@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/title_layout"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:background="@color/blue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <com.dd.ShadowLayout
+            android:id="@+id/calendar_shadow"
+            android:layout_margin="30px"
+            app:sl_shadowColor="#803F51B5"
+            app:sl_shadowRadius="15px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <thinku.com.word.view.SignDate
+                    android:id="@+id/calendar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></thinku.com.word.view.SignDate>
+                <RelativeLayout
+                    android:layout_margin="30px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/total_num"
+                        android:text="累计打卡：0天"
+                        android:textSize="50px"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/sign"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="签到"
+                        android:textSize="50px"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/main_10round_tv"
+                        android:layout_width="250px"
+                        android:layout_height="80px" />
+                </RelativeLayout>
+            </LinearLayout>
+        </com.dd.ShadowLayout>
+        <com.dd.ShadowLayout
+            app:sl_shadowColor="#803F51B5"
+            app:sl_shadowRadius="15px"
+            android:layout_marginLeft="30px"
+            android:layout_marginRight="30px"
+            android:layout_below="@+id/calendar_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="150px">
+            <RelativeLayout
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_marginLeft="30px"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="雷豆总数"
+                    android:textColor="@color/black"
+                    android:textSize="50px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:layout_marginRight="50px"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:background="@color/black"
+                        android:layout_width="60px"
+                        android:layout_height="60px" />
+                    <TextView
+                        android:id="@+id/bean_num"
+                        android:text="0"
+                        android:layout_marginLeft="20px"
+                        android:textSize="50px"
+                        android:textColor="@color/mainColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </RelativeLayout>
+        </com.dd.ShadowLayout>
+    </RelativeLayout>
+</LinearLayout>

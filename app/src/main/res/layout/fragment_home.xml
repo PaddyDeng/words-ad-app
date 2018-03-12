@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/top_rl"
+        android:background="@color/mainColor_dark"
+        android:layout_width="match_parent"
+        android:layout_height="700px">
+        <TextView
+            android:id="@+id/days"
+            android:background="@drawable/yellow_right_round"
+            android:gravity="center"
+            android:text="已坚持0天"
+            android:textSize="40px"
+            android:textColor="@color/white"
+            android:layout_marginTop="70px"
+            android:layout_width="300px"
+            android:layout_height="80px" />
+        <LinearLayout
+            android:id="@+id/day_ll"
+            android:orientation="vertical"
+            android:background="@drawable/day_round"
+            android:layout_marginTop="40px"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:layout_width="180px"
+            android:layout_height="180px">
+            <TextView
+                android:text="剩余"
+                android:textSize="40px"
+                android:textColor="@color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_marginTop="10px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <thinku.com.word.view.AutoZoomTextView
+                    android:id="@+id/surplus_day"
+                    android:text="0"
+                    android:textSize="60px"
+                    android:gravity="right"
+                    android:maxWidth="100px"
+                    android:textColor="@color/yellow_right_round"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60px" />
+                <TextView
+                    android:textSize="40px"
+                    android:text="天"
+                    android:layout_marginLeft="10px"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/sign"
+            android:layout_toRightOf="@+id/day_ll"
+            android:layout_marginTop="85px"
+            android:layout_marginLeft="100px"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:background="@color/black"
+                android:layout_width="60px"
+                android:layout_height="60px" />
+            <TextView
+                android:textSize="40px"
+                android:textColor="@color/white"
+                android:text="打卡"
+                android:layout_marginLeft="10px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/change_plan"
+            android:background="@drawable/white_side_round"
+            android:layout_marginTop="30px"
+            android:layout_below="@+id/day_ll"
+            android:layout_centerHorizontal="true"
+            android:text="改计划"
+            android:gravity="center"
+            android:textSize="40px"
+            android:textColor="@color/white"
+            android:layout_width="140px"
+            android:layout_height="60px" />
+        <RelativeLayout
+            android:layout_marginTop="60px"
+            android:layout_below="@id/change_plan"
+            android:layout_marginLeft="200px"
+            android:layout_marginRight="200px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/need_num"
+                        android:text="0"
+                        android:textSize="80px"
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:text="个"
+                        android:textSize="40px"
+                        android:layout_marginLeft="10px"
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <TextView
+                    android:textSize="40px"
+                    android:layout_marginTop="10px"
+                    android:textColor="@color/white"
+                    android:text="今天需背单词"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <View
+                android:background="@color/white"
+                android:layout_centerInParent="true"
+                android:layout_width="2px"
+                android:layout_height="100px"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_alignParentRight="true"
+                android:gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/already_num"
+                        android:text="0"
+                        android:textSize="80px"
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:text="个"
+                        android:textSize="40px"
+                        android:layout_marginLeft="10px"
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <TextView
+                    android:textSize="40px"
+                    android:layout_marginTop="10px"
+                    android:textColor="@color/white"
+                    android:text="累计已背"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+    <View
+        android:background="#F6EDEE"
+        android:layout_below="@id/top_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:id="@+id/middle"
+        android:layout_marginTop="560px"
+        android:layout_width="match_parent"
+        android:layout_height="300px">
+    <ImageView
+        android:background="@color/blue"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textSize="45px"
+                    android:text="GMAT词汇-核心词包"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:id="@+id/modify_word_package"
+                    android:layout_marginLeft="10px"
+                    android:background="@color/black"
+                    android:layout_width="50px"
+                    android:layout_height="50px" />
+            </LinearLayout>
+            <thinku.com.word.view.ProgressView
+                android:id="@+id/progress"
+                android:layout_marginTop="20px"
+                android:layout_width="800px"
+                android:layout_height="80px" />
+            <LinearLayout
+                android:layout_marginTop="20px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="进度:"
+                    android:textSize="40px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/num"
+                    android:text="0"
+                    android:layout_marginLeft="10px"
+                    android:textColor="@color/mainColor"
+                    android:textSize="40px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/all_num"
+                    android:text="/0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_below="@id/middle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="150px"
+            android:layout_marginRight="150px"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="今日需背单词："
+                    android:textSize="35px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/today_num"
+                    android:text="0/0"
+                    android:textSize="35px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/review_t"
+                    android:text=",今日需复习："
+                    android:textSize="35px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/review_num"
+                    android:textSize="35px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/start_recite"
+                android:textSize="50px"
+                android:layout_marginTop="30px"
+                android:textColor="@color/white"
+                android:background="@drawable/main_20round_tv"
+                android:gravity="center"
+                android:text="开始背单词"
+                android:layout_width="match_parent"
+                android:layout_height="120px" />
+            <TextView
+                android:id="@+id/start_review"
+                android:text="复习"
+                android:textSize="50px"
+                android:textColor="@color/mainColor"
+                android:gravity="center"
+                android:layout_marginTop="30px"
+                android:background="@drawable/main_side_round_tv"
+                android:layout_width="match_parent"
+                android:layout_height="120px" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/gray_white"
+    android:layout_height="match_parent">
+    <include layout="@layout/title_layout"/>
+    <LinearLayout
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="150px">
+        <TextView
+            android:layout_marginLeft="60px"
+            android:text="金额(￥)"
+            android:textSize="50px"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/et"
+            android:inputType="numberDecimal"
+            android:layout_marginLeft="60px"
+            android:layout_marginRight="60px"
+            android:hint="请填写充值金额"
+            android:textSize="45px"
+            android:textColor="@color/black"
+            android:background="@null"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:background="@color/gray_white"
+        android:layout_width="match_parent"
+        android:layout_height="30px"/>
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="支付方式"
+            android:textSize="50px"
+            android:textColor="@color/black"
+            android:layout_marginTop="50px"
+            android:layout_marginLeft="60px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <View
+            android:layout_marginTop="20px"
+            android:background="@color/gray_white"
+            android:layout_width="match_parent"
+            android:layout_height="2px"/>
+
+        <LinearLayout
+            android:id="@+id/wechat"
+            android:layout_width="match_parent"
+            android:layout_height="150px"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/wechat_select"
+                android:layout_width="60px"
+                android:layout_height="60px"
+                android:layout_marginLeft="80px"
+                android:background="@color/black" />
+
+            <ImageView
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_marginLeft="60px"
+                android:background="@color/colorAccent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50px"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="微信支付"
+                    android:textColor="@color/black"
+                    android:textSize="45px" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="微信红包"
+                    android:textSize="40px" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/alipay"
+            android:layout_width="match_parent"
+            android:layout_height="150px"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/alipay_select"
+                android:layout_width="60px"
+                android:layout_height="60px"
+                android:layout_marginLeft="80px"
+                android:background="@color/black" />
+
+            <ImageView
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_marginLeft="60px"
+                android:background="@color/colorAccent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50px"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="支付宝"
+                    android:textColor="@color/black"
+                    android:textSize="45px" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="快捷方式"
+                    android:textSize="40px" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/card"
+            android:layout_width="match_parent"
+            android:layout_height="150px">
+            <ImageView
+                android:id="@+id/card_select"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="80px"
+                android:background="@color/black"
+                android:layout_width="60px"
+                android:layout_height="60px" />
+            <ImageView
+                android:layout_centerVertical="true"
+                android:id="@+id/card_icon"
+                android:layout_toRightOf="@+id/card_select"
+                android:layout_marginLeft="60px"
+                android:background="@color/colorAccent"
+                android:layout_width="100px"
+                android:layout_height="100px" />
+            <LinearLayout
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/card_icon"
+                android:layout_marginLeft="50px"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="银联支付"
+                    android:textSize="45px"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:text="快捷方式"
+                    android:textSize="40px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <ImageView
+                android:background="@color/colorPrimary"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="80px"
+                android:layout_alignParentRight="true"
+                android:layout_width="50px"
+                android:layout_height="50px" />
+        </RelativeLayout>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/to_pay"
+        android:textSize="52px"
+        android:textColor="@color/white"
+        android:text="充值"
+        android:gravity="center"
+        android:background="@drawable/main_10round_tv"
+        android:layout_marginTop="150px"
+        android:layout_marginLeft="80px"
+        android:layout_marginRight="80px"
+        android:layout_width="match_parent"
+        android:layout_height="120px" />
+</LinearLayout>

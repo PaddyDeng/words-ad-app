@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:gravity="center_horizontal"
+    android:layout_height="match_parent">
+    <include layout="@layout/title_layout"/>
+    <TextView
+        android:layout_marginTop="150px"
+        android:text="雷豆总数"
+        android:textSize="60px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/bean_num"
+        android:text="0"
+        android:layout_marginTop="40px"
+        android:textSize="100px"
+        android:textColor="@color/mainColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/to_pay"
+        android:layout_marginTop="30px"
+        android:textSize="50px"
+        android:textColor="@color/white"
+        android:text="充值雷豆"
+        android:background="@drawable/main_10round_tv"
+        android:gravity="center"
+        android:layout_width="500px"
+        android:layout_height="100px" />
+    <TextView
+        android:layout_marginTop="20px"
+        android:textSize="35px"
+        android:text="注：每100雷豆等于1元"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:background="@color/gray_white"
+            android:orientation="vertical"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:padding="30px"
+            android:layout_marginLeft="60px"
+            android:layout_marginRight="60px"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="获得雷豆:"
+                    android:textSize="45px"
+                    android:textColor="@color/mainColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="40px"
+                    android:layout_marginLeft="10px"
+                    android:textColor="@color/mainColor"
+                    android:text="(适用于雷哥网)"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="60px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <View
+                    android:layout_marginTop="12px"
+                    android:background="@drawable/gray_dot"
+                    android:layout_width="10px"
+                    android:layout_height="10px"/>
+                <TextView
+                    android:textSize="30px"
+                    android:text="会员注册成功获得10枚；"
+                    android:layout_marginLeft="20px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="10px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <View
+                    android:layout_marginTop="12px"
+                    android:background="@drawable/gray_dot"
+                    android:layout_width="10px"
+                    android:layout_height="10px"/>
+                <TextView
+                    android:textSize="30px"
+                    android:text="每做一道题获得2枚；"
+                    android:layout_marginLeft="20px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="10px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <View
+                    android:layout_marginTop="12px"
+                    android:background="@drawable/gray_dot"
+                    android:layout_width="10px"
+                    android:layout_height="10px"/>
+                <TextView
+                    android:textSize="30px"
+                    android:text="每贡献一条题目解析得2枚，若解析审核通过成为最正确解析得10枚；"
+                    android:layout_marginLeft="20px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="10px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <View
+                    android:layout_marginTop="12px"
+                    android:background="@drawable/gray_dot"
+                    android:layout_width="10px"
+                    android:layout_height="10px"/>
+                <TextView
+                    android:textSize="30px"
+                    android:text="每向系统管理员提交有效bug(单词拼写、选项错误、答案错误等问题)1个得2枚；"
+                    android:layout_marginLeft="20px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="10px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <View
+                    android:layout_marginTop="12px"
+                    android:background="@drawable/gray_dot"
+                    android:layout_width="10px"
+                    android:layout_height="10px"/>
+                <TextView
+                    android:textSize="30px"
+                    android:text="每邀请1个好友注册会员成功，奖励50枚；"
+                    android:layout_marginLeft="20px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="10px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <View
+                    android:layout_marginTop="12px"
+                    android:background="@drawable/gray_dot"
+                    android:layout_width="10px"
+                    android:layout_height="10px"/>
+                <TextView
+                    android:textSize="30px"
+                    android:text="每分享一道题/网站链接到微信、朋友圈、微博、人人等，各奖励10枚；"
+                    android:layout_marginLeft="20px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/title_bar"/>
+    <LinearLayout
+        android:background="@color/mainColor"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="@dimen/title_height">
+        <TextView
+            android:id="@+id/pk"
+            android:text="PK"
+            android:background="@drawable/select_text_back"
+            android:textSize="@dimen/title_text_size"
+            android:textColor="@color/white"
+            android:layout_marginLeft="150px"
+            android:layout_marginRight="150px"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0px"
+            android:layout_height="100px" />
+        <TextView
+            android:id="@+id/find"
+            android:text="发现"
+            android:layout_marginLeft="150px"
+            android:layout_marginRight="150px"
+            android:background="@drawable/select_text_back"
+            android:textSize="@dimen/title_text_size"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0px"
+            android:layout_height="100px" />
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/fl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+</LinearLayout>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:background="@color/mainColor"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"/>
+    <RelativeLayout
+        android:background="@color/mainColor"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height">
+        <ImageView
+            android:id="@+id/back"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/white_back"
+            android:layout_marginLeft="40px"
+            android:layout_width="70px"
+            android:layout_height="70px" />
+        <TextView
+            android:text="学习模式"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title_text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/title_right"
+            android:layout_marginRight="40px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/black"
+            android:layout_width="70px"
+            android:layout_height="70px" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_marginTop="150px"
+            android:layout_centerHorizontal="true"
+            android:textSize="50px"
+            android:textColor="@color/black"
+            android:text="请选择适合你的\n背单词模式"
+            android:lineSpacingMultiplier="1.2"
+            android:gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="150px"
+            android:layout_marginRight="150px"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/ebbinghaus"
+            android:background="@drawable/type_setting_select"
+            android:text="艾宾浩斯记忆法（科学记忆）"
+            android:textSize="40px"
+            android:textColor="@color/dark_gray"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="100px" />
+        <TextView
+            android:id="@+id/review"
+            android:background="@drawable/type_setting_select"
+            android:layout_marginTop="40px"
+            android:textSize="40px"
+            android:textColor="@color/dark_gray"
+            android:text="复习记忆法（快速巩固）"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="100px" />
+        <TextView
+            android:id="@+id/only_new"
+            android:background="@drawable/type_setting_select"
+            android:layout_marginTop="40px"
+            android:textSize="40px"
+            android:textColor="@color/dark_gray"
+            android:text="只背新单词（快速记忆）"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="100px" />
+        </LinearLayout>
+        <TextView
+            android:textSize="40px"
+            android:text="在个人中心-学习模式可更换设置模式哦~"
+            android:layout_marginBottom="40px"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</LinearLayout>

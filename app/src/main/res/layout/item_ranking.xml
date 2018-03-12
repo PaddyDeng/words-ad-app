@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@color/evaluate_result"
+        android:layout_width="match_parent"
+        android:layout_height="150px">
+        <ImageView
+            android:id="@+id/portrait"
+            android:background="@color/colorAccent"
+            android:layout_marginLeft="80px"
+            android:layout_centerVertical="true"
+            android:layout_width="100px"
+            android:layout_height="100px" />
+        <LinearLayout
+            android:layout_toRightOf="@+id/portrait"
+            android:layout_marginLeft="40px"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/name"
+                android:text="名字"
+                android:textSize="40px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="词汇量："
+                    android:layout_marginTop="5px"
+                    android:textSize="40px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/num"
+                    android:textSize="40px"
+                    android:text="0"
+                    android:textColor="@color/mainColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_marginRight="80px"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <ImageView
+                android:background="@color/colorAccent"
+                android:layout_width="120px"
+                android:layout_height="100px" />
+            <TextView
+                android:id="@+id/ranking_num"
+                android:text="0"
+                android:textSize="45px"
+                android:textColor="@color/white"
+                android:layout_marginTop="20px"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv"
+                android:visibility="gone"
+                android:textColor="@color/mainColor"
+                android:text="你的排名"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10px"
+                android:textSize="30px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </RelativeLayout>

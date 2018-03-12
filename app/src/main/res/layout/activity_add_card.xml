@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/title_layout"/>
+    <TextView
+        android:textSize="40px"
+        android:paddingLeft="40px"
+        android:gravity="center_vertical"
+        android:text="请填写真实信息，核实后不可更改"
+        android:background="@color/gray_white"
+        android:layout_width="match_parent"
+        android:layout_height="100px" />
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="300px">
+        <LinearLayout
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0px">
+            <TextView
+                android:text="真实姓名"
+                android:textSize="50px"
+                android:textColor="@color/black"
+                android:layout_marginLeft="40px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/name"
+                android:layout_marginLeft="40px"
+                android:layout_marginRight="40px"
+                android:maxLines="1"
+                android:textSize="45px"
+                android:hint="请填写持卡人姓名"
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="60px" />
+        </LinearLayout>
+        <View
+            android:layout_marginLeft="40px"
+            android:layout_marginRight="40px"
+            android:background="@color/gray_white"
+            android:layout_width="match_parent"
+            android:layout_height="2px"/>
+        <LinearLayout
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0px">
+            <TextView
+                android:text="身份证号"
+                android:textSize="50px"
+                android:textColor="@color/black"
+                android:layout_marginLeft="40px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/id_num"
+                android:layout_marginLeft="40px"
+                android:layout_marginRight="40px"
+                android:maxLines="1"
+                android:textSize="45px"
+                android:hint="请正确填写身份证号码"
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="30px"/>
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="300px">
+        <LinearLayout
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0px">
+            <TextView
+                android:text="开户银行"
+                android:textSize="50px"
+                android:textColor="@color/black"
+                android:layout_marginLeft="40px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/card"
+                android:layout_marginLeft="40px"
+                android:layout_marginRight="40px"
+                android:maxLines="1"
+                android:textSize="45px"
+                android:hint="请选择开户银行"
+                android:layout_width="match_parent"
+                android:layout_height="60px" />
+        </LinearLayout>
+        <View
+            android:layout_marginLeft="40px"
+            android:layout_marginRight="40px"
+            android:background="@color/gray_white"
+            android:layout_width="match_parent"
+            android:layout_height="2px"/>
+        <LinearLayout
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0px">
+            <TextView
+                android:text="银行卡号"
+                android:textSize="50px"
+                android:textColor="@color/black"
+                android:layout_marginLeft="40px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/card_num"
+                android:layout_marginLeft="40px"
+                android:layout_marginRight="40px"
+                android:maxLines="1"
+                android:textSize="45px"
+                android:hint="请输入银行卡号"
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="60px" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_margin="50px"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/agree"
+            android:background="@color/black"
+            android:layout_width="50px"
+            android:layout_height="50px" />
+        <TextView
+            android:layout_marginLeft="20px"
+            android:textSize="40px"
+            android:text="我已经阅读并同意"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/agreement"
+            android:textColor="@color/mainColor"
+            android:text="《银行卡绑定及解绑服务协议》"
+            android:textSize="40px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/confirm"
+        android:textSize="54px"
+        android:textColor="@color/white"
+        android:text="确认添加"
+        android:gravity="center"
+        android:layout_margin="40px"
+        android:background="@drawable/main_20round_tv"
+        android:layout_width="match_parent"
+        android:layout_height="120px" />
+</LinearLayout>

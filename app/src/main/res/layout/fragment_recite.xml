@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:background="@color/mainColor"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"/>
+    <RelativeLayout
+        android:background="@color/mainColor"
+        android:layout_width="match_parent"
+        android:layout_height="150px">
+        <ImageView
+            android:id="@+id/portrait"
+            android:layout_centerVertical="true"
+            android:background="@color/black"
+            android:layout_marginLeft="40px"
+            android:layout_width="100px"
+            android:layout_height="100px" />
+        <LinearLayout
+            android:id="@+id/input_lookup"
+            android:background="@drawable/search_ll"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:layout_width="500px"
+            android:layout_height="90px">
+            <ImageView
+                android:layout_marginLeft="30px"
+                android:background="@color/black"
+                android:layout_width="40px"
+                android:layout_height="40px" />
+            <TextView
+                android:textSize="40px"
+                android:textColor="@color/white"
+                android:layout_marginLeft="30px"
+                android:text="搜索单词"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginRight="60px"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="200px"
+            android:layout_height="90px">
+            <ImageView
+                android:id="@+id/speech_lookup"
+                android:background="@color/black"
+                android:layout_weight="1"
+                android:layout_width="0px"
+                android:layout_height="match_parent" />
+            <ImageView
+                android:id="@+id/photo_lookup"
+                android:layout_marginLeft="20px"
+                android:background="@color/black"
+                android:layout_weight="1"
+                android:layout_width="0px"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/fl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+</LinearLayout>

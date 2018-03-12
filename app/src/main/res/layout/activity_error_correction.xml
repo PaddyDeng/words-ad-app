@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/title_layout"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/type_list"
+        android:layout_marginLeft="40px"
+        android:layout_marginRight="40px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+    <EditText
+        android:id="@+id/et"
+        android:layout_margin="40px"
+        android:background="@drawable/gray_side_white_10round"
+        android:padding="30px"
+        android:gravity="start"
+        android:textSize="40px"
+        android:hint="请输入题目纠错信息"
+        android:layout_width="match_parent"
+        android:layout_height="500px" />
+    <LinearLayout
+        android:layout_margin="100px"
+        android:layout_width="match_parent"
+        android:layout_height="100px">
+        <TextView
+            android:id="@+id/submit"
+            android:background="@drawable/main_10round_tv"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="提交"
+            android:textSize="45px"
+            android:layout_weight="1"
+            android:layout_width="0px"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/cancel"
+            android:background="@drawable/main_10round_tv"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="取消"
+            android:textSize="45px"
+            android:layout_marginLeft="100px"
+            android:layout_weight="1"
+            android:layout_width="0px"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</LinearLayout>
