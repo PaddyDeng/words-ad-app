@@ -1,33 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:gravity="center_horizontal"
-    android:layout_height="match_parent">
-    <include layout="@layout/title_layout_word"/>
-    <ImageView
-        android:id="@+id/play"
-        android:background="@color/mainColor"
-        android:layout_marginTop="150px"
-        android:layout_width="60px"
-        android:layout_height="60px" />
-    <TextView
-        android:id="@+id/word"
-        android:text="windmill"
-        android:textSize="80px"
-        android:textColor="@color/black"
-        android:layout_margin="20px"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/phonogram"
-        android:text="['wln(d),mll]"
-        android:textSize="45px"
-        android:textColor="@color/black"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/option_list"
-        android:layout_margin="100px"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <include layout="@layout/title_layout_word" />
+
+        <TextView
+            android:id="@+id/word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/mainColor"
+            android:textSize="24dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/play"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginTop="5dp"
+                android:background="@mipmap/word_broadcast"
+                android:padding="5dp" />
+
+            <TextView
+                android:id="@+id/phonogram"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/mainColor"
+                android:textSize="17sp"
+                />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/word_evaluate_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+             />
+    </LinearLayout>
+</ScrollView>

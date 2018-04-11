@@ -29,12 +29,12 @@
             android:layout_marginRight="40px"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:background="@color/black"
+            android:background="@mipmap/right"
             android:layout_width="70px"
             android:layout_height="70px" />
     </RelativeLayout>
     <RelativeLayout
-        android:background="@color/colorPrimary"
+        android:background="@mipmap/study_mode_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
@@ -54,26 +54,29 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/ebbinghaus"
-            android:background="@drawable/type_setting_select"
-            android:text="艾宾浩斯记忆法（科学记忆）"
-            android:textSize="40px"
-            android:textColor="@color/dark_gray"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="100px" />
-        <TextView
-            android:id="@+id/review"
-            android:background="@drawable/type_setting_select"
-            android:layout_marginTop="40px"
-            android:textSize="40px"
-            android:textColor="@color/dark_gray"
-            android:text="复习记忆法（快速巩固）"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="100px" />
-        <TextView
+
+            <TextView
+                android:id="@+id/ebbinghaus"
+                android:layout_width="match_parent"
+                android:layout_height="100px"
+                android:background="@drawable/type_setting_select"
+                android:gravity="center"
+                android:text="艾宾浩斯记忆法（科学记忆）"
+                android:textColor="@color/dark_gray"
+                android:textSize="40px" />
+
+            <TextView
+                android:id="@+id/review"
+                android:layout_width="match_parent"
+                android:layout_height="100px"
+                android:layout_marginTop="40px"
+                android:background="@drawable/type_setting_select"
+                android:gravity="center"
+                android:text="复习记忆法（快速巩固）"
+                android:textColor="@color/dark_gray"
+                android:textSize="40px" />
+
+            <TextView
             android:id="@+id/only_new"
             android:background="@drawable/type_setting_select"
             android:layout_marginTop="40px"

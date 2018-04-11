@@ -12,12 +12,22 @@ import com.yanzhenjie.nohttp.cookie.DBCookieStore;
 import java.net.HttpCookie;
 import java.net.URI;
 
+import me.yokeyword.fragmentation.Fragmentation;
+import me.yokeyword.fragmentation.exception.AfterSaveStateTransactionWarning;
+import me.yokeyword.fragmentation.helper.ExceptionHandler;
+import thinku.com.word.utils.AudioTools.IMAudioManager;
+import thinku.com.word.utils.SharedPreferencesUtils;
+
 /**
  * Created by Administrator on 2017/12/5.
  */
 
 public class MyApplication extends Application {
+    private static final String TAG = MyApplication.class.getSimpleName();
     private static Context mContext;
+    public static int MemoryMode = 0 ;  //  初始化记忆模式
+    public static int WordStatus = 0 ; // 单词状态
+    public static String session = "";
 
     public static Context getInstance(){
         return mContext;
@@ -27,15 +37,39 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext=this;
-        InitializationConfig config =InitializationConfig.newBuilder(this).cookieStore(new DBCookieStore(this).setEnable(false)).build();
+        session = SharedPreferencesUtils.getSession(MyApplication.this ,4);
+        InitializationConfig config =InitializationConfig.newBuilder(this)
+                .cookieStore(new DBCookieStore(this).setEnable(false))
+                .addHeader("Cookie","PHPSESSID="  + session)
+                .build();
         NoHttp.initialize(config);
 
         // 开启NoHttp的调试模式, 配置后可看到请求过程、日志和错误信息。
         Logger.setDebug(true);
         Logger.setTag("NoHttpSample");
+        IMAudioManager.instance().init(this);
+        //  fragment  框架配置
+        Fragmentation.builder()
+                // 设置 栈视图 模式为 （默认）悬浮球模式   SHAKE: 摇一摇唤出  NONE：隐藏， 仅在Debug环境生效
+                .stackViewMode(Fragmentation.BUBBLE)
+                .debug(true) // 实际场景建议.debug(BuildConfig.DEBUG)
+                /**
+                 * 可以获取到{@link AfterSaveStateTransactionWarning}
+                 * 在遇到After onSaveInstanceState时，不会抛出异常，会回调到下面的ExceptionHandler
+                 */
+                .handleException(new ExceptionHandler() {
+                    @Override
+                    public void onException(Exception e) {
+                        // 以Bugtags为例子: 把捕获到的 Exception 传到 Bugtags 后台。
+                        // Bugtags.sendException(e);
+
+                        Log.e(TAG, "onException: " + e.getMessage());
+                    }
+                })
+                .install();
     }
     /**
-     * Cookie管理监听。
+     * Cookie管理监听。x
      */
     private DBCookieStore.CookieStoreListener mListener = new DBCookieStore.CookieStoreListener() {
         @Override
@@ -54,5 +88,7 @@ public class MyApplication extends Application {
         public void onRemoveCookie(URI uri, HttpCookie cookie) {// Cookie被移除时被调用。
             Log.i("移除cookie",cookie.getValue());
         }
+
     };
+
 }

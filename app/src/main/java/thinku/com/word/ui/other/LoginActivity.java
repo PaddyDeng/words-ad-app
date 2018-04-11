@@ -1,16 +1,21 @@
 package thinku.com.word.ui.other;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import me.yokeyword.fragmentation.SupportActivity;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
+import thinku.com.word.bean.UserInfo;
+import thinku.com.word.callback.RequestCallback;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.PhoneAndEmailUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
@@ -26,17 +31,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private TextView login,register_btn,forget_btn;
     private String phone;
     private String pass;
-
-    private static LoginActivity sInstance;
-    public static LoginActivity getInstance() {
-        if (sInstance != null) {
-            return sInstance;
-        }
-        return null;
-    }
-    public static void finishNow(){
-        sInstance.finish();
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,15 +77,43 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     return;
                 }
                 pass = pass_et.getText().toString();
-                SharedPreferencesUtils.setPassword(LoginActivity.this,phone,pass);
-                LoginHelper.againLogin(LoginActivity.this,3);
+                LoginHelper.againLoginRetrofit(LoginActivity.this, phone, pass, new RequestCallback<UserInfo>() {
+                    @Override
+                    public void beforeRequest() {
+                    }
+
+                    @Override
+                    public void requestFail(String msg) {
+                    }
+
+                    @Override
+                    public void requestSuccess(UserInfo userInfo) {
+                        SharedPreferencesUtils.setPassword(LoginActivity.this, TextUtils.isEmpty(userInfo.getPhone()) ? userInfo.getEmail() : userInfo.getPhone(), userInfo.getPassword());
+                        SharedPreferencesUtils.setLogin(LoginActivity.this, userInfo);
+                        LoginActivity.this.finish();
+                    }
+
+                    @Override
+                    public void otherDeal(UserInfo userInfo) {
+
+                    }
+                });
                 break;
             case R.id.register_btn:
-
+                startActivity(new Intent(LoginActivity.this ,RigisterActivity.class));
                 break;
             case R.id.forget_btn:
-
+                startActivity(new Intent(LoginActivity.this ,ForgetPassActivity.class));
                 break;
         }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == 10){
+//            startActivity(new Intent(LoginActivity.this ,MainActivity.class));
+//        }
     }
 }

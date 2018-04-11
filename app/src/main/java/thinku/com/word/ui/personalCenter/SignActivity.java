@@ -1,13 +1,21 @@
 package thinku.com.word.ui.personalCenter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
+import thinku.com.word.bean.SingBeen;
+import thinku.com.word.http.HttpUtil;
 import thinku.com.word.view.SignDate;
 
 /**
@@ -20,15 +28,32 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     private ImageView back;
     private TextView title_t,total_num,sign,bean_num;
 
+
+    public static void start(Context context){
+        Intent intent = new Intent(context ,SignActivity.class);
+        context.startActivity(intent);
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
         findView();
         setClick();
+        initData();
     }
 
 
+    public void initData(){
+        addToCompositeDis(HttpUtil.userSingObservable()
+        .subscribe(new Consumer<SingBeen>() {
+            @Override
+            public void accept(SingBeen singBeen) throws Exception {
+                if (singBeen != null){
+
+                }
+            }
+        }));
+    }
 
     private void findView() {
         back = (ImageView) findViewById(R.id.back);
@@ -42,6 +67,13 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     private void setClick() {
         back.setOnClickListener(this);
         sign.setOnClickListener(this);
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(5);
+        list.add(6);
+        list.add(18);
+        calendar.setSign(list);
     }
 
     @Override
@@ -51,7 +83,6 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 finish();
                 break;
             case R.id.sign:
-
 
                 break;
         }

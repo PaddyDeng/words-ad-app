@@ -1,33 +1,51 @@
 package thinku.com.word.base;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.gyf.barlibrary.ImmersionBar;
+import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.rest.OnResponseListener;
+import com.yanzhenjie.nohttp.rest.Request;
+import com.yanzhenjie.nohttp.rest.RequestQueue;
+
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import me.yokeyword.fragmentation.SupportFragment;
+import me.yokeyword.fragmentation.SupportFragmentDelegate;
 import thinku.com.word.MyApplication;
+import thinku.com.word.utils.HttpUtils;
+import thinku.com.word.utils.WaitUtils;
 
 
 /**
  * Created by dasu on 2016/9/27.
- *
+ * <p>
  * Fragment基类，封装了懒加载的实现
- *
+ * <p>
  * 1、Viewpager + Fragment情况下，fragment的生命周期因Viewpager的缓存机制而失去了具体意义
  * 该抽象类自定义新的回调方法，当fragment可见状态改变时会触发的回调方法，和 Fragment 第一次可见时会回调的方法
  *
  * @see #onFragmentVisibleChange(boolean)
  * @see #onFragmentFirstVisible()
  */
-public abstract class BaseFragment extends Fragment {
-
+public abstract class BaseFragment extends SupportFragment  {
+    protected OnBackToFirstListener _mBackToFirstListener;
     private static final String TAG = BaseFragment.class.getSimpleName();
-
+    protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private boolean isFragmentVisible;
     private boolean isReuseView;
     private boolean isFirstVisible;
     private View rootView;
 
+    protected Context mContext;
+    private RequestQueue mRequestQueue;
+    private ImmersionBar immersionBar;
 
     //setUserVisibleHint()在Fragment创建时会先被调用一次，传入isVisibleToUser = false
     //如果当前Fragment可见，那么setUserVisibleHint()会再次被调用一次，传入isVisibleToUser = true
@@ -59,10 +77,58 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyApplication application = (MyApplication) getActivity().getApplication();
         initVariable();
     }
 
+    protected void addToCompositeDis(Disposable disposable) {
+        mCompositeDisposable.add(disposable);
+    }
+
+    /**
+     * 发起一个请求。
+     *
+     * @param what     what.
+     * @param request  请求对象。
+     * @param listener 结果监听。
+     * @param <T>      要请求到的数据类型。
+     */
+    public <T> void request(int what, Request<T> request, OnResponseListener<T> listener) {
+        mRequestQueue.add(what, request, listener);
+    }
+
+    /**
+     *  判断是否请求成功
+     * @param code
+     * @return
+     */
+    protected boolean getHttpResSuc(int code) {
+        if (HttpUtils.getHttpMsgSu(code)) {
+            return true;
+        }
+        return false;
+    }
+
+    //  toast
+    public void toTast(Context context , String content){
+        Toast.makeText(context ,content ,Toast.LENGTH_SHORT).show();
+    }
+    /**
+     * 关闭加载dialog
+     */
+    public void dismissLoadDialog() {
+//        if (isShow()) {
+//            WaitDialog01.getInstance(mContext).dismissWaitDialog();
+//        }
+        if(WaitUtils.isRunning(getClass().getSimpleName())){
+            WaitUtils.dismiss(getClass().getSimpleName());
+        }
+    }
+
+    public void dismissLoadDialog(String tag){
+        if(WaitUtils.isRunning(tag)){
+            WaitUtils.dismiss(tag);
+        }
+    }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         //如果setUserVisibleHint()在rootView创建前调用时，那么
@@ -115,7 +181,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 去除setUserVisibleHint()多余的回调场景，保证只有当fragment可见状态发生变化时才回调
      * 回调时机在view创建完后，所以支持ui操作，解决在setUserVisibleHint()里进行ui操作有可能报null异常的问题
-     *
+     * <p>
      * 可在该回调方法里进行一些ui显示与隐藏，比如加载框的显示和隐藏
      *
      * @param isVisible true  不可见 -> 可见
@@ -138,5 +204,29 @@ public abstract class BaseFragment extends Fragment {
 
     protected boolean isFragmentVisible() {
         return isFragmentVisible;
+    }
+
+    /**
+     * 按返回键触发,前提是SupportActivity的onBackPressed()方法能被调用
+     *
+     * @return false则继续向上传递, true则消费掉该事件
+     */
+    @Override
+    public boolean onBackPressedSupport() {
+        if (getChildFragmentManager().getBackStackEntryCount() > 1) {
+            popChild();
+        } else {
+//            if (this instanceof ZhihuFirstFragment) {   // 如果是 第一个Fragment 则退出app
+//                _mActivity.finish();
+//            } else {                                    // 如果不是,则回到第一个Fragment
+//                _mBackToFirstListener.onBackToFirstFragment();
+//            }
+            _mActivity.finish();
+        }
+        return true;
+    }
+
+    public interface OnBackToFirstListener {
+        void onBackToFirstFragment();
     }
 }

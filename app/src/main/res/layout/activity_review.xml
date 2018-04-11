@@ -17,7 +17,7 @@
             android:layout_width="0px"
             android:layout_height="match_parent">
             <ImageView
-                android:background="@color/colorAccent"
+                android:src="@mipmap/review_error"
                 android:layout_centerInParent="true"
                 android:layout_width="200px"
                 android:layout_height="200px" />
@@ -48,7 +48,7 @@
             android:layout_width="0px"
             android:layout_height="match_parent">
             <ImageView
-                android:background="@color/colorAccent"
+                android:src="@mipmap/review_time"
                 android:layout_centerInParent="true"
                 android:layout_width="200px"
                 android:layout_height="200px" />
@@ -73,7 +73,7 @@
         android:layout_height="300px">
         <ImageView
             android:layout_marginLeft="120px"
-            android:background="@color/colorAccent"
+            android:src="@mipmap/review_exercise"
             android:layout_centerVertical="true"
             android:layout_width="200px"
             android:layout_height="200px" />

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">word</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="string_evaluate">按照正确率从词库抽取单词进行评估，请尽可能真实评测</string>
 </resources>

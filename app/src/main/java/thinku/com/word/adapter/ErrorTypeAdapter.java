@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.zhy.autolayout.utils.AutoUtils;
 
+import java.util.List;
+
 import thinku.com.word.R;
 import thinku.com.word.callback.SelectListener;
 
@@ -19,11 +21,11 @@ import thinku.com.word.callback.SelectListener;
 
 public class ErrorTypeAdapter extends RecyclerView.Adapter<ErrorTypeAdapter.ViewHolder>{
     private Context context;
-    private String[] datas;
+    private List<String> datas;
     private SelectListener listener;
     private int selectP=0;
 
-    public ErrorTypeAdapter(Context context, String[] datas, SelectListener listener) {
+    public ErrorTypeAdapter(Context context, List<String> datas, SelectListener listener) {
         this.context = context;
         this.datas = datas;
         this.listener = listener;
@@ -38,7 +40,7 @@ public class ErrorTypeAdapter extends RecyclerView.Adapter<ErrorTypeAdapter.View
 
     @Override
     public void onBindViewHolder(ErrorTypeAdapter.ViewHolder holder, final int position) {
-        holder.tv.setText(datas[position]);
+        holder.tv.setText(datas.get(position));
         if(selectP==position)holder.iv.setSelected(true);
         else holder.iv.setSelected(false);
         holder.rl.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +55,7 @@ public class ErrorTypeAdapter extends RecyclerView.Adapter<ErrorTypeAdapter.View
 
     @Override
     public int getItemCount() {
-        return null==datas?0:datas.length;
+        return null==datas?0:datas.size();
     }
     public class ViewHolder extends RecyclerView.ViewHolder{
 

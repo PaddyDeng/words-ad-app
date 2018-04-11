@@ -2,90 +2,287 @@ package thinku.com.word.ui.recite;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.Request;
+import com.yanzhenjie.nohttp.rest.Response;
+import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
+
+import java.text.SimpleDateFormat;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import thinku.com.word.MyApplication;
 import thinku.com.word.R;
+import thinku.com.word.base.BaseActivity;
 import thinku.com.word.base.BaseFragment;
+import thinku.com.word.bean.BackCode;
+import thinku.com.word.bean.ResultBeen;
+import thinku.com.word.bean.ReviewDialogBeen;
+import thinku.com.word.bean.UserIndex;
+import thinku.com.word.http.HttpUtil;
+import thinku.com.word.http.NetworkChildren;
+import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.ui.personalCenter.SignActivity;
+import thinku.com.word.utils.C;
+import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.view.AutoZoomTextView;
-import thinku.com.word.view.ProgressView;
+import thinku.com.word.view.LoadingCustomView;
+import thinku.com.word.view.ReviewDialog;
+
+import static thinku.com.word.view.LoadingCustomView.HOLLOW;
 
 /**
  * 正常进入
  */
 
-public class HomeFragment extends BaseFragment implements View.OnClickListener {
+public class HomeFragment extends BaseFragment {
+    private static final String TAG = HomeFragment.class.getSimpleName();
+    @BindView(R.id.days)
+    TextView days;
+    @BindView(R.id.surplus_day)
+    AutoZoomTextView surplusDay;
+    @BindView(R.id.day_ll)
+    LinearLayout dayLl;
+    @BindView(R.id.sign)
+    LinearLayout sign;
+    @BindView(R.id.change_plan)
+    TextView changePlan;
+    @BindView(R.id.need_num)
+    TextView needNum;
+    @BindView(R.id.already_num)
+    TextView alreadyNum;
+    @BindView(R.id.top_rl)
+    RelativeLayout topRl;
+    @BindView(R.id.modify_word_package)
+    ImageView modifyWordPackage;
+    @BindView(R.id.progress)
+    LoadingCustomView progress;
+    @BindView(R.id.num)
+    TextView num;
+    @BindView(R.id.all_num)
+    TextView allNum;
+    @BindView(R.id.middle)
+    RelativeLayout middle;
+    @BindView(R.id.today_num)
+    TextView todayNum;
+    @BindView(R.id.review_t)
+    TextView reviewT;
+    @BindView(R.id.review_num)
+    TextView reviewNum;
+    @BindView(R.id.start_recite)
+    TextView startRecite;
+    @BindView(R.id.start_review)
+    TextView startReview;
+    Unbinder unbinder;
+    @BindView(R.id.name)
+    TextView name;
 
-    private AutoZoomTextView surplus_day;
-    private ProgressView progress;
-    private TextView days,change_plan,need_num,already_num,num,all_num,today_num,review_t,review_num,start_recite,start_review;
-    private LinearLayout sign;
-    private ImageView modify_word_package;
+    private String name_text;
+    private SimpleDateFormat simpleDateFormat;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home,container,false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        init();
+        return view;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        findView(view);
-        setClick();
+    public void onResume() {
+        super.onResume();
+        initData();
     }
 
-    private void setClick() {
-        sign.setOnClickListener(this);
-        change_plan.setOnClickListener(this);
-        modify_word_package.setOnClickListener(this);
-        start_recite.setOnClickListener(this);
-        start_review.setOnClickListener(this);
+    private void init() {
+        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        surplusDay.setIsAutoZoom(true);
+        progress.setProgressBankgroundColor(_mActivity.getResources().getColor(R.color.color_progress_side));
+        progress.setProgressBarBankgroundStyle(HOLLOW);
+        progress.setProgressColor(_mActivity.getResources().getColor(R.color.progress_clolor1));
+        progress.setProgressBarFrameHeight(3);
     }
 
-    private void findView(View view) {
-        surplus_day = (AutoZoomTextView) view.findViewById(R.id.surplus_day);
-        surplus_day.setIsAutoZoom(true);
-        progress = (ProgressView) view.findViewById(R.id.progress);
-        days = (TextView) view.findViewById(R.id.days);
-        sign = (LinearLayout) view.findViewById(R.id.sign);
-        change_plan = (TextView) view.findViewById(R.id.change_plan);
-        need_num = (TextView) view.findViewById(R.id.need_num);
-        already_num = (TextView) view.findViewById(R.id.already_num);
-        modify_word_package = (ImageView) view.findViewById(R.id.modify_word_package);
-        num = (TextView) view.findViewById(R.id.num);
-        all_num = (TextView) view.findViewById(R.id.all_num);
-        today_num = (TextView) view.findViewById(R.id.today_num);
-        review_t = (TextView) view.findViewById(R.id.review_t);
-        review_num = (TextView) view.findViewById(R.id.review_num);
-        start_recite = (TextView) view.findViewById(R.id.start_recite);
-        start_review = (TextView) view.findViewById(R.id.start_review);
 
-        //设置进度条
-//        progress.setColor(R.color.black,R.color.mainColor,R.color.blue);
-//        progress.setMaxCount(100);
-//        progress.setCurrentCount(50);
+    public void initData() {
+        addToCompositeDis(HttpUtil.reciteIndex()
+        .doOnSubscribe(new Consumer<Disposable>() {
+            @Override
+            public void accept(@NonNull Disposable disposable) throws Exception {
+            }
+        }).subscribe(new Consumer<UserIndex>() {
+                            @Override
+                            public void accept(@NonNull UserIndex userIndex) throws Exception {
+                                    days.setText("已坚持" + userIndex.getInsistDay() + "天");
+                                    surplusDay.setText(userIndex.getSurplusDay());
+                                    needNum.setText(userIndex.getUserPackage().getPlanWords());
+                                    alreadyNum.setText(userIndex.getUserAllWords());
+                                    num.setText(userIndex.getUserPackageWords());
+                                    allNum.setText("/" + userIndex.getAllWords());
+                                    name.setText(userIndex.getPackageName());
+                                    name_text = userIndex.getPackageName();
+                                    progress.setProgress((Float.parseFloat(userIndex.getUserPackageWords()) * 100) / Float.parseFloat(userIndex.getAllWords()));
+                                    todayNum.setText(userIndex.getToDayWords() + "/" + userIndex.getUserPackage().getPlanWords());
+                                    reviewNum.setText(userIndex.getUserReviewWords() + "/" + userIndex.getUserNeedReviewWords());
+                                }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                Toast.makeText(_mActivity ,throwable.getMessage() ,Toast.LENGTH_SHORT).show();
+                            }
+                        })
+        );
     }
 
-    @Override
+
+    @OnClick({R.id.change_plan, R.id.modify_word_package, R.id.start_recite, R.id.start_review, R.id.sign})
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.sign:
-
+        switch (v.getId()) {
+            case R.id.sign:  // 打卡
+                SignActivity.start(_mActivity);
                 break;
             case R.id.change_plan:
-
+                MyPlanActivity.start(_mActivity);
                 break;
             case R.id.modify_word_package:
-
+                WordPackageActivity.start(_mActivity);
                 break;
-            case R.id.start_recite:
+            case R.id.start_recite:  // 背单词
+                reciteWord();
                 break;
-            case R.id.start_review:
+            case R.id.start_review:  // 复习
+                ReviewActivity.start(_mActivity);
                 break;
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+
+    /**
+     * 背单词
+     */
+    public void reciteWord() {
+        String nowTime = simpleDateFormat.format(new java.util.Date());
+        String windowTime = SharedPreferencesUtils.getWindow(_mActivity);
+        if (nowTime.equals(windowTime)) {
+            thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity, needNum.getText().toString().trim(), C.NORMAL_RECITE);
+        } else {
+
+            addToCompositeDis(HttpUtil.reciteWordObservable()
+            .subscribe(new Consumer<ResultBeen<Void>>() {
+                @Override
+                public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                        if (voidResultBeen.getCode() ==97){
+                            reviewCase();
+                        } else{
+                            thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity, needNum.getText().toString().trim(), C.NORMAL_RECITE);
+                        }
+                }
+            }));
+        }
+    }
+
+    public void reviewCase() {
+        addToCompositeDis(HttpUtil.reviewCaseObservable()
+        .subscribe(new Consumer<ReviewDialogBeen>() {
+            @Override
+            public void accept(@NonNull ReviewDialogBeen reviewDialogBeen) throws Exception {
+                showReviewDialog(reviewDialogBeen);
+            }
+        }));
+    }
+
+    public void showReviewDialog(ReviewDialogBeen data) {
+        if (null != data) {
+            final ReviewDialog reDialog = new ReviewDialog(_mActivity);
+            reDialog.getWindow().setBackgroundDrawableResource(R.color.color_translate_black);
+            reDialog.setName_txt("你需要复习" + name_text);
+            reDialog.setAll_txt(data.getAll());
+            reDialog.setKnow_txt("(" + data.getKnow() + "词）");
+            reDialog.setIncognizan_txt("(" + data.getIncognizant() + "词）");
+            reDialog.setDim_txt("(" + data.getDim() + "词）");
+            reDialog.setAll_2_txt("共(" + data.getAll() + "词）");
+            reDialog.setOnReviewClickListener(new ReviewDialog.OnReviewClickListener() {
+                @Override
+                public void onReviewClick() {
+                    toTast(_mActivity, "复习");
+                    dialogReview();
+                    reDialog.dismiss();
+                }
+            });
+            reDialog.setOnNotReviewClickListener(new ReviewDialog.OnNotReviewClickListener() {
+                @Override
+                public void onNotReviewClick() {
+                    toTast(_mActivity, "取消");
+                    dialogReview();
+                    reDialog.dismiss();
+                }
+            });
+            reDialog.show();
+        } else {
+            final ReviewDialog reDialog = new ReviewDialog(_mActivity);
+            reDialog.getWindow().setBackgroundDrawableResource(R.color.color_translate_black);
+            reDialog.setName_txt("你需要复习" + name_text);
+            reDialog.setAll_txt(data.getAll());
+            reDialog.setKnow_txt("(" + data.getKnow() + "词）");
+            reDialog.setIncognizan_txt("(" + data.getIncognizant() + "词）");
+            reDialog.setDim_txt("(" + data.getDim() + "词）");
+            reDialog.setAll_2_txt("共(" + data.getAll() + "词）");
+            reDialog.setOnReviewClickListener(new ReviewDialog.OnReviewClickListener() {
+                @Override
+                public void onReviewClick() {
+                    dialogReview();
+                    reDialog.dismiss();
+                    thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity, needNum.getText().toString().trim(), reDialog.status);
+                }
+            });
+            reDialog.setOnNotReviewClickListener(new ReviewDialog.OnNotReviewClickListener() {
+                @Override
+                public void onNotReviewClick() {
+                    dialogReview();
+                    reDialog.dismiss();
+                }
+            });
+            reDialog.show();
+        }
+    }
+
+    /**
+     * dialog 界面点击
+     */
+    public void dialogReview() {
+        SharedPreferencesUtils.setWindow(_mActivity, simpleDateFormat.format(new java.util.Date()));
+
+        addToCompositeDis(HttpUtil.updataIsReviewObservable()
+        .subscribe(new Consumer<ResultBeen<Void>>() {
+            @Override
+            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                    toTast(_mActivity ,voidResultBeen.getMessage());
+            }
+        }));
     }
 }

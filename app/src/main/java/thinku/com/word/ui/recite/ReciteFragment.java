@@ -5,90 +5,103 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONException;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import thinku.com.word.MyApplication;
 import thinku.com.word.R;
-import thinku.com.word.base.BaseActivity;
 import thinku.com.word.base.BaseFragment;
-import thinku.com.word.bean.BackCode;
-import thinku.com.word.http.NetworkChildren;
-import thinku.com.word.http.NetworkTitle;
-import thinku.com.word.utils.LogUtils;
+import thinku.com.word.bean.ResultBeen;
+import thinku.com.word.bean.UserData;
+import thinku.com.word.http.HttpUtil;
+import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
- *背单词
+ * 背单词
  */
 
 public class ReciteFragment extends BaseFragment implements View.OnClickListener {
-
-    private ImageView portrait;
+    private static final String TAG = ReciteFragment.class.getSimpleName();
+    private CircleImageView portrait;
     private LinearLayout input_lookup;
-    private ImageView speech_lookup,photo_lookup;
-    private Map<String,Fragment> fragments;
-    private int oldPage=-1;
+    private ImageView speech_lookup, photo_lookup;
+    private SparseArray<Fragment> fragments;
+    private int oldPage = -1;
+
+    public static ReciteFragment newInstance() {
+        ReciteFragment reciteFragment = new ReciteFragment();
+        return reciteFragment;
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_recite,container,false);
+        return inflater.inflate(R.layout.fragment_recite, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         findView(view);
-        initView();
         setClick();
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initView();
+    }
+
+    /**
+     * 是否选择记忆模式
+     *
+     * @return
+     */
+    public boolean isChooseMemeryMode() {
+        MyApplication.MemoryMode = SharedPreferencesUtils.getMemoryMode(_mActivity);
+        if (MyApplication.MemoryMode != 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void initView() {
-        fragments=new HashMap<>();
-        String session= SharedPreferencesUtils.getSession(getActivity(),1);
-        if(!TextUtils.isEmpty(session)){
-            Request<String>req =NoHttp.createStringRequest(NetworkTitle.WORD+ NetworkChildren.USERDETAIL, RequestMethod.POST);
-            req.setHeader("Cookie","PHPSESSID="+session);
-            ((BaseActivity)getActivity()).request(0, req, new SimpleResponseListener<String>() {
-                @Override
-                public void onSucceed(int what, Response<String> response) {
-                    if(response.isSucceed()){
-                        try {
-                            BackCode backCode=JSON.parseObject(response.get(), BackCode.class);
-                            if(backCode.getCode()==1){//成功
-
-
-                            }else{
-                                setFragment(1);
-                            }
-                        }catch (JSONException e){
-                            LogUtils.log(response.get());
+        addToCompositeDis(HttpUtil.getUserData()
+                .subscribe(new Consumer<ResultBeen<UserData>>() {
+            @Override
+            public void accept(@NonNull ResultBeen<UserData> been) throws Exception {
+                if (getHttpResSuc(been.getCode())) {
+                    UserData userData = been.getData();
+                    if (userData != null && !TextUtils.isEmpty(userData.getPassword())) {
+                        SharedPreferencesUtils.setPlanWords(_mActivity, userData.getPlanWords());
+                        new GlideUtils().load(_mActivity,userData.getImage(),portrait);
+                        if (TextUtils.isEmpty(userData.getPlanWords())) {
+                            setFragment(0);
+                        } else {
+                            setFragment(1);
                         }
                     }
+                }else {
+                    setFragment(0);
                 }
-
-                @Override
-                public void onFailed(int what, Response<String> response) {
-                    LogUtils.log(response.get());
-                }
-            });
-        }else{
-            setFragment(0);
-        }
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(@NonNull Throwable throwable) throws Exception {
+            }
+        }));
     }
+
 
     private void setClick() {
         portrait.setOnClickListener(this);
@@ -96,16 +109,18 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
         speech_lookup.setOnClickListener(this);
         photo_lookup.setOnClickListener(this);
     }
+
     private void findView(View view) {
-        portrait = (ImageView) view.findViewById(R.id.portrait);
+        portrait = (CircleImageView) view.findViewById(R.id.portrait);
         input_lookup = (LinearLayout) view.findViewById(R.id.input_lookup);
         speech_lookup = (ImageView) view.findViewById(R.id.speech_lookup);
-        photo_lookup = (ImageView) view.findViewById(R.id.photo_lookup);
+        photo_lookup = (ImageView) view.findViewById(R.id.take_photo);
+        fragments = new SparseArray<>();
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.portrait:
 
                 break;
@@ -113,34 +128,45 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.speech_lookup:
                 break;
-            case R.id.photo_lookup:
+            case R.id.take_photo:
                 break;
         }
     }
 
-    public void setFragment(int tag){
+    public void setFragment(int tag) {
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        if(oldPage!=-1){
-            ft.hide(fragments.get(oldPage+""));
+        if (oldPage != -1) {
+            ft.hide(fragments.get(oldPage));
         }
-        if(null!=fragments.get(tag+"")&&fragments.get(tag+"").isAdded()){
-            ft.show(fragments.get(tag+""));
-        }else {
+        if (null != fragments.get(tag) && fragments.get(tag).isAdded()) {
+            ft.show(fragments.get(tag));
+        } else {
             switch (tag) {
                 case 0://没选择
                     HomeFirstFragment homeFirstFragment = new HomeFirstFragment();
-                    fragments.put(tag + "", homeFirstFragment);
-                    ft.add(R.id.fl, fragments.get(tag + ""));
+                    fragments.put(tag, homeFirstFragment);
+                    ft.add(R.id.fl, fragments.get(tag));
                     break;
                 case 1://选好了的
-                    HomeFragment homeFragment =new HomeFragment();
-                    fragments.put(tag+"",homeFragment);
-                    ft.add(R.id.fl,fragments.get(tag+""));
+                    HomeFragment homeFragment = new HomeFragment();
+                    fragments.put(tag, homeFragment);
+                    ft.add(R.id.fl, fragments.get(tag));
                     break;
             }
         }
-        oldPage=tag;
-        ft.commit();
+        oldPage = tag;
+        try {
+            ft.commit();
+        } catch (Exception e) {
+
+        }
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            initView();
+        }
+    }
 }

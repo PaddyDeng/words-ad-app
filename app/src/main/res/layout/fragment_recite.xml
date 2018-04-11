@@ -1,65 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <View
-        android:background="@color/mainColor"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_height"/>
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/mainColor" />
+
     <RelativeLayout
-        android:background="@color/mainColor"
         android:layout_width="match_parent"
-        android:layout_height="150px">
-        <ImageView
+        android:layout_height="150px"
+        android:background="@color/mainColor">
+
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/portrait"
-            android:layout_centerVertical="true"
-            android:background="@color/black"
-            android:layout_marginLeft="40px"
             android:layout_width="100px"
-            android:layout_height="100px" />
+            android:layout_height="100px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40px"
+            android:src="@mipmap/a" />
+
         <LinearLayout
             android:id="@+id/input_lookup"
-            android:background="@drawable/search_ll"
-            android:layout_centerInParent="true"
-            android:gravity="center_vertical"
             android:layout_width="500px"
-            android:layout_height="90px">
+            android:layout_height="90px"
+            android:layout_alignTop="@+id/linearLayout"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/search_ll"
+            android:gravity="center_vertical">
+
             <ImageView
-                android:layout_marginLeft="30px"
-                android:background="@color/black"
                 android:layout_width="40px"
-                android:layout_height="40px" />
+                android:layout_height="40px"
+                android:layout_marginLeft="30px"
+                android:background="@mipmap/seacher" />
+
             <TextView
-                android:textSize="40px"
-                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="30px"
                 android:text="搜索单词"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/white"
+                android:textSize="40px" />
         </LinearLayout>
+
         <LinearLayout
-            android:layout_marginRight="60px"
+            android:id="@+id/linearLayout"
+            android:layout_width="200px"
+            android:layout_height="90px"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_width="200px"
-            android:layout_height="90px">
+            android:layout_marginRight="60px">
+
             <ImageView
                 android:id="@+id/speech_lookup"
-                android:background="@color/black"
-                android:layout_weight="1"
-                android:layout_width="0px"
-                android:layout_height="match_parent" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="40px"
+                android:background="@mipmap/voice" />
+
             <ImageView
-                android:id="@+id/photo_lookup"
-                android:layout_marginLeft="20px"
-                android:background="@color/black"
-                android:layout_weight="1"
-                android:layout_width="0px"
-                android:layout_height="match_parent" />
+                android:id="@+id/take_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="40px"
+                android:src="@mipmap/take_photo" />
         </LinearLayout>
     </RelativeLayout>
+
     <FrameLayout
         android:id="@+id/fl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></FrameLayout>
+        android:layout_height="match_parent" />
 </LinearLayout>

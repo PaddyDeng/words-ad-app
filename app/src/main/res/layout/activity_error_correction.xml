@@ -1,24 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/title_layout"/>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/type_list"
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_marginLeft="40px"
         android:layout_marginRight="40px"
+        android:layout_height="150px">
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_centerVertical="true"
+            android:textSize="50px"
+            android:text="单词拼写错误"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/check_1"
+            android:background="@drawable/word_wrong_select"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="60px"
+            android:layout_height="60px" />
+
+        <thinku.com.word.view.DashView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:dashWidth = "2dp"
+            app:lineWidth="8dp"
+            app:lineHeight="1px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="2dp"
+            app:lineColor="@color/interal"
+            />
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/r2"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        android:layout_marginLeft="40px"
+        android:layout_marginRight="40px"
+        android:layout_height="150px">
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_centerVertical="true"
+            android:textSize="50px"
+            android:text="格式有错误"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/check_2"
+            android:background="@drawable/word_wrong_select"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="60px"
+            android:layout_height="60px" />
+
+        <thinku.com.word.view.DashView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:dashWidth = "2dp"
+            app:lineWidth="8dp"
+            app:lineHeight="1px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="2dp"
+            app:lineColor="@color/interal"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/r3"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="40px"
+        android:layout_marginRight="40px"
+        android:layout_height="150px">
+        <TextView
+            android:id="@+id/tv3"
+            android:layout_centerVertical="true"
+            android:textSize="50px"
+            android:text="翻译错误"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/check_3"
+            android:background="@drawable/word_wrong_select"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="60px"
+            android:layout_height="60px" />
+
+        <thinku.com.word.view.DashView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:dashWidth = "2dp"
+            app:lineWidth="8dp"
+            app:lineHeight="1px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="2dp"
+            app:lineColor="@color/interal"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/r4"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="40px"
+        android:layout_marginRight="40px"
+        android:layout_height="150px">
+        <TextView
+            android:id="@+id/tv4"
+            android:layout_centerVertical="true"
+            android:textSize="50px"
+            android:text="其他"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/check_4"
+            android:background="@drawable/word_wrong_select"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="60px"
+            android:layout_height="60px" />
+
+        <thinku.com.word.view.DashView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:dashWidth = "2dp"
+            app:lineWidth="8dp"
+            app:lineHeight="1px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="1dp"
+            app:lineColor="@color/interal"
+            />
+    </RelativeLayout>
     <EditText
         android:id="@+id/et"
-        android:layout_margin="40px"
-        android:background="@drawable/gray_side_white_10round"
-        android:padding="30px"
-        android:gravity="start"
-        android:textSize="40px"
-        android:hint="请输入题目纠错信息"
         android:layout_width="match_parent"
-        android:layout_height="500px" />
+        android:layout_marginStart="40px"
+        android:layout_marginEnd="40px"
+        android:layout_height="500px"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/gray_side_white_10round"
+        android:gravity="start"
+        android:hint="请输入题目纠错信息"
+        android:padding="30px"
+        android:textSize="40px" />
     <LinearLayout
         android:layout_margin="100px"
         android:layout_width="match_parent"

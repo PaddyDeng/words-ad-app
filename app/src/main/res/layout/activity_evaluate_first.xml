@@ -8,10 +8,10 @@
         android:background="@color/gray_white"
         android:layout_width="match_parent"
         android:layout_height="200px">
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/portrait"
             android:layout_centerVertical="true"
-            android:background="@color/black"
+            android:src="@mipmap/a1"
             android:layout_marginLeft="60px"
             android:layout_width="120px"
             android:layout_height="120px" />
@@ -20,7 +20,7 @@
             android:layout_toRightOf="@+id/portrait"
             android:layout_centerVertical="true"
             android:textSize="45px"
-            android:textColor="@color/black"
+            android:textColor="@color/color_black_text"
             android:layout_marginLeft="40px"
             android:text="名字"
             android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
             <TextView
                 android:text="词汇量"
                 android:textSize="40px"
-                android:textColor="@color/black"
+                android:textColor="@color/color_black_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
@@ -49,16 +49,16 @@
                 android:layout_height="match_parent" />
         </LinearLayout>
     </RelativeLayout>
-    <ImageView
-        android:background="@color/black"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:src="@mipmap/logo"
         android:layout_marginTop="150px"
         android:layout_width="400px"
         android:layout_height="400px" />
     <TextView
         android:gravity="center"
         android:textSize="35px"
-        android:text="按照正确率从词库抽取单词进行评估，请尽可能真实评测"
-        android:textColor="@color/black"
+        android:text="@string/string_evaluate"
+        android:textColor="@color/color_black_text"
         android:layout_marginTop="60px"
         android:layout_width="500px"
         android:layout_height="wrap_content" />

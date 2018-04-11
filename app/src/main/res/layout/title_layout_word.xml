@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:background="@color/white"
+                    android:background="@mipmap/familiarity"
                     android:layout_width="50px"
                     android:layout_height="50px" />
                 <TextView
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:background="@color/white"
+                    android:background="@mipmap/error_smile"
                     android:layout_width="50px"
                     android:layout_height="50px" />
                 <TextView

@@ -24,4 +24,22 @@
         </attr>
 
     </declare-styleable>
+    
+     <!--圆形进度条-->
+    <declare-styleable name="LoadingCustomView">
+        <attr name="progressBankgroundColor" format="color" />
+        <attr name="progressColor" format="color" />
+        <attr name="progress" format="float"/>
+        <attr name="progressBarFrameHeight" format="dimension" />
+        <attr name="progressBarBankgroundStyle" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="DashView">
+        <attr name="dashWidth" format="dimension" />
+        <attr name="lineHeight" format="dimension" />
+        <attr name="lineWidth" format="dimension"/>
+        <attr name="lineColor" />
+        <attr name="dashOrientation" format="integer" />
+    </declare-styleable>
+
 </resources>

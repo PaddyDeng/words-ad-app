@@ -14,6 +14,11 @@ import thinku.com.word.base.BaseFragment;
  */
 
 public class PeripheryFragment extends BaseFragment {
+
+    public static PeripheryFragment newInstance(){
+        PeripheryFragment peripheryFragment = new PeripheryFragment();
+        return peripheryFragment ;
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

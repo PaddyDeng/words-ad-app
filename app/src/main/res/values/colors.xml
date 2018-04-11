@@ -27,4 +27,28 @@
     <color name="forget">#FF6F4B</color>
     <color name="evaluate_result">#F2ECE0</color>
     <color name="light_pink">#F5ECED</color>
+    <color name="main_title_color">#434342</color>
+    <color name="progress_clolor1">#EEC15F</color>
+    <color name="progress_bg">#F1EFE4</color>
+    <color name="progress_bg_stroker">#8ED9D1</color>
+    <color name="gray_text">#7A7A7A</color>
+    <color name="interal">#C9C9C9</color>
+    <color name="pie_orange">#FF6F48</color>
+    <color name="pie_green">#00B38B</color>
+    <color name="pie_blue">#33AFB9</color>
+    <color name="pie_orange_3">#E89500</color>
+    <color name="color_black_text">#7c7c7c</color>
+    <color name="color_frame">#A3DFC0</color>
+    <color name="color_progress_side">#CAF0EE</color>
+
+    <!--progeress -->
+    <color name="color_progress_low">#EEC15F</color>
+    <color name="color_progress_middle">#659FFF</color>
+    <color name="color_progress_high">#37BC85</color>
+    <color name="color_interval_line">#ECECEC</color>
+
+    <color name="color_button_blue">#2E8FE9</color>
+    <color name="color_bg_gray">#EBEBEB</color>
+    <color name="color_gray_bg">#F0EEE9</color>
+    <color name="color_translate_black">#10000000</color>
 </resources>

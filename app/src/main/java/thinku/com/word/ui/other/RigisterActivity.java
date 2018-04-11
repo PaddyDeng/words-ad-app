@@ -148,9 +148,7 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
                                 BackCode praiseBack = JSON.parseObject(response.get(), BackCode.class);
                                 if(praiseBack.getCode()==1){
                                     Toast.makeText(RigisterActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
-                                    LoginActivity.getInstance().finishNow();
-                                    SharedPreferencesUtils.setPassword(RigisterActivity.this,num,pass);
-                                    LoginHelper.againLogin(RigisterActivity.this,1);
+                                    LoginHelper.againLogin(RigisterActivity.this,num ,pass,1);
                                     //跳转修改昵称
 //                                    Intent intent =new Intent(RigisterActivity.this, NameActivity.class);
 //                                    intent.putExtra("tag",1);
@@ -189,7 +187,14 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
+
+    /**
+     *   发送
+     * @param num
+     * @param i
+     */
     private void sendCode(String num, int i) {
+
         StringBuffer sb =new StringBuffer();
         sb.append(NetworkTitle.DomainLoginNormal);
         boolean isPhone;
@@ -202,16 +207,6 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
         }
         showLoadDialog();
         isSendCode =true;
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                recLen--;
-                Message message = new Message();
-                message.what = 1;
-                handler.sendMessage(message);
-            }
-        }, 1000, 1000);
         Request<String> req = NoHttp.createStringRequest(sb.toString(), RequestMethod.POST);
         if(!isPhone)req.set("email",num);
         else if(isPhone)req.set("phoneNum",num);
@@ -229,6 +224,7 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
                         BackCode backCode = JSON.parseObject(response.get(), BackCode.class);
                         if(backCode.getCode()==1){
                             Toast.makeText(RigisterActivity.this,"发送成功",Toast.LENGTH_SHORT).show();
+                            timerClick();
                         }else {
                             Toast.makeText(RigisterActivity.this,backCode.getMessage(),Toast.LENGTH_SHORT).show();
                         }
@@ -246,6 +242,21 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
         });
     }
 
+    /**
+     *  启动计时器
+     */
+    public void timerClick(){
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                recLen--;
+                Message message = new Message();
+                message.what = 1;
+                handler.sendMessage(message);
+            }
+        }, 1000, 1000);
+    }
 
     final Handler handler = new Handler(){
         @Override

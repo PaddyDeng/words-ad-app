@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_gray_bg">
+
+    <include layout="@layout/title_layout" />
+
+    <TextView
+        android:paddingLeft="50px"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:text="请选择复习内容"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:textColor="@color/mainColor"
+        />
+    <RelativeLayout
+        style="@style/White_hor_center_lin"
+        android:id="@+id/blurry_rl">
+        <ImageView
+            style="@style/center_vertical_image"
+            android:src="@mipmap/review_blurry"
+            android:id="@+id/img"
+          />
+
+        <TextView
+            style="@style/center_text"
+            android:text="模糊词组"
+            android:id="@+id/text"
+            android:layout_toEndOf="@id/img"/>
+
+        <TextView
+            style="@style/center_text_small"
+            android:layout_toEndOf="@id/text"
+            android:id="@+id/text_all"/>
+
+        <ImageView
+           style="@style/center_vertical_image"
+            android:src="@mipmap/black_back"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+    android:layout_marginTop="10dp"
+    style="@style/White_hor_center_lin"
+    android:id="@+id/not_know_rl">
+    <ImageView
+        style="@style/center_vertical_image"
+        android:src="@mipmap/review_not_know"
+        android:id="@+id/img1"
+        />
+
+    <TextView
+        style="@style/center_text"
+        android:text="不认识词组"
+        android:id="@+id/text1"
+        android:layout_toEndOf="@id/img1"/>
+
+    <TextView
+        style="@style/center_text_small"
+        android:layout_toEndOf="@id/text1"
+        android:id="@+id/text_all_not_know"/>
+
+    <ImageView
+        style="@style/center_vertical_image"
+        android:src="@mipmap/black_back"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        />
+</RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        style="@style/White_hor_center_lin"
+        android:id="@+id/all_rl">
+        <ImageView
+            style="@style/center_vertical_image"
+            android:src="@mipmap/review_all"
+            android:id="@+id/img2"
+            />
+
+        <TextView
+            style="@style/center_text"
+            android:text="全部词组"
+            android:id="@+id/text2"
+            android:layout_toEndOf="@id/img2"/>
+
+        <TextView
+            style="@style/center_text_small"
+            android:layout_toEndOf="@id/text2"
+            android:id="@+id/text_all_all"/>
+
+        <ImageView
+            style="@style/center_vertical_image"
+            android:src="@mipmap/black_back"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            />
+    </RelativeLayout>
+
+
+</LinearLayout>

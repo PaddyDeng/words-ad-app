@@ -2,6 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="thinku.com.word">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -10,72 +20,161 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="design_width" android:value="1080"></meta-data>
-        <meta-data android:name="design_height" android:value="1920"></meta-data>
-        <activity android:name=".ui.other.MainActivity" android:theme="@style/NoTitleTheme"
-            android:screenOrientation="portrait">
+        <meta-data
+            android:name="design_width"
+            android:value="1080" />
+        <meta-data
+            android:name="design_height"
+            android:value="1920" />
+
+        <activity
+            android:name=".ui.other.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--登录-->
-        <activity android:name=".ui.other.LoginActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--注册-->
-        <activity android:name=".ui.other.RigisterActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--找回密码-->
-        <activity android:name=".ui.other.ForgetPassActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--设置背单词模式-->
-        <activity android:name=".ui.personalCenter.TypeSettingActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--个人中心-->
-        <activity android:name=".ui.personalCenter.PersonalCenterActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--设置-->
-        <activity android:name=".ui.personalCenter.SettingActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--签到-->
-        <activity android:name=".ui.personalCenter.SignActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait">
+        <!-- 登录 -->
+        <activity
+            android:name=".ui.other.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 注册 -->
+        <activity
+            android:name=".ui.other.RigisterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 找回密码 -->
+        <activity
+            android:name=".ui.other.ForgetPassActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 设置背单词模式 -->
+        <activity
+            android:name=".ui.personalCenter.TypeSettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 个人中心 -->
+        <activity
+            android:name=".ui.personalCenter.PersonalCenterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 设置 -->
+        <activity
+            android:name=".ui.personalCenter.SettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 签到 -->
+        <activity
+            android:name=".ui.personalCenter.SignActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 我的计划 -->
+        <activity
+            android:name=".ui.recite.MyPlanActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme"
+            />
+        <!-- 词包详情 -->
+        <activity
+            android:name=".ui.recite.WordbagDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 词包详情(收费) -->
+        <activity
+            android:name=".ui.recite.WordbagDetailChargeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 充值首页 -->
+        <activity
+            android:name=".ui.other.PayHomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 选择充值方式 -->
+        <activity
+            android:name=".ui.other.PayTypeChooseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 银行选择 -->
+        <activity
+            android:name=".ui.other.CardTypeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 添加银行卡 -->
+        <activity
+            android:name=".ui.other.AddCardActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 明细 -->
+        <activity
+            android:name=".ui.other.BeanDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 评估 -->
+        <activity
+            android:name=".ui.report.WordEvaluateFragment"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 评估结果 -->
+        <activity
+            android:name=".ui.report.EvaluateResultActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 评估排名 -->
+        <activity
+            android:name=".ui.report.EvaluateRankingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 复习 -->
+        <activity
+            android:name=".ui.recite.ReviewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 时间复习 -->
+        <activity
+            android:name=".ui.recite.ReviewTimeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 错题本 -->
+        <activity
+            android:name=".ui.recite.ReviewErrorActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <!-- 背诵（未完成） -->
+        <activity
+            android:name=".ui.recite.ReciteActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <activity
+            android:name=".ui.recite.WordPackageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
 
-        </activity>
-        <!--我的计划-->
-        <activity android:name=".ui.recite.MyPlanActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--词包详情-->
-        <activity android:name=".ui.recite.WordbagDetailActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--词包详情(收费)-->
-        <activity android:name=".ui.recite.WordbagDetailChargeActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--充值首页-->
-        <activity android:name=".ui.other.PayHomeActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--选择充值方式-->
-        <activity android:name=".ui.other.PayTypeChooseActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--银行选择-->
-        <activity android:name=".ui.other.CardTypeActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--添加银行卡-->
-        <activity android:name=".ui.other.AddCardActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--明细-->
-        <activity android:name=".ui.other.BeanDetailActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--纠错-->
-        <activity android:name=".ui.other.ErrorCorrectionActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--评估首页-->
-        <activity android:name=".ui.report.EvaluateFirstActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--评估-->
-        <activity android:name=".ui.report.WordEvaluateActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--评估结果-->
-        <activity android:name=".ui.report.EvaluateResultActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--评估排名-->
-        <activity android:name=".ui.report.EvaluateRankingActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--复习-->
-        <activity android:name=".ui.recite.ReviewActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait"/>
-        <!--时间复习-->
-        <activity android:name=".ui.recite.ReviewTimeActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait">
+        <!-- 听写练习 -->
+        <activity
+            android:name=".ui.recite.ReviewExerciseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
 
-            </activity>
-        <!--错题本-->
-        <activity android:name=".ui.recite.ReviewErrorActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait">
+        <!--听写练习 单词详情-->
+        <activity android:name=".ui.recite.DictionDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
 
-            </activity>
-        <!--背诵（未完成）-->
-        <activity android:name=".ui.recite.ReciteActivity" android:theme="@style/NoTitleTheme" android:screenOrientation="portrait">
+        <!--听写练习 提示-->
+        <activity android:name=".ui.recite.DictionDetailWordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
 
-            </activity>
+        <!--报错 -->
+        <activity android:name=".ui.recite.WordErrorActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
     </application>
 
 </manifest>

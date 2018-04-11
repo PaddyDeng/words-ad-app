@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
+import thinku.com.word.R;
+
 
 /**
  * 图片加载工具
@@ -23,8 +25,8 @@ public class GlideUtils {
     public void load(Context context,String url, ImageView iv){
         Glide.with(context)
                 .load(url)
-//                .placeholder(R.mipmap.short_defult)//占位图
-//                .error(R.mipmap.short_defult)//加载错误占位图
+                .placeholder(R.mipmap.short_defult)//占位图
+                .error(R.mipmap.short_defult)//加载错误占位图
                 .crossFade(300)//过渡动画
                 .into(iv);
     }

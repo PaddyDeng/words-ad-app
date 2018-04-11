@@ -1,12 +1,18 @@
 package thinku.com.word.base;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.widget.Toast;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -20,9 +26,25 @@ import com.yanzhenjie.permission.RationaleListener;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
+import butterknife.internal.Utils;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import me.yokeyword.fragmentation.ExtraTransaction;
+import me.yokeyword.fragmentation.ISupportActivity;
+import me.yokeyword.fragmentation.ISupportFragment;
+import me.yokeyword.fragmentation.SupportActivity;
+import me.yokeyword.fragmentation.SupportActivityDelegate;
+import me.yokeyword.fragmentation.SupportHelper;
+import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import thinku.com.word.R;
 import thinku.com.word.callback.PermissionCallback;
+import thinku.com.word.http.HttpUtil;
+import thinku.com.word.utils.HttpUtils;
+import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.WaitUtils;
 
 
@@ -31,6 +53,8 @@ import thinku.com.word.utils.WaitUtils;
  */
 
 public class BaseActivity extends AutoLayoutActivity {
+    public static final String TAG = BaseActivity.class.getSimpleName();
+
     protected Context mContext;
     private RequestQueue mRequestQueue;
     private int code,tag;
@@ -38,6 +62,8 @@ public class BaseActivity extends AutoLayoutActivity {
     private PermissionCallback mCallback;
     private String hint;
     private ImmersionBar immersionBar;
+
+    protected ConcurrentMap<String, CompositeDisposable> mConcurrentMap = new ConcurrentHashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,8 +73,19 @@ public class BaseActivity extends AutoLayoutActivity {
         mRequestQueue = NoHttp.newRequestQueue(20);
         immersionBar = ImmersionBar.with(this);
         immersionBar.init();
+
     }
 
+
+    //网络请求
+    protected void addToCompositeDis(Disposable disposable) {
+        CompositeDisposable compositeDisposable = mConcurrentMap.get(TAG);
+        if (compositeDisposable == null) {
+            compositeDisposable = new CompositeDisposable();
+            mConcurrentMap.put(TAG, compositeDisposable);
+        }
+        compositeDisposable.add(disposable);
+    }
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
@@ -81,6 +118,11 @@ public class BaseActivity extends AutoLayoutActivity {
     }
     public void showLoadDialog(String tag){
         WaitUtils.show(mContext,tag);
+    }
+
+    public void showLoadDialog(String hint ,String tag){
+        WaitUtils.show(mContext ,tag);
+        WaitUtils.setHint(tag ,hint);
     }
 
 //    public boolean isShow(){
@@ -144,6 +186,7 @@ public class BaseActivity extends AutoLayoutActivity {
         finish();
         overridePendingTransition(0, R.anim.ac_scale_shrink_center);
     }
+
     public enum AnimType {
         ANIM_TYPE_DOWN_IN,
         ANIM_TYPE_RIGHT_IN, // 右侧滑动进入
@@ -183,6 +226,8 @@ public class BaseActivity extends AutoLayoutActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -200,6 +245,13 @@ public class BaseActivity extends AutoLayoutActivity {
      */
     public <T> void request(int what, Request<T> request, OnResponseListener<T> listener) {
         mRequestQueue.add(what, request, listener);
+    }
+
+    protected boolean getHttpResSuc(int code) {
+        if (HttpUtils.getHttpMsgSu(code)) {
+            return true;
+        }
+        return false;
     }
 
     public void getPermission(String[] permission, int code,String hint,int tag,PermissionCallback callback) {
@@ -259,4 +311,10 @@ public class BaseActivity extends AutoLayoutActivity {
         super.onPause();
         dismissLoadDialog();
     }
+
+    //  toast
+    public void toTast(Context context , String content){
+        Toast.makeText(context ,content ,Toast.LENGTH_SHORT).show();
+    }
+
 }

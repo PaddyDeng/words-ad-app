@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+     android:layout_height="70dp"
+     android:paddingTop="8dp"
+     android:id="@+id/rl"
+    >
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="10dp"
+        android:src="@mipmap/music"
+        android:id="@+id/music"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="40px" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:text="conversion"
+        android:layout_toRightOf="@id/music"
+        android:textColor="@color/black"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/word"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13dp"
+        android:text="conversion"
+        android:id="@+id/phonetic_uk"
+        android:layout_toRightOf="@id/word"
+        android:layout_alignBottom="@id/word"
+        android:textColor="@color/gray_text"
+        android:layout_marginLeft="10dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:text="conversion"
+        android:id="@+id/translate"
+        android:layout_marginTop="1dp"
+        android:layout_toRightOf="@id/word"
+        android:layout_alignLeft="@id/word"
+        android:layout_below="@id/word"
+        android:maxLength="20"
+        android:textColor="@color/black"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_interval_line" />
+
+</RelativeLayout>

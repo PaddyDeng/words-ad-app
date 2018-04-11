@@ -129,9 +129,7 @@ public class ForgetPassActivity extends BaseActivity implements View.OnClickList
                             try {
                                 BackCode praiseBack = JSON.parseObject(response.get(), BackCode.class);
                                 if(praiseBack.getCode()==1){
-                                    SharedPreferencesUtils.setPassword(ForgetPassActivity.this,num,pass);
-                                    LoginHelper.againLogin(ForgetPassActivity.this,2);
-                                    LoginActivity.getInstance().finishNow();
+                                    LoginHelper.againLogin(ForgetPassActivity.this, num ,pass,2);
                                     Toast.makeText(ForgetPassActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
                                 }else{
                                     Toast.makeText(ForgetPassActivity.this,praiseBack.getMessage(),Toast.LENGTH_SHORT).show();

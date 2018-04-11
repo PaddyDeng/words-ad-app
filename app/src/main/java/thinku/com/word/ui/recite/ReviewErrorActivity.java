@@ -1,9 +1,13 @@
 package thinku.com.word.ui.recite;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,70 +15,159 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.adapter.ReviewErrorAdapter;
 import thinku.com.word.base.BaseActivity;
+import thinku.com.word.bean.WrongIndexBeen;
 import thinku.com.word.callback.SelectListener;
+import thinku.com.word.http.HttpUtil;
+import thinku.com.word.utils.PopHelper;
+import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
  * 错题本
  */
 
-public class ReviewErrorActivity extends BaseActivity implements View.OnClickListener {
+public class ReviewErrorActivity extends BaseActivity {
 
-    private ImageView back,title_iv;
-    private TextView title_t,total_num;
-    private RecyclerView list_view;
+    @BindView(R.id.back)
+    ImageView back;
+    @BindView(R.id.title_t)
+    TextView titleT;
+    @BindView(R.id.title_iv)
+    ImageView titleIv;
+    @BindView(R.id.total_num)
+    TextView totalNum;
+    @BindView(R.id.list_view)
+    RecyclerView listView;
+    @BindView(R.id.chose_txt)
+    TextView choseTxt;
+
+    private String count;
+    private PopHelper popHelper ;
+
+    public static void start(Context context, String count) {
+        Intent intent = new Intent(context, ReviewErrorActivity.class);
+        intent.putExtra("count", count);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_error);
-        findView();
-        initView();
-        setClick();
-    }
-
-    private void initView() {
-        int total=200;
-        List<String> list =new ArrayList<>();
-        for (int i = 0; i < total/20; i++) {
-            list.add(i*20+"-"+(i+1)*20);
+        ButterKnife.bind(this);
+        try {
+            count = getIntent().getStringExtra("count");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        ReviewErrorAdapter adapter =new ReviewErrorAdapter(ReviewErrorActivity.this, list, new SelectListener() {
-            @Override
-            public void setListener(int position) {
-
-            }
-        });
-        list_view.setAdapter(adapter);
+        findView();
+        initPopWindow();
+        wrongIndex();
     }
 
-    private void setClick() {
-        back.setOnClickListener(this);
-        title_iv.setOnClickListener(this);
+    private void initView(final List<WrongIndexBeen> wrongIndexBeens) {
+        if (wrongIndexBeens != null & wrongIndexBeens.size() > 0) {
+            ReviewErrorAdapter adapter = new ReviewErrorAdapter(ReviewErrorActivity.this, wrongIndexBeens, new SelectListener() {
+                @Override
+                public void setListener(int position) {
+                    getWordDetails(wrongIndexBeens.get(position).getStart());
+                }
+            });
+            listView.setAdapter(adapter);
+        }
     }
 
     private void findView() {
-        back = (ImageView) findViewById(R.id.back);
-        title_t = (TextView) findViewById(R.id.title_t);
-        title_t.setText("错题本");
-        title_iv = (ImageView) findViewById(R.id.title_iv);
-        total_num = (TextView) findViewById(R.id.total_num);
-        list_view = (RecyclerView) findViewById(R.id.list_view);
-        GridLayoutManager manager =new GridLayoutManager(ReviewErrorActivity.this,3);
-        list_view.setLayoutManager(manager);
+        titleT.setText("错题本");
+        GridLayoutManager manager = new GridLayoutManager(ReviewErrorActivity.this, 3);
+        listView.setLayoutManager(manager);
+        titleIv.setBackgroundResource(R.mipmap.wrong_chose);
+        totalNum.setText(count);
+        String choseMode = SharedPreferencesUtils.getChoseMode(ReviewErrorActivity.this);
+        if (!TextUtils.isEmpty(choseMode)) choseTxt.setText(choseMode);
     }
 
-    @Override
+    @OnClick({R.id.back, R.id.title_iv})
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.back:
                 finish();
                 break;
             case R.id.title_iv:
+                showPopWindow();
                 break;
         }
+    }
+
+
+    public void initPopWindow() {
+      final  ArrayList<String> names = new ArrayList<>();
+        names.add("中英");
+        names.add("英中");
+        names.add("听写");
+        popHelper = PopHelper.create(ReviewErrorActivity.this);
+        popHelper.setData(names);
+        popHelper.setSelectListener(new SelectListener() {
+            @Override
+            public void setListener(int position) {
+                choseTxt.setText(names.get(position));
+                SharedPreferencesUtils.setChoseMode(ReviewErrorActivity.this,names.get(position));
+                popHelper.dismiss();
+            }
+        });
+        popHelper.initRecyclerView();
+    }
+
+    public void showPopWindow() {
+        popHelper.show(titleIv);
+    }
+
+
+    /**
+     * 错题
+     */
+    public void wrongIndex() {
+
+        addToCompositeDis(HttpUtil.wrongIndexObservable()
+        .subscribe(new Consumer<List<WrongIndexBeen>>() {
+            @Override
+            public void accept(@NonNull List<WrongIndexBeen> wrongIndexBeens) throws Exception {
+                if (wrongIndexBeens!= null && wrongIndexBeens.size() > 0) initView(wrongIndexBeens);
+            }
+        }));
+    }
+
+    /**
+     * 获取单词详情
+     */
+    public void getWordDetails(int start){
+        addToCompositeDis(HttpUtil.wrongIndexObservable(start+"")
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        showLoadDialog();
+                    }
+                })
+        .subscribe(new Consumer<List<String>>() {
+            @Override
+            public void accept(@NonNull List<String> strings) throws Exception {
+                dismissLoadDialog();
+                thinku.com.word.ui.report.WordEvaluateFragment.start(ReviewErrorActivity.this, (ArrayList<String>) strings);
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(@NonNull Throwable throwable) throws Exception {
+                dismissLoadDialog();
+                toTast(ReviewErrorActivity.this ,throwable.getMessage());
+            }
+        }));
     }
 }

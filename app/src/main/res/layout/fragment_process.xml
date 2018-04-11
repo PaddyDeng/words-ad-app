@@ -120,9 +120,9 @@
                 android:background="@color/gray_white"
                 android:layout_width="match_parent"
                 android:layout_height="30px"/>
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="250px"></LinearLayout>
+                android:layout_height="250px"/>
             <View
                 android:background="@color/gray_white"
                 android:layout_width="match_parent"
@@ -138,14 +138,15 @@
                     android:layout_marginLeft="60px"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/bag_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="40px"
                     android:layout_marginLeft="60px"
                     android:layout_marginRight="60px"
-                    android:layout_marginTop="30px"
-                    android:layout_marginBottom="40px"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                     />
             </LinearLayout>
             <View
                 android:background="@color/gray_white"
@@ -156,13 +157,13 @@
                 android:layout_width="match_parent"
                 android:gravity="center_vertical"
                 android:layout_height="200px">
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/portrait"
-                    android:background="@color/colorAccent"
+                    android:background="@mipmap/a1"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="60px"
-                    android:layout_width="120px"
-                    android:layout_height="120px" />
+                    android:layout_width="80px"
+                    android:layout_height="80px" />
                 <LinearLayout
                     android:layout_toRightOf="@+id/portrait"
                     android:layout_centerVertical="true"
@@ -202,7 +203,7 @@
                     android:layout_height="match_parent">
                     <ImageView
                         android:id="@+id/iv1"
-                        android:background="@color/mainColor"
+                        android:background="@mipmap/rank_bg"
                         android:layout_width="match_parent"
                         android:layout_height="120px" />
                     <TextView
@@ -228,6 +229,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/ranking_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+                android:layout_height="match_parent"
+                />
         </LinearLayout>
     </ScrollView>

@@ -10,9 +10,9 @@ import android.view.View;
 import thinku.com.word.R;
 
 public class ProgressView extends View{
-    private int sideColor =R.color.mainColor;//外边颜色
+    private int sideColor =R.color.color_progress_side;//外边颜色
     private int backColor= R.color.white;//背景颜色
-    private int progressColor =R.color.yellow_right_round;//进度条颜色
+    private int progressColor =R.color.progress_clolor1;//进度条颜色
     /**
      * 进度条最大值
      * */
@@ -34,7 +34,8 @@ public class ProgressView extends View{
         super(context);
         // TODO Auto-generated constructor stub
     }
-    /**** 设置最大的进度值* @param maxCount*/
+    /**** 设置最大的进度值* @param maxCount
+     * @param maxCount*/
     public void setMaxCount(float maxCount) {
         this.maxCount = maxCount;
     }
@@ -47,7 +48,8 @@ public class ProgressView extends View{
     public double getMaxCount(){
         return maxCount;
     }
-    /**** 设置当前的进度值* @param currentCount*/
+    /**** 设置当前的进度值* @param currentCount
+     * @param currentCount*/
     public void setCurrentCount(float currentCount) {
         this.currentCount = currentCount > maxCount ? maxCount : currentCount;
         /*** invalidate()是用来刷新View的，必须是在UI线程中进行工作。比如在修改某个view的显示时，

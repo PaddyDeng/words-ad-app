@@ -65,7 +65,7 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
                 SettingActivity.start(PersonalCenterActivity.this);
                 break;
             case R.id.type_setting:
-                TypeSettingActivity.start(PersonalCenterActivity.this);
+//                TypeSettingActivity.start(PersonalCenterActivity.this);
                 break;
             case R.id.sign:
                 

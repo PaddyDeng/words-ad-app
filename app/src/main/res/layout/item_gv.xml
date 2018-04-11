@@ -18,13 +18,13 @@
         android:id="@+id/ivStatus"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:src="@mipmap/sign"
+        android:src="@mipmap/singin_today"
         android:visibility="gone"
         android:layout_centerInParent="true"
        />
     <ImageView
         android:id="@+id/today"
-        android:src="@mipmap/today"
+        android:src="@mipmap/singin"
         android:layout_centerInParent="true"
         android:visibility="gone"
         android:layout_width="25dp"

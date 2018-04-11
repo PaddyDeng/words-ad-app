@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@mipmap/word_success_bg">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="160dp"
+        android:textSize="18sp"
+        android:textColor="@color/main_title_color"
+        android:id="@+id/name"
+        android:text="今天单词任务"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:textColor="@color/win_yellow"
+        android:text="完成啦！"
+        android:layout_below="@id/name"
+        android:layout_marginTop="10dp"
+        android:id="@+id/over"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:text="知道了"
+        android:layout_below="@id/over"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:id="@+id/center"
+        android:background="@drawable/button_bg_yellow"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

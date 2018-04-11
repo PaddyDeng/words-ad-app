@@ -1,5 +1,7 @@
 package thinku.com.word.ui.recite;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -7,56 +9,86 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
+import thinku.com.word.bean.ReviewMainBeen;
+import thinku.com.word.http.HttpUtil;
 
 /**
  * 复习(选择复习方式)
  */
 
 public class ReviewActivity extends BaseActivity implements View.OnClickListener {
+    @BindView(R.id.back)
+    ImageView back;
+    @BindView(R.id.title_t)
+    TextView titleT;
+    @BindView(R.id.num)
+    TextView num;
+    @BindView(R.id.error_rl)
+    RelativeLayout errorRl;
+    @BindView(R.id.time_rl)
+    RelativeLayout timeRl;
+    @BindView(R.id.listener_rl)
+    RelativeLayout listenerRl;
 
-    private ImageView back;
-    private TextView title_t,num;
-    private RelativeLayout error_rl,time_rl,listener_rl;
+
+    public static void start(Context context) {
+        Intent intent = new Intent(context, ReviewActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
-        findView();
-        setClick();
+        ButterKnife.bind(this);
+        initView();
+        Review();
     }
 
-    private void setClick() {
-        back.setOnClickListener(this);
-        error_rl.setOnClickListener(this);
-        time_rl.setOnClickListener(this);
-        listener_rl.setOnClickListener(this);
+
+    private void initView() {
+        titleT.setText("复习");
     }
 
-    private void findView() {
-        back = (ImageView) findViewById(R.id.back);
-        title_t = (TextView) findViewById(R.id.title_t);
-        title_t.setText("复习");
-        error_rl = (RelativeLayout) findViewById(R.id.error_rl);
-        num = (TextView) findViewById(R.id.num);
-        time_rl = (RelativeLayout) findViewById(R.id.time_rl);
-        listener_rl = (RelativeLayout) findViewById(R.id.listener_rl);
-    }
-
-    @Override
+    @OnClick({R.id.back ,R.id.error_rl ,R.id.time_rl ,R.id.listener_rl})
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.back:
                 finish();
                 break;
             case R.id.error_rl:
+                ReviewErrorActivity.start(ReviewActivity.this ,num.getText().toString());
                 break;
             case R.id.time_rl:
+                ReviewTimeActivity.start(ReviewActivity.this );
                 break;
             case R.id.listener_rl:
+                ReviewExerciseActivity.start(ReviewActivity.this );
                 break;
         }
+    }
+
+    /**
+     * 复习
+     */
+    public void Review(){
+        showLoadDialog();
+        addToCompositeDis(HttpUtil.reviewMainObservable()
+        .subscribe(new Consumer<ReviewMainBeen>() {
+            @Override
+            public void accept(@NonNull ReviewMainBeen reviewMainBeen) throws Exception {
+                dismissLoadDialog();
+                if (Integer.parseInt(reviewMainBeen.getCode()) == 1){
+                    num.setText("共"+reviewMainBeen.getNum()+"词");
+                }
+            }
+        }));
     }
 }

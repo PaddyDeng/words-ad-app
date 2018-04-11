@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="40px"
+    android:layout_marginTop="20px">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30px"
+        android:text="GMAT强化词句"/>
+
+    <ProgressBar
+        android:layout_width="500px"
+        android:layout_height="40px"
+        android:layout_marginLeft="30px"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:progress="20"
+        android:progressDrawable="@drawable/progress_horizontal"
+        android:id="@+id/progress"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30px"
+        android:textSize="30px"
+        android:text="(456/2000)"
+        android:id="@+id/num"/>
+</LinearLayout>

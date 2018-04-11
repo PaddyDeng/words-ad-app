@@ -14,6 +14,7 @@ import com.zhy.autolayout.utils.AutoUtils;
 import java.util.List;
 
 import thinku.com.word.R;
+import thinku.com.word.bean.WrongIndexBeen;
 import thinku.com.word.callback.SelectListener;
 import thinku.com.word.view.AutoZoomTextView;
 
@@ -23,10 +24,10 @@ import thinku.com.word.view.AutoZoomTextView;
 
 public class ReviewErrorAdapter extends RecyclerView.Adapter<ReviewErrorAdapter.ViewHolder>{
     private Context context;
-    private List<String> datas;
+    private List<WrongIndexBeen> datas;
     private SelectListener listener;
 
-    public ReviewErrorAdapter(Context context, List<String> datas, SelectListener listener) {
+    public ReviewErrorAdapter(Context context,  List<WrongIndexBeen> datas, SelectListener listener) {
         this.context = context;
         this.datas = datas;
         this.listener = listener;
@@ -41,7 +42,8 @@ public class ReviewErrorAdapter extends RecyclerView.Adapter<ReviewErrorAdapter.
 
     @Override
     public void onBindViewHolder(ReviewErrorAdapter.ViewHolder holder, final int position) {
-        holder.tv.setText(datas.get(position));
+        WrongIndexBeen wrongIndexBeen = datas.get(position);
+        holder.tv.setText(wrongIndexBeen.getName());
         holder.ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

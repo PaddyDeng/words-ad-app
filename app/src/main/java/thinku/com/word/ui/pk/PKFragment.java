@@ -2,6 +2,7 @@ package thinku.com.word.ui.pk;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.PluralsRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,11 @@ import thinku.com.word.base.BaseFragment;
  */
 
 public class PKFragment extends BaseFragment implements View.OnClickListener {
+
+    public static PKFragment newInstance(){
+        PKFragment pkFragment = new PKFragment();
+        return pkFragment ;
+    }
 
     private TextView pk, find;
 

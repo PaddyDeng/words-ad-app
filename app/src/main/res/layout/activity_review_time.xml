@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:gravity="center_horizontal"
     android:layout_height="match_parent">
-    <include layout="@layout/title_layout_share"/>
+    <include layout="@layout/title_layout_share"  />
     <TextView
         android:textSize="50px"
         android:text="请选择某时间内背的单词"
@@ -46,38 +46,19 @@
                 android:id="@+id/start_time"
                 android:textSize="45px"
                 android:textColor="@color/white"
-                android:text="2018.01.21"
                 android:gravity="center"
                 android:background="@drawable/main_10round_tv"
                 android:layout_width="match_parent"
                 android:layout_height="100px" />
             <RelativeLayout
-                android:layout_marginTop="30px"
-                android:background="@drawable/gray_10round"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="10px"
                 android:layout_marginRight="10px"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <View
-                    android:background="@color/gray"
-                    android:visibility="visible"
-                    android:layout_centerInParent="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="120px"/>
-                <thinku.com.word.view.wheelView.WheelView
-                    android:id="@+id/wheel_start"
-                    android:layout_centerInParent="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:textColorCenter="@color/mainColor"
-                    app:lineSpaceingDimens="20px"
-                    app:itemVisibleNum="11"
-                    app:lineColor="@android:color/transparent"
-                    app:textSizeCenter="30px"
-                    app:textSizeOuter="30px"
-                    app:isLoop="false"
-                    app:textColorOuter="@android:color/darker_gray"/>
-            </RelativeLayout>
+                android:layout_marginTop="30px"
+                android:id="@+id/start_rl"
+                android:background="@drawable/gray_10round" />
+
         </LinearLayout>
         <View
             android:layout_marginTop="49px"
@@ -95,7 +76,6 @@
                 android:id="@+id/end_time"
                 android:textSize="45px"
                 android:textColor="@color/white"
-                android:text="2018.01.21"
                 android:gravity="center"
                 android:background="@drawable/main_10round_tv"
                 android:layout_width="match_parent"
@@ -105,28 +85,21 @@
                 android:layout_marginLeft="10px"
                 android:layout_marginRight="10px"
                 android:background="@drawable/gray_10round"
+                android:id="@+id/end_rl"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <View
-                    android:background="@color/gray"
-                    android:visibility="visible"
-                    android:layout_centerInParent="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="120px"/>
-                <thinku.com.word.view.wheelView.WheelView
-                    android:id="@+id/wheel_end"
-                    android:layout_centerInParent="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:textColorCenter="@color/mainColor"
-                    app:lineSpaceingDimens="20px"
-                    app:itemVisibleNum="11"
-                    app:lineColor="@android:color/transparent"
-                    app:textSizeCenter="30px"
-                    app:textSizeOuter="30px"
-                    app:isLoop="false"
-                    app:textColorOuter="@android:color/darker_gray"/>
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/center"
+        android:textSize="45px"
+        android:textColor="@color/white"
+        android:text="确  定"
+        android:gravity="center"
+        android:background="@drawable/main_10round_tv"
+        android:layout_width="400px"
+        android:layout_height="100px" />
 </LinearLayout>

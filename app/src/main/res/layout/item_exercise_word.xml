@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView android:layout_width="80dp"
+    android:layout_height="60dp"
+    android:gravity="center"
+    android:background="@drawable/text_bottom"
+    android:text="fdsfa"
+    android:id="@+id/text"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

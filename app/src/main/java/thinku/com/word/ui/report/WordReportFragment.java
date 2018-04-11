@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import me.yokeyword.fragmentation.SupportFragment;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
 
@@ -15,11 +16,15 @@ import thinku.com.word.base.BaseFragment;
  * 单词报表
  */
 
-public class WordReportFragment extends BaseFragment{
+public class WordReportFragment extends SupportFragment{
 
     private TextView total_num,familiar_num,vague_num,know_num,forget_num,date;
     private ImageView setting_date;
 
+    public static WordReportFragment newInstance(){
+        WordReportFragment wordReportFragment = new WordReportFragment();
+        return wordReportFragment ;
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
