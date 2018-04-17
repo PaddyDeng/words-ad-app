@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.fastjson.FastJsonConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import thinku.com.word.MyApplication;
 
 //链接
@@ -85,7 +85,7 @@ public class RetrofitProvider {
             return new Retrofit.Builder()
                     .baseUrl(url)
                     .client(builder.build())
-                    .addConverterFactory(FastJsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
         }

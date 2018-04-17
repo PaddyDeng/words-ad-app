@@ -14,6 +14,38 @@ import java.util.regex.Pattern;
  */
 
 public class StringUtils {
+
+
+    /**
+     * 获取 类似2015-04-04的当月日期数
+     * @param s
+     * @return
+     */
+    public static String spiltDay(String s){
+            String[] strings = s.split("-");
+            if (strings != null){
+                return strings[strings.length -1];
+            }else {
+                return "";
+            }
+        }
+
+    /**
+     * 以 //n  分割字符串
+      * @param s
+     * @return
+     */
+    public static List<String> spiltString(String s){
+        List<String> stringList = new ArrayList<>();
+        String[] strings = s.split("\\n");
+        if (strings.length > 0){
+            for (int i = 0 ; i< strings.length ;i++){
+                stringList.add(strings[i]);
+            }
+            Collections.reverse(stringList);
+        }
+        return stringList;
+    }
     /**
      * 以空行分割字符串
      * @param s

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+        <include layout="@layout/title_layout_word" />
+
+            <ImageView
+                android:id="@+id/play"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginTop="40dp"
+                android:background="@mipmap/word_broadcast"
+                android:padding="5dp" />
+
+            <TextView
+                android:id="@+id/word"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/gray_text"
+                android:textSize="23dp"
+                android:text="windmil"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:id="@+id/mnemonic"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:background="@color/white"
+                android:text="[fdsfasfa]"
+                />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/data_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bg"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
+    </LinearLayout>

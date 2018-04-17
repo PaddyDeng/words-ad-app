@@ -62,8 +62,8 @@ public class DictionDetailWordActivity extends BaseActivity {
     public static void start(Context context, RecitWordBeen recitWordBeen) {
         Intent intent = new Intent(context, DictionDetailWordActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putParcelable("word", recitWordBeen);
-        intent.putExtra("data", bundle);
+        bundle.putParcelable("word" ,recitWordBeen);
+        intent.putExtra("data",bundle);
         context.startActivity(intent);
     }
 
@@ -77,13 +77,13 @@ public class DictionDetailWordActivity extends BaseActivity {
             recitWord = bundle.getParcelable("word");
             initView();
         } catch (Exception e) {
-
+            Log.e(TAG, "onCreate: "+ e.toString() );
         }
     }
 
     public void initView() {
         familiar.setVisibility(View.GONE);
-        titleT.setText((Integer.parseInt(recitWord.getItem())) + "/" + recitWord.getplanWords());
+        titleT.setText((Integer.parseInt(recitWord.getDoX())) + "/" + recitWord.getPlanWords());
         titleT.setVisibility(View.VISIBLE);
         word.setText(recitWord.getWords().getWord());
         phonogram.setText(recitWord.getWords().getPhonetic_us());
@@ -125,10 +125,10 @@ public class DictionDetailWordActivity extends BaseActivity {
         if (!TextUtils.isEmpty(recitWord.getWords().getMnemonic()) & !"".equals(recitWord.getWords().getMnemonic())) {
             ReciteWordParent reciteWordParent = new ReciteWordParent();
             reciteWordParent.setName("助句");
-            RecitWordBeen.Sentence sentent = new RecitWordBeen.Sentence();
+            RecitWordBeen.LowSentenceBean sentent = new RecitWordBeen.LowSentenceBean();
             sentent.setChinese(recitWord.getWords().getMnemonic());
             sentent.setId("助句");
-            List<RecitWordBeen.Sentence> arrs = new ArrayList<>();
+            List<RecitWordBeen.LowSentenceBean> arrs = new ArrayList<>();
             reciteWordParent.setSentenceList(arrs);
         }
         if (recitWord.getLowSentence() != null & recitWord.getLowSentence().size() > 0) {

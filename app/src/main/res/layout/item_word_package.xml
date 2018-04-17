@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="110dp"
+    android:layout_height="80dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/word_package_bg"
     android:id="@+id/rl">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/word_package_img"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="25dp"
         android:src="@mipmap/gmat" />
@@ -23,7 +23,7 @@
         android:layout_toEndOf="@id/word_package_img"
         android:text="GMAT"
         android:textColor="@color/gray_text"
-        android:textSize="18dp" />
+        android:textSize="15dp" />
 
     <thinku.com.word.view.DashView
         android:layout_width="match_parent"

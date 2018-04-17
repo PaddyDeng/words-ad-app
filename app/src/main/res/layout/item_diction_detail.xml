@@ -5,12 +5,12 @@
    >
 
     <TextView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/word_spilt"
         android:text="ming"
         android:gravity="center"
-        android:textSize="13sp"
+        android:textSize="15dp"
         android:layout_margin="30dp"
         android:clickable="true"
         android:background="@drawable/chose_text_bg"

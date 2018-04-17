@@ -115,16 +115,23 @@
             android:name=".ui.other.BeanDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
-        <!-- 评估 -->
+        <!-- 背单词详情 -->
         <activity
             android:name=".ui.report.WordEvaluateFragment"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+
+        <!-- 评估页面 -->
+        <activity
+            android:name=".ui.report.EvaWordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
         <!-- 评估结果 -->
         <activity
             android:name=".ui.report.EvaluateResultActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme" />
+            android:theme="@style/NoTitleTheme" >
+        </activity>
         <!-- 评估排名 -->
         <activity
             android:name=".ui.report.EvaluateRankingActivity"

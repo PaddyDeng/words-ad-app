@@ -19,10 +19,10 @@ import thinku.com.word.bean.RecitWordBeen;
 
 public class ReciteWordAdapter extends RecyclerView.Adapter {
     private static final String TAG = ReciteWordAdapter.class.getSimpleName();
-    private List<RecitWordBeen.Sentence> sentences ;
+    private List<RecitWordBeen.LowSentenceBean> sentences ;
     private Context context ;
 
-    public ReciteWordAdapter(Context context , List<RecitWordBeen.Sentence> sentences){
+    public ReciteWordAdapter(Context context , List<RecitWordBeen.LowSentenceBean> sentences){
         this.context = context ;
         this.sentences = sentences ;
     }
@@ -36,7 +36,7 @@ public class ReciteWordAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ReciteWordHolder reciteWordHolder = (ReciteWordHolder) holder;
-        RecitWordBeen.Sentence sentence = sentences.get(position);
+        RecitWordBeen.LowSentenceBean sentence = sentences.get(position);
         if ("助句".equals(sentence.getId())){
             reciteWordHolder.us.setVisibility(View.GONE);
         }else {

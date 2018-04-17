@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="40px"
-    android:layout_marginTop="20px">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="25dp"
+    android:layout_marginTop="10dp">
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:textSize="30px"
-        android:text="GMAT强化词句"/>
+        android:gravity="start"
+        android:maxLength="8"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="12dp"
+        android:id="@+id/name"
+        android:layout_gravity="center_vertical"
+        />
 
-    <ProgressBar
-        android:layout_width="500px"
-        android:layout_height="40px"
-        android:layout_marginLeft="30px"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        android:progress="20"
-        android:progressDrawable="@drawable/progress_horizontal"
+    <thinku.com.word.view.LoadingCustomView
+        android:layout_marginLeft="10dp"
+        android:layout_width="150dp"
+        android:layout_height="15dp"
         android:id="@+id/progress"
+        android:layout_gravity="center_vertical"
+        app:progressBankgroundColor="@color/color_progress_side"
+        app:progressBarBankgroundStyle="3"
+        app:progressColor="@color/color_progress_low"
+        app:progress="20"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30px"
-        android:textSize="30px"
-        android:text="(456/2000)"
+        android:layout_marginLeft="10dp"
+        android:textSize="12dp"
+        android:layout_gravity="center_vertical"
         android:id="@+id/num"/>
 </LinearLayout>

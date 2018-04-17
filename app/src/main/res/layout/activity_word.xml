@@ -21,11 +21,11 @@
         />
 
         <thinku.com.word.view.DashView
-            android:layout_width="1dp"
+            android:layout_width="1px"
             android:layout_height="match_parent"
-            app:dashWidth = "1dp"
-            app:lineWidth="1dp"
-            app:lineHeight="1dp"
+            app:dashWidth = "3dp"
+            app:lineWidth="5dp"
+            app:lineHeight="1px"
             app:dashOrientation="1"
             app:lineColor="@color/gray_text"
             />

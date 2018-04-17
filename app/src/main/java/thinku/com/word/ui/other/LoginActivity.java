@@ -80,14 +80,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 LoginHelper.againLoginRetrofit(LoginActivity.this, phone, pass, new RequestCallback<UserInfo>() {
                     @Override
                     public void beforeRequest() {
+                        showLoadDialog();
                     }
 
                     @Override
                     public void requestFail(String msg) {
+                        dismissLoadDialog();
                     }
 
                     @Override
                     public void requestSuccess(UserInfo userInfo) {
+                        dismissLoadDialog();
                         SharedPreferencesUtils.setPassword(LoginActivity.this, TextUtils.isEmpty(userInfo.getPhone()) ? userInfo.getEmail() : userInfo.getPhone(), userInfo.getPassword());
                         SharedPreferencesUtils.setLogin(LoginActivity.this, userInfo);
                         LoginActivity.this.finish();

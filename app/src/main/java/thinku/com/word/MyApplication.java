@@ -1,5 +1,6 @@
 package thinku.com.word;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
@@ -11,6 +12,8 @@ import com.yanzhenjie.nohttp.cookie.DBCookieStore;
 
 import java.net.HttpCookie;
 import java.net.URI;
+import java.util.List;
+import java.util.Stack;
 
 import me.yokeyword.fragmentation.Fragmentation;
 import me.yokeyword.fragmentation.exception.AfterSaveStateTransactionWarning;
@@ -28,7 +31,8 @@ public class MyApplication extends Application {
     public static int MemoryMode = 0 ;  //  初始化记忆模式
     public static int WordStatus = 0 ; // 单词状态
     public static String session = "";
-
+    private Stack<Activity> activityStack;
+    private static MyApplication myApplication ;
     public static Context getInstance(){
         return mContext;
     }
@@ -68,6 +72,82 @@ public class MyApplication extends Application {
                 })
                 .install();
     }
+
+    public static MyApplication newInstance(){
+        if (myApplication == null) {
+            synchronized (MyApplication.class) {
+                if (myApplication == null){
+                    myApplication = new MyApplication();
+                }
+            }
+
+        }
+        return myApplication ;
+    }
+
+    /**
+     * 添加Activity到堆栈
+     */
+    // Stack <Activity> activityStack;
+    public void addActivity(Activity activity) {
+        if (activityStack == null) {
+            activityStack = new Stack<Activity>();
+        }
+        activityStack.add(activity);
+    }
+    /**
+     * 获取当前Activity（堆栈中最后一个压入的）
+     */
+    public Activity currentActivity() {
+        Activity activity = activityStack.lastElement();
+        return activity;
+    }
+
+    /**
+     * 结束当前Activity（堆栈中最后一个压入的）
+     */
+    public void finishActivity() {
+        Activity activity = activityStack.lastElement();
+        finishActivity(activity);
+    }
+
+    /**
+     * 结束指定类名的Activity
+     */
+    public void finishActivity(Class<?> cls) {
+        for (Activity activity : activityStack) {
+            if (activity.getClass().equals(cls)) {
+                finishActivity(activity);
+            }
+        }
+    }
+
+    /**
+     * 结束指定的Activity
+     */
+    public void finishActivity(Activity activity) {
+        if (activity != null) {
+            activityStack.remove(activity);
+            activity.finish();
+            activity = null;
+        }
+    }
+
+
+    /**
+     * 结束所有Activity
+     */
+    public void finishAllActivity() {
+        if (activityStack != null) {
+            for (int i = 0; i < activityStack.size(); i++) {
+                if (null != activityStack.get(i)) {
+                    activityStack.get(i).finish();
+                }
+            }
+            activityStack.clear();
+        }
+    }
+
     /**
      * Cookie管理监听。x
      */

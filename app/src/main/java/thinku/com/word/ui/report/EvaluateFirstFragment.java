@@ -13,8 +13,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
+import thinku.com.word.bean.ResultBeen;
+import thinku.com.word.http.HttpUtil;
+import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
  * 评估首页
@@ -61,6 +66,21 @@ public class EvaluateFirstFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        initView();
+    }
+
+    public void initView(){
+        titleT.setText("评估");
+        int evaNum = SharedPreferencesUtils.getEvaluationNum(_mActivity);
+        String nametxt = SharedPreferencesUtils.getString("nickname",_mActivity);
+        name.setText(nametxt);
+        if (evaNum == 0) state.setText("未评估");
+        else state.setText(evaNum+"");
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
@@ -73,6 +93,19 @@ public class EvaluateFirstFragment extends BaseFragment {
 
     @OnClick(R.id.evaluate)
     public void evaluate(){
-//        start(WordEvaluateFragment.newInstance());
+        addToCompositeDis(HttpUtil.evaStartObservable()
+        .doOnSubscribe(new Consumer<Disposable>() {
+            @Override
+            public void accept(Disposable disposable) throws Exception {
+//                showLoadDialog();
+            }
+        }).subscribe(new Consumer<ResultBeen<Void>>() {
+                    @Override
+                    public void accept(ResultBeen<Void> voidResultBeen) throws Exception {
+                        if (getHttpResSuc(voidResultBeen.getCode())){
+                            EvaWordActivity.start(_mActivity);
+                        }
+                    }
+                }));
     }
 }

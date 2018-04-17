@@ -22,7 +22,7 @@ import thinku.com.word.R;
 
 public class GlideUtils {
     //普通加载图片
-    public void load(Context context,String url, ImageView iv){
+    public static void load(Context context,String url, ImageView iv){
         Glide.with(context)
                 .load(url)
                 .placeholder(R.mipmap.short_defult)//占位图

@@ -12,6 +12,8 @@ import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
 import thinku.com.word.bean.BackCode;
 import thinku.com.word.bean.Dictation;
+import thinku.com.word.bean.EVAnswerBeen;
+import thinku.com.word.bean.EvaWordBeen;
 import thinku.com.word.bean.Package;
 import thinku.com.word.bean.PackageDetails;
 import thinku.com.word.bean.RecitWordBeen;
@@ -19,10 +21,13 @@ import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.ReviewDialogBeen;
 import thinku.com.word.bean.ReviewMainBeen;
 import thinku.com.word.bean.SingBeen;
+import thinku.com.word.bean.TrackBeen;
 import thinku.com.word.bean.UserData;
 import thinku.com.word.bean.UserIndex;
 import thinku.com.word.bean.UserInfo;
+import thinku.com.word.bean.UserRankBeen;
 import thinku.com.word.bean.WordPackageBeen;
+import thinku.com.word.bean.WordResultBeen;
 import thinku.com.word.bean.WordReviewTodayBeen;
 import thinku.com.word.bean.WrongIndexBeen;
 
@@ -149,4 +154,26 @@ public interface RestApi {
 
     @POST(NetworkChildren.USER_SIGN)
     Observable<SingBeen> userSign();
+
+    @POST(NetworkChildren.SIGN)
+    Observable<ResultBeen<Void>> sing();
+
+    @POST(NetworkChildren.TRACK)
+    Observable<TrackBeen> track();
+
+    @POST(NetworkChildren.EVA_START)
+    Observable<ResultBeen<Void>> evaStart();
+
+    @POST(NetworkChildren.EV_WORDS)
+    Observable<EvaWordBeen> evaWord();
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.EV_ANSWER)
+    Observable<EVAnswerBeen> evAnswer(@Field("wordsId") String wordsId , @Field("type") String type  , @Field("answer") String answer , @Field("duration") String duration , @Field("status") String isKnow);
+
+    @POST(NetworkChildren.EV_RESULT)
+    Observable<WordResultBeen> evResult();
+
+    @POST(NetworkChildren.EV_RANK)
+    Observable<UserRankBeen> evRank();
 }

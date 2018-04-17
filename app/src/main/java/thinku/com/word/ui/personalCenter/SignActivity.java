@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,8 +15,11 @@ import java.util.List;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
+import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.SingBeen;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.utils.DateUtil;
+import thinku.com.word.utils.StringUtils;
 import thinku.com.word.view.SignDate;
 
 /**
@@ -28,7 +32,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     private ImageView back;
     private TextView title_t,total_num,sign,bean_num;
 
-
+    private List<Integer> list ;
     public static void start(Context context){
         Intent intent = new Intent(context ,SignActivity.class);
         context.startActivity(intent);
@@ -49,12 +53,33 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void accept(SingBeen singBeen) throws Exception {
                 if (singBeen != null){
-
+                   referUi(singBeen);
                 }
             }
         }));
     }
 
+    /**
+     *   刷新UI
+     * @param singBeen
+     */
+    public void referUi(SingBeen singBeen){
+        List<SingBeen.SignData> signDates = singBeen.getData();
+        list = new ArrayList<>();
+        if (signDates!= null){
+            for (SingBeen.SignData data : signDates) {
+                list.add(Integer.parseInt(StringUtils.spiltDay(data.getCreateDay())));
+            }
+            calendar.setSign(list);
+        }
+        total_num.setText("累计打卡：" + singBeen.getNum()+"天");
+        bean_num.setText(singBeen.getIntegral());
+        if (singBeen.getType() == 0){
+            sign.setClickable(true);
+        }else{
+            sign.setClickable(false);
+        }
+    }
     private void findView() {
         back = (ImageView) findViewById(R.id.back);
         title_t = (TextView) findViewById(R.id.title_t);
@@ -67,13 +92,6 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     private void setClick() {
         back.setOnClickListener(this);
         sign.setOnClickListener(this);
-        List<Integer> list = new ArrayList<>();
-        list.add(1);
-        list.add(2);
-        list.add(5);
-        list.add(6);
-        list.add(18);
-        calendar.setSign(list);
     }
 
     @Override
@@ -83,8 +101,29 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 finish();
                 break;
             case R.id.sign:
-
+                sign();
                 break;
         }
+    }
+
+    /**
+     * 签到
+     */
+    public void sign(){
+        addToCompositeDis(HttpUtil.singObservable()
+                .subscribe(new Consumer<ResultBeen<Void>>() {
+                    @Override
+                    public void accept(ResultBeen<Void> voidResultBeen) throws Exception {
+                        if (getHttpResSuc(voidResultBeen.getCode())) {
+                            toTast(SignActivity.this, voidResultBeen.getMessage());
+                            list.add(DateUtil.getToday());
+                            calendar.setSign(list);
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                    }
+                }));
     }
 }

@@ -29,7 +29,6 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="30px"
         android:layout_toRightOf="@id/score_txt"
-        android:src="@mipmap/a"
         />
 
     <TextView

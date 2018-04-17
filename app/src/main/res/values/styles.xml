@@ -9,6 +9,10 @@
     </style>
 
 
+    <style name="wrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
     <style name="AlphaDialogAct" parent="android:style/Theme.Dialog">
         <item name="android:windowAnimationStyle">@anim/ac_slide_up_in</item>
         <!-- 边框 -->

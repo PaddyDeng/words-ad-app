@@ -35,7 +35,6 @@ import thinku.com.word.utils.WaitUtils;
  * @see #onFragmentFirstVisible()
  */
 public abstract class BaseFragment extends SupportFragment  {
-    protected OnBackToFirstListener _mBackToFirstListener;
     private static final String TAG = BaseFragment.class.getSimpleName();
     protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private boolean isFragmentVisible;
@@ -83,19 +82,6 @@ public abstract class BaseFragment extends SupportFragment  {
     protected void addToCompositeDis(Disposable disposable) {
         mCompositeDisposable.add(disposable);
     }
-
-    /**
-     * 发起一个请求。
-     *
-     * @param what     what.
-     * @param request  请求对象。
-     * @param listener 结果监听。
-     * @param <T>      要请求到的数据类型。
-     */
-    public <T> void request(int what, Request<T> request, OnResponseListener<T> listener) {
-        mRequestQueue.add(what, request, listener);
-    }
-
     /**
      *  判断是否请求成功
      * @param code
@@ -112,6 +98,23 @@ public abstract class BaseFragment extends SupportFragment  {
     public void toTast(Context context , String content){
         Toast.makeText(context ,content ,Toast.LENGTH_SHORT).show();
     }
+
+    /**
+     *调起加载dialog
+     */
+    public void showLoadDialog() {
+        WaitUtils.show(mContext,getClass().getSimpleName());
+    }
+    public void showLoadDialog(String tag){
+        WaitUtils.show(mContext,tag);
+    }
+
+    public void showLoadDialog(String hint ,String tag){
+        WaitUtils.show(mContext ,tag);
+        WaitUtils.setHint(tag ,hint);
+    }
+
+
     /**
      * 关闭加载dialog
      */

@@ -126,7 +126,7 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
                 if (getHttpResSuc(recitWordBeen.getCode())){
                     recitWord = recitWordBeen ;
                     wordId = recitWord.getWords().getId();
-                    titleT.setText((Integer.parseInt(recitWord.getItem()) + 1) + "/" + recitWord.getplanWords());
+                    titleT.setText((Integer.parseInt(recitWord.getDoX()) + 1) + "/" + recitWord.getPlanWords());
                     titleT.setVisibility(View.VISIBLE);
                     word.setText(recitWord.getWords().getWord());
                     phonogram.setText(recitWord.getWords().getPhonetic_us());
@@ -199,7 +199,6 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
      * 从wordsId 获取word 详情
      */
     public void fromWordsIdGetWordDetails(final String wordsId, final String all, final String now, final String tag) {
-        Log.e(TAG, "fromWordsIdGetWordDetails: " + wordsId );
        addToCompositeDis(HttpUtil.wordDetailsObservable(wordsId)
        .doOnSubscribe(new Consumer<Disposable>() {
            @Override
@@ -218,7 +217,7 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
                word.setText(recitWord.getWords().getWord());
                phonogram.setText(recitWord.getWords().getPhonetic_us());
                recitWord.setTag(tag);
-               recitWord.setItem(now);
+               recitWord.setDoX(now);
                recitWord.setPlanWords(all);
                IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
                    @Override
@@ -231,7 +230,6 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
        }, new Consumer<Throwable>() {
            @Override
            public void accept(@NonNull Throwable throwable) throws Exception {
-               Log.e(TAG, "accept: " + throwable.toString() );
                 dismissLoadDialog();
            }
        }));
@@ -322,13 +320,13 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
                             public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
                                 if (getHttpResSuc(voidResultBeen.getCode())){
                                     if (C.NORMAL.equals(wordEvaluateEvent.getTag())) {
-                                        if (Integer.parseInt(recitWord.getItem()) + 1 == Integer.parseInt(recitWord.getPlanWords())) {
+                                        if (Integer.parseInt(recitWord.getDoX()) + 1 == Integer.parseInt(recitWord.getPlanWords())) {
                                             showCompelete();
                                         } else {
                                             reciteWords();
                                         }
                                     } else if (C.TAGS.equals(wordEvaluateEvent.getTag())) {
-                                        if (Integer.parseInt(recitWord.getItem()) + 1 == Integer.parseInt(recitWord.getPlanWords())) {
+                                        if (Integer.parseInt(recitWord.getDoX()) + 1 == Integer.parseInt(recitWord.getPlanWords())) {
                                             showCompelete();
                                         } else {
                                             fromTagGetWrodsId(tag);

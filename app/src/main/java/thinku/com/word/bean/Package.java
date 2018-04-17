@@ -1,6 +1,6 @@
 package thinku.com.word.bean;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 public class Package {
-    @JSONField(name="package")
+    @SerializedName("package")
     private List<PackData> packDatas ;
     public static class PackData{
             private String id ;

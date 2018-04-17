@@ -11,7 +11,7 @@ import android.util.Base64;
 
 public class SharePref {
 
-    protected static String PREFS_NAME = "SHAREDPREF_WORD";
+    protected static String PREFS_NAME = "UserInfo";
     private final static String PREFS_KEY_COOKIE = "prefs_key_cookie";
     public static final String PREFS_STR_INVALID = "";
     public static String getCookie(Context c) {

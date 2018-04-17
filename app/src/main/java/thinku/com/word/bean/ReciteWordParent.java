@@ -9,7 +9,7 @@ import java.util.List;
 public class ReciteWordParent {
 
     private String name;
-    private List<RecitWordBeen.Sentence> sentenceList;
+    private List<RecitWordBeen.LowSentenceBean> sentenceList;
 
     public String getName() {
         return name;
@@ -19,11 +19,11 @@ public class ReciteWordParent {
         this.name = name;
     }
 
-    public List<RecitWordBeen.Sentence> getSentenceList() {
+    public List<RecitWordBeen.LowSentenceBean> getSentenceList() {
         return sentenceList;
     }
 
-    public void setSentenceList(List<RecitWordBeen.Sentence> sentenceList) {
+    public void setSentenceList(List<RecitWordBeen.LowSentenceBean> sentenceList) {
         this.sentenceList = sentenceList;
     }
 }

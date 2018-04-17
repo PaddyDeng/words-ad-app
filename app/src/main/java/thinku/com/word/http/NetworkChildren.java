@@ -40,5 +40,18 @@ public class NetworkChildren {
     public static final String DICTATION_WORDS = "app-api/dictation-words";  // 听写练习分类获取words
     public static final String DCTATION_INDEX = "app-api/dictation-index" ;   // 听写练习首页
     public static final String ERROR_RECOVERY = "app-api/error-recovery" ; //  报错功能
-    public static final String USER_SIGN = "app-api/user-sign" ;  //  用户签到
+    public static final String USER_SIGN = "app-api/user-sign" ;  //  用户签到首页
+    public static final String SIGN = "app-api/sign" ;  //  用户签到
+
+
+    /**
+     * 单词报告接口
+     */
+    public static final String TRACK = "app-api/track"; // 单词报告轨迹
+    public static final String EVA_START = "app-api/ev-start" ; //  开始单词报告
+    public static final String EV_WORDS = "app-api/ev-words" ;  //  单词报告单词
+    public static final String EV_ANSWER = "app-api/ev-answer"; //  单词评估提交答案
+    public static final String EV_RESULT = "app-api/ev-result" ;  //  单词评估结果
+    public static final String EV_RANK = "app-api/ev-rank-list" ;  //  单词评估排名
+
 }

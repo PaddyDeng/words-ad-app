@@ -56,14 +56,14 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        login();
         findView();
-        initView();
         setClick();
         // 获取权限
         getPermission(permissions, 1, "需要文件读写权限", 2, new PermissionCallback() {
             @Override
             public void onSuccessful() {
-
+                initView();
             }
 
             @Override
@@ -72,7 +72,6 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
                 finish();
             }
         });
-        login();
     }
 
     /**

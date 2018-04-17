@@ -1,6 +1,7 @@
 package thinku.com.word.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,14 @@ import java.util.List;
 import thinku.com.word.R;
 import thinku.com.word.utils.DateUtil;
 
+import static thinku.com.word.R.mipmap.singin_today;
+
 /**
  * Created by Administrator on 2017/8/16.
  */
 
 public class AdapterDate extends BaseAdapter {
-
+    private static final String TAG = AdapterDate.class.getSimpleName();
     private Context context;
     private List<Integer> days = new ArrayList<>();
     //日历数据
@@ -85,17 +88,18 @@ public class AdapterDate extends BaseAdapter {
         }
         viewHolder.tv = (TextView) view.findViewById(R.id.tvWeek);
         viewHolder.rlItem = (RelativeLayout) view.findViewById(R.id.rlItem);
-        viewHolder.ivStatus = (ImageView) view.findViewById(R.id.ivStatus);
-        viewHolder.today= (ImageView) view.findViewById(R.id.today);
+        viewHolder.ivStatus = (ImageView) view.findViewById(R.id.iv_status);
         viewHolder.tv.setText(days.get(i)+"");
         if(days.get(i)==0){
             viewHolder.rlItem.setVisibility(View.GONE);
         }
-        if(i==today)viewHolder.today.setVisibility(View.VISIBLE);
-        else viewHolder.today.setVisibility(View.GONE);
         if(status.get(i)){
             viewHolder.ivStatus.setVisibility(View.VISIBLE);
-            viewHolder.today.setVisibility(View.GONE);
+            if (i == today){
+                viewHolder.ivStatus.setImageResource(R.mipmap.singin);
+            }else{
+                viewHolder.ivStatus.setImageResource(R.mipmap.singin_today);
+            }
         }else{
             viewHolder.ivStatus.setVisibility(View.GONE);
         }
@@ -107,6 +111,5 @@ public class AdapterDate extends BaseAdapter {
         RelativeLayout rlItem;
         TextView tv;
         ImageView ivStatus;
-        ImageView today;
     }
 }

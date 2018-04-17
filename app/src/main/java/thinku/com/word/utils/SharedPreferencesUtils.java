@@ -26,6 +26,8 @@ public class SharedPreferencesUtils {
     private final static String PREFS_KEY_PALN_WORDS = "prefs_key_plan_words" ;
     private final static String PREFS_KEY_WINDOW = "prefs_key_window" ;  //  是否弹窗
     private final static String PREFS_KEY_REVIEWE_MODE = "prefs_key_chose_mode" ;
+    private final static String PREFS_KEY_RANK_SCORE = "prefs_key_rank_score" ;  //  评估排名
+    private final static String PREFS_KEY_RANK_NUM = "prefs_key_rank_num" ;   //  评估数量
     public static void setPersonal(Context context, PersonalDetail personal) {
         SharedPreferences sp = context.getSharedPreferences("Personal", Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sp.edit();
@@ -103,6 +105,7 @@ public class SharedPreferencesUtils {
         return login;
     }
 
+
     public static void setSession(Context context, int i, String session) {
         SharedPreferences sp = context.getSharedPreferences("Sessions", Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sp.edit();
@@ -174,6 +177,16 @@ public class SharedPreferencesUtils {
         edit.commit();
     }
 
+    // 存储评估量
+    public static void setEvaluationNum(Context context ,int  num ){
+        SharedPreferences sp = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        sp.edit().putInt("evaluationNum" ,num).commit();
+    }
+    //  获取评估量
+    public static int getEvaluationNum(Context context ){
+        SharedPreferences sp = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+       return sp.getInt("evaluationNum",0);
+    }
     public static String getPassword(Context context ){
         SharedPreferences sp = context.getSharedPreferences("PhoneAndPass", Context.MODE_PRIVATE);
         return sp.getString("pass","");
@@ -257,23 +270,46 @@ public class SharedPreferencesUtils {
         setString(PREFS_KEY_REVIEWE_MODE ,context ,value);
     }
 
+    /**
+     *  评估排名
+     * @param context
+     * @return
+     */
+    public static void setRankScore(Context context ,String value){
+        setString(PREFS_KEY_RANK_SCORE ,context ,value);
+    }
+    public static String getRankScore(Context context){
+        return getString(PREFS_KEY_RANK_SCORE , context);
+    }
+
+    /**
+     *  评估数量
+     * @param context
+     * @return
+     */
+    public static void setRankNum(Context context ,String value){
+        setString(PREFS_KEY_RANK_NUM ,context ,value);
+    }
+    public static String getRankNum(Context context){
+        return getString(PREFS_KEY_RANK_NUM , context);
+    }
 
     public static String getString(String key, Context c) {
-        return c.getSharedPreferences(PREFS_NAME, 0).getString(key, "");
+        return c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString(key, "");
     }
 
     public static void setString(String key, Context c, String value) {
-        SharedPreferences.Editor editor = c.getSharedPreferences(PREFS_NAME, 0).edit();
+        SharedPreferences.Editor editor = c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit();
         editor.putString(key, value);
         editor.commit();
     }
 
     public static int getInt(String key, Context c) {
-        return c.getSharedPreferences(PREFS_NAME, 0).getInt(key, 0);
+        return c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getInt(key, 0);
     }
 
     public  static  void setInt(String key, Context c, int value) {
-        SharedPreferences.Editor editor = c.getSharedPreferences(PREFS_NAME, 0).edit();
+        SharedPreferences.Editor editor = c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit();
         editor.putInt(key, value);
         editor.commit();
     }

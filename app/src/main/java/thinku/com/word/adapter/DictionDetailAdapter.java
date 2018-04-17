@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.zhy.autolayout.utils.AutoUtils;
+
 import java.util.List;
 
 import thinku.com.word.R;
@@ -67,6 +69,7 @@ public class DictionDetailAdapter extends RecyclerView.Adapter {
 
         public DictionDetailHolder(View itemView) {
             super(itemView);
+            AutoUtils.auto(itemView);
             textView = (TextView) itemView.findViewById(R.id.word_spilt);
         }
     }

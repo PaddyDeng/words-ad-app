@@ -15,15 +15,7 @@
         android:background="@android:color/white">
     </TextView>
     <ImageView
-        android:id="@+id/ivStatus"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:src="@mipmap/singin_today"
-        android:visibility="gone"
-        android:layout_centerInParent="true"
-       />
-    <ImageView
-        android:id="@+id/today"
+        android:id="@+id/iv_status"
         android:src="@mipmap/singin"
         android:layout_centerInParent="true"
         android:visibility="gone"

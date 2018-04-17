@@ -7,6 +7,8 @@ import io.reactivex.Observable;
 import retrofit2.Response;
 import thinku.com.word.bean.BackCode;
 import thinku.com.word.bean.Dictation;
+import thinku.com.word.bean.EVAnswerBeen;
+import thinku.com.word.bean.EvaWordBeen;
 import thinku.com.word.bean.Package;
 import thinku.com.word.bean.PackageDetails;
 import thinku.com.word.bean.RecitWordBeen;
@@ -14,10 +16,13 @@ import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.ReviewDialogBeen;
 import thinku.com.word.bean.ReviewMainBeen;
 import thinku.com.word.bean.SingBeen;
+import thinku.com.word.bean.TrackBeen;
 import thinku.com.word.bean.UserData;
 import thinku.com.word.bean.UserIndex;
 import thinku.com.word.bean.UserInfo;
+import thinku.com.word.bean.UserRankBeen;
 import thinku.com.word.bean.WordPackageBeen;
+import thinku.com.word.bean.WordResultBeen;
 import thinku.com.word.bean.WordReviewTodayBeen;
 import thinku.com.word.bean.WrongIndexBeen;
 
@@ -190,8 +195,43 @@ public class HttpUtil {
         return getRestApi(HostType.WORDS_URL_HOST).errorRecovery( type ,wordId ,content).compose(new SchedulerTransformer<ResultBeen<Void>>());
     }
 
-    //用户签到
+    //用户签到首页
     public static Observable<SingBeen> userSingObservable(){
         return getRestApi(HostType.WORDS_URL_HOST).userSign().compose(new SchedulerTransformer<SingBeen>());
+    }
+
+    //用户签到
+    public static Observable<ResultBeen<Void>> singObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).sing().compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
+    //单词报告轨迹
+    public static Observable<TrackBeen> trackObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).track().compose(new SchedulerTransformer<TrackBeen>());
+    }
+
+    //单词报告轨迹
+    public static Observable<ResultBeen<Void>> evaStartObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).evaStart().compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
+    //单词报告轨迹
+    public static Observable<EvaWordBeen> evaWordBeenObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).evaWord().compose(new SchedulerTransformer<EvaWordBeen>());
+    }
+
+    //提交单词答案
+    public static Observable<EVAnswerBeen> evAnseerObservable(String wordIds , String type , String answer , String duration , String isKnow){
+        return getRestApi(HostType.WORDS_URL_HOST).evAnswer( wordIds ,type ,answer ,duration ,isKnow).compose(new SchedulerTransformer<EVAnswerBeen>());
+    }
+
+    //提交单词答案
+    public static Observable<WordResultBeen> evResultObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).evResult().compose(new SchedulerTransformer<WordResultBeen>());
+    }
+
+    //获取rank排名
+    public static Observable<UserRankBeen> evRankObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).evRank().compose(new SchedulerTransformer<UserRankBeen>());
     }
 }

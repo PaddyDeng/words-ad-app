@@ -4,30 +4,71 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
-import me.yokeyword.fragmentation.SupportFragment;
+import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.adapter.GMATBagAdapter;
 import thinku.com.word.adapter.WordRankAdapter;
+import thinku.com.word.base.BaseFragment;
+import thinku.com.word.bean.Package;
+import thinku.com.word.bean.TrackBeen;
+import thinku.com.word.http.HttpUtil;
+import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.SharePref;
+import thinku.com.word.utils.SharedPreferencesUtils;
+
+import static thinku.com.word.http.NetworkTitle.WORDRESOURE;
 
 /**
  * 背单词轨迹
  */
 
-public class ProcessFragment extends SupportFragment {
+public class ProcessFragment extends BaseFragment {
+    private static final String TAG = ProcessFragment.class.getSimpleName();
+    @BindView(R.id.total_day)
+    TextView totalDay;
+    @BindView(R.id.total_num)
+    TextView totalNum;
+    @BindView(R.id.know_num)
+    TextView knowNum;
+    @BindView(R.id.unknow_num)
+    TextView unknowNum;
+    @BindView(R.id.bag_list)
+    RecyclerView bagList;
+    @BindView(R.id.portrait)
+    CircleImageView portrait;
+    @BindView(R.id.name)
+    TextView name;
+    @BindView(R.id.total_word_num)
+    TextView totalWordNum;
+    @BindView(R.id.iv1)
+    ImageView iv1;
+    @BindView(R.id.ranking)
+    TextView ranking;
+    @BindView(R.id.ranking_list)
+    RecyclerView rankingList;
+    Unbinder unbinder;
 
-    private TextView total_day, total_num, know_num, unknow_num, name, total_word_num, ranking;
-    private RecyclerView bag_list, ranking_list;
-    private CircleImageView portrait;
-
+    private List<TrackBeen.PackageBean> packageBeanList ;
+    private List<TrackBeen.RankBean> rankBeanList ;
     private GMATBagAdapter gmatBagAdapter;
-    private WordRankAdapter wordRankAdapter ;
+    private WordRankAdapter wordRankAdapter;
+
     public static ProcessFragment newInstance() {
         ProcessFragment processFragment = new ProcessFragment();
         return processFragment;
@@ -36,39 +77,77 @@ public class ProcessFragment extends SupportFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_process, container, false);
+        View view = inflater.inflate(R.layout.fragment_process, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        initAdapter();
+        return view;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        referNetUi();
+    }
+
+
+    // 请求网络刷新UI
+    public void referNetUi(){
+        addToCompositeDis(HttpUtil.trackObservable()
+        .subscribe(new Consumer<TrackBeen>() {
+            @Override
+            public void accept(TrackBeen trackBeen) throws Exception {
+                if (trackBeen != null){
+                    totalDay.setText(trackBeen.getInsistDay() + "");
+                    totalNum.setText(trackBeen.getUserAllWords());
+                    knowNum.setText(trackBeen.getKnow());
+                    unknowNum.setText(trackBeen.getNotKnow());
+//                    new GlideUtils().load(_mActivity ,WORDRESOURE + SharedPreferencesUtils.getString(""));
+                    name.setText(SharedPreferencesUtils.getString("nickname" ,_mActivity));
+                    totalWordNum.setText(trackBeen.getData().getNum()+"");
+                    ranking.setText(trackBeen.getData().getRank()+"");
+                    packageBeanList.clear();
+                    packageBeanList.addAll(trackBeen.getPackageX());
+                    gmatBagAdapter.notifyDataSetChanged();
+                    rankBeanList.clear();
+                    rankBeanList.addAll(trackBeen.getRank());
+                    wordRankAdapter.notifyDataSetChanged();
+                    SharedPreferencesUtils.setEvaluationNum(_mActivity ,trackBeen.getData().getNum());
+                    SharedPreferencesUtils.setRankScore(_mActivity ,trackBeen.getData().getRank()+"");
+                    SharedPreferencesUtils.setRankNum(_mActivity ,trackBeen.getData().getNum()+"");
+
+                }
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                Log.e(TAG, "accept: " + throwable.toString() );
+            }
+        }));
+    }
+    /**
+     * 初始化adapter
+     */
+    public void initAdapter() {
+        packageBeanList = new ArrayList<>();
+        rankBeanList = new ArrayList<>();
+        gmatBagAdapter = new GMATBagAdapter(_mActivity ,packageBeanList);
+        bagList.setLayoutManager(new LinearLayoutManager(_mActivity));
+        bagList.setAdapter(gmatBagAdapter);
+        wordRankAdapter = new WordRankAdapter(_mActivity ,rankBeanList);
+        rankingList.setLayoutManager(new LinearLayoutManager(_mActivity));
+        rankingList.setAdapter(wordRankAdapter);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        findView(view);
-        initAdapter();
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
-    private void findView(View v) {
-        total_day = (TextView) v.findViewById(R.id.total_day);
-        total_num = (TextView) v.findViewById(R.id.total_num);
-        know_num = (TextView) v.findViewById(R.id.know_num);
-        unknow_num = (TextView) v.findViewById(R.id.unknow_num);
-        bag_list = (RecyclerView) v.findViewById(R.id.bag_list);
-        portrait = (CircleImageView) v.findViewById(R.id.portrait);
-        name = (TextView) v.findViewById(R.id.name);
-        total_word_num = (TextView) v.findViewById(R.id.total_word_num);
-        ranking = (TextView) v.findViewById(R.id.ranking);
-        ranking_list = (RecyclerView) v.findViewById(R.id.ranking_list);
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            referNetUi();
+        }
     }
-
-    /**
-     *  初始化adapter
-     */
-    public void initAdapter() {
-        gmatBagAdapter = new GMATBagAdapter(getActivity());
-        bag_list.setLayoutManager(new LinearLayoutManager(_mActivity));
-        bag_list.setAdapter(gmatBagAdapter);
-        wordRankAdapter = new WordRankAdapter(_mActivity);
-        ranking_list.setLayoutManager(new LinearLayoutManager(_mActivity));
-        ranking_list.setAdapter(wordRankAdapter);
-
-    }
-
 }

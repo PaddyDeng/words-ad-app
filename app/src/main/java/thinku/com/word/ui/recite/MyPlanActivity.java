@@ -201,7 +201,6 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
         });
 //        wheel_num.setSelection(totals - wordInt );
         wheelView_r2.addView(wheel_num);
-
         num_of_word.setText(wordList.get(totals - wordInt));
         days[wordPosition] = dayList.get(dayInt - 1);
         words[wordPosition] = wordList.get(totals - wordInt);

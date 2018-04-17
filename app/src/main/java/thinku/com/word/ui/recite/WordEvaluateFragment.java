@@ -116,10 +116,10 @@ public class WordEvaluateFragment extends BaseFragment {
         if (!TextUtils.isEmpty(recitWordBeen.getWords().getMnemonic()) & !"".equals(recitWordBeen.getWords().getMnemonic())) {
             ReciteWordParent reciteWordParent = new ReciteWordParent();
             reciteWordParent.setName("助句");
-            RecitWordBeen.Sentence sentent = new RecitWordBeen.Sentence();
+            RecitWordBeen.LowSentenceBean sentent = new RecitWordBeen.LowSentenceBean();
             sentent.setChinese(recitWordBeen.getWords().getMnemonic());
             sentent.setId("助句");
-            List<RecitWordBeen.Sentence> arrs = new ArrayList<>();
+            List<RecitWordBeen.LowSentenceBean> arrs = new ArrayList<>();
             reciteWordParent.setSentenceList(arrs);
         }
         if (recitWordBeen.getLowSentence() != null & recitWordBeen.getLowSentence().size() > 0) {
@@ -134,6 +134,10 @@ public class WordEvaluateFragment extends BaseFragment {
             reciteWordParent.setName("例句");
             reciteWordParent.setSentenceList(recitWordBeen.getSentence());
             reciteWordParents.add(reciteWordParent);
+        }
+
+        if (recitWordBeen.getQuestion() != null ){
+
         }
 
         return reciteWordParents;

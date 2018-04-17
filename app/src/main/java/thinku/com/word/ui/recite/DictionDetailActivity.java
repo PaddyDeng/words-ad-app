@@ -37,6 +37,7 @@ import java.util.TreeSet;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -146,7 +147,6 @@ public class DictionDetailActivity extends BaseActivity {
         texts = new ArrayList<>();
         word_word = new HashMap<>();
         referData();
-
         addToCompositeDis(HttpUtil.wordDetailsObservable(wordsId)
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -161,7 +161,7 @@ public class DictionDetailActivity extends BaseActivity {
                         titleT.setVisibility(View.VISIBLE);
                         recitWord = strings ;
                         recitWord.setPlanWords(all);
-                        recitWord.setItem(Integer.parseInt(now) + 1+"");
+                        recitWord.setDoX(Integer.parseInt(now) + 1+"");
                         phonogram.setText(recitWord.getWords().getPhonetic_us());
                         IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
                             @Override
@@ -187,7 +187,7 @@ public class DictionDetailActivity extends BaseActivity {
 
     public void initTimeText(){
         choseTxt.setText("16");
-        choseTxt.setTextSize(MeasureUtils.sp2px(this ,16));
+//        choseTxt.setTextSize(MeasureUtils.sp2px(this ,16));
 
         addToCompositeDis(RxHelper.countDown(time)
         .subscribe(new Consumer<Integer>() {
@@ -196,6 +196,7 @@ public class DictionDetailActivity extends BaseActivity {
                 choseTxt.setText(integer+"");
             }
         }));
+
     }
 
     /**

@@ -76,12 +76,12 @@ public class LoadingCustomView extends View {
         mContext = context;
 
         TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.LoadingCustomView);
-        mProgressBankgroundColor = ta.getColor(R.styleable.LoadingCustomView_progressBankgroundColor, mProgressBankgroundColor);
+        mProgressBankgroundColor = ta.getColor(R.styleable.LoadingCustomView_progressBankgroundColor, context.getResources().getColor(R.color.color_progress_side));
         mProgressColor = ta.getColor(R.styleable.LoadingCustomView_progressColor, mProgressColor);
         mProgress = ta.getFloat(R.styleable.LoadingCustomView_progress, mProgress);
         mProgress = mProgress / 100;//目标进度0-1
         mProgressBarFrameHeight = ta.getDimensionPixelOffset(R.styleable.LoadingCustomView_progressBarFrameHeight, mProgressBarFrameHeight);
-        mProgressBarBankgroundStyle = ta.getInteger(R.styleable.LoadingCustomView_progressBarBankgroundStyle, mProgressBarBankgroundStyle);
+        mProgressBarBankgroundStyle = ta.getInteger(R.styleable.LoadingCustomView_progressBarBankgroundStyle, HOLLOW);
         //
         ta.recycle();
 
@@ -134,7 +134,7 @@ public class LoadingCustomView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
+        Log.e(TAG, "onDraw: " );
         if (mHasCoordinate) {
             drawCoordinate(canvas);
             drawCoordinateOnCenter(canvas);
@@ -354,27 +354,27 @@ public class LoadingCustomView extends View {
 
     public void setProgress(float progress) {
         mProgress = progress / 100;
-        invalidate();
+        postInvalidate();
     }
 
     public void setProgressBarBankgroundStyle(int progressBarBankgroundStyle) {
         mProgressBarBankgroundStyle = progressBarBankgroundStyle;
-        invalidate();
+        postInvalidate();
     }
 
     public void setProgressColor(int progressColor) {
         mProgressColor = progressColor;
-        invalidate();
+        postInvalidate();
     }
 
     public void setProgressBankgroundColor(int progressBankgroundColor) {
         mProgressBankgroundColor = progressBankgroundColor;
-        invalidate();
+        postInvalidate();
     }
 
     public void setProgressBarFrameHeight(int progressBarFrameHeight) {
         mProgressBarFrameHeight = progressBarFrameHeight;
-        invalidate();
+        postInvalidate();
     }
 
     //

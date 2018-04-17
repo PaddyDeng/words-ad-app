@@ -11,6 +11,6 @@ public class SchedulerTransformer<T> implements ObservableTransformer<T, T> {
 
     @Override
     public ObservableSource apply(Observable upstream) {
-        return upstream.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.newThread());
+        return upstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.newThread());
     }
 }
