@@ -22,6 +22,7 @@ public class PKFragment extends BaseFragment implements View.OnClickListener {
         return pkFragment ;
     }
 
+    private PKPageFragment pkPageFragment ;
     private TextView pk, find;
 
     @Nullable
@@ -33,8 +34,18 @@ public class PKFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         findView(view);
+        init();
         setSelect(0);
         setClick();
+    }
+
+    public  void init(){
+        if (findChildFragment(PKPageFragment.class) == null){
+            pkPageFragment = PKPageFragment.newInstance();
+        }else {
+            pkPageFragment = findFragment(PKPageFragment.class);
+        }
+        loadMultipleRootFragment(R.id.fl  ,2,pkPageFragment);
     }
 
     private void setClick() {
@@ -62,6 +73,7 @@ public class PKFragment extends BaseFragment implements View.OnClickListener {
         if(i==0){
             find.setSelected(false);
             pk.setSelected(true);
+            showHideFragment(pkPageFragment);
         }else{
             pk.setSelected(false);
             find.setSelected(true);

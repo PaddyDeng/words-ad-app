@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@mipmap/pk_match_bg"
+    android:orientation="vertical"
+    tools:context="thinku.com.word.ui.pk.PKHomeActivity">
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="60px"
+        android:layout_height="60px"
+        android:layout_marginLeft="60px"
+        android:layout_marginTop="100px"
+        android:src="@mipmap/white_back" />
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60px"
+        android:layout_marginTop="30px"
+        android:id="@+id/pk_num_rl_1">
+
+        <View
+            android:id="@+id/middle"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@color/white" />
+
+        <ImageView
+            android:id="@+id/pk_lose_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20px"
+            android:layout_toRightOf="@id/middle"
+            android:src="@mipmap/pk_lose" />
+
+        <TextView
+            android:id="@+id/lose_num_1"
+            style="@style/white_text_30px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10px"
+            android:layout_toRightOf="@id/pk_lose_img"
+            android:text="lose:9" />
+
+        <TextView
+            android:id="@+id/win_num_1"
+            style="@style/white_text_30px"
+            android:textColor="@color/yellow_right_round"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20px"
+            android:layout_toLeftOf="@id/middle"
+            android:text="win:9" />
+
+        <ImageView
+            android:id="@+id/pk_win_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10px"
+            android:layout_toLeftOf="@id/win_num_1"
+            android:src="@mipmap/pk_win" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="400px">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_1"
+        android:layout_width="400px"
+        android:layout_height="400px"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="50px"
+        android:src="@mipmap/image_default"
+        app:civ_border_width="5dp"
+        app:civ_border_color="@color/yellow_right_round"/>
+
+        <LinearLayout
+            android:id="@+id/words_rl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <TextView
+                style="@style/white_text_30px"
+                android:text="词汇量：" />
+
+            <TextView
+                android:id="@+id/words_1"
+                style="@style/white_text_30px"
+                android:layout_width="wrap_content"
+                android:layout_below="@id/back"
+                android:text="6230" />
+        </LinearLayout>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/name_1"
+        style="@style/white_text_60px_center_horizontal"
+        android:layout_marginTop="50px"
+        android:text="独角戏" />
+
+    <ImageView
+        android:id="@+id/match_success"
+        android:layout_width="370px"
+        android:layout_height="90px"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="100px"
+        android:layout_marginTop="20px"
+        android:src="@mipmap/match_success" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60px"
+        android:layout_below="@id/words_rl"
+        android:layout_marginTop="20px"
+        android:id="@+id/pk_num_rl_2">
+
+        <View
+            android:id="@+id/middle_1"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@color/white" />
+
+        <ImageView
+            android:id="@+id/pk_lose_img_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20px"
+            android:layout_toRightOf="@id/middle_1"
+            android:src="@mipmap/pk_lose" />
+
+        <TextView
+            android:id="@+id/lose_num_2"
+            style="@style/white_text_30px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10px"
+            android:layout_toRightOf="@id/pk_lose_img_1"
+            android:text="lose:9" />
+
+        <TextView
+            android:id="@+id/win_num_2"
+            style="@style/white_text_30px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20px"
+            android:layout_toLeftOf="@id/middle_1"
+            android:textColor="@color/yellow_right_round"
+            android:text="win:9" />
+
+        <ImageView
+            android:id="@+id/pk_win_img_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10px"
+            android:layout_toLeftOf="@id/win_num_2"
+            android:src="@mipmap/pk_win" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="400px">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_2"
+        android:layout_width="400px"
+        android:layout_height="400px"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="50px"
+        app:civ_border_width="5dp"
+        app:civ_border_color="@color/yellow_right_round"
+        android:src="@mipmap/image_default" />
+        <LinearLayout
+            android:id="@+id/words_r2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <TextView
+                style="@style/white_text_30px"
+                android:text="词汇量：" />
+
+            <TextView
+                android:id="@+id/words_2"
+                style="@style/white_text_40px"
+                android:layout_below="@id/back"
+                android:text="6230" />
+        </LinearLayout>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/name_2"
+        style="@style/white_text_60px_center_horizontal"
+        android:layout_marginTop="50px"
+        android:text="独角戏" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50px"
+        android:id="@+id/pk_button">
+
+        <View
+            android:id="@+id/middle_2"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true" />
+
+        <TextView
+            android:id="@+id/review_match"
+            android:layout_width="350px"
+            android:layout_height="100px"
+            android:layout_marginRight="50px"
+            android:layout_toLeftOf="@id/middle_2"
+            android:background="@drawable/white_20round"
+            android:gravity="center"
+            android:text="重新匹配"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/pking"
+            android:layout_width="350px"
+            android:layout_height="100px"
+            android:layout_marginLeft="50px"
+            android:layout_toRightOf="@id/middle_2"
+            android:background="@drawable/yellow_20round"
+            android:gravity="center"
+            android:text="立即PK"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+</LinearLayout>

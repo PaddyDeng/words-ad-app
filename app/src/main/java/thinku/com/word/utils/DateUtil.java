@@ -30,7 +30,7 @@ public class DateUtil {
         Calendar a = Calendar.getInstance();
         int year = a.get(Calendar.YEAR);
         int month = a.get(Calendar.MONTH) + 1;
-        return year + "年" + month + "月" + getToday() + "日";
+        return year + "-" + month + "-" + getToday() + "-";
     }
 
     public static int getFirstDayOfMonth() {

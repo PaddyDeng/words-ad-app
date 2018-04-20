@@ -27,4 +27,5 @@ public class HostType {
     @HostType.HostTypeChecker
     public static final int WORDS_URL_HOST = 7 ;
 
+
 }

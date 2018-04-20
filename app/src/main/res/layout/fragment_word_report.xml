@@ -2,177 +2,239 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <View
-            android:background="@color/gray_white"
             android:layout_width="match_parent"
-            android:layout_height="30px"/>
+            android:layout_height="30px"
+            android:background="@color/gray_white" />
+
         <TextView
-            android:text="周报"
-            android:textSize="45px"
-            android:layout_marginTop="20px"
-            android:layout_marginLeft="60px"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60px"
+            android:layout_marginTop="20px"
+            android:text="周报"
+            android:textSize="45px" />
+
         <thinku.com.word.view.PieView
-            android:layout_gravity="center_horizontal"
             android:layout_width="330px"
-            android:layout_height="330px" />
+            android:layout_height="330px"
+            android:id="@+id/week"
+            android:layout_gravity="center_horizontal" />
+
         <TextView
             android:id="@+id/total_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="60px"
             android:text="总量：0"
-            android:textSize="35px"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <RelativeLayout
-            android:layout_marginTop="40px"
-            android:layout_marginLeft="200px"
-            android:layout_marginRight="200px"
+            android:textSize="35px" />
+
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_marginLeft="50px"
+            android:layout_marginRight="50px"
+            android:layout_marginTop="40px">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
                 <LinearLayout
-                    android:gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical">
+
                     <View
-                        android:background="@drawable/familiar_dot"
                         android:layout_width="20px"
-                        android:layout_height="20px"/>
+                        android:layout_height="20px"
+                        android:background="@drawable/familiar_dot" />
+
                     <TextView
-                        android:layout_marginLeft="20px"
-                        android:text="熟食量"
-                        android:textSize="35px"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20px"
+                        android:text="熟知量"
+                        android:textSize="35px" />
+
                     <TextView
                         android:id="@+id/familiar_num"
-                        android:text="0"
-                        android:layout_marginLeft="40px"
-                        android:textSize="35px"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_marginTop="20px"
-                    android:gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <View
-                        android:background="@drawable/vague_dot"
-                        android:layout_width="20px"
-                        android:layout_height="20px"/>
-                    <TextView
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="20px"
-                        android:text="模糊量"
-                        android:textSize="35px"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:id="@+id/vague_num"
                         android:text="0"
-                        android:layout_marginLeft="40px"
-                        android:textSize="35px"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:textSize="35px" />
                 </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+
                 <LinearLayout
-                    android:gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical">
+
                     <View
-                        android:background="@drawable/know_dot"
                         android:layout_width="20px"
-                        android:layout_height="20px"/>
+                        android:layout_height="20px"
+                        android:background="@drawable/know_dot" />
+
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="20px"
                         android:text="认识量"
-                        android:textSize="35px"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:textSize="35px" />
+
                     <TextView
                         android:id="@+id/know_num"
-                        android:text="0"
-                        android:layout_marginLeft="40px"
-                        android:textSize="35px"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40px"
+                        android:text="0"
+                        android:textSize="35px" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_marginTop="20px"
-                    android:gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical">
+
                     <View
-                        android:background="@drawable/forget_dot"
                         android:layout_width="20px"
-                        android:layout_height="20px"/>
+                        android:layout_height="20px"
+                        android:background="@drawable/not_know_diot" />
+
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20px"
+                        android:text="不认识量"
+                        android:textSize="35px" />
+
+                    <TextView
+                        android:id="@+id/not_know_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40px"
+                        android:text="0"
+                        android:textSize="35px" />
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical">
+
+                    <View
+                        android:layout_width="20px"
+                        android:layout_height="20px"
+                        android:background="@drawable/vague_dot" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20px"
+                        android:text="模糊量"
+                        android:textSize="35px" />
+
+                    <TextView
+                        android:id="@+id/vague_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20px"
+                        android:text="0"
+                        android:textSize="35px" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical">
+
+                    <View
+                        android:layout_width="20px"
+                        android:layout_height="20px"
+                        android:background="@drawable/forget_dot" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="20px"
                         android:text="忘记量"
-                        android:textSize="35px"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:textSize="35px" />
+
                     <TextView
                         android:id="@+id/forget_num"
-                        android:text="0"
-                        android:layout_marginLeft="40px"
-                        android:textSize="35px"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40px"
+                        android:text="0"
+                        android:textSize="35px" />
                 </LinearLayout>
-            </LinearLayout>
-        </RelativeLayout>
+            </TableRow>
+        </TableLayout>
+
         <View
-            android:layout_marginTop="40px"
-            android:background="@color/gray_white"
             android:layout_width="match_parent"
-            android:layout_height="50px"/>
+            android:layout_height="50px"
+            android:layout_marginTop="40px"
+            android:background="@color/gray_white" />
+
         <RelativeLayout
-            android:layout_marginTop="40px"
             android:layout_width="match_parent"
-            android:layout_height="60px">
+            android:layout_height="60px"
+            android:layout_marginTop="40px">
+
             <TextView
-                android:text="月报"
-                android:textSize="45px"
-                android:layout_marginLeft="60px"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60px"
+                android:text="月报"
+                android:textSize="45px" />
+
             <TextView
                 android:id="@+id/date"
-                android:textSize="40px"
-                android:text="9月30日-10月30日"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="9月30日-10月30日"
+                android:textSize="40px" />
+
             <ImageView
                 android:id="@+id/setting_date"
-                android:background="@color/black"
-                android:layout_marginRight="50px"
-                android:layout_alignParentRight="true"
                 android:layout_width="60px"
-                android:layout_height="60px" />
+                android:layout_height="60px"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="50px"
+                android:background="@color/black" />
         </RelativeLayout>
+
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="600px"
             android:background="@color/colorAccent"
             android:gravity="center"
-            android:text="统计图"
-            android:layout_width="match_parent"
-            android:layout_height="600px" />
+            android:text="统计图" />
     </LinearLayout>
 </ScrollView>

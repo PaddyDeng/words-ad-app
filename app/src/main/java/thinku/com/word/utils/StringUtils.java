@@ -32,6 +32,22 @@ public class StringUtils {
 
     /**
      * 以 //n  分割字符串
+     * @param s
+     * @return
+     */
+    public static List<String> spiltInt(String s){
+        List<String> stringList = new ArrayList<>();
+        String[] strings = s.split("-");
+        if (strings.length > 0){
+            for (int i = 0 ; i< strings.length ;i++){
+                stringList.add(strings[i]);
+            }
+        }
+        return stringList;
+    }
+
+    /**
+     * 以 //n  分割字符串
       * @param s
      * @return
      */
@@ -186,6 +202,8 @@ public class StringUtils {
     public  static  int  random(int lower,int upper) {
         return (int) (Math.floor(Math.random() * (upper - lower+1)) + lower);
     }
+
+
 
 
 }

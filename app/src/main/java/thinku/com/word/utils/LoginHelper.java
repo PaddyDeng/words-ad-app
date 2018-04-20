@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
@@ -36,9 +37,13 @@ import thinku.com.word.callback.RequestCallback;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkChildren;
 import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.jpush.TagAliasOperatorHelper;
 import thinku.com.word.ui.other.LoginActivity;
 import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.other.dialog.NeedLoginDialog;
+
+import static thinku.com.word.jpush.TagAliasOperatorHelper.ACTION_SET;
+import static thinku.com.word.jpush.TagAliasOperatorHelper.sequence;
 
 
 /**
@@ -137,11 +142,25 @@ public class LoginHelper {
     }
 
     /**
+     * 设置 Jpush alians
+     * @param context
+     * @param uid
+     */
+    public static void setJpushAlians(Context context ,String uid){
+        String sequence = "lgw" + uid ;
+        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+        tagAliasBean.action = 2;
+            tagAliasBean.alias = sequence;
+        tagAliasBean.isAliasAction = true;
+        TagAliasOperatorHelper.getInstance().handleAction(context,2,tagAliasBean);
+    }
+
+    /**
      *  retrofit 重置session
      * @param context
      * @param mUserInfo
      */
-    public static void setSession(final Context context , UserInfo mUserInfo  , final ICallBack  mICallBack){
+    public static void setSession(final Context context ,final UserInfo mUserInfo  , final ICallBack  mICallBack){
         final Map param = new HashMap();
         param.put("uid", mUserInfo.getUid());
         param.put("username", mUserInfo.getUsername());
@@ -200,6 +219,7 @@ public class LoginHelper {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
+                        setJpushAlians(context ,mUserInfo.getUid());
                         mICallBack.onSuccess(o);
                     }
                 }, new Consumer<Throwable>() {

@@ -10,7 +10,12 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.HashMap;
+import java.util.List;
+
 import thinku.com.word.R;
+import thinku.com.word.bean.WeekData;
+import thinku.com.word.utils.MeasureUtils;
 
 /**
  * Created by Administrator on 2018/3/20.
@@ -18,20 +23,27 @@ import thinku.com.word.R;
  */
 
 public class PieView extends View {
-
+    private static final String TAG = PieView.class.getSimpleName();
     private int ScrWidth, ScrHeight;
     private Context context;
     //演示用的百分比例,实际使用中，即为外部传入的比例参数
-    private  float arrPer[] = new float[] {
-            25f ,25f ,25f ,25f
-    };
-    private  int value = 3600 ;
-    private final int colors[] = new int[]{
-            R.color.pie_green, R.color.pie_orange_3, R.color.pie_blue, R.color.pie_orange
-    };
+    private List<WeekData>  weekDataList ;
 
-    public void setData(float[] arrPer ,int value){
-        this.arrPer = arrPer ;
+    private  int value  ;   //  总量
+
+    private HashMap<String ,Integer> colors = new HashMap<>();
+
+
+    public void initColor(){
+        colors.put("knowWell" ,R.color.pie_green);
+        colors.put("know", R.color.pie_blue);
+        colors.put("dim" ,R.color.pie_orange_3);
+        colors.put("notKnow" ,R.color.color_not_know);
+        colors.put("forget",R.color.pie_orange);
+    }
+
+    public void setData(List<WeekData> weekDataList ,int value){
+        this.weekDataList = weekDataList ;
         this.value = value ;
         this.invalidate();
     }
@@ -48,6 +60,7 @@ public class PieView extends View {
     public PieView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
+        initColor();
     }
 
     @Override
@@ -58,6 +71,9 @@ public class PieView extends View {
     }
 
     public void onDraw(Canvas canvas) {
+        if (weekDataList == null){
+            return ;
+        }
         float cirX = ScrWidth / 2;
         float cirY = ScrHeight / 2;
         float radius = ScrHeight / 2;
@@ -67,33 +83,38 @@ public class PieView extends View {
         float arcRight = cirX + radius;
         float arcBottom = cirY + radius;
         RectF arcRF0 = new RectF(arcLeft, arcTop, arcRight, arcBottom);
+                   //位置计算类
+            XChartCalc xcalc = new XChartCalc();
+            //画笔初始化
+            Paint PaintArc = new Paint();
+            PaintArc.setAntiAlias(true);
+            float Percentage = 0.0f;
+            float CurrPer = 0.0f;
+            int i = 0;
+            //  逆时针旋转90度，让图形最上面开始
+            if (weekDataList.size() > 0) {
+                for (i = 0; i < weekDataList.size(); i++) {
+                    //将百分比转换为饼图显示角度
+                    Percentage = 360 * (weekDataList.get(i).getValue());
+                    Percentage = (float) (Math.round(Percentage * 100)) / 100;
+                    PaintArc.setColor(context.getResources().getColor(colors.get(weekDataList.get(i).getName())));
+                    //在饼图中显示所占比例
+                    canvas.drawArc(arcRF0, CurrPer, Percentage, true, PaintArc);
+                    //下次的起始角度
+                    CurrPer += Percentage;
+                }
+            }else{
+                PaintArc.setColor(Color.GRAY);
+                canvas.drawArc(arcRF0 ,0 ,360 ,true ,PaintArc);
+            }
 
 
-        //位置计算类
-        XChartCalc xcalc = new XChartCalc();
-        //画笔初始化
-        Paint PaintArc = new Paint();
-        PaintArc.setAntiAlias(true);
-        float Percentage = 0.0f;
-        float CurrPer = 0.0f;
-        int i = 0;
-        for (i = 0; i < arrPer.length; i++) {
-
-            //将百分比转换为饼图显示角度
-            Percentage = 360 * (arrPer[i] / 100);
-            Percentage = (float) (Math.round(Percentage * 100)) / 100;
-            PaintArc.setColor(context.getResources().getColor(colors[i]));
-            //在饼图中显示所占比例
-            canvas.drawArc(arcRF0, CurrPer, Percentage, true, PaintArc);
-            //下次的起始角度
-            CurrPer += Percentage;
-        }
         //画圆心
         PaintArc.setColor(Color.WHITE);
         canvas.drawCircle(cirX, cirY, radius / 1.5f, PaintArc);
         TextPaint paint = new TextPaint();
         paint.setColor(context.getResources().getColor(R.color.gray_text));
-        paint.setTextSize(30);
+        paint.setTextSize(MeasureUtils.sp2px(context ,16));
         String text = "总量";
         int baseX = (int) (cirX - paint.measureText(text) / 2);
         int baseY = (int) (cirY - radius / 1.5f / 5f);

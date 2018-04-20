@@ -9,7 +9,6 @@ public class ResultBeen<T> {
 
     private int code ;
     private String message ;
-
     private T data ;
 
     public int getCode() {

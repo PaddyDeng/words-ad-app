@@ -16,6 +16,7 @@ import thinku.com.word.bean.EVAnswerBeen;
 import thinku.com.word.bean.EvaWordBeen;
 import thinku.com.word.bean.Package;
 import thinku.com.word.bean.PackageDetails;
+import thinku.com.word.bean.PkIndexBeen;
 import thinku.com.word.bean.RecitWordBeen;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.ReviewDialogBeen;
@@ -27,6 +28,8 @@ import thinku.com.word.bean.UserIndex;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.bean.UserRankBeen;
 import thinku.com.word.bean.WordPackageBeen;
+import thinku.com.word.bean.WordReportBeen;
+import thinku.com.word.bean.WordReportMonthBeen;
 import thinku.com.word.bean.WordResultBeen;
 import thinku.com.word.bean.WordReviewTodayBeen;
 import thinku.com.word.bean.WrongIndexBeen;
@@ -176,4 +179,27 @@ public interface RestApi {
 
     @POST(NetworkChildren.EV_RANK)
     Observable<UserRankBeen> evRank();
+
+    @POST(NetworkChildren.WORD_REPORT)
+    Observable<WordReportBeen> wordReport();
+
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.API_REPORT)
+    Observable<WordReportMonthBeen> monthWordReport(@Field("month") String month);
+
+
+    @POST(NetworkChildren.PK_INDEX)
+    Observable<PkIndexBeen> pkIndex();
+
+    @POST(NetworkChildren.PK_MATCHING)
+    Observable<ResultBeen<Void>> pkMatching();
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.PK_CHOSE)
+    Observable<ResultBeen<Void>> pkChose(@Field("uid") String uid , @Field("type") String type);
+
+
+
+
 }

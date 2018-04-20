@@ -134,4 +134,36 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/mainColor</item>
     </style>
+
+    <!--白色字base-->
+    <style name="white_text_base">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <!--25px-->
+    <style name="white_text_40px" parent="white_text_base">
+        <item name="android:textSize">40px</item>
+    </style>
+    <!--30px-->
+    <style name="white_text_30px" parent="white_text_base">
+        <item name="android:textSize">35px</item>
+    </style>
+
+    <!-- 50px-->
+    <style name="white_text_50px" parent="white_text_base">
+        <item name="android:textSize">60px</item>
+    </style>
+
+    <style name="white_text_60px_center_horizontal" parent="white_text_base">
+        <item name="android:textSize">70px</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="yellow_text_30px_center_horizontal">
+
+    </style>
+
 </resources>

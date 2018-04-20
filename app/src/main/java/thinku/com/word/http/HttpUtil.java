@@ -11,6 +11,7 @@ import thinku.com.word.bean.EVAnswerBeen;
 import thinku.com.word.bean.EvaWordBeen;
 import thinku.com.word.bean.Package;
 import thinku.com.word.bean.PackageDetails;
+import thinku.com.word.bean.PkIndexBeen;
 import thinku.com.word.bean.RecitWordBeen;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.ReviewDialogBeen;
@@ -22,6 +23,8 @@ import thinku.com.word.bean.UserIndex;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.bean.UserRankBeen;
 import thinku.com.word.bean.WordPackageBeen;
+import thinku.com.word.bean.WordReportBeen;
+import thinku.com.word.bean.WordReportMonthBeen;
 import thinku.com.word.bean.WordResultBeen;
 import thinku.com.word.bean.WordReviewTodayBeen;
 import thinku.com.word.bean.WrongIndexBeen;
@@ -233,5 +236,30 @@ public class HttpUtil {
     //获取rank排名
     public static Observable<UserRankBeen> evRankObservable(){
         return getRestApi(HostType.WORDS_URL_HOST).evRank().compose(new SchedulerTransformer<UserRankBeen>());
+    }
+
+    //获取单词报表数据
+    public static Observable<WordReportBeen> wordReportBeenObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).wordReport().compose(new SchedulerTransformer<WordReportBeen>());
+    }
+
+    //月报切换数据
+    public static Observable<WordReportMonthBeen> wordMonthReportObservable(String month){
+        return getRestApi(HostType.WORDS_URL_HOST).monthWordReport(month).compose(new SchedulerTransformer<WordReportMonthBeen>());
+    }
+
+    //PKIndex
+    public static Observable<PkIndexBeen> pkIndexObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).pkIndex().compose(new SchedulerTransformer<PkIndexBeen>());
+    }
+
+    //PKIndex
+    public static Observable<ResultBeen<Void>> pkMatchObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).pkMatching().compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
+    //PKIndex
+    public static Observable<ResultBeen<Void>> pkChoseObservable(String uid ,String type){
+        return getRestApi(HostType.WORDS_URL_HOST).pkChose(uid ,type).compose(new SchedulerTransformer<ResultBeen<Void>>());
     }
 }

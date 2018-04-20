@@ -53,5 +53,13 @@ public class NetworkChildren {
     public static final String EV_ANSWER = "app-api/ev-answer"; //  单词评估提交答案
     public static final String EV_RESULT = "app-api/ev-result" ;  //  单词评估结果
     public static final String EV_RANK = "app-api/ev-rank-list" ;  //  单词评估排名
+    public static final String WORD_REPORT = "app-api/words-report";  //  单词报告报表
+    public static final String API_REPORT = "app-api/api-report" ;  //  切换单词报告月报
 
+    /**
+     *  PK
+     */
+    public static final String PK_INDEX = "app-api/pk-index" ;  //  pkIndex
+    public static final String PK_MATCHING = "app-api/pk-matching" ;  //  表明用户想PK
+    public static final String PK_CHOSE = "app-api/pk-choice";   // Pk  取消 操作
 }

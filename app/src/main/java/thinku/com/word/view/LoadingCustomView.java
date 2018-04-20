@@ -96,9 +96,7 @@ public class LoadingCustomView extends View {
         mPaint.setColor(Color.GREEN);*/
 
         mScreenWidth = getScreenWidth(mContext);
-        Log.d(TAG, "init: mScreenWidth:" + mScreenWidth);
         mScreenHeight = getScreenHeight(mContext);
-        Log.d(TAG, "init: mScreenHeight:" + mScreenHeight);
 
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(0f, 1f).setDuration(mDuration);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -134,7 +132,6 @@ public class LoadingCustomView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Log.e(TAG, "onDraw: " );
         if (mHasCoordinate) {
             drawCoordinate(canvas);
             drawCoordinateOnCenter(canvas);

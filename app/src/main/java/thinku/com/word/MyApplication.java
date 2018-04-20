@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.facebook.stetho.Stetho;
 import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -15,6 +16,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Stack;
 
+import cn.jpush.android.api.JPushInterface;
 import me.yokeyword.fragmentation.Fragmentation;
 import me.yokeyword.fragmentation.exception.AfterSaveStateTransactionWarning;
 import me.yokeyword.fragmentation.helper.ExceptionHandler;
@@ -42,6 +44,8 @@ public class MyApplication extends Application {
         super.onCreate();
         mContext=this;
         session = SharedPreferencesUtils.getSession(MyApplication.this ,4);
+
+        //  Nohttp
         InitializationConfig config =InitializationConfig.newBuilder(this)
                 .cookieStore(new DBCookieStore(this).setEnable(false))
                 .addHeader("Cookie","PHPSESSID="  + session)
@@ -71,6 +75,11 @@ public class MyApplication extends Application {
                     }
                 })
                 .install();
+
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
+
+//        Stetho.initializeWithDefaults(this);
     }
 
     public static MyApplication newInstance(){

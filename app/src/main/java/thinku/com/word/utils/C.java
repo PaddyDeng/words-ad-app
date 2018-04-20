@@ -18,4 +18,15 @@ public class C {
     public static final String NORMAL = "normal";
     public static final String TAGS = "tags" ;
     public static final String LISTWORD = "list_word" ;  //  已知list数组 获取word详情
+
+
+    public static final int PK_MATCH_SUCCESS = 1 ;   //  匹配成功
+    public static final int PK_READY_SUCCESS = 2 ;  //准备好
+    public static final int PK_MATCH_CANCLE = 3 ;  //  对手取消匹配
+    public static final int PKING = 4 ; //  正在PK
+
+
+    public static final int PK_AGREE = 1 ;  // 同意PK
+    public static final int PK_CANCEL = 2 ;  // 取消PK
+
 }

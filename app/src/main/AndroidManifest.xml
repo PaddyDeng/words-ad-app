@@ -12,6 +12,21 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <!--Jpush配置-->
+    <uses-permission android:name="thinku.com.word.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature"/>
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!-- Optional. Required for location feature -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -29,9 +44,9 @@
 
         <activity
             android:name=".ui.other.MainActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme"
-            android:launchMode="singleTop">
+            android:theme="@style/NoTitleTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -78,8 +93,7 @@
             android:name=".ui.recite.MyPlanActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme"
-            />
+            android:theme="@style/NoTitleTheme" />
         <!-- 词包详情 -->
         <activity
             android:name=".ui.recite.WordbagDetailActivity"
@@ -130,8 +144,7 @@
         <activity
             android:name=".ui.report.EvaluateResultActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme" >
-        </activity>
+            android:theme="@style/NoTitleTheme" />
         <!-- 评估排名 -->
         <activity
             android:name=".ui.report.EvaluateRankingActivity"
@@ -168,20 +181,54 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
 
-        <!--听写练习 单词详情-->
-        <activity android:name=".ui.recite.DictionDetailActivity"
+        <!-- 听写练习 单词详情 -->
+        <activity
+            android:name=".ui.recite.DictionDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
 
-        <!--听写练习 提示-->
-        <activity android:name=".ui.recite.DictionDetailWordActivity"
+        <!-- 听写练习 提示 -->
+        <activity
+            android:name=".ui.recite.DictionDetailWordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
 
-        <!--报错 -->
-        <activity android:name=".ui.recite.WordErrorActivity"
+        <!-- 报错 -->
+        <activity
+            android:name=".ui.recite.WordErrorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
+
+        <!--PK 匹配-->
+        <activity android:name=".ui.pk.PKHomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme"/>
+
+
+        <!--JPUSH-->
+
+        <!--!& For test only  用户自定义的广播接收器&ndash;&gt;-->
+        <receiver
+            android:name=".jpush.MyReceiver"
+            android:exported="false"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!--Required  用户注册SDK的intent-->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!--Required  用户接收SDK消息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required  用户接收SDK通知栏信息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required  用户打开自定义通知栏的intent-->
+                <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="thinku.com.word" />
+            </intent-filter>
+        </receiver>
+
+        <!-- User defined.  For test only  用户自定义接收消息器,3.0.7开始支持,目前新tag/alias接口设置结果会在该广播接收器对应的方法中回调-->
+        <receiver android:name=".jpush.MyJPushMessageReceiver">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+                <category android:name="thinku.com.word"></category>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

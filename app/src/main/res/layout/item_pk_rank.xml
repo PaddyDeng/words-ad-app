@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView
+        android:layout_width="60px"
+        android:layout_height="60px"
+        android:id="@+id/rank_bg"
+        android:layout_centerVertical="true"
+        android:visibility="invisible"/>
+    <TextView
+        android:id="@+id/rank"
+        android:text="0"
+        android:textSize="60px"
+        android:textColor="@color/mainColor"
+        android:layout_centerVertical="true"
+        android:layout_width="60px"
+        android:layout_height="60px"
+        android:visibility="invisible"
+        android:paddingLeft="10px"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/head_image"
+        android:src="@mipmap/a"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="80px" />
+
+    <TextView
+        android:id="@+id/name"
+        android:text="名字"
+        android:textSize="45px"
+        android:textColor="@color/dark_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/head_image"
+        android:layout_alignTop="@id/head_image"/>
+    <ImageView
+        android:id="@+id/iv1"
+        android:src="@mipmap/pk_win"
+        android:layout_width="50px"
+        android:layout_height="50px"
+        android:layout_alignLeft="@id/name"
+        android:layout_below="@id/name"
+        />
+
+    <TextView
+        android:id="@+id/win_num"
+        android:text="win:0"
+        android:textSize="40px"
+        android:textColor="@color/win_yellow"
+        android:layout_marginLeft="10px"
+        android:layout_alignTop="@id/iv1"
+        android:layout_toRightOf="@id/iv1"
+        android:layout_width="200px"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/win_num"
+        android:src="@mipmap/pk_lose"
+        android:id="@+id/pk_lose"
+        android:layout_alignTop="@id/iv1"
+        android:layout_width="50px"
+        android:layout_height="50px" />
+
+    <TextView
+        android:id="@+id/lose_num"
+        android:text="lose:0"
+        android:textSize="40px"
+        android:layout_marginLeft="10px"
+        android:layout_alignTop="@id/iv1"
+        android:layout_toRightOf="@id/pk_lose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/vocabulary"
+        android:text="0"
+        android:textSize="60px"
+        android:textColor="@color/mainColor"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <thinku.com.word.view.DashView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        app:dashWidth = "2dp"
+        app:lineWidth="8dp"
+        app:lineHeight="1px"
+        android:layout_alignParentBottom="true"
+        app:lineColor="@color/interal"
+        />
+
+</com.zhy.autolayout.AutoRelativeLayout>
