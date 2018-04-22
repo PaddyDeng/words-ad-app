@@ -31,6 +31,7 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.SharePref;
 import thinku.com.word.utils.SharedPreferencesUtils;
+import thinku.com.word.view.CirView;
 
 import static thinku.com.word.http.NetworkTitle.WORDRESOURE;
 
@@ -64,6 +65,8 @@ public class ProcessFragment extends BaseFragment {
     RecyclerView rankingList;
     Unbinder unbinder;
 
+    CirView cirView ;
+
     private List<TrackBeen.PackageBean> packageBeanList ;
     private List<TrackBeen.RankBean> rankBeanList ;
     private GMATBagAdapter gmatBagAdapter;
@@ -79,6 +82,7 @@ public class ProcessFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_process, container, false);
         unbinder = ButterKnife.bind(this, view);
+        cirView = (CirView) view.findViewById(R.id.cirView);
         initAdapter();
         return view;
     }
@@ -110,6 +114,7 @@ public class ProcessFragment extends BaseFragment {
                     rankBeanList.clear();
                     rankBeanList.addAll(trackBeen.getRank());
                     wordRankAdapter.notifyDataSetChanged();
+                    cirView.setData(trackBeen.getNewX() ,trackBeen.getReview());
                     SharedPreferencesUtils.setEvaluationNum(_mActivity ,trackBeen.getData().getNum());
                     SharedPreferencesUtils.setRankScore(_mActivity ,trackBeen.getData().getRank()+"");
                     SharedPreferencesUtils.setRankNum(_mActivity ,trackBeen.getData().getNum()+"");
