@@ -5,7 +5,6 @@ package thinku.com.word.bean;
  */
 
 public class EventPkData {
-
     /**
      * user2 : {"uid":"29456","image":null,"lose":"20","win":"25","words":"120","nickname":"nickw"}
      * user1 : {"uid":"26967","image":"/files/upload/image5abc50f205dd8.jpg","lose":"26","win":"20","words":"93","nickname":"Test222"}
@@ -41,7 +40,7 @@ public class EventPkData {
          */
 
         private String uid;
-        private Object image;
+        private String image;
         private String lose;
         private String win;
         private String words;
@@ -55,11 +54,11 @@ public class EventPkData {
             this.uid = uid;
         }
 
-        public Object getImage() {
+        public String getImage() {
             return image;
         }
 
-        public void setImage(Object image) {
+        public void setImage(String image) {
             this.image = image;
         }
 

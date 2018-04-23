@@ -50,7 +50,7 @@
     <color name="color_button_blue">#2E8FE9</color>
     <color name="color_bg_gray">#EBEBEB</color>
     <color name="color_gray_bg">#F0EEE9</color>
-    <color name="color_translate_black">#10000000</color>
+    <color name="color_translate_black">#80000000</color>
     
     
     <color name="color_not_know">#4d6fcc</color>

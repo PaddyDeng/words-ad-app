@@ -5,25 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-
-import com.alibaba.fastjson.JSON;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
-import java.util.Iterator;
-import java.util.Map;
-
 import cn.jpush.android.api.JPushInterface;
 import thinku.com.word.JsonFormat.FromJsonUtils;
 import thinku.com.word.bean.EventPkData;
+import thinku.com.word.bean.EventPkListData;
 import thinku.com.word.bean.JPushData;
-import thinku.com.word.bean.PkUserMessage;
+import thinku.com.word.bean.PkingData;
 
 /**
  * 自定义接收器
@@ -64,12 +56,15 @@ public class MyReceiver extends BroadcastReceiver {
 							break;
 						case 3:
 							JPushData  jPushData1 = new JPushData();
-							jPushData1.setType(3);
 							EventBus.getDefault().post(jPushData1);
 							break;
 						case 2:
+							JPushData<EventPkListData> jPushData2  = FromJsonUtils.fromJson(bundle.getString(JPushInterface.EXTRA_EXTRA) ,EventPkListData.class);
+							EventBus.getDefault().post(jPushData2);
 							break;
 						case 4:
+							JPushData<PkingData> jPushData3 = FromJsonUtils.fromJson(bundle.getString(JPushInterface.EXTRA_EXTRA) ,PkingData.class);
+							EventBus.getDefault().post(jPushData3);
 							break;
 					}
 				} catch (JSONException e) {

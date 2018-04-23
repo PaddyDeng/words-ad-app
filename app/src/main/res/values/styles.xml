@@ -157,6 +157,9 @@
         <item name="android:textSize">60px</item>
     </style>
 
+    <style name="white_text_90px" parent="white_text_base">
+        <item name="android:textSize">90px</item>
+    </style>
     <style name="white_text_60px_center_horizontal" parent="white_text_base">
         <item name="android:textSize">70px</item>
         <item name="android:layout_gravity">center_horizontal</item>

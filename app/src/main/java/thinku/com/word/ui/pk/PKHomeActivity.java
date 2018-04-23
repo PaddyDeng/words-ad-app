@@ -11,8 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -24,6 +22,7 @@ import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
+import thinku.com.word.adapter.PKAdapter;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.EventPkData;
 import thinku.com.word.bean.JPushData;
@@ -97,9 +96,11 @@ public class PKHomeActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
+
     private EventPkData.UserBean mySelfUser  ;
     private EventPkData.UserBean mathUser ;
     private String uid ;
+    private static boolean isInit = true ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,26 +110,10 @@ public class PKHomeActivity extends BaseActivity {
     }
 
     public void init(){
+        hideAll();
         EventBus.getDefault().register(this);
         uid = SharedPreferencesUtils.getString("uid",PKHomeActivity.this);
         addNet();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(5000);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            showAll(null);
-                        }
-                    });
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
     }
 
     private void addNet(){
@@ -137,7 +122,6 @@ public class PKHomeActivity extends BaseActivity {
                     @Override
                     public void accept(ResultBeen<Void> voidResultBeen) throws Exception {
                         if (getHttpResSuc(voidResultBeen.getCode())){
-                            hideAll();
                         }
                     }
                 }));
@@ -165,7 +149,7 @@ public class PKHomeActivity extends BaseActivity {
                 showAll((EventPkData) jPushData.getMessage());
                 break;
             case PK_MATCH_CANCLE:
-                Log.e(TAG, "onEvent: ");
+                hideAll();
                 addNet();
                 break;
         }
@@ -212,9 +196,9 @@ public class PKHomeActivity extends BaseActivity {
             public void accept(ResultBeen<Void> voidResultBeen) throws Exception {
                 if (getHttpResSuc(voidResultBeen.getCode())){
                            if (type == PK_AGREE){
-                               // TODO: 2018/4/20   去pk界面
-                               toTast(PKHomeActivity.this ,"pking");
+                               PkActivity.start(PKHomeActivity.this ,mySelfUser.getImage() ,mathUser.getImage());
                            }else{
+                               hideAll();
                                addNet();
                            }
                 }
