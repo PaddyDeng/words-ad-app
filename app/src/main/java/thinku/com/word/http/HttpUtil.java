@@ -262,4 +262,19 @@ public class HttpUtil {
     public static Observable<ResultBeen<Void>> pkChoseObservable(String uid ,String type){
         return getRestApi(HostType.WORDS_URL_HOST).pkChose(uid ,type).compose(new SchedulerTransformer<ResultBeen<Void>>());
     }
+
+    //PK 回答问题
+    public static Observable<ResultBeen<Void>> pkAnswerObservable(String totalId ,String wordsId ,String answer ,String type ,String duration){
+        return getRestApi(HostType.WORDS_URL_HOST).pkAnswer(totalId ,wordsId ,answer  ,type ,duration).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
+    //PK 完成请求结果
+    public static Observable<ResultBeen<Void>> pkFinshObservable(String uid ,String totalId){
+        return getRestApi(HostType.WORDS_URL_HOST).pkFinsh(uid,totalId ).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
+    //PK 完成请求结果
+    public static Observable<ResultBeen<Void>> pkPollObservable(String uid ,String totalId){
+        return getRestApi(HostType.WORDS_URL_HOST).pkPoll(uid,totalId ).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
 }

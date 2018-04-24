@@ -12,7 +12,6 @@
         android:layout_marginLeft="60px"
         android:layout_width="200px"
         android:layout_height="200px"
-        android:src="@mipmap/a"
         app:civ_border_color="@color/yellow_right_round"
         app:civ_border_width="10px"
         android:id="@+id/userImage"
@@ -39,19 +38,11 @@
         android:text="进度：1/8"
         android:id="@+id/userCurrent"/>
 
-    <TextView
-        style="@style/white_text_30px"
-        android:textColor="@color/yellow_right_round"
-        android:text="60%"
-        android:id="@+id/userCorrectRate"
-        android:layout_alignBottom="@id/userImage"
-        android:layout_toRightOf="@id/userImage"
-        android:layout_marginLeft="20px"/>
+
 
     <TextView
         style="@style/white_text_50px"
         android:textColor="@color/white"
-        android:text="20s"
         android:id="@+id/timer"
         android:layout_alignBottom="@id/userImage"
         android:layout_centerHorizontal="true"
@@ -62,8 +53,7 @@
         android:layout_marginRight="60px"
         android:layout_width="200px"
         android:layout_height="200px"
-        android:src="@mipmap/a"
-        app:civ_border_color="@android:color/holo_red_light"
+        app:civ_border_color="@color/color_red"
         android:layout_alignParentRight="true"
         app:civ_border_width="10px"
         android:id="@+id/rivalImage"
@@ -94,31 +84,38 @@
         android:id="@+id/rivalCurrent"
         />
 
-    <TextView
-        style="@style/white_text_30px"
-        android:textColor="@color/yellow_right_round"
-        android:text="40%"
-        android:id="@+id/rivalCurrentRate"
-        android:layout_alignBottom="@id/userImage"
-        android:layout_toLeftOf="@id/rivalImage"
-        android:layout_marginRight="20px"/>
-
     <thinku.com.word.view.LoadingCustomView
         android:layout_width="700px"
-        android:layout_height="60px"
+        android:layout_height="40px"
         android:layout_marginTop="20px"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/rivalImage"
-        app:progress="60"
         android:id="@+id/pk_progress"
         app:progressColor="@color/yellow_right_round"
         app:progressBarFrameHeight="0dp"
         app:progressBarBankgroundStyle="1"
-        app:progressBankgroundColor="@android:color/holo_red_dark"/>
+        app:progressBankgroundColor="@color/color_red"/>
+
+    <TextView
+        style="@style/white_text_30px"
+        android:textColor="@color/color_red"
+        android:id="@+id/rivalCurrentRate"
+        android:text="20"
+        android:layout_alignBottom="@id/pk_progress"
+        android:layout_toRightOf="@id/pk_progress"
+        android:layout_marginLeft="20px"/>
+
+    <TextView
+        style="@style/white_text_30px"
+        android:textColor="@color/yellow_right_round"
+        android:id="@+id/userCorrectRate"
+        android:layout_alignBottom="@id/pk_progress"
+        android:layout_toLeftOf="@id/pk_progress"
+        android:text="20"
+        android:layout_marginRight="20px"/>
 
     <TextView
         style="@style/white_text_90px"
-        android:text="winfos"
         android:layout_below="@id/pk_progress"
         android:layout_marginTop="100px"
         android:layout_centerHorizontal="true"
@@ -146,7 +143,6 @@
             android:textSize="40px"
             android:layout_marginLeft="20px"
             android:id="@+id/word_translate"
-            android:text="32321321"
             android:gravity="bottom"
             />
     </com.zhy.autolayout.AutoLinearLayout>

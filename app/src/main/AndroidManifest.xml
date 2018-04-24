@@ -206,6 +206,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
 
+        <!--PK 中-->
+        <activity android:name=".ui.pk.PkActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+
         <!-- JPUSH -->
 
 
@@ -233,7 +238,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.pk.PkActivity"></activity>
     </application>
 
 </manifest>

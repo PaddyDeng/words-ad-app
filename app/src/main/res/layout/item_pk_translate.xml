@@ -6,14 +6,13 @@
     
     <TextView
        android:layout_width="match_parent"
-        android:layout_height="150px"
-        android:layout_marginTop="10px"
-        android:text="fdsfasfafsa"
+        android:layout_height="100px"
+        android:layout_marginTop="20px"
         android:background="@drawable/white_20round"
         android:textColor="@color/color_black_text"
-        android:textSize="50px"
+        android:textSize="30px"
         android:id="@+id/item_translate"
         android:gravity="center_vertical"
-        android:paddingLeft="20px"
+        android:paddingLeft="30px"
         />
 </LinearLayout>

@@ -1,5 +1,7 @@
 package thinku.com.word.JsonFormat;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
@@ -51,14 +53,16 @@ public class JsonFormatParser implements JsonDeserializer<JPushData> {
                 break;
             case PK_READY_SUCCESS:
                 if (jsonObject.get("message").isJsonObject()&& !jsonObject.get("message").isJsonNull()){
-                    jPushData.setMessage(fromJsonArray(message , EventPkListData.class));
+                    jPushData.setMessage(fromJsonObject(message , EventPkListData.class));
                     jPushData.setType(type);
                 }
+                break;
             case PKING:
                 if (jsonObject.get("message").isJsonObject()&& !jsonObject.get("message").isJsonNull()){
-                    jPushData.setMessage(fromJsonArray(message , PkingData.class));
+                    jPushData.setMessage(fromJsonObject(message , PkingData.class));
                     jPushData.setType(type);
                 }
+                break;
         }
         return jPushData;
     }

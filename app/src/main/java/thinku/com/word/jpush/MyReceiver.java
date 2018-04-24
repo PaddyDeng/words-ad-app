@@ -68,7 +68,7 @@ public class MyReceiver extends BroadcastReceiver {
 							break;
 					}
 				} catch (JSONException e) {
-					Logger.e(TAG, "Get message extra JSON error!");
+					Logger.e(TAG, "Get message extra JSON error!" + e.getMessage());
 				}
 
 			}

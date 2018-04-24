@@ -51,7 +51,8 @@
     <color name="color_bg_gray">#EBEBEB</color>
     <color name="color_gray_bg">#F0EEE9</color>
     <color name="color_translate_black">#80000000</color>
-    
+
+    <color name="color_red">#FF203B</color>
     
     <color name="color_not_know">#4d6fcc</color>
 </resources>

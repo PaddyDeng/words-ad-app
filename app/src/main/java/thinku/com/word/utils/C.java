@@ -29,4 +29,9 @@ public class C {
     public static final int PK_AGREE = 1 ;  // 同意PK
     public static final int PK_CANCEL = 2 ;  // 取消PK
 
+
+    public static final int PK_TYPE_ERROR = 0 ; // 答案错误
+    public static final int PK_TYPE_CURRENT = 1 ;   // 答案正确
+
+
 }

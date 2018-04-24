@@ -62,4 +62,7 @@ public class NetworkChildren {
     public static final String PK_INDEX = "app-api/pk-index" ;  //  pkIndex
     public static final String PK_MATCHING = "app-api/pk-matching" ;  //  表明用户想PK
     public static final String PK_CHOSE = "app-api/pk-choice";   // Pk  取消 操作
+    public static final String PK_ANSWER = "app-api/pk-answer";   //  pk 没做一题上传答案
+    public static final String PK_FINSH = "app-api/pk-finish";   //PK 做完题之后
+    public static final String PK_POLL = "app-api/pk-poll";    //  等对手做完的时候每两秒请求一次
 }

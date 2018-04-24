@@ -25,6 +25,7 @@ import thinku.com.word.R;
 import thinku.com.word.adapter.PKAdapter;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.EventPkData;
+import thinku.com.word.bean.EventPkListData;
 import thinku.com.word.bean.JPushData;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.http.HttpUtil;
@@ -36,6 +37,7 @@ import static thinku.com.word.utils.C.PK_AGREE;
 import static thinku.com.word.utils.C.PK_CANCEL;
 import static thinku.com.word.utils.C.PK_MATCH_CANCLE;
 import static thinku.com.word.utils.C.PK_MATCH_SUCCESS;
+import static thinku.com.word.utils.C.PK_READY_SUCCESS;
 
 public class PKHomeActivity extends BaseActivity {
     private static final String TAG = PKHomeActivity.class.getSimpleName();
@@ -90,7 +92,10 @@ public class PKHomeActivity extends BaseActivity {
     @BindView(R.id.pk_button)
     RelativeLayout pkButton;
 
+    private EventPkListData eventPkListData;
     private ValueAnimator valueAnimator ;
+    private String mySelfUid ;
+    private String matchUid ;
     public static void start(Context context) {
         Intent intent = new Intent(context, PKHomeActivity.class);
         context.startActivity(intent);
@@ -152,7 +157,19 @@ public class PKHomeActivity extends BaseActivity {
                 hideAll();
                 addNet();
                 break;
+            case PK_READY_SUCCESS:
+                eventPkListData = (EventPkListData) jPushData.getMessage();
+                toPking(eventPkListData);
+                break;
         }
+    }
+
+    /**
+     * 同意开始 去pk界面
+     */
+    public void  toPking(EventPkListData  eventPkListData){
+        PkActivity.start(PKHomeActivity.this ,mySelfUser.getImage() ,mathUser.getImage() ,eventPkListData ,mySelfUser.getUid() ,mathUser.getUid());
+        this.finishWithAnim();
     }
     /**
      * 展示所有界面
@@ -163,6 +180,8 @@ public class PKHomeActivity extends BaseActivity {
         }
         if (eventPkData != null) {
             setMySelfUser(eventPkData);
+            mySelfUid = mySelfUser.getUid();
+            matchUid = mathUser.getUid();
             words1.setText(mathUser.getWords());
             winNum1.setText("win：" + mathUser.getWin());
             loseNum1.setText("lose：" + mathUser.getLose());
@@ -172,7 +191,7 @@ public class PKHomeActivity extends BaseActivity {
             winNum2.setText("win：" + mySelfUser.getWin());
             loseNum2.setText("lose：" + mySelfUser.getLose());
             new GlideUtils().load(PKHomeActivity.this, NetworkTitle.WORDRESOURE + mySelfUser.getImage(), img2);
-            name2.setText(mathUser.getNickname());
+            name2.setText(mySelfUser.getNickname());
             words1.setVisibility(View.VISIBLE);
             wordsRl.setVisibility(View.VISIBLE);
             pkNumRl1.setVisibility(View.VISIBLE);
@@ -196,7 +215,7 @@ public class PKHomeActivity extends BaseActivity {
             public void accept(ResultBeen<Void> voidResultBeen) throws Exception {
                 if (getHttpResSuc(voidResultBeen.getCode())){
                            if (type == PK_AGREE){
-                               PkActivity.start(PKHomeActivity.this ,mySelfUser.getImage() ,mathUser.getImage());
+                               toTast(PKHomeActivity.this ,"等待对手开始");
                            }else{
                                hideAll();
                                addNet();

@@ -200,6 +200,19 @@ public interface RestApi {
     Observable<ResultBeen<Void>> pkChose(@Field("uid") String uid , @Field("type") String type);
 
 
+    @FormUrlEncoded
+    @POST(NetworkChildren.PK_ANSWER)
+    Observable<ResultBeen<Void>> pkAnswer(@Field("totalId") String totalId ,@Field("wordsId") String wordsId ,
+                                                 @Field("answer") String answer ,@Field("type") String type ,@Field("duration") String duration);
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.PK_FINSH)
+    Observable<ResultBeen<Void>> pkFinsh(@Field("uid") String uid ,@Field("totalId") String totalId );
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.PK_POLL)
+    Observable<ResultBeen<Void>> pkPoll(@Field("uid") String uid ,@Field("totalId") String totalId );
+
 
 
 }
