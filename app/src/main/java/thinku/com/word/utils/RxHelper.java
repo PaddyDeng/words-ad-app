@@ -55,7 +55,7 @@ public class RxHelper {
     public static Observable<Integer> delay(final int time) {
         return Observable
                 .just(time)
-                .delay(time, TimeUnit.SECONDS)
+                .delay(time, TimeUnit.MILLISECONDS)
                 .compose(new SchedulerTransformer<Integer>());
     }
 }

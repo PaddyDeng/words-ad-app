@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import thinku.com.word.R;
+import thinku.com.word.view.GlideRoundTransform;
 
 
 /**
@@ -42,6 +43,16 @@ public class GlideUtils {
 //                .placeholder(R.mipmap.short_defult)//占位图
 //                .error(R.mipmap.short_defult)//加载错误占位图
                 .crossFade(300)//过渡动画
+                .into(iv);
+    }
+
+    public void loadRoundCircle(Context context ,String url ,final  ImageView iv){
+        Glide.with(context)
+                .load(url)
+                .placeholder(R.mipmap.short_defult)//占位图
+                .error(R.mipmap.short_defult)//加载错误占位图
+                .crossFade(300)//过渡动画
+                .transform(new GlideRoundTransform(context,10))
                 .into(iv);
     }
     //加载圆形图片

@@ -17,6 +17,7 @@ import thinku.com.word.bean.EvaWordBeen;
 import thinku.com.word.bean.Package;
 import thinku.com.word.bean.PackageDetails;
 import thinku.com.word.bean.PkIndexBeen;
+import thinku.com.word.bean.PkResultBeen;
 import thinku.com.word.bean.RecitWordBeen;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.ReviewDialogBeen;
@@ -33,6 +34,7 @@ import thinku.com.word.bean.WordReportMonthBeen;
 import thinku.com.word.bean.WordResultBeen;
 import thinku.com.word.bean.WordReviewTodayBeen;
 import thinku.com.word.bean.WrongIndexBeen;
+import thinku.com.word.ui.pk.been.PkWordData;
 
 /**
  * Created by fire on 2017/5/3 15:18.
@@ -211,7 +213,16 @@ public interface RestApi {
 
     @FormUrlEncoded
     @POST(NetworkChildren.PK_POLL)
-    Observable<ResultBeen<Void>> pkPoll(@Field("uid") String uid ,@Field("totalId") String totalId );
+    Observable<ResultBeen<Void>> pkPoll(@Field("uid2") String uid ,@Field("totalId") String totalId );
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.PK_RESULT)
+    Observable<PkResultBeen> pkResult(@Field("uid") String uid , @Field("totalId") String totalId );
+
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.PK_DISCOVER)
+    Observable<PkWordData> pkDiscover(@Field("page") String page ,@Field("pageSize") String pageSize );
 
 
 

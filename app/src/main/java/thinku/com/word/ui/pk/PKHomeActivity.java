@@ -20,9 +20,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
-import thinku.com.word.adapter.PKAdapter;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.EventPkData;
 import thinku.com.word.bean.EventPkListData;
@@ -31,6 +32,7 @@ import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.RxHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 import static thinku.com.word.utils.C.PK_AGREE;
@@ -41,8 +43,14 @@ import static thinku.com.word.utils.C.PK_READY_SUCCESS;
 
 public class PKHomeActivity extends BaseActivity {
     private static final String TAG = PKHomeActivity.class.getSimpleName();
+    @BindView(R.id.timer)
+    TextView timer;
+    @BindView(R.id.middle_2)
+    View middle2;
+    @BindView(R.id.timer_rl)
+    LinearLayout timerRl;
     private int[] match_ing = new int[]{
-           R.mipmap.pk_match_0 ,R.mipmap.pk_match_1 ,R.mipmap.pk_match_2 ,R.mipmap.pk_match_3
+            R.mipmap.pk_match_0, R.mipmap.pk_match_1, R.mipmap.pk_match_2, R.mipmap.pk_match_3
     };
     @BindView(R.id.back)
     ImageView back;
@@ -93,19 +101,22 @@ public class PKHomeActivity extends BaseActivity {
     RelativeLayout pkButton;
 
     private EventPkListData eventPkListData;
-    private ValueAnimator valueAnimator ;
-    private String mySelfUid ;
-    private String matchUid ;
+    private ValueAnimator valueAnimator;
+    private String mySelfUid;
+    private String matchUid;
+
+    private Disposable disposable ;
     public static void start(Context context) {
         Intent intent = new Intent(context, PKHomeActivity.class);
         context.startActivity(intent);
     }
 
 
-    private EventPkData.UserBean mySelfUser  ;
-    private EventPkData.UserBean mathUser ;
-    private String uid ;
-    private static boolean isInit = true ;
+    private EventPkData.UserBean mySelfUser;
+    private EventPkData.UserBean mathUser;
+    private String uid;
+    private static boolean isInit = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,24 +125,25 @@ public class PKHomeActivity extends BaseActivity {
         init();
     }
 
-    public void init(){
+    public void init() {
         hideAll();
         EventBus.getDefault().register(this);
-        uid = SharedPreferencesUtils.getString("uid",PKHomeActivity.this);
+        uid = SharedPreferencesUtils.getString("uid", PKHomeActivity.this);
         addNet();
     }
 
-    private void addNet(){
+    private void addNet() {
         addToCompositeDis(HttpUtil.pkMatchObservable()
                 .subscribe(new Consumer<ResultBeen<Void>>() {
                     @Override
                     public void accept(ResultBeen<Void> voidResultBeen) throws Exception {
-                        if (getHttpResSuc(voidResultBeen.getCode())){
+                        if (getHttpResSuc(voidResultBeen.getCode())) {
                         }
                     }
                 }));
     }
-    @OnClick({R.id.back , R.id.review_match ,R.id.pking})
+
+    @OnClick({R.id.back, R.id.review_match, R.id.pking})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -146,10 +158,11 @@ public class PKHomeActivity extends BaseActivity {
 
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(JPushData jPushData){
+    public void onEvent(JPushData jPushData) {
         int type = jPushData.getType();
-        switch (type){
+        switch (type) {
             case PK_MATCH_SUCCESS:
                 showAll((EventPkData) jPushData.getMessage());
                 break;
@@ -167,19 +180,21 @@ public class PKHomeActivity extends BaseActivity {
     /**
      * 同意开始 去pk界面
      */
-    public void  toPking(EventPkListData  eventPkListData){
-        PkActivity.start(PKHomeActivity.this ,mySelfUser.getImage() ,mathUser.getImage() ,eventPkListData ,mySelfUser.getUid() ,mathUser.getUid());
+    public void toPking(EventPkListData eventPkListData) {
+        PkActivity.start(PKHomeActivity.this, eventPkListData);
         this.finishWithAnim();
     }
+
     /**
      * 展示所有界面
      */
-    private void showAll(EventPkData eventPkData){
-        if (valueAnimator != null){
+    private void showAll(EventPkData eventPkData) {
+        if (valueAnimator != null) {
             valueAnimator.cancel();
         }
         if (eventPkData != null) {
             setMySelfUser(eventPkData);
+            SharedPreferencesUtils.setPk(PKHomeActivity.this, mathUser);
             mySelfUid = mySelfUser.getUid();
             matchUid = mathUser.getUid();
             words1.setText(mathUser.getWords());
@@ -202,42 +217,56 @@ public class PKHomeActivity extends BaseActivity {
             name2.setVisibility(View.VISIBLE);
             pkButton.setVisibility(View.VISIBLE);
             matchSuccess.setImageResource(R.mipmap.match_success);
+            timerRl.setVisibility(View.VISIBLE);
+            disposable = RxHelper.countDown(15)
+                    .subscribe(new Consumer<Integer>() {
+                        @Override
+                        public void accept(@NonNull Integer integer) throws Exception {
+                            timer.setText("倒计时：" +integer+ "s");
+                            if (integer == 0){
+                               pkChose(PK_CANCEL);
+                            }
+                        }
+                    });
+            addToCompositeDis(disposable);
         }
     }
 
     /**
      * pk选择
      */
-    public void pkChose(final int type){
-        addToCompositeDis(HttpUtil.pkChoseObservable(mathUser.getUid(),type+"")
-        .subscribe(new Consumer<ResultBeen<Void>>() {
-            @Override
-            public void accept(ResultBeen<Void> voidResultBeen) throws Exception {
-                if (getHttpResSuc(voidResultBeen.getCode())){
-                           if (type == PK_AGREE){
-                               toTast(PKHomeActivity.this ,"等待对手开始");
-                           }else{
-                               hideAll();
-                               addNet();
-                           }
-                }
-            }
-        }));
+    public void pkChose(final int type) {
+        addToCompositeDis(HttpUtil.pkChoseObservable(mathUser.getUid(), type + "")
+                .subscribe(new Consumer<ResultBeen<Void>>() {
+                    @Override
+                    public void accept(ResultBeen<Void> voidResultBeen) throws Exception {
+                        if (getHttpResSuc(voidResultBeen.getCode())) {
+                            if (type == PK_AGREE) {
+                                toTast(PKHomeActivity.this, "等待对手开始");
+                            } else {
+                                hideAll();
+                                addNet();
+                            }
+                        }
+                    }
+                }));
     }
 
     /**
      * 根据uid 确定选手位置  uid  == 存储uid   是本人  否则 是对手
+     *
      * @param eventPkData
      */
-    public void setMySelfUser(EventPkData eventPkData){
-        if (uid.equals(eventPkData.getUser1().getUid())){
+    public void setMySelfUser(EventPkData eventPkData) {
+        if (uid.equals(eventPkData.getUser1().getUid())) {
             mySelfUser = eventPkData.getUser1();
             mathUser = eventPkData.getUser2();
-        }else{
+        } else {
             mySelfUser = eventPkData.getUser2();
             mathUser = eventPkData.getUser1();
         }
     }
+
     /**
      * 匹配中界面 隐藏界面
      */
@@ -251,6 +280,7 @@ public class PKHomeActivity extends BaseActivity {
         pkNumRl2.setVisibility(View.INVISIBLE);
         name2.setVisibility(View.INVISIBLE);
         pkButton.setVisibility(View.GONE);
+        timerRl.setVisibility(View.GONE);
         if (valueAnimator == null) {
             valueAnimator = ValueAnimator.ofInt(0, 4).setDuration(2000);
             valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
@@ -263,6 +293,10 @@ public class PKHomeActivity extends BaseActivity {
             });
         }
         valueAnimator.start();
+        if (disposable != null){
+            disposable.dispose();
+            disposable = null ;
+        }
     }
 
 
@@ -272,14 +306,18 @@ public class PKHomeActivity extends BaseActivity {
         unbinder.unbind();
         cancleAnimator();
         EventBus.getDefault().unregister(this);
+        if (disposable != null){
+            disposable.dispose();
+            disposable = null ;
+        }
     }
 
 
     /**
      * 暂停动画
      */
-    public void cancleAnimator(){
-        if (valueAnimator != null){
+    public void cancleAnimator() {
+        if (valueAnimator != null) {
             valueAnimator.cancel();
         }
     }

@@ -12,6 +12,7 @@ import thinku.com.word.bean.EvaWordBeen;
 import thinku.com.word.bean.Package;
 import thinku.com.word.bean.PackageDetails;
 import thinku.com.word.bean.PkIndexBeen;
+import thinku.com.word.bean.PkResultBeen;
 import thinku.com.word.bean.RecitWordBeen;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.ReviewDialogBeen;
@@ -28,6 +29,7 @@ import thinku.com.word.bean.WordReportMonthBeen;
 import thinku.com.word.bean.WordResultBeen;
 import thinku.com.word.bean.WordReviewTodayBeen;
 import thinku.com.word.bean.WrongIndexBeen;
+import thinku.com.word.ui.pk.been.PkWordData;
 
 public class HttpUtil {
     private HttpUtil() {
@@ -276,5 +278,15 @@ public class HttpUtil {
     //PK 完成请求结果
     public static Observable<ResultBeen<Void>> pkPollObservable(String uid ,String totalId){
         return getRestApi(HostType.WORDS_URL_HOST).pkPoll(uid,totalId ).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
+    //PK 结果
+    public static Observable<PkResultBeen> pkResultBeenObservable(String uid , String totalId){
+        return getRestApi(HostType.WORDS_URL_HOST).pkResult(uid,totalId ).compose(new SchedulerTransformer<PkResultBeen>());
+    }
+
+    //PK 子页
+    public static Observable<PkWordData> pkDiscoverObservable(String page ,String pageSize){
+        return getRestApi(HostType.WORDS_URL_HOST).pkDiscover(page ,pageSize).compose(new SchedulerTransformer<PkWordData>());
     }
 }

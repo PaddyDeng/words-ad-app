@@ -22,7 +22,7 @@
             android:layout_height="100px" />
         <TextView
             android:id="@+id/find"
-            android:text="发现"
+            android:text="单词团"
             android:layout_marginLeft="150px"
             android:layout_marginRight="150px"
             android:background="@drawable/select_text_back"

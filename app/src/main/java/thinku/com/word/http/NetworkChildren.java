@@ -65,4 +65,6 @@ public class NetworkChildren {
     public static final String PK_ANSWER = "app-api/pk-answer";   //  pk 没做一题上传答案
     public static final String PK_FINSH = "app-api/pk-finish";   //PK 做完题之后
     public static final String PK_POLL = "app-api/pk-poll";    //  等对手做完的时候每两秒请求一次
+    public static final String PK_RESULT = "app-api/pk-result";   //  PK 结果页
+    public static final String PK_DISCOVER = "app-api/discover" ;   // PK 发现页
 }

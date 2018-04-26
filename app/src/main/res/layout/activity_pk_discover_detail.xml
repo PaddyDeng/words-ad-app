@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="thinku.com.word.ui.pk.PkDiscoverDetailActivity">
+
+    <include layout="@layout/title_layout" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="250px"
+        android:scaleType="fitXY"
+        android:id="@+id/image"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/content"/>
+
+</com.zhy.autolayout.AutoLinearLayout>

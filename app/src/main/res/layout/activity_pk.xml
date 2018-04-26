@@ -96,23 +96,57 @@
         app:progressBarBankgroundStyle="1"
         app:progressBankgroundColor="@color/color_red"/>
 
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/pk_wait_rl"
+        android:layout_marginTop="150px"
+        android:visibility="gone"
+        android:layout_below="@id/pk_progress">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="700px"
+            android:src="@mipmap/pk_wait_fly"
+            android:layout_marginLeft="20px"
+            android:layout_marginRight="20px"
+            android:id="@+id/pk_fly"
+            android:layout_centerHorizontal="true"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="300px"
+            android:background="@mipmap/pk_wait_bg"
+            android:layout_below="@id/pk_fly"
+            android:layout_marginTop="50px"
+            android:layout_centerHorizontal="true"
+            >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="100px"
+            android:src="@mipmap/pk_wait_0"
+            android:layout_marginTop="80px"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/pk_wait_animator"/>
+        </RelativeLayout>
+    </com.zhy.autolayout.AutoRelativeLayout>
     <TextView
-        style="@style/white_text_30px"
+        style="@style/white_text_40px"
         android:textColor="@color/color_red"
         android:id="@+id/rivalCurrentRate"
         android:text="20"
         android:layout_alignBottom="@id/pk_progress"
         android:layout_toRightOf="@id/pk_progress"
-        android:layout_marginLeft="20px"/>
+        android:layout_marginLeft="40px"/>
 
     <TextView
-        style="@style/white_text_30px"
+        style="@style/white_text_40px"
         android:textColor="@color/yellow_right_round"
         android:id="@+id/userCorrectRate"
         android:layout_alignBottom="@id/pk_progress"
         android:layout_toLeftOf="@id/pk_progress"
         android:text="20"
-        android:layout_marginRight="20px"/>
+        android:layout_marginRight="40px"/>
 
     <TextView
         style="@style/white_text_90px"

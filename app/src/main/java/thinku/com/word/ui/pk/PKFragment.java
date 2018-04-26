@@ -23,6 +23,7 @@ public class PKFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private PKPageFragment pkPageFragment ;
+    private PkWordFragment pkWordFragment ;
     private TextView pk, find;
 
     @Nullable
@@ -42,10 +43,12 @@ public class PKFragment extends BaseFragment implements View.OnClickListener {
     public  void init(){
         if (findChildFragment(PKPageFragment.class) == null){
             pkPageFragment = PKPageFragment.newInstance();
+            pkWordFragment = PkWordFragment.newInstance();
         }else {
             pkPageFragment = findFragment(PKPageFragment.class);
+            pkWordFragment = findFragment(PkWordFragment.class);
         }
-        loadMultipleRootFragment(R.id.fl  ,2,pkPageFragment);
+        loadMultipleRootFragment(R.id.fl  ,2,pkPageFragment , pkWordFragment);
     }
 
     private void setClick() {
@@ -77,6 +80,7 @@ public class PKFragment extends BaseFragment implements View.OnClickListener {
         }else{
             pk.setSelected(false);
             find.setSelected(true);
+            showHideFragment(pkWordFragment);
         }
     }
 }

@@ -7,6 +7,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import thinku.com.word.MyApplication;
+import thinku.com.word.bean.EventPkData;
 import thinku.com.word.bean.PersonalDetail;
 import thinku.com.word.bean.UserInfo;
 
@@ -28,6 +29,14 @@ public class SharedPreferencesUtils {
     private final static String PREFS_KEY_REVIEWE_MODE = "prefs_key_chose_mode" ;
     private final static String PREFS_KEY_RANK_SCORE = "prefs_key_rank_score" ;  //  评估排名
     private final static String PREFS_KEY_RANK_NUM = "prefs_key_rank_num" ;   //  评估数量
+    private final static String PREFS_KEY_IMAGE = "prefs_key_user_img";  //  自己头像
+
+    //  PK
+    private final static String PREFS_PK_NAME = "prefs_pk";   //  pk
+    private final static String PERFS_PK_IMAGE = "prefs_pk_match_image" ;  //  对手头像
+    private final static String PERFS_PK_NAME = "prefs_pk_match_name" ;   // 对手名字
+    private final static String PERFS_PK_UID = "prefs_pk_match_uid" ;
+
     public static void setPersonal(Context context, PersonalDetail personal) {
         SharedPreferences sp = context.getSharedPreferences("Personal", Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sp.edit();
@@ -57,6 +66,48 @@ public class SharedPreferencesUtils {
         context.getSharedPreferences("UserInfo", Context.MODE_PRIVATE).edit().clear().commit();
     }
 
+    /**
+     * 存储PK对手信息
+     * @param context
+     * @param userBean
+     */
+    public static void setPk(Context context , EventPkData.UserBean userBean){
+        SharedPreferences sp = context.getSharedPreferences(PREFS_PK_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(PERFS_PK_IMAGE,userBean.getImage());
+        editor.putString(PERFS_PK_NAME , userBean.getNickname());
+        editor.putString(PERFS_PK_UID ,userBean.getUid());
+        editor.commit();
+    }
+
+    /**
+     * 获取对手头像
+     * @param context
+     * @return
+     */
+    public static String getPKMatchImage(Context context ){
+        return context.getSharedPreferences(PREFS_PK_NAME ,Context.MODE_PRIVATE).getString(PERFS_PK_IMAGE,"");
+    }
+
+    /**
+     * 获取对手名字
+     * @param context
+     * @return
+     */
+    public static String getPKMatchName(Context context ){
+        return context.getSharedPreferences(PREFS_PK_NAME ,Context.MODE_PRIVATE).getString(PERFS_PK_NAME,"");
+    }
+
+    /**
+     * 获取对手名字
+     * @param context
+     * @return
+     */
+    public static String getPKMatchUid(Context context ){
+        return context.getSharedPreferences(PREFS_PK_NAME ,Context.MODE_PRIVATE).getString(PERFS_PK_UID,"");
+    }
+
+
     public static PersonalDetail getPersonalDetail(Context context) {
         PersonalDetail personalDetail = new PersonalDetail();
         SharedPreferences sp = context.getSharedPreferences("Personal", Context.MODE_PRIVATE);
@@ -80,9 +131,13 @@ public class SharedPreferencesUtils {
         return personalDetail;
     }
 
-    //保存用户登录信息
+    /**
+     * 用户信息
+     * @param context
+     * @param login
+     */
     public static void setLogin(Context context, UserInfo login) {
-        SharedPreferences sp = context.getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sp.edit();
         edit.putString("uid", login.getUid());
         edit.putString("username", login.getUsername());
@@ -95,7 +150,7 @@ public class SharedPreferencesUtils {
 
     public static UserInfo getUserInfo(Context context) {
         UserInfo login = new UserInfo();
-        SharedPreferences sp = context.getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         login.setUid(sp.getString("uid", ""));
         login.setUsername(sp.getString("username", ""));
         login.setEmail(sp.getString("email", ""));
@@ -104,6 +159,22 @@ public class SharedPreferencesUtils {
         login.setPassword(sp.getString("password", ""));
         return login;
     }
+
+    public static String getNickName(Context context){
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString("nickname" ,"");
+    }
+
+    public static String getUid (Context context){
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString("uid" ,"");
+    }
+
+    public static String getImage(Context context){
+        return getString(PREFS_KEY_IMAGE ,context);
+    }
+    /**
+     *
+     */
+
 
 
     public static void setSession(Context context, int i, String session) {
