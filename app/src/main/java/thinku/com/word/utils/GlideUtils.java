@@ -60,8 +60,8 @@ public class GlideUtils {
         Glide.with(context)
                 .load(url)
                 .asBitmap()
-//                .placeholder(R.mipmap.head_defult)//占位图
-//                .error(R.mipmap.head_defult)//加载错误占位图
+                .placeholder(R.mipmap.short_defult)//占位图
+                .error(R.mipmap.short_defult)//加载错误占位图
                 .into(new BitmapImageViewTarget(iv){
             @Override
             protected void setResource(Bitmap resource) {

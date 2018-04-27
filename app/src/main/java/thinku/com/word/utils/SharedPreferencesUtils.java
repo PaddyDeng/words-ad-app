@@ -2,6 +2,7 @@ package thinku.com.word.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.ImageReader;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -37,34 +38,7 @@ public class SharedPreferencesUtils {
     private final static String PERFS_PK_NAME = "prefs_pk_match_name" ;   // 对手名字
     private final static String PERFS_PK_UID = "prefs_pk_match_uid" ;
 
-    public static void setPersonal(Context context, PersonalDetail personal) {
-        SharedPreferences sp = context.getSharedPreferences("Personal", Context.MODE_PRIVATE);
-        SharedPreferences.Editor edit = sp.edit();
-        edit.putString("id", personal.getId());
-        edit.putString("userName", personal.getUserName());
-        edit.putString("userPass", personal.getUserPass());
-        edit.putString("nickname", personal.getNickname());
-        edit.putString("phone", personal.getPhone());
-        edit.putString("school", null == personal.getSchool() ? "" : personal.getSchool());
-        edit.putString("major", null == personal.getMajor() ? "" : personal.getMajor());
-        edit.putString("grade", null == personal.getGrade() ? "" : personal.getGrade());
-        edit.putString("email", null == personal.getEmail() ? "" : personal.getEmail());
-        edit.putString("createTime", personal.getCreateTime());
-        edit.putString("image", null == personal.getImage() ? "" : personal.getImage());
-        edit.putString("remark", null == personal.getRemark() ? "" : personal.getRemark());
-        edit.putString("uid", personal.getUid());
-        edit.putString("follow", personal.getFollow());
-        edit.putString("fans", personal.getFans());
-        edit.putString("questionNum", personal.getQuestionNum());
-        edit.putString("answerNum", personal.getAnswerNum());
-        edit.commit();
-    }
 
-    public static void exitLogin(Context context) {
-        context.getSharedPreferences("Personal", Context.MODE_PRIVATE).edit().clear().commit();
-        context.getSharedPreferences("Sessions", Context.MODE_PRIVATE).edit().clear().commit();
-        context.getSharedPreferences("UserInfo", Context.MODE_PRIVATE).edit().clear().commit();
-    }
 
     /**
      * 存储PK对手信息
@@ -108,29 +82,6 @@ public class SharedPreferencesUtils {
     }
 
 
-    public static PersonalDetail getPersonalDetail(Context context) {
-        PersonalDetail personalDetail = new PersonalDetail();
-        SharedPreferences sp = context.getSharedPreferences("Personal", Context.MODE_PRIVATE);
-        personalDetail.setId(sp.getString("id", ""));
-        personalDetail.setUserName(sp.getString("userName", ""));
-        personalDetail.setUserPass(sp.getString("userPass", ""));
-        personalDetail.setNickname(sp.getString("nickname", ""));
-        personalDetail.setPhone(sp.getString("phone", ""));
-        personalDetail.setSchool(sp.getString("school", ""));
-        personalDetail.setMajor(sp.getString("major", ""));
-        personalDetail.setGrade(sp.getString("grade", ""));
-        personalDetail.setEmail(sp.getString("email", ""));
-        personalDetail.setCreateTime(sp.getString("createTime", ""));
-        personalDetail.setImage(sp.getString("image", ""));
-        personalDetail.setRemark(sp.getString("remark", ""));
-        personalDetail.setUid(sp.getString("uid", ""));
-        personalDetail.setFollow(sp.getString("follow", ""));
-        personalDetail.setFans(sp.getString("fans", ""));
-        personalDetail.setQuestionNum(sp.getString("questionNum", ""));
-        personalDetail.setAnswerNum(sp.getString("answerNum", ""));
-        return personalDetail;
-    }
-
     /**
      * 用户信息
      * @param context
@@ -170,6 +121,10 @@ public class SharedPreferencesUtils {
 
     public static String getImage(Context context){
         return getString(PREFS_KEY_IMAGE ,context);
+    }
+
+    public static void setImage(Context context ,String image){
+         setString(PERFS_PK_IMAGE ,context , image);
     }
     /**
      *

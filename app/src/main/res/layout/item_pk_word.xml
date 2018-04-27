@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="20px"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:id="@+id/pk_rl">
 
     <ImageView
         android:id="@+id/img"

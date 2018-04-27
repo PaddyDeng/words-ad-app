@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
+import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
  * Created by Administrator on 2018/2/7.
@@ -20,9 +23,9 @@ import thinku.com.word.base.BaseActivity;
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView back,portrait;
-    private TextView title_t,name,nick,phone,email,pass,website,wechat,qq,version,font;
+    private TextView title_t,name,nick,phone,email,pass,version,font;
     private LinearLayout personal_detail;
-    private RelativeLayout portrait_rl,name_rl,nick_rl,phone_rl,email_rl,pass_rl,website_rl,wechat_rl,qq_rl,version_rl,font_rl;
+    private RelativeLayout portrait_rl,name_rl,nick_rl,phone_rl,email_rl,pass_rl,version_rl,font_rl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,6 +33,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         setContentView(R.layout.activity_setting);
         findView();
         setClick();
+        init();
     }
 
     public static void start(Context context){
@@ -37,6 +41,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         context.startActivity(intent);
     }
 
+
+    public void init(){
+        new GlideUtils().load(SettingActivity.this , NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(SettingActivity.this),portrait);
+
+    }
     private void findView() {
         back = (ImageView) findViewById(R.id.back);
         title_t = (TextView) findViewById(R.id.title_t);
@@ -54,12 +63,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         email = (TextView) findViewById(R.id.email);
         pass_rl = (RelativeLayout) findViewById(R.id.pass_rl);
         pass = (TextView) findViewById(R.id.pass);
-        website_rl = (RelativeLayout) findViewById(R.id.website_rl);
-        website = (TextView) findViewById(R.id.website);
-        wechat_rl = (RelativeLayout) findViewById(R.id.wechat_rl);
-        wechat = (TextView) findViewById(R.id.wechat);
-        qq_rl = (RelativeLayout) findViewById(R.id.qq_rl);
-        qq = (TextView) findViewById(R.id.qq);
         version_rl = (RelativeLayout) findViewById(R.id.version_rl);
         version = (TextView) findViewById(R.id.version);
         font_rl = (RelativeLayout) findViewById(R.id.font_rl);
@@ -73,9 +76,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         phone_rl.setOnClickListener(this);
         email_rl.setOnClickListener(this);
         pass_rl.setOnClickListener(this);
-        website_rl.setOnClickListener(this);
-        wechat_rl.setOnClickListener(this);
-        qq_rl.setOnClickListener(this);
         version_rl.setOnClickListener(this);
         font_rl.setOnClickListener(this);
     }
@@ -97,12 +97,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.email_rl:
                 break;
             case R.id.pass_rl:
-                break;
-            case R.id.website_rl:
-                break;
-            case R.id.wechat_rl:
-                break;
-            case R.id.qq_rl:
                 break;
             case R.id.version_rl:
                 break;

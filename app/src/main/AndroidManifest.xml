@@ -166,11 +166,6 @@
             android:name=".ui.recite.ReviewErrorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
-        <!-- 背诵（未完成） -->
-        <activity
-            android:name=".ui.recite.ReciteActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme" />
         <activity
             android:name=".ui.recite.WordPackageActivity"
             android:screenOrientation="portrait"
@@ -216,7 +211,17 @@
         <activity
             android:name=".ui.pk.PKResultActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme"></activity>
+            android:theme="@style/NoTitleTheme" />
+
+        <!--pk发现页详情-->
+        <activity android:name=".ui.pk.PkDiscoverDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme"/>
+
+        <!--pk 报名-->
+        <activity android:name=".ui.pk.OnlineActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme"/>
         <!-- JPUSH -->
 
 
@@ -244,7 +249,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.pk.PkDiscoverDetailActivity"></activity>
+
     </application>
 
 </manifest>

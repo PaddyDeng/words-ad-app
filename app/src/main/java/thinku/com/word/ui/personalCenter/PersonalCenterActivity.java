@@ -1,5 +1,7 @@
 package thinku.com.word.ui.personalCenter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -9,6 +11,9 @@ import android.widget.TextView;
 
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
+import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
  * Created by Administrator on 2018/2/7.
@@ -21,12 +26,17 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
     private ImageView portrait;
     private RelativeLayout type_setting,sign,feedback,clock,night,service;
 
+    public static void start(Context context){
+        Intent intent = new Intent(context ,PersonalCenterActivity.class);
+        context.startActivity(intent);
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_center);
         findView();
         setClick();
+        init();
     }
 
     private void findView() {
@@ -42,6 +52,11 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
         clock = (RelativeLayout) findViewById(R.id.clock);
         night = (RelativeLayout) findViewById(R.id.night);
         service = (RelativeLayout) findViewById(R.id.service);
+    }
+
+    public void init(){
+        new GlideUtils().loadCircle(PersonalCenterActivity.this , NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(PersonalCenterActivity.this) ,portrait);
+        name.setText(SharedPreferencesUtils.getNickName(PersonalCenterActivity.this));
     }
 
     private void setClick() {

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.MyApplication;
@@ -21,7 +22,12 @@ import thinku.com.word.base.BaseFragment;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.UserData;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.http.NetworkChildren;
+import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.http.SchedulerTransformer;
+import thinku.com.word.ui.personalCenter.PersonalCenterActivity;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.RxHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
@@ -84,7 +90,8 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                     UserData userData = been.getData();
                     if (userData != null && !TextUtils.isEmpty(userData.getPassword())) {
                         SharedPreferencesUtils.setPlanWords(_mActivity, userData.getPlanWords());
-                        new GlideUtils().load(_mActivity,userData.getImage(),portrait);
+                        new GlideUtils().load(_mActivity , NetworkTitle.WORDRESOURE + userData.getImage(),portrait);
+                        SharedPreferencesUtils.setImage(_mActivity ,userData.getImage());
                         if (TextUtils.isEmpty(userData.getPlanWords())) {
                             setFragment(0);
                         } else {
@@ -122,7 +129,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.portrait:
-
+                PersonalCenterActivity.start(_mActivity);
                 break;
             case R.id.input_lookup:
                 break;
