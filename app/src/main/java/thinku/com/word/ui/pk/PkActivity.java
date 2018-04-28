@@ -131,8 +131,8 @@ public class PkActivity extends BaseActivity {
             eventPkListData = getIntent().getParcelableExtra("data");
             matchUid = SharedPreferencesUtils.getPKMatchUid(PkActivity.this);
             mySelfUid =SharedPreferencesUtils.getUid(PkActivity.this);
-            new GlideUtils().load(PkActivity.this, NetworkTitle.WORDRESOURE + userImg, userImage);
-            new GlideUtils().load(PkActivity.this, NetworkTitle.WORDRESOURE + matchImg, rivalImage);
+            new GlideUtils().loadCircle(PkActivity.this, NetworkTitle.WORDRESOURE + userImg, userImage);
+            new GlideUtils().loadCircle(PkActivity.this, NetworkTitle.WORDRESOURE + matchImg, rivalImage);
         } catch (Exception e) {
             Log.i(TAG, e.getMessage());
         }

@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import org.greenrobot.eventbus.EventBus;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
@@ -21,12 +23,15 @@ import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.UserData;
+import thinku.com.word.callback.ReferImage;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkChildren;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.http.SchedulerTransformer;
 import thinku.com.word.ui.personalCenter.PersonalCenterActivity;
+import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.RxHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
@@ -34,7 +39,7 @@ import thinku.com.word.utils.SharedPreferencesUtils;
  * 背单词
  */
 
-public class ReciteFragment extends BaseFragment implements View.OnClickListener {
+public class ReciteFragment extends BaseFragment implements View.OnClickListener{
     private static final String TAG = ReciteFragment.class.getSimpleName();
     private CircleImageView portrait;
     private LinearLayout input_lookup;
@@ -57,8 +62,9 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         findView(view);
         setClick();
-
     }
+
+
 
 
     @Override
@@ -90,7 +96,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                     UserData userData = been.getData();
                     if (userData != null && !TextUtils.isEmpty(userData.getPassword())) {
                         SharedPreferencesUtils.setPlanWords(_mActivity, userData.getPlanWords());
-                        new GlideUtils().load(_mActivity , NetworkTitle.WORDRESOURE + userData.getImage(),portrait);
+                        new GlideUtils().loadCircle(_mActivity , NetworkTitle.WORDRESOURE + userData.getImage(),portrait);
                         SharedPreferencesUtils.setImage(_mActivity ,userData.getImage());
                         if (TextUtils.isEmpty(userData.getPlanWords())) {
                             setFragment(0);
@@ -176,4 +182,5 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
             initView();
         }
     }
+
 }

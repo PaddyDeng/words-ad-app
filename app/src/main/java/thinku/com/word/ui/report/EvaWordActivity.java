@@ -131,7 +131,7 @@ public class EvaWordActivity extends BaseActivity {
                         public void accept(EVAnswerBeen evAnswerBeen) throws Exception {
                             dismissLoadDialog();
                             if (getHttpResSuc(evAnswerBeen.getCode())) {
-                                toTast(EvaWordActivity.this, evAnswerBeen.getMessage());
+                                toTast( evAnswerBeen.getMessage());
                                 myApplication.finishAllActivity();
                                 EvaluateResultActivity.start(EvaWordActivity.this);
 //                                refreshActivity();

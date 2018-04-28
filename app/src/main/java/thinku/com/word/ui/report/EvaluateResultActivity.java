@@ -142,7 +142,7 @@ public class EvaluateResultActivity extends BaseActivity implements View.OnClick
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         dismissLoadDialog();
-                        toTast(EvaluateResultActivity.this, "请求网络失败");
+                        toTast("请求网络失败");
                     }
                 }));
     }
@@ -150,7 +150,7 @@ public class EvaluateResultActivity extends BaseActivity implements View.OnClick
     public void referUi(WordResultBeen wordResultBeen) {
         WordResultBeen.ResultBean resultBeen = wordResultBeen.getResult();
         if (resultBeen != null) {
-            new GlideUtils().load(EvaluateResultActivity.this, NetworkTitle.WORDRESOURE, headImage);
+            new GlideUtils().loadCircle(EvaluateResultActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(this), headImage);
             name.setText(SharedPreferencesUtils.getString("nickname", EvaluateResultActivity.this));
             level.setText(resultBeen.getLevel());
             recent.setText(resultBeen.getBit() * 100 + "%");

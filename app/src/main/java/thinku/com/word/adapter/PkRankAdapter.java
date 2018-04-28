@@ -58,7 +58,7 @@ public class PkRankAdapter extends RecyclerView.Adapter {
             pkRankHolder.rank.setVisibility(View.VISIBLE);
             pkRankHolder.rank.setText(position + 1 +"");
         }
-        new GlideUtils().load(context , NetworkTitle.WORDRESOURE + rankingListBean.getImage() , pkRankHolder.head_image);
+        new GlideUtils().loadCircle(context , NetworkTitle.WORDRESOURE + rankingListBean.getImage() , pkRankHolder.head_image);
         pkRankHolder.name.setText(rankingListBean.getNickname());
         pkRankHolder.win_num.setText("win：" + rankingListBean.getWin());
         pkRankHolder.lose_num.setText("lose：" + rankingListBean.getLose());

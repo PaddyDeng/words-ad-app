@@ -88,7 +88,7 @@ public class PKPageFragment extends BaseFragment{
     public void referUi(PkIndexBeen pkIndexBeen){
         PkIndexBeen.UserBean userBean = pkIndexBeen.getUser() ;
         if (userBean != null) {
-            new GlideUtils().load(_mActivity, NetworkTitle.WORDRESOURE + userBean.getImage(), portrait);
+            new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + userBean.getImage(), portrait);
             name.setText(userBean.getNickname());
             win_num.setText("win：" + userBean.getWin());
             lose_num.setText("loss：" + userBean.getLose());

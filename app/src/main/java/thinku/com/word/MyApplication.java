@@ -5,7 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.facebook.stetho.Stetho;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -13,7 +14,6 @@ import com.yanzhenjie.nohttp.cookie.DBCookieStore;
 
 import java.net.HttpCookie;
 import java.net.URI;
-import java.util.List;
 import java.util.Stack;
 
 import cn.jpush.android.api.JPushInterface;
@@ -30,25 +30,27 @@ import thinku.com.word.utils.SharedPreferencesUtils;
 public class MyApplication extends Application {
     private static final String TAG = MyApplication.class.getSimpleName();
     private static Context mContext;
-    public static int MemoryMode = 0 ;  //  初始化记忆模式
-    public static int WordStatus = 0 ; // 单词状态
+    public static int MemoryMode = 0;  //  初始化记忆模式
+    public static int WordStatus = 0; // 单词状态
     public static String session = "";
     private Stack<Activity> activityStack;
-    private static MyApplication myApplication ;
-    public static Context getInstance(){
+    private static MyApplication myApplication;
+    private RefWatcher refWatcher;
+
+    public static Context getInstance() {
         return mContext;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mContext=this;
-        session = SharedPreferencesUtils.getSession(MyApplication.this ,4);
+        mContext = this;
+        session = SharedPreferencesUtils.getSession(MyApplication.this, 4);
 
         //  Nohttp
-        InitializationConfig config =InitializationConfig.newBuilder(this)
+        InitializationConfig config = InitializationConfig.newBuilder(this)
                 .cookieStore(new DBCookieStore(this).setEnable(false))
-                .addHeader("Cookie","PHPSESSID="  + session)
+                .addHeader("Cookie", "PHPSESSID=" + session)
                 .build();
         NoHttp.initialize(config);
 
@@ -78,20 +80,25 @@ public class MyApplication extends Application {
 
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
-
+        refWatcher = LeakCanary.install(this);
 //        Stetho.initializeWithDefaults(this);
     }
 
-    public static MyApplication newInstance(){
+    public static RefWatcher getRefWatcher(Context context) {
+        MyApplication application = (MyApplication) context.getApplicationContext();
+        return application.refWatcher;
+    }
+
+    public static MyApplication newInstance() {
         if (myApplication == null) {
             synchronized (MyApplication.class) {
-                if (myApplication == null){
+                if (myApplication == null) {
                     myApplication = new MyApplication();
                 }
             }
 
         }
-        return myApplication ;
+        return myApplication;
     }
 
     /**
@@ -104,6 +111,7 @@ public class MyApplication extends Application {
         }
         activityStack.add(activity);
     }
+
     /**
      * 获取当前Activity（堆栈中最后一个压入的）
      */
@@ -167,7 +175,7 @@ public class MyApplication extends Application {
             // 2. 这里的JSessionId是Session的name，
             //    比如java的是JSessionId，PHP的是PSessionId，
             //    当然这里只是举例，实际java中和php不一定是这个，具体要咨询你们服务器开发人员。
-            if("PHPSESSID".equals(cookie.getName())) {
+            if ("PHPSESSID".equals(cookie.getName())) {
                 // 设置有效期为最大。
                 cookie.setMaxAge(0);
             }
@@ -175,7 +183,7 @@ public class MyApplication extends Application {
 
         @Override
         public void onRemoveCookie(URI uri, HttpCookie cookie) {// Cookie被移除时被调用。
-            Log.i("移除cookie",cookie.getValue());
+            Log.i("移除cookie", cookie.getValue());
         }
 
     };

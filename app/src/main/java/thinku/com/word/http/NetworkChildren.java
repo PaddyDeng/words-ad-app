@@ -67,4 +67,11 @@ public class NetworkChildren {
     public static final String PK_POLL = "app-api/pk-poll";    //  等对手做完的时候每两秒请求一次
     public static final String PK_RESULT = "app-api/pk-result";   //  PK 结果页
     public static final String PK_DISCOVER = "app-api/discover" ;   // PK 发现页
+
+    /**
+     *   用户信息
+     */
+    public static final String USER_IMAGE = "app-api/app-image" ;  //  用户头像
+    public static final String CHANGE_NICKNAME = "change-nickname" ;  // 切换昵称
+
 }

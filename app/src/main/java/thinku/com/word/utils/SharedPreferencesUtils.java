@@ -2,19 +2,13 @@ package thinku.com.word.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.ImageReader;
 import android.text.TextUtils;
-import android.util.Base64;
-import android.util.Log;
 
 import thinku.com.word.MyApplication;
 import thinku.com.word.bean.EventPkData;
-import thinku.com.word.bean.PersonalDetail;
 import thinku.com.word.bean.UserInfo;
 
 import static thinku.com.word.utils.SharePref.PREFS_NAME;
-import static thinku.com.word.utils.SharePref.PREFS_STR_INVALID;
-import static thinku.com.word.utils.SharePref.isInvalidPrefString;
 
 /**
  * Created by Administrator on 2017/12/11.
@@ -124,7 +118,14 @@ public class SharedPreferencesUtils {
     }
 
     public static void setImage(Context context ,String image){
-         setString(PERFS_PK_IMAGE ,context , image);
+         setString(PREFS_KEY_IMAGE ,context , image);
+    }
+
+    public static void setNickName(Context context ,String name){
+        SharedPreferences sp = context.getSharedPreferences(PREFS_NAME ,Context.MODE_PRIVATE );
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("nickname" ,name);
+        editor.commit();
     }
     /**
      *

@@ -34,4 +34,16 @@ public class C {
     public static final int PK_TYPE_CURRENT = 1 ;   // 答案正确
 
 
+    public static final String CENTER_CHANGE = "center_change";
+    public static final int HEADER_CHANGE = 500;
+
+    public  static int LOGIN_REQUEST_CODE = 100;
+    public  static int COM_REQUEST_CODE = LOGIN_REQUEST_CODE + 1;
+    public  static int REMARK_RELEASE_REQUEST_CODE = COM_REQUEST_CODE + 1;
+    public  static int MAKE_REQUEST_CODE = REMARK_RELEASE_REQUEST_CODE + 1;
+    public  static int SETTING_RESET_TXT_CODE = MAKE_REQUEST_CODE + 1;
+    public  static int SET_NICK_REQUEST_CODE = SETTING_RESET_TXT_CODE + 1;
+
+
+
 }

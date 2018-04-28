@@ -5,8 +5,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="string_evaluate">按照正确率从词库抽取单词进行评估，请尽可能真实评测</string>
     <string name="pk_success">匹配成功</string>
-
-
+    <string name="str_camera_no_permisson">相机权限未授予，去设置中心设置</string>
+    <string name="str_read_external_no_permisson">相册权限未授予，去设置中心设置</string>
+    <string name="str_please_choose_pic">请选择图片</string>
+    <string name="str_set_modify_user_name_fail_tip">用户名不能修改</string>
     <!--JPush-->
 
     <string name="hello">Hello World, JPush!</string>

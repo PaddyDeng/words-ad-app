@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.QueryMap;
 import thinku.com.word.bean.BackCode;
 import thinku.com.word.bean.Dictation;
@@ -34,6 +37,7 @@ import thinku.com.word.bean.WordReportMonthBeen;
 import thinku.com.word.bean.WordResultBeen;
 import thinku.com.word.bean.WordReviewTodayBeen;
 import thinku.com.word.bean.WrongIndexBeen;
+import thinku.com.word.ui.personalCenter.bean.ImageBean;
 import thinku.com.word.ui.pk.been.PkWordData;
 
 /**
@@ -225,5 +229,12 @@ public interface RestApi {
     Observable<PkWordData> pkDiscover(@Field("page") String page ,@Field("pageSize") String pageSize );
 
 
+    @Multipart
+    @POST(NetworkChildren.USER_IMAGE)
+    Observable<ImageBean> replaceHeader(@Part MultipartBody.Part file);
 
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.CHANGE_NICKNAME)
+    Observable<ResultBeen<Void>> setNickName(@Field("nickname") String nickName  );
 }

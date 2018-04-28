@@ -200,12 +200,12 @@ public class PKHomeActivity extends BaseActivity {
             words1.setText(mathUser.getWords());
             winNum1.setText("win：" + mathUser.getWin());
             loseNum1.setText("lose：" + mathUser.getLose());
-            new GlideUtils().load(PKHomeActivity.this, NetworkTitle.WORDRESOURE + mathUser.getImage(), img1);
+            new GlideUtils().loadCircle(PKHomeActivity.this, NetworkTitle.WORDRESOURE + mathUser.getImage(), img1);
             name1.setText(mathUser.getNickname());
             words2.setText(mySelfUser.getWords());
             winNum2.setText("win：" + mySelfUser.getWin());
             loseNum2.setText("lose：" + mySelfUser.getLose());
-            new GlideUtils().load(PKHomeActivity.this, NetworkTitle.WORDRESOURE + mySelfUser.getImage(), img2);
+            new GlideUtils().loadCircle(PKHomeActivity.this, NetworkTitle.WORDRESOURE + mySelfUser.getImage(), img2);
             name2.setText(mySelfUser.getNickname());
             words1.setVisibility(View.VISIBLE);
             wordsRl.setVisibility(View.VISIBLE);

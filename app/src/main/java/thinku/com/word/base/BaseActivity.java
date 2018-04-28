@@ -1,17 +1,12 @@
 package thinku.com.word.base;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.widget.Toast;
 
 import com.gyf.barlibrary.ImmersionBar;
@@ -29,22 +24,12 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import butterknife.internal.Utils;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import me.yokeyword.fragmentation.ExtraTransaction;
-import me.yokeyword.fragmentation.ISupportActivity;
-import me.yokeyword.fragmentation.ISupportFragment;
-import me.yokeyword.fragmentation.SupportActivity;
-import me.yokeyword.fragmentation.SupportActivityDelegate;
-import me.yokeyword.fragmentation.SupportHelper;
-import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import thinku.com.word.R;
 import thinku.com.word.callback.PermissionCallback;
-import thinku.com.word.http.HttpUtil;
+import thinku.com.word.permission.RxPermissions;
 import thinku.com.word.utils.HttpUtils;
-import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.WaitUtils;
 
 
@@ -62,6 +47,7 @@ public class BaseActivity extends AutoLayoutActivity {
     private PermissionCallback mCallback;
     private String hint;
     private ImmersionBar immersionBar;
+    protected RxPermissions mRxPermissions;
 
     protected ConcurrentMap<String, CompositeDisposable> mConcurrentMap = new ConcurrentHashMap<>();
 
@@ -73,6 +59,7 @@ public class BaseActivity extends AutoLayoutActivity {
         mRequestQueue = NoHttp.newRequestQueue(20);
         immersionBar = ImmersionBar.with(this);
         immersionBar.init();
+        mRxPermissions = new RxPermissions(this);
 
     }
 
@@ -313,8 +300,16 @@ public class BaseActivity extends AutoLayoutActivity {
     }
 
     //  toast
-    public void toTast(Context context , String content){
-        Toast.makeText(context ,content ,Toast.LENGTH_SHORT).show();
+    public void toTast( String content){
+        Toast.makeText(mContext,content ,Toast.LENGTH_SHORT).show();
+    }
+
+    public void toTast( Context context,String content){
+        Toast.makeText(context,content ,Toast.LENGTH_SHORT).show();
+    }
+
+    public void toTast( int contentId){
+        Toast.makeText(mContext,mContext.getString(contentId) ,Toast.LENGTH_SHORT).show();
     }
 
 }

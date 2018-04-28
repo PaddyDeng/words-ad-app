@@ -10,13 +10,14 @@ import android.view.ViewGroup;
 
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
+import thinku.com.word.callback.ReferImage;
 import thinku.com.word.ui.recite.ReciteFragment;
 import thinku.com.word.ui.report.WordReportFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WordParentFragment extends BaseFragment {
+public class WordParentFragment extends BaseFragment  {
 
     public static WordParentFragment newInstance(){
         WordParentFragment wordReportFragment = new WordParentFragment();

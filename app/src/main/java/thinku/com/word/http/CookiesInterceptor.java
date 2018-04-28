@@ -30,7 +30,6 @@ public class CookiesInterceptor implements Interceptor {
                 .header("cookie", SharePref.getCookie(mContext))
                 .build();
         Response originalResponse = chain.proceed(compressedRequest);
-        Log.e("tag", "intercept: " + SharePref.getCookie(mContext) );
         if (!originalResponse.headers("Set-Cookie").isEmpty()) {
             for (String header : originalResponse.headers("Set-Cookie")) {
                 SharePref.saveCookie(mContext, header);

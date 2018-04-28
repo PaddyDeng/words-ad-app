@@ -128,8 +128,8 @@ public class PKResultActivity extends BaseActivity {
         userErrorNum.getBackground().setAlpha(50);
         matchCurrentNum.getBackground().setAlpha(50);
         matchErrorNum.getBackground().setAlpha(50);
-        new GlideUtils().load(PKResultActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(PKResultActivity.this), userImage);
-        new GlideUtils().load(PKResultActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getPKMatchImage(PKResultActivity.this), matchImage);
+        new GlideUtils().loadCircle(PKResultActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(PKResultActivity.this), userImage);
+        new GlideUtils().loadCircle(PKResultActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getPKMatchImage(PKResultActivity.this), matchImage);
         userName.setText(SharedPreferencesUtils.getNickName(PKResultActivity.this));
         matchName.setText(SharedPreferencesUtils.getPKMatchName(PKResultActivity.this));
     }

@@ -40,7 +40,8 @@
     <color name="color_black_text">#7c7c7c</color>
     <color name="color_frame">#A3DFC0</color>
     <color name="color_progress_side">#CAF0EE</color>
-
+    <color name="color_hint">#c8c8c8</color>
+    <color name="color_sec_gray">#F2F2F2</color>
     <!--progeress -->
     <color name="color_progress_low">#EEC15F</color>
     <color name="color_progress_middle">#659FFF</color>

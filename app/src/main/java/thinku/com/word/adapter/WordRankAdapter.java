@@ -58,7 +58,7 @@ public class WordRankAdapter extends RecyclerView.Adapter {
             wordRankHolder.score_txt.setText((position +1)+"");
             wordRankHolder.score_txt.setVisibility(View.VISIBLE);
         }
-        GlideUtils.load(context , WORDRESOURE +rankBean.getImage()  ,wordRankHolder.head_image);
+       new  GlideUtils().loadRoundCircle(context , WORDRESOURE +rankBean.getImage()  ,wordRankHolder.head_image);
         wordRankHolder.name.setText(rankBean.getNickname());
         wordRankHolder.score.setText(rankBean.getNum());
     }

@@ -4,14 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.ui.personalCenter.bean.ImageBean;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
@@ -55,6 +61,7 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
     }
 
     public void init(){
+        EventBus.getDefault().register(this);
         new GlideUtils().loadCircle(PersonalCenterActivity.this , NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(PersonalCenterActivity.this) ,portrait);
         name.setText(SharedPreferencesUtils.getNickName(PersonalCenterActivity.this));
     }
@@ -70,6 +77,10 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
         service.setOnClickListener(this);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ImageBean imageBean){
+        new GlideUtils().loadCircle(this ,NetworkTitle.WORDRESOURE + imageBean.getImage() ,portrait);
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -97,5 +108,11 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
             case R.id.service:
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

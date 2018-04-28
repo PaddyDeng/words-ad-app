@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import retrofit2.Response;
 import thinku.com.word.bean.BackCode;
 import thinku.com.word.bean.Dictation;
@@ -29,6 +30,7 @@ import thinku.com.word.bean.WordReportMonthBeen;
 import thinku.com.word.bean.WordResultBeen;
 import thinku.com.word.bean.WordReviewTodayBeen;
 import thinku.com.word.bean.WrongIndexBeen;
+import thinku.com.word.ui.personalCenter.bean.ImageBean;
 import thinku.com.word.ui.pk.been.PkWordData;
 
 public class HttpUtil {
@@ -289,4 +291,17 @@ public class HttpUtil {
     public static Observable<PkWordData> pkDiscoverObservable(String page ,String pageSize){
         return getRestApi(HostType.WORDS_URL_HOST).pkDiscover(page ,pageSize).compose(new SchedulerTransformer<PkWordData>());
     }
+
+
+    // 更换头像
+    public static Observable<ImageBean> uploadHeader(MultipartBody.Part file){
+        return getRestApi(HostType.WORDS_URL_HOST).replaceHeader(file).compose(new SchedulerTransformer<ImageBean>());
+    }
+
+
+    //PK 子页
+    public static Observable<ResultBeen<Void>> newModifyName(String nickName){
+        return getRestApi(HostType.LOGIN_REGIST_HOST).setNickName(nickName).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
 }

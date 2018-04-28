@@ -52,7 +52,7 @@ public class RankAdapter extends RecyclerView.Adapter {
 
         if (rankBean != null){
             rankHolder.name.setText(rankBean.getNickname());
-            new GlideUtils().load(context , NetworkTitle.WORDRESOURE + rankBean.getImage() ,rankHolder.portrait);
+            new GlideUtils().loadCircle(context , NetworkTitle.WORDRESOURE + rankBean.getImage() ,rankHolder.portrait);
             rankHolder.num.setText(rankBean.getNum());
             rankHolder.ranking_num.setText(position + 1 +"");
         }

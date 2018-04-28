@@ -287,7 +287,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
      */
     public void updataPlan() {
         if (!checkPlan()) {
-            toTast(MyPlanActivity.this, "请为所有词包选择计划");
+            toTast( "请为所有词包选择计划");
         } else {
             String JsonString = createJSONObject().toJSONString();
             showLoadDialog();
