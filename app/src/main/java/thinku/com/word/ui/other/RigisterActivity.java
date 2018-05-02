@@ -148,7 +148,7 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
                                 BackCode praiseBack = JSON.parseObject(response.get(), BackCode.class);
                                 if(praiseBack.getCode()==1){
                                     Toast.makeText(RigisterActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
-                                    LoginHelper.againLogin(RigisterActivity.this,num ,pass,1);
+//                                    LoginHelper.againLogin(RigisterActivity.this,num ,pass,1);
                                     //跳转修改昵称
 //                                    Intent intent =new Intent(RigisterActivity.this, NameActivity.class);
 //                                    intent.putExtra("tag",1);

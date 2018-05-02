@@ -2,21 +2,34 @@ package thinku.com.word.ui.personalCenter.dialog;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
+import thinku.com.word.bean.ResultBeen;
+import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
+import thinku.com.word.callback.RequestCallback;
+import thinku.com.word.http.C;
+import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.personalCenter.BaseDialog;
 import thinku.com.word.ui.personalCenter.feature.AuthCode;
+import thinku.com.word.utils.LoginHelper;
+import thinku.com.word.utils.RegexValidateUtil;
+import thinku.com.word.utils.SharedPreferencesUtils;
+import thinku.com.word.utils.Utils;
 
 /**
  * 修改电话或邮箱后都要重新登录，修改成功，自动就登录了。
  */
 public class ModifyPhoneOrEmailDialog extends BaseDialog {
-
+    private final static String TAG = ModifyPhoneOrEmailDialog.class.getSimpleName();
     private static ICallBack<String> mCallBack;
     private static final String KEY_TYPE = "modify_email";
 
@@ -76,172 +89,194 @@ public class ModifyPhoneOrEmailDialog extends BaseDialog {
                 dismiss();
             }
         });
-//        confirm.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (check(et) && checkAuthCode(etAuthCode)) {
-//                    modify(et);
-//                }
-//            }
-//        });
-//        authCode.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                sendAuthCode();
-//            }
-//        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (check(et) && checkAuthCode(etAuthCode)) {
+                    modify(et);
+                }
+            }
+        });
+        authCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAuthCode();
+            }
+        });
     }
 
-//    private Observable<ResultBeen<Void>> getAuthCode() {
-////        if (modifyEmail) {
-////            return HttpUtil.emailGetAuthCode(getEditTxt(et), C.MODIFY_INFO_TYPE);
-////        }
-////        return HttpUtil.numGetAuthCode(getEditTxt(et), C.MODIFY_INFO_TYPE);
-//    }
+    private void getAuthCode() {
+        addToCompositeDis(HttpUtil.sendCode()
+                .subscribe(new Consumer<ResultBeen<Void>>() {
+                    @Override
+                    public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                        if (voidResultBeen.getCode() == 1) {
+                            if (modifyEmail) {
+                                sendAuthCode(HttpUtil.emailCodeObservable(getEditTxt(et)));
+                            } else {
+                                sendAuthCode(HttpUtil.phoneCodeObservable(getEditTxt(et)));
+                            }
+                        } else {
+                            toastShort(voidResultBeen.getMessage());
+                        }
+                    }
+                }));
+    }
 
-//    private void sendAuthCode() {
-//        if (check(et)) {
-//            mAuthCode.start();
-//            addToCompositeDis(getAuthCode().subscribe(new Consumer<ResultBeen<Void>>() {
-//                @Override
-//                public void accept(@NonNull ResultBeen<Void> o) throws Exception {
-//                    if (o.getCode() != 1) {
-//                        mAuthCode.sendAgain();
-//                    }
-//                }
-//            }, new Consumer<Throwable>() {
-//                @Override
-//                public void accept(@NonNull Throwable throwable) throws Exception {
-//                    mAuthCode.sendAgain();
-//                }
-//            }));
-//        }
-//    }
-//
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        if (mAuthCode != null)
-//            mAuthCode.destory();
-//        if (mCallBack != null)
-//            mCallBack = null;
-//    }
-//
-//    private Observable<ResultBeen<Void>> getModifyType() {
-//        UserData data = GlobalUser.getInstance().getUserData();
-//        if (modifyEmail) {
-//            return HttpUtil.modifyEmail(data.getUid(), getEditTxt(et), getEditTxt(etAuthCode));
-//        }
-//        return HttpUtil.modifyPhone(data.getUid(), getEditTxt(et), getEditTxt(etAuthCode));
-//    }
-//
-//    private void modify(final EditText et) {
-//        showLoadDialog();
-//        addToCompositeDis(getModifyType().doOnError(new Consumer<Throwable>() {
-//                    @Override
-//                    public void accept(@NonNull Throwable throwable) throws Exception {
-//                        dismissLoadDialog();
-//                    }
-//                })
-//                        .subscribe(new Consumer<ResultBean>() {
-//                            @Override
-//                            public void accept(@NonNull final ResultBean bean) throws Exception {
-//                                String account = getEditTxt(et);
-//                                if (getHttpCodeSucc(bean.getCode())) {
-//                                    if (mCallBack != null) {
-//                                        mCallBack.onSuccess(account);
-//                                        mCallBack = null;
-//                                    }
-//                                    saveUserInfo(account);
-//                                    SharedPref.saveAccount(getActivity(), account);
+
+    private void sendAuthCode(Observable<ResultBeen<Void>> observable) {
+        if (check(et)) {
+            mAuthCode.start();
+            addToCompositeDis(observable.subscribe(new Consumer<ResultBeen<Void>>() {
+                @Override
+                public void accept(@NonNull ResultBeen<Void> o) throws Exception {
+                    if (o.getCode() != 1) {
+                        mAuthCode.sendAgain();
+                    } else {
+                        toastShort(o.getMessage());
+                    }
+                }
+            }, new Consumer<Throwable>() {
+                @Override
+                public void accept(@NonNull Throwable throwable) throws Exception {
+                    mAuthCode.sendAgain();
+                }
+            }));
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mAuthCode != null)
+            mAuthCode.destory();
+        if (mCallBack != null)
+            mCallBack = null;
+    }
+
+    private Observable<ResultBeen<Void>> getModifyType() {
+        UserInfo userInfo = SharedPreferencesUtils.getUserInfo(getActivity());
+        if (modifyEmail) {
+            return HttpUtil.updateEmailObservable(userInfo.getUid(), getEditTxt(et), getEditTxt(etAuthCode));
+        }
+        return HttpUtil.updatePhoneObservable(userInfo.getUid(), getEditTxt(et), getEditTxt(etAuthCode));
+    }
+
+    private void modify(final EditText et) {
+        showLoadDialog();
+        addToCompositeDis(getModifyType().doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        dismissLoadDialog();
+                    }
+                })
+                        .subscribe(new Consumer<ResultBeen<Void>>() {
+                            @Override
+                            public void accept(@NonNull final ResultBeen<Void> bean) throws Exception {
+                                String account = getEditTxt(et);
+                                if (getHttpCodeSucc(bean.getCode())) {
+                                    if (mCallBack != null) {
+                                        mCallBack.onSuccess(account);
+                                        mCallBack = null;
+                                    }
+                                    saveUserInfo(account);
 //                                    //重新登录
-//                                    String password = SharedPref.getPassword(getActivity());
-//                                    if (TextUtils.isEmpty(password)) {
-//                                        password = C.DEFALUT_PWD;
-//                                    }
-//                                    ReSetSessionProxy.getInstance().login(account, password, new ICallBack() {
-//                                        @Override
-//                                        public void onSuccess(Object o) {
-//                                            toastShort(bean.getMessage());
-//                                            dismissLoadDialog();
-//                                            dismiss();
-//                                        }
-//
-//                                        @Override
-//                                        public void onFail() {
-//                                            dismissLoadDialog();
-//                                            dismiss();
-//                                        }
-//                                    });
-//                                } else {
-//                                    toastShort(bean.getMessage());
-//                                    dismissLoadDialog();
-//                                }
-//                            }
-//                        }, new Consumer<Throwable>() {
-//                            @Override
-//                            public void accept(@NonNull Throwable throwable) throws Exception {
-//                            }
-//                        })
-//        );
-//    }
-//
-//    private void saveUserInfo(String account) {
-//        if (!TextUtils.isEmpty(account)) {
-//            if (modifyEmail) {
-//                GlobalUser.getInstance().setEmail(account);
-//            } else {
-//                GlobalUser.getInstance().setPhone(account);
-//            }
-//        }
-//        GlobalUser.getInstance().resetUserInfoToSp(getActivity());
-//    }
-//
-//
-//    private boolean checkAuthCode(EditText etAuthCode) {
-//        String authCode = Utils.getEditTextString(etAuthCode);
-//        if (TextUtils.isEmpty(authCode)) {
-//            toastShort(R.string.str_enter_auth_code);
-//            return false;
-//        }
-//        return true;
-//    }
-//
-//    private boolean check(final EditText editText) {
-//        String acc = Utils.getEditTextString(editText);
-//        if (modifyEmail) {
-//            if (checkEmail(acc)) return false;
-//        } else {
-//            if (checkPhone(acc)) return false;
-//        }
-//        return true;
-//    }
-//
-//    private boolean checkEmail(String acc) {
-//        if (TextUtils.isEmpty(acc)) {
-//            toastShort(R.string.str_set_email_tip);
-//            return true;
-//        } else if (!RegexValidateUtil.checkEmail(acc)) {
-//            toastShort(R.string.str_set_modify_email_format);
-//            return true;
-//        } else if (acc.equals(GlobalUser.getInstance().getUserData().getUseremail())) {
-//            toastShort(R.string.str_set_modify_email_com);
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    private boolean checkPhone(String acc) {
-//        if (TextUtils.isEmpty(acc)) {
-//            toastShort(R.string.str_set_phone_tip);
-//            return true;
-//        } else if (!RegexValidateUtil.checkPhoneNumber(acc)) {
-//            toastShort(R.string.str_set_modify_phone_format);
-//            return true;
-//        } else if (acc.equals(GlobalUser.getInstance().getUserData().getPhone())) {
-//            toastShort(R.string.str_set_modify_phone_com);
-//            return true;
-//        }
-//        return false;
-//    }
+                                    String password = SharedPreferencesUtils.getPassword(getActivity());
+                                    if (TextUtils.isEmpty(password)) {
+                                        password = C.DEFAULT_PWD;
+                                    }
+                                    LoginHelper.againLoginRetrofit(getActivity(), account, password, new RequestCallback<UserInfo>() {
+                                        @Override
+                                        public void beforeRequest() {
+                                            showLoadDialog();
+                                        }
+
+                                        @Override
+                                        public void requestFail(String msg) {
+                                            toastShort(msg);
+                                            dismissLoadDialog();
+                                            dismiss();
+                                        }
+
+                                        @Override
+                                        public void requestSuccess(UserInfo userInfo) {
+                                            dismissLoadDialog();
+                                            UserInfo user = userInfo;
+                                            SharedPreferencesUtils.setPassword(getActivity(), TextUtils.isEmpty(user.getPhone()) ? user.getEmail() : user.getPhone(), user.getPassword());
+                                            SharedPreferencesUtils.setLogin(getActivity(), user);
+                                            dismiss();
+                                        }
+
+                                        @Override
+                                        public void otherDeal(UserInfo userInfo) {
+
+                                        }
+
+                                    });
+                                } else {
+                                    toastShort(bean.getMessage());
+                                    dismissLoadDialog();
+                                }
+                            }
+                        })
+        );
+    }
+
+    private void saveUserInfo(String account) {
+        if (!TextUtils.isEmpty(account)) {
+            if (modifyEmail) {
+                SharedPreferencesUtils.setEmail(getActivity(), account);
+            } else {
+                SharedPreferencesUtils.setPhone(getActivity(), account);
+            }
+        }
+    }
+
+
+    private boolean checkAuthCode(EditText etAuthCode) {
+        String authCode = Utils.getEditTextString(etAuthCode);
+        if (TextUtils.isEmpty(authCode)) {
+            toastShort("请输入验证码");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean check(final EditText editText) {
+        String acc = Utils.getEditTextString(editText);
+        if (modifyEmail) {
+            if (checkEmail(acc)) return false;
+        } else {
+            if (checkPhone(acc)) return false;
+        }
+        return true;
+    }
+
+    private boolean checkEmail(String acc) {
+        if (TextUtils.isEmpty(acc)) {
+            toastShort("请填写邮箱");
+            return true;
+        } else if (!RegexValidateUtil.checkEmail(acc)) {
+            toastShort("邮箱格式错误");
+            return true;
+        } else if (acc.equals(SharedPreferencesUtils.getUserInfo(getActivity()).getEmail())) {
+            toastShort("与当前邮箱一致，无须修改");
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkPhone(String acc) {
+        if (TextUtils.isEmpty(acc)) {
+            toastShort("请填写手机号");
+            return true;
+        } else if (!RegexValidateUtil.checkPhoneNumber(acc)) {
+            toastShort("手机号格式错误");
+            return true;
+        } else if (acc.equals(SharedPreferencesUtils.getUserInfo(getActivity()).getPhone())) {
+            toastShort("与当前手机号一致，无须修改");
+            return true;
+        }
+        return false;
+    }
 }

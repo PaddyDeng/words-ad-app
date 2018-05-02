@@ -3,16 +3,19 @@ package thinku.com.word.ui.personalCenter;
 import android.Manifest;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +34,9 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -40,17 +46,19 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
-import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.UserInfo;
+import thinku.com.word.callback.ICallBack;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
-import thinku.com.word.permission.RxPermissions;
 import thinku.com.word.photo.ClipImageActivity;
 import thinku.com.word.ui.personalCenter.bean.ImageBean;
+import thinku.com.word.ui.personalCenter.dialog.ModifyPhoneOrEmailDialog;
+import thinku.com.word.ui.personalCenter.dialog.ModifyPwdDialog;
+import thinku.com.word.ui.personalCenter.update.SimpleUpdateApk;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.ImageUtil;
-import thinku.com.word.utils.RxBus;
+import thinku.com.word.utils.SharePref;
 import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.version.VersionInfo;
 
@@ -60,45 +68,85 @@ import thinku.com.word.version.VersionInfo;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = SettingActivity.class.getSimpleName();
-    private ImageView back;
-    private CircleImageView portrait ;
-    private TextView title_t,name,nick,phone,email,pass,version,font;
+    @BindView(R.id.back)
+    ImageView back;
+    @BindView(R.id.title_t)
+    TextView titleT;
+    @BindView(R.id.title_right_t)
+    TextView titleRightT;
+    @BindView(R.id.portrait)
+    CircleImageView portrait;
+    @BindView(R.id.portrait_rl)
+    RelativeLayout portraitRl;
+    @BindView(R.id.name)
+    TextView name;
+    @BindView(R.id.name_rl)
+    RelativeLayout nameRl;
+    @BindView(R.id.nick)
+    TextView nick;
+    @BindView(R.id.nick_rl)
+    RelativeLayout nickRl;
+    @BindView(R.id.phone)
+    TextView phone;
+    @BindView(R.id.phone_rl)
+    RelativeLayout phoneRl;
+    @BindView(R.id.email)
+    TextView email;
+    @BindView(R.id.email_rl)
+    RelativeLayout emailRl;
+    @BindView(R.id.pass)
+    TextView pass;
+    @BindView(R.id.pass_rl)
+    RelativeLayout passRl;
+    @BindView(R.id.personal_detail)
+    LinearLayout personalDetail;
+    @BindView(R.id.version)
+    TextView version;
+    @BindView(R.id.version_rl)
+    RelativeLayout versionRl;
+    @BindView(R.id.font)
+    TextView font;
+    @BindView(R.id.font_rl)
+    RelativeLayout fontRl;
     private LinearLayout personal_detail;
 
-    private RelativeLayout portrait_rl,name_rl,nick_rl,phone_rl,email_rl,pass_rl,version_rl,font_rl;
-
-    private UserInfo userInfo ;
+    private UserInfo userInfo;
 
     //请求相机
     private static final int REQUEST_CAPTURE = 100;
     //请求相册
     private static final int REQUEST_PICK = 101;
     //  剪裁图片
-    private static final int CROP_PHOTO = 103 ;
+    private static final int CROP_PHOTO = 103;
     //调用照相机返回图片临时文件
     private File tempFile;
 
-    private Uri imageUri ;
+    private Uri imageUri;
+
+    //  更新
+    private SimpleUpdateApk mSimpleUpdateApk;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        ButterKnife.bind(this);
         findView();
-        setClick();
+        mSimpleUpdateApk = new SimpleUpdateApk(SettingActivity.this, true);
         init();
     }
 
-    public static void start(Context context){
-        Intent intent =new Intent(context,SettingActivity.class);
+    public static void start(Context context) {
+        Intent intent = new Intent(context, SettingActivity.class);
         context.startActivity(intent);
     }
 
     /**
      * 初始化用户信息
      */
-    public void init(){
+    public void init() {
         userInfo = SharedPreferencesUtils.getUserInfo(SettingActivity.this);
-        new GlideUtils().loadCircle(SettingActivity.this , NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(SettingActivity.this),portrait);
+        new GlideUtils().loadCircle(SettingActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(SettingActivity.this), portrait);
         name.setText(userInfo.getPhone());
         nick.setText(userInfo.getNickname());
         phone.setText(userInfo.getPhone());
@@ -109,42 +157,15 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
 
     private void findView() {
-        back = (ImageView) findViewById(R.id.back);
-        title_t = (TextView) findViewById(R.id.title_t);
-        title_t.setText("账号设置");
-        personal_detail = (LinearLayout) findViewById(R.id.personal_detail);
-        portrait_rl = (RelativeLayout) findViewById(R.id.portrait_rl);
-        portrait = (CircleImageView) findViewById(R.id.portrait);
-        name_rl = (RelativeLayout) findViewById(R.id.name_rl);
-        name = (TextView) findViewById(R.id.name);
-        nick_rl = (RelativeLayout) findViewById(R.id.nick_rl);
-        nick = (TextView) findViewById(R.id.nick);
-        phone_rl = (RelativeLayout) findViewById(R.id.phone_rl);
-        phone = (TextView) findViewById(R.id.phone);
-        email_rl = (RelativeLayout) findViewById(R.id.email_rl);
-        email = (TextView) findViewById(R.id.email);
-        pass_rl = (RelativeLayout) findViewById(R.id.pass_rl);
-        pass = (TextView) findViewById(R.id.pass);
-        version_rl = (RelativeLayout) findViewById(R.id.version_rl);
-        version = (TextView) findViewById(R.id.version);
-        font_rl = (RelativeLayout) findViewById(R.id.font_rl);
-        font = (TextView) findViewById(R.id.font);
-    }
-    private void setClick() {
-        back.setOnClickListener(this);
-        portrait_rl.setOnClickListener(this);
-        name_rl.setOnClickListener(this);
-        nick_rl.setOnClickListener(this);
-        phone_rl.setOnClickListener(this);
-        email_rl.setOnClickListener(this);
-        pass_rl.setOnClickListener(this);
-        version_rl.setOnClickListener(this);
-        font_rl.setOnClickListener(this);
+        titleT.setText("账号设置");
     }
 
-    @Override
+
+
+    @OnClick({R.id.back ,R.id.portrait_rl , R.id.name_rl ,R.id.nick_rl ,R.id.phone_rl , R.id.email_rl ,
+    R.id.pass_rl ,R.id.version_rl ,R.id.font_rl ,R.id.exit_login})
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.back:
                 finishWithAnim();
                 break;
@@ -158,16 +179,82 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 modifyNickName();
                 break;
             case R.id.phone_rl:
+                modifyPhoneOrEmail(false);
                 break;
             case R.id.email_rl:
+                modifyPhoneOrEmail(true);
                 break;
             case R.id.pass_rl:
+                modifyPwd();
                 break;
             case R.id.version_rl:
+                mSimpleUpdateApk.checkVersionUpdate();
                 break;
             case R.id.font_rl:
+                FontSizeSettingActivity.start(SettingActivity.this);
+                break;
+            case R.id.exit_login:
+                clearUi();
                 break;
         }
+    }
+
+    public void clearUi(){
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(SettingActivity.this);
+        alertDialog.setMessage("确认是否清楚账号");
+        alertDialog.setCancelable(true);
+        alertDialog.setPositiveButton("是的", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        SharedPreferencesUtils.clearLogin(SettingActivity.this);
+                        SharedPreferencesUtils.clearMatch(SettingActivity.this);
+                        name.setText("");
+                        nick.setText("");
+                        portrait.setImageBitmap(null);
+                        phone.setText("");
+                        pass.setText("");
+                        email.setText("");
+                        SharePref.saveCookie(mContext, "");
+                    }
+                });
+        alertDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = alertDialog.create();
+        dialog.show();
+    }
+
+    private void modifyPwd() {
+        ModifyPwdDialog.getInstance(new ICallBack<String>() {
+            @Override
+            public void onSuccess(String s) {
+            }
+
+            @Override
+            public void onFail() {
+            }
+        }).showDialog(getSupportFragmentManager());
+    }
+
+    private void modifyPhoneOrEmail(final boolean modifyEmail) {
+        ModifyPhoneOrEmailDialog.getInstance(modifyEmail, new ICallBack<String>() {
+            @Override
+            public void onSuccess(String emailOrPhone) {
+                if (modifyEmail) {
+                    email.setText(emailOrPhone);
+                } else {
+                    phone.setText(emailOrPhone);
+                }
+            }
+
+            @Override
+            public void onFail() {
+            }
+        }).showDialog(getSupportFragmentManager());
     }
 
 
@@ -190,6 +277,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         intent.setData(uri);
         startActivityForResult(intent, CROP_PHOTO);
     }
+
     /**
      * 修改相册弹窗
      */
@@ -225,7 +313,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                                 if (aBoolean) {
                                     gotoCarema();
                                 } else {
-                                    toTast(SettingActivity.this,SettingActivity.this.getResources().getString(R.string.str_camera_no_permisson));
+                                    toTast(SettingActivity.this, SettingActivity.this.getResources().getString(R.string.str_camera_no_permisson));
                                 }
                             }
                         }, new Consumer<Throwable>() {
@@ -246,7 +334,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                                 if (aBoolean) {
                                     gotoPhoto();
                                 } else {
-                                    toTast(SettingActivity.this ,SettingActivity.this.getResources().getString(R.string.str_read_external_no_permisson));
+                                    toTast(SettingActivity.this, SettingActivity.this.getResources().getString(R.string.str_read_external_no_permisson));
                                 }
                             }
                         }, new Consumer<Throwable>() {
@@ -270,38 +358,38 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
      * 跳转到照相机
      */
     private void gotoCarema() {
-            //獲取系統版本
-            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-            // 激活相机
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            // 判断存储卡是否可以用，可用进行存储
-            if (hasSdcard()) {
-                SimpleDateFormat timeStampFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
-                String filename = timeStampFormat.format(new Date());
-                tempFile = new File(Environment.getExternalStorageDirectory(),
-                        filename + ".jpg");
-                if (currentapiVersion < 24) {
-                    // 从文件中创建uri
-                    imageUri = Uri.fromFile(tempFile);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                } else {
-                    //兼容android7.0 使用共享文件的形式
-                    ContentValues contentValues = new ContentValues(1);
-                    contentValues.put(MediaStore.Images.Media.DATA, tempFile.getAbsolutePath());
-                    //检查是否有存储权限，以免崩溃
-                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        //申请WRITE_EXTERNAL_STORAGE权限
-                        Toast.makeText(this,"请开启存储权限",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        //獲取系統版本
+        int currentapiVersion = Build.VERSION.SDK_INT;
+        // 激活相机
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // 判断存储卡是否可以用，可用进行存储
+        if (hasSdcard()) {
+            SimpleDateFormat timeStampFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+            String filename = timeStampFormat.format(new Date());
+            tempFile = new File(Environment.getExternalStorageDirectory(),
+                    filename + ".jpg");
+            if (currentapiVersion < 24) {
+                // 从文件中创建uri
+                imageUri = Uri.fromFile(tempFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            } else {
+                //兼容android7.0 使用共享文件的形式
+                ContentValues contentValues = new ContentValues(1);
+                contentValues.put(MediaStore.Images.Media.DATA, tempFile.getAbsolutePath());
+                //检查是否有存储权限，以免崩溃
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    //申请WRITE_EXTERNAL_STORAGE权限
+                    Toast.makeText(this, "请开启存储权限", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             }
-            // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CAREMA
-            startActivityForResult(intent, REQUEST_CAPTURE);
         }
+        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CAREMA
+        startActivityForResult(intent, REQUEST_CAPTURE);
+    }
 
 
     /*
@@ -322,6 +410,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     /**
      * 上传图片
+     *
      * @param cropImagePath
      */
     private void uploadHeader(String cropImagePath) {
@@ -342,7 +431,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     @Override
                     public void accept(@NonNull ImageBean imageBeanResultBeen) throws Exception {
                         dismissLoadDialog();
-                        toTast( SettingActivity.this,imageBeanResultBeen.getMessage());
+                        toTast(SettingActivity.this, imageBeanResultBeen.getMessage());
                         if (getHttpResSuc(imageBeanResultBeen.getCode())) {
                             savePhoto(imageBeanResultBeen.getImage());
                             EventBus.getDefault().post(imageBeanResultBeen);
@@ -358,14 +447,14 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
 
 
-    public void savePhoto(String  imageUrl){
-        SharedPreferencesUtils.setImage(SettingActivity.this ,imageUrl);
+    public void savePhoto(String imageUrl) {
+        SharedPreferencesUtils.setImage(SettingActivity.this, imageUrl);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case 105:
                 nick.setText(SharedPreferencesUtils.getNickName(this));
                 //这里并不是退出登录，只是发送广播通知个人中心界面更新ui
@@ -392,7 +481,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     String cropImagePath = ImageUtil.getRealFilePathFromUri(getApplicationContext(), uri);
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inSampleSize = 2;
-                    Bitmap bitMap = BitmapFactory.decodeFile(cropImagePath , options);
+                    Bitmap bitMap = BitmapFactory.decodeFile(cropImagePath, options);
                     portrait.setImageBitmap(bitMap);
                     uploadHeader(cropImagePath);
                 }
@@ -400,6 +489,15 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             default:
                 super.onActivityResult(requestCode, resultCode, data);
                 break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mSimpleUpdateApk != null) {
+            mSimpleUpdateApk.onDestory();
+            mSimpleUpdateApk = null;
         }
     }
 }

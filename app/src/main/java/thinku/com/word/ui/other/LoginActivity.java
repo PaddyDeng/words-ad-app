@@ -14,6 +14,7 @@ import android.widget.Toast;
 import me.yokeyword.fragmentation.SupportActivity;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
+import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.RequestCallback;
 import thinku.com.word.utils.LoginHelper;
@@ -86,19 +87,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     @Override
                     public void requestFail(String msg) {
                         dismissLoadDialog();
+                        toTast(LoginActivity.this ,msg);
                     }
 
                     @Override
                     public void requestSuccess(UserInfo userInfo) {
                         dismissLoadDialog();
-                        SharedPreferencesUtils.setPassword(LoginActivity.this, TextUtils.isEmpty(userInfo.getPhone()) ? userInfo.getEmail() : userInfo.getPhone(), userInfo.getPassword());
-                        SharedPreferencesUtils.setLogin(LoginActivity.this, userInfo);
-                        LoginActivity.this.finish();
+                        if (getHttpResSuc(userInfo.getCode())) {
+                            SharedPreferencesUtils.setPassword(LoginActivity.this, TextUtils.isEmpty(userInfo.getPhone()) ? userInfo.getEmail() : userInfo.getPhone(), userInfo.getPassword());
+                            SharedPreferencesUtils.setLogin(LoginActivity.this, userInfo);
+                            LoginActivity.this.finish();
+                        }else{
+                            toTast(userInfo.getMessage());
+                        }
                     }
 
-                    @Override
-                    public void otherDeal(UserInfo userInfo) {
 
+                    @Override
+                    public void otherDeal(UserInfo userInfoResultBeen) {
+                            dismissLoadDialog();
                     }
                 });
                 break;

@@ -17,7 +17,7 @@ import thinku.com.word.MyApplication;
 //链接
 public class RetrofitProvider {
     public static String BASEURL = "http://www.gmatonline.cn/";
-    private static String LOGINURL = "http://login.gmatonline.cn/cn/app-api/";
+    private static String LOGINURL = "http://login.gmatonline.cn/cn/";
     private static String TOEFLURL = "http://www.toeflonline.cn/";
 //        public static String SMARTAPPLYURL = "http://smartapply.gmatonline.cn/";
     public static String SMARTAPPLYURL = "http://www.smartapply.cn/";

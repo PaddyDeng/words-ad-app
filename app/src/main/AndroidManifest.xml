@@ -233,6 +233,11 @@
         <activity android:name=".ui.personalCenter.SetNickNameActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme"/>
+
+        <!--修改字体-->
+        <activity android:name=".ui.personalCenter.FontSizeSettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme"/>
         <!-- JPUSH -->
 
 

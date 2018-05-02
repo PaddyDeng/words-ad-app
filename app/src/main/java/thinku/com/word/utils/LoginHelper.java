@@ -3,11 +3,8 @@ package thinku.com.word.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONException;
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
@@ -21,14 +18,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.UserInfo;
@@ -39,11 +34,7 @@ import thinku.com.word.http.NetworkChildren;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.jpush.TagAliasOperatorHelper;
 import thinku.com.word.ui.other.LoginActivity;
-import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.other.dialog.NeedLoginDialog;
-
-import static thinku.com.word.jpush.TagAliasOperatorHelper.ACTION_SET;
-import static thinku.com.word.jpush.TagAliasOperatorHelper.sequence;
 
 
 /**
@@ -53,114 +44,120 @@ public class LoginHelper {
     private static final String TAG = LoginHelper.class.getSimpleName();
     private static String needLogin = "还未登录，请先登录";
 
+//    /**
+//     * @param context
+//     * @param tag     0改名字 1打开app重置\注册  2 忘记密码 3正常登录
+//     */
+//    public static void againLogin(final Context context, String phone, String password, final int tag) {
+//        if (!TextUtils.isEmpty(phone)) {
+//            Request<String> req = NoHttp.createStringRequest(NetworkTitle.DomainLoginNormal + NetworkChildren.LOGIN, RequestMethod.POST);
+//            req.set("userName", phone).set("userPass", password);
+//            ((BaseActivity) context).request(0, req, new SimpleResponseListener<String>() {
+//                @Override
+//                public void onSucceed(int what, Response<String> response) {
+//                    if (response.isSucceed()) {
+//                        try {
+//                            UserInfo login = JSON.parseObject(response.get(), UserInfo.class);
+//                            if (login.getCode() == 1) {//登录成功
+//                                List<HttpCookie> cookies = response.getHeaders().getCookies();
+//                                if (cookies.isEmpty() || TextUtils.isEmpty(cookies.get(0).getValue())) {
+//                                    Toast.makeText(context, "重置session失败，需重新登录", Toast.LENGTH_SHORT).show();
+//                                } else {
+//                                    SharedPreferencesUtils.setPassword(context, TextUtils.isEmpty(login.getPhone()) ? login.getEmail() : login.getPhone(), login.getPassword());
+////                                    SharedPreferencesUtils.setSession(context, 4, cookies.get(0).getValue());
+//                                    SharedPreferencesUtils.setLogin(context, login);
+//                                    if (tag == 0) {
+//                                        login(context, login, 2);
+//                                    } else if (tag == 1) {
+//                                        login(context, login, 1);
+//                                    } else if (tag == 2) {
+//                                        login(context, login, 3);
+//                                    } else if (tag == 3) {
+//                                        login(context, login, 4);
+//                                    }
+//                                }
+//                            } else {
+//
+//                            }
+//                        } catch (JSONException e) {
+//
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailed(int what, Response<String> response) {
+//                    super.onFailed(what, response);
+//                }
+//            });
+//        }
+//    }
+
     /**
-     * @param context
-     * @param tag     0改名字 1打开app重置\注册  2 忘记密码 3正常登录
-     */
-    public static void againLogin(final Context context, String phone, String password, final int tag) {
-        if (!TextUtils.isEmpty(phone)) {
-            Request<String> req = NoHttp.createStringRequest(NetworkTitle.DomainLoginNormal + NetworkChildren.LOGIN, RequestMethod.POST);
-            req.set("userName", phone).set("userPass", password);
-            ((BaseActivity) context).request(0, req, new SimpleResponseListener<String>() {
-                @Override
-                public void onSucceed(int what, Response<String> response) {
-                    if (response.isSucceed()) {
-                        try {
-                            UserInfo login = JSON.parseObject(response.get(), UserInfo.class);
-                            if (login.getCode() == 1) {//登录成功
-                                List<HttpCookie> cookies = response.getHeaders().getCookies();
-                                if (cookies.isEmpty() || TextUtils.isEmpty(cookies.get(0).getValue())) {
-                                    Toast.makeText(context, "重置session失败，需重新登录", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    SharedPreferencesUtils.setPassword(context, TextUtils.isEmpty(login.getPhone()) ? login.getEmail() : login.getPhone(), login.getPassword());
-//                                    SharedPreferencesUtils.setSession(context, 4, cookies.get(0).getValue());
-                                    SharedPreferencesUtils.setLogin(context, login);
-                                    if (tag == 0) {
-                                        login(context, login, 2);
-                                    } else if (tag == 1) {
-                                        login(context, login, 1);
-                                    } else if (tag == 2) {
-                                        login(context, login, 3);
-                                    } else if (tag == 3) {
-                                        login(context, login, 4);
-                                    }
-                                }
-                            } else {
-
-                            }
-                        } catch (JSONException e) {
-
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailed(int what, Response<String> response) {
-                    super.onFailed(what, response);
-                }
-            });
-        }
-    }
-
-     /**
      * @param context
      * @param
      */
     public static void againLoginRetrofit(final Context context, String phone, String password, final RequestCallback<UserInfo> requestCallback) {
         if (!TextUtils.isEmpty(phone)) {
-            addToCompositeDis(HttpUtil.login(phone ,password)
+            addToCompositeDis(HttpUtil.login(phone, password)
                     .doOnSubscribe(new Consumer<Disposable>() {
                         @Override
                         public void accept(@NonNull Disposable disposable) throws Exception {
                             requestCallback.beforeRequest();
                         }
                     })
-            .subscribe(new Consumer<UserInfo>() {
-                @Override
-                public void accept(@NonNull final UserInfo userInfo) throws Exception {
-                    if (userInfo != null) {
-                        setSession(context, userInfo, new ICallBack() {
-                            @Override
-                            public void onSuccess(Object o) {
-                                requestCallback.requestSuccess(userInfo);
-                            }
+                    .subscribe(new Consumer<UserInfo>() {
+                        @Override
+                        public void accept(@NonNull final UserInfo userInfo) throws Exception {
+                            if (userInfo != null) {
+                                if (userInfo.getCode() == 1) {
+                                    setSession(context, userInfo, new ICallBack() {
+                                        @Override
+                                        public void onSuccess(Object o) {
+                                            requestCallback.requestSuccess(userInfo);
+                                        }
 
-                            @Override
-                            public void onFail() {
-                                requestCallback.requestFail("");
+                                        @Override
+                                        public void onFail() {
+                                            requestCallback.requestFail("");
+                                        }
+                                    });
+                                } else {
+                                    requestCallback.requestFail(userInfo.getMessage());
+                                }
                             }
-                        });
-                    }
-                }
-            }, new Consumer<Throwable>() {
-                @Override
-                public void accept(@NonNull Throwable throwable) throws Exception {
-                   requestCallback.requestFail(throwable.getMessage());
-                }
-            }));
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@NonNull Throwable throwable) throws Exception {
+                            requestCallback.requestFail(throwable.getMessage());
+                        }
+                    }));
         }
     }
 
     /**
      * 设置 Jpush alians
+     *
      * @param context
      * @param uid
      */
-    public static void setJpushAlians(Context context ,String uid){
-        String sequence = "lgw" + uid ;
+    public static void setJpushAlians(Context context, String uid) {
+        String sequence = "lgw" + uid;
         TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
         tagAliasBean.action = 2;
-            tagAliasBean.alias = sequence;
+        tagAliasBean.alias = sequence;
         tagAliasBean.isAliasAction = true;
-        TagAliasOperatorHelper.getInstance().handleAction(context,2,tagAliasBean);
+        TagAliasOperatorHelper.getInstance().handleAction(context, 2, tagAliasBean);
     }
 
     /**
-     *  retrofit 重置session
+     * retrofit 重置session
+     *
      * @param context
      * @param mUserInfo
      */
-    public static void setSession(final Context context ,final UserInfo mUserInfo  , final ICallBack  mICallBack){
+    public static void setSession(final Context context, final UserInfo mUserInfo, final ICallBack mICallBack) {
         final Map param = new HashMap();
         param.put("uid", mUserInfo.getUid());
         param.put("username", mUserInfo.getUsername());
@@ -189,9 +186,9 @@ public class LoginHelper {
                 .flatMap(new Function<retrofit2.Response<Void>, ObservableSource<retrofit2.Response<Void>>>() {
                     @Override
                     public ObservableSource<retrofit2.Response<Void>> apply(@NonNull retrofit2.Response<Void> voidResponse) throws Exception {
-                        if (voidResponse.isSuccessful()){
+                        if (voidResponse.isSuccessful()) {
                             return HttpUtil.gmatl(param);
-                        }else{
+                        } else {
                             throw new IllegalArgumentException("gmatl reset session fail");
                         }
                     }
@@ -199,9 +196,9 @@ public class LoginHelper {
                 .flatMap(new Function<retrofit2.Response<Void>, ObservableSource<retrofit2.Response<Void>>>() {
                     @Override
                     public ObservableSource<retrofit2.Response<Void>> apply(@NonNull retrofit2.Response<Void> voidResponse) throws Exception {
-                        if (voidResponse.isSuccessful()){
+                        if (voidResponse.isSuccessful()) {
                             return HttpUtil.gossip(param);
-                        }else{
+                        } else {
                             throw new IllegalArgumentException("gossip reset session fail");
                         }
                     }
@@ -209,9 +206,9 @@ public class LoginHelper {
                 .flatMap(new Function<retrofit2.Response<Void>, ObservableSource<retrofit2.Response<Void>>>() {
                     @Override
                     public ObservableSource<retrofit2.Response<Void>> apply(@NonNull retrofit2.Response<Void> voidResponse) throws Exception {
-                        if (voidResponse.isSuccessful()){
+                        if (voidResponse.isSuccessful()) {
                             return HttpUtil.smartapply(param);
-                        }else{
+                        } else {
                             throw new IllegalArgumentException("smartapply reset session fail");
                         }
                     }
@@ -219,7 +216,7 @@ public class LoginHelper {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
-                        setJpushAlians(context ,mUserInfo.getUid());
+                        setJpushAlians(context, mUserInfo.getUid());
                         mICallBack.onSuccess(o);
                     }
                 }, new Consumer<Throwable>() {

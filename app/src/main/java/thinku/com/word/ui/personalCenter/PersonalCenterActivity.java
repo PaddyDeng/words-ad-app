@@ -42,7 +42,7 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
         setContentView(R.layout.activity_personal_center);
         findView();
         setClick();
-        init();
+        EventBus.getDefault().register(this);
     }
 
     private void findView() {
@@ -60,8 +60,13 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
         service = (RelativeLayout) findViewById(R.id.service);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        init();
+    }
+
     public void init(){
-        EventBus.getDefault().register(this);
         new GlideUtils().loadCircle(PersonalCenterActivity.this , NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(PersonalCenterActivity.this) ,portrait);
         name.setText(SharedPreferencesUtils.getNickName(PersonalCenterActivity.this));
     }
@@ -91,10 +96,10 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
                 SettingActivity.start(PersonalCenterActivity.this);
                 break;
             case R.id.type_setting:
-//                TypeSettingActivity.start(PersonalCenterActivity.this);
+                TypeSettingActivity.start(PersonalCenterActivity.this);
                 break;
             case R.id.sign:
-                
+                SignActivity.start(PersonalCenterActivity.this);
                 break;
             case R.id.feedback:
 
@@ -106,6 +111,7 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
 
                 break;
             case R.id.service:
+
                 break;
         }
     }

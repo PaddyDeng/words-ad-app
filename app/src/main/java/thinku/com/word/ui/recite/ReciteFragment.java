@@ -147,6 +147,9 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     }
 
     public void setFragment(int tag) {
+        if (tag ==1){
+            portrait.setVisibility(View.VISIBLE);
+        }
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         if (oldPage != -1) {
             ft.hide(fragments.get(oldPage));
@@ -159,11 +162,13 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                     HomeFirstFragment homeFirstFragment = new HomeFirstFragment();
                     fragments.put(tag, homeFirstFragment);
                     ft.add(R.id.fl, fragments.get(tag));
+                    portrait.setVisibility(View.GONE);
                     break;
                 case 1://选好了的
                     HomeFragment homeFragment = new HomeFragment();
                     fragments.put(tag, homeFragment);
                     ft.add(R.id.fl, fragments.get(tag));
+                    portrait.setVisibility(View.VISIBLE);
                     break;
             }
         }

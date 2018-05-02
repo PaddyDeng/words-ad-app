@@ -15,6 +15,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import thinku.com.word.MyApplication;
 import thinku.com.word.ui.personalCenter.dialog.load.WaitDialog;
+import thinku.com.word.utils.Utils;
 
 public abstract class BaseDialogView extends BaseDialogFragment {
 
@@ -45,7 +46,7 @@ public abstract class BaseDialogView extends BaseDialogFragment {
     protected abstract int getRootViewId();
 
     protected void toastShort(String msg) {
-//        Utils.toastShort(getActivity(), msg);
+        Utils.toastShort(getActivity(), msg);
     }
 
     protected void toastShort(@StringRes int resId) {

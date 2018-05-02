@@ -44,6 +44,16 @@ public class C {
     public  static int SETTING_RESET_TXT_CODE = MAKE_REQUEST_CODE + 1;
     public  static int SET_NICK_REQUEST_CODE = SETTING_RESET_TXT_CODE + 1;
 
+    public static int TRIAL_COURSE = 1;
+    public static int INTRO_COURSE = TRIAL_COURSE + 1;
+    public static int PUBLIC_COURSE = INTRO_COURSE + 1;
+    public static int HOT_COURSE = PUBLIC_COURSE + 1;
+    public static int TEACHER_COURSE = HOT_COURSE + 1;
+    public static int MAKE_TEST_PERSON = TEACHER_COURSE + 1;
+    public static int KNOW_POINT_TYPE = MAKE_TEST_PERSON + 1;
+    public static int KNOW_POINT_TYPE_ITEM = KNOW_POINT_TYPE + 1;
+    public static int REQUST_CODE_UPDATE = KNOW_POINT_TYPE_ITEM + 1;
+
 
 
 }

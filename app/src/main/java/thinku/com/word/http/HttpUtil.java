@@ -31,6 +31,8 @@ import thinku.com.word.bean.WordResultBeen;
 import thinku.com.word.bean.WordReviewTodayBeen;
 import thinku.com.word.bean.WrongIndexBeen;
 import thinku.com.word.ui.personalCenter.bean.ImageBean;
+import thinku.com.word.ui.personalCenter.update.bean.VersionInfo;
+import thinku.com.word.ui.personalCenter.update.localdb.UpdateLocalDbData;
 import thinku.com.word.ui.pk.been.PkWordData;
 
 public class HttpUtil {
@@ -303,5 +305,45 @@ public class HttpUtil {
     public static Observable<ResultBeen<Void>> newModifyName(String nickName){
         return getRestApi(HostType.LOGIN_REGIST_HOST).setNickName(nickName).compose(new SchedulerTransformer<ResultBeen<Void>>());
     }
+
+    //  获取验证码之前调用
+    public static Observable<ResultBeen<Void>> sendCode(){
+        return getRestApi(HostType.LOGIN_REGIST_HOST).sendCode().compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
+    //  手机获取验证码
+    public static Observable<ResultBeen<Void>> phoneCodeObservable(String phoneNum){
+        return getRestApi(HostType.LOGIN_REGIST_HOST).phoneCode(phoneNum ,C.LGPhoneCode).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
+    //  邮箱获取验证码
+    public static Observable<ResultBeen<Void>> emailCodeObservable(String email){
+        return getRestApi(HostType.LOGIN_REGIST_HOST).emailCode(email ,C.LGEmailCode).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
+    //  更新邮箱
+    public static Observable<ResultBeen<Void>> updateEmailObservable(String uid ,String email , String code){
+        return getRestApi(HostType.LOGIN_REGIST_HOST).updateEmail(uid  , email ,code).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
+    //  更新手机号
+    public static Observable<ResultBeen<Void>> updatePhoneObservable(String uid ,String phone , String code){
+        return getRestApi(HostType.LOGIN_REGIST_HOST).updatePhone(uid  , phone ,code).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
+    //  更换密码
+    public static Observable<ResultBeen<Void>> updatePasswordObservable(String uid ,String oldPassword , String newPassword){
+        return getRestApi(HostType.LOGIN_REGIST_HOST).updatePassword(uid  , oldPassword ,newPassword).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
+    //  更新版本
+    public static Observable<UpdateLocalDbData> updateLocalData(String url) {
+        return getRestApi(HostType.BASE_URL_HOST).updateLocalData(url).compose(new SchedulerTransformer<UpdateLocalDbData>());
+    }
+
+    public static Observable<VersionInfo> getUpdate() {
+        return getRestApi(HostType.BASE_URL_HOST).getUpdate().compose(new SchedulerTransformer<VersionInfo>());
+    }
+
 
 }

@@ -93,6 +93,32 @@ public class SharedPreferencesUtils {
         edit.commit();
     }
 
+    /**
+     * 用户信息
+     * @param context
+     */
+    public static void clearLogin(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putString("uid", "");
+        edit.putString("username", "");
+        edit.putString("password", "");
+        edit.putString("email", "");
+        edit.putString("phone", "");
+        edit.putString("nickname", "");
+        edit.commit();
+    }
+
+    public static void clearMatch(Context context){
+        SharedPreferences sp = context.getSharedPreferences(PREFS_PK_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(PERFS_PK_IMAGE,"");
+        editor.putString(PERFS_PK_NAME , "");
+        editor.putString(PERFS_PK_UID ,"");
+        editor.commit();
+    }
+
+
     public static UserInfo getUserInfo(Context context) {
         UserInfo login = new UserInfo();
         SharedPreferences sp = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -119,6 +145,26 @@ public class SharedPreferencesUtils {
 
     public static void setImage(Context context ,String image){
          setString(PREFS_KEY_IMAGE ,context , image);
+    }
+
+    public static void setEmail(Context context ,String email){
+        setString("email",context ,email);
+    }
+
+    public static void setPhone(Context context ,String phone){
+        setString("phone",context ,phone);
+    }
+
+    public static void setPassword(Context context ,String password){
+        setString("password" ,context ,password);
+    }
+
+    public static void saveFontSize(Context context ,int size){
+        setInt("font" ,context ,size);
+    }
+
+    public static int getFontSize(Context context){
+       return  getInt( "font",context);
     }
 
     public static void setNickName(Context context ,String name){

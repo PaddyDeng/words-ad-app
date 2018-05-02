@@ -56,4 +56,5 @@
     <color name="color_red">#FF203B</color>
     
     <color name="color_not_know">#4d6fcc</color>
+    <color name="color_new_update_tip">#00c6ab</color>
 </resources>

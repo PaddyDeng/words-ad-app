@@ -5,7 +5,7 @@ package thinku.com.word.http;
  */
 
 public class NetworkChildren {
-    public static final String LOGIN="check-login";//正常登录
+    public static final String LOGIN="app-api/check-login";//正常登录
     public static final String TOEFL="app-api/unify-login";//托福
     public static final String GMAT="index.php?web/appapi/unifyLogin";//GMAT
     public static final String MESSAGEINIT="phone-request";//短信初始化
@@ -69,9 +69,13 @@ public class NetworkChildren {
     public static final String PK_DISCOVER = "app-api/discover" ;   // PK 发现页
 
     /**
-     *   用户信息
+     *   个人中心
      */
     public static final String USER_IMAGE = "app-api/app-image" ;  //  用户头像
-    public static final String CHANGE_NICKNAME = "change-nickname" ;  // 切换昵称
+    public static final String CHANGE_NICKNAME = "app-api/change-nickname" ;  // 切换昵称
+    public static final String UPDATE_USER = "app-api/update-user"  ;  //  修改用户手机号、邮箱、密码
+    public static final String SEND_CODE = "app-api/phone-request" ;   // 发送验证码之前都需要请求这个接口
+    public static final String PHONE_CODE = "app-api/phone-code" ;  //  手机号码验证接口
+    public static final String EMAIL_CODE = "app-api/send-mail" ;   //  邮箱验证接口
 
 }

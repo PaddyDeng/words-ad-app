@@ -13,6 +13,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Url;
 import thinku.com.word.bean.BackCode;
 import thinku.com.word.bean.Dictation;
 import thinku.com.word.bean.EVAnswerBeen;
@@ -38,6 +39,8 @@ import thinku.com.word.bean.WordResultBeen;
 import thinku.com.word.bean.WordReviewTodayBeen;
 import thinku.com.word.bean.WrongIndexBeen;
 import thinku.com.word.ui.personalCenter.bean.ImageBean;
+import thinku.com.word.ui.personalCenter.update.bean.VersionInfo;
+import thinku.com.word.ui.personalCenter.update.localdb.UpdateLocalDbData;
 import thinku.com.word.ui.pk.been.PkWordData;
 
 /**
@@ -237,4 +240,35 @@ public interface RestApi {
     @FormUrlEncoded
     @POST(NetworkChildren.CHANGE_NICKNAME)
     Observable<ResultBeen<Void>> setNickName(@Field("nickname") String nickName  );
+
+
+    @POST(NetworkChildren.SEND_CODE)
+    Observable<ResultBeen<Void>> sendCode();
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.PHONE_CODE)
+    Observable<ResultBeen<Void>> phoneCode(@Field("phoneNum") String phoneNum ,@Field("type") String type  );
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.EMAIL_CODE)
+    Observable<ResultBeen<Void>> emailCode(@Field("email") String phoneNum ,@Field("type") String type  );
+
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.UPDATE_USER)
+    Observable<ResultBeen<Void>> updatePhone(@Field("uid") String uid  ,@Field("phone") String phone ,@Field("code") String code  );
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.UPDATE_USER)
+    Observable<ResultBeen<Void>> updateEmail(@Field("uid") String uid  ,@Field("email") String email ,@Field("code") String code  );
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.UPDATE_USER)
+    Observable<ResultBeen<Void>> updatePassword(@Field("uid") String uid  ,@Field("oldPass") String olbPassword ,@Field("newPass") String newPassword  );
+
+    @GET
+    Observable<UpdateLocalDbData> updateLocalData(@Url String url);
+
+    @GET("index.php?web/appapi/versions")
+    Observable<VersionInfo> getUpdate();
 }
