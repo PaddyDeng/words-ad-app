@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <!-- Jpush配置 -->
     <uses-permission
@@ -46,6 +46,7 @@
 
         <activity
             android:name=".ui.other.MainActivity"
+            android:configChanges="keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme">
@@ -58,16 +59,19 @@
         <!-- 登录 -->
         <activity
             android:name=".ui.other.LoginActivity"
+            android:configChanges="keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
         <!-- 注册 -->
         <activity
             android:name=".ui.other.RigisterActivity"
+            android:configChanges="keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
         <!-- 找回密码 -->
         <activity
             android:name=".ui.other.ForgetPassActivity"
+            android:configChanges="keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
         <!-- 设置背单词模式 -->
@@ -214,30 +218,48 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
 
-        <!--pk发现页详情-->
-        <activity android:name=".ui.pk.PkDiscoverDetailActivity"
+        <!-- pk发现页详情 -->
+        <activity
+            android:name=".ui.pk.PkDiscoverDetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme"/>
+            android:theme="@style/NoTitleTheme" />
 
-        <!--pk 报名-->
-        <activity android:name=".ui.pk.OnlineActivity"
+        <!-- pk 报名 -->
+        <activity
+            android:name=".ui.pk.OnlineActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme"/>
+            android:theme="@style/NoTitleTheme" />
 
-        <!--pk 报名-->
-        <activity android:name=".photo.ClipImageActivity"
+        <!-- pk 报名 -->
+        <activity
+            android:name=".photo.ClipImageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme"/>
+            android:theme="@style/NoTitleTheme" />
 
-        <!--pk 修改名字-->
-        <activity android:name=".ui.personalCenter.SetNickNameActivity"
+        <!-- pk 修改名字 -->
+        <activity
+            android:name=".ui.personalCenter.SetNickNameActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme"/>
+            android:theme="@style/NoTitleTheme" />
 
-        <!--修改字体-->
-        <activity android:name=".ui.personalCenter.FontSizeSettingActivity"
+        <!-- 修改字体 -->
+        <activity
+            android:name=".ui.personalCenter.FontSizeSettingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme"/>
+            android:theme="@style/NoTitleTheme" />
+        <activity
+            android:name=".ui.personalCenter.FeedBackActivity"
+            android:configChanges="keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <activity
+            android:name=".ui.personalCenter.AlarmActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+
+        <activity android:name=".ui.personalCenter.AlarmAddActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
         <!-- JPUSH -->
 
 

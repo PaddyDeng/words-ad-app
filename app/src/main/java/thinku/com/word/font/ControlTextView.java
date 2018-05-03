@@ -25,6 +25,8 @@ public class ControlTextView extends android.support.v7.widget.AppCompatTextView
             case 0:
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 break;
+
+
             case 1:
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
                 break;

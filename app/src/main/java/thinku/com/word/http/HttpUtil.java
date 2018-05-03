@@ -341,9 +341,14 @@ public class HttpUtil {
         return getRestApi(HostType.BASE_URL_HOST).updateLocalData(url).compose(new SchedulerTransformer<UpdateLocalDbData>());
     }
 
+    //  获取服务器版本信息
     public static Observable<VersionInfo> getUpdate() {
         return getRestApi(HostType.BASE_URL_HOST).getUpdate().compose(new SchedulerTransformer<VersionInfo>());
     }
 
 
+    //  意见反馈信息
+    public static Observable<ResultBeen<Void>> feedBackObservable(String content) {
+        return getRestApi(HostType.WORDS_URL_HOST).feedback(content).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
 }

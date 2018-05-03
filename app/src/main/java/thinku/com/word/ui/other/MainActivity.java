@@ -1,6 +1,8 @@
 package thinku.com.word.ui.other;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
@@ -58,6 +60,11 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
     private ReportParentFragment reportFragment;
     private PKParentFragment pkFragment;
     private PeripheryParentFragment peripheryFragment;
+
+    public static void toMain(Context context){
+        Intent intent = new Intent(context ,MainActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

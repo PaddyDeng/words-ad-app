@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_interval_line"
+    android:orientation="vertical"
+    tools:context="thinku.com.word.ui.personalCenter.FeedBackActivity">
+
+    <include layout="@layout/title_layout" />
+
+    <EditText
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="600px"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:gravity="top"
+        android:hint="请输入反馈，我们将为你不断改进"
+        android:padding="20px"
+        android:textColorHint="@color/gray_text" />
+
+    <EditText
+        android:id="@+id/phone"
+        android:layout_width="match_parent"
+        android:layout_height="400px"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:gravity="top"
+        android:hint="请输入你的联系方式（可选）"
+        android:padding="20px"
+        android:textColorHint="@color/gray_text" />
+</com.zhy.autolayout.AutoLinearLayout>

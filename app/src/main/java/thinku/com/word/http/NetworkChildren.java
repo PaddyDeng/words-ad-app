@@ -77,5 +77,6 @@ public class NetworkChildren {
     public static final String SEND_CODE = "app-api/phone-request" ;   // 发送验证码之前都需要请求这个接口
     public static final String PHONE_CODE = "app-api/phone-code" ;  //  手机号码验证接口
     public static final String EMAIL_CODE = "app-api/send-mail" ;   //  邮箱验证接口
+    public static final String FEED_BACK = "app-api/add-feedback" ;   //  意见反馈接口
 
 }

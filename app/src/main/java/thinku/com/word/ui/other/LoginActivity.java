@@ -1,5 +1,6 @@
 package thinku.com.word.ui.other;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,6 +34,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private String phone;
     private String pass;
 
+    public static void toLogin(Context context){
+        Intent intent = new Intent(context ,LoginActivity.class);
+        context.startActivity(intent);
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

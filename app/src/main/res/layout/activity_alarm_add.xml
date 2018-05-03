@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/lin_rl"
+    android:background="@color/white"
+    tools:context="thinku.com.word.ui.personalCenter.AlarmAddActivity">
+
+    <include layout="@layout/title_layout_share" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="500px"
+        android:layout_margin="50px">
+        
+        <View
+            android:layout_width="350dp"
+            android:layout_height="100px"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/main_50round_tv"
+            android:layout_centerInParent="true"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true">
+        <thinku.com.word.view.loopview.LoopView
+            android:layout_width="100px"
+            android:layout_height="match_parent"
+            app:awv_itemsVisibleCount = "7"
+            android:id="@+id/hour"
+            app:awv_dividerTextColor = "@color/white"
+            app:awv_centerTextColor = "@color/white"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dip"
+            android:text="时"
+            android:layout_marginTop="10px"
+            android:textSize="16dp"
+            android:textColor="@color/white"
+            android:gravity="center_vertical"/>
+
+            <thinku.com.word.view.loopview.LoopView
+                android:layout_width="100px"
+                android:layout_marginLeft="300px"
+                android:layout_height="match_parent"
+                app:awv_itemsVisibleCount = "7"
+                android:id="@+id/minute"
+                app:awv_dividerTextColor = "@color/white"
+                app:awv_centerTextColor = "@color/white"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dip"
+                android:layout_marginTop="10px"
+                android:text="分"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                android:gravity="center_vertical"
+              />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/gray" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:id="@+id/chose_weeks">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="日期"
+            android:id="@+id/date"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/date"
+            android:id="@+id/weeks"
+            android:layout_marginTop="10dp"
+            />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/black_back"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/gray" />
+
+</com.zhy.autolayout.AutoLinearLayout>

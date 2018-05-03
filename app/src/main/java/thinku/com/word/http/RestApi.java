@@ -271,4 +271,8 @@ public interface RestApi {
 
     @GET("index.php?web/appapi/versions")
     Observable<VersionInfo> getUpdate();
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.FEED_BACK)
+    Observable<ResultBeen<Void>> feedback(@Field("content") String content);
 }

@@ -51,6 +51,7 @@ import thinku.com.word.callback.ICallBack;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.photo.ClipImageActivity;
+import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.personalCenter.bean.ImageBean;
 import thinku.com.word.ui.personalCenter.dialog.ModifyPhoneOrEmailDialog;
 import thinku.com.word.ui.personalCenter.dialog.ModifyPwdDialog;
@@ -216,6 +217,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         pass.setText("");
                         email.setText("");
                         SharePref.saveCookie(mContext, "");
+                        MainActivity.toMain(SettingActivity.this);
                     }
                 });
         alertDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {

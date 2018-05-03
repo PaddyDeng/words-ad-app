@@ -18,6 +18,7 @@ import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.personalCenter.bean.ImageBean;
+import thinku.com.word.utils.APPSmart;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
@@ -102,16 +103,16 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
                 SignActivity.start(PersonalCenterActivity.this);
                 break;
             case R.id.feedback:
-
+                FeedBackActivity.start(this);
                 break;
             case R.id.clock:
-
+                AlarmActivity.toAlarm(this);
                 break;
             case R.id.night:
 
                 break;
             case R.id.service:
-
+                APPSmart.openApplicationMarket(this ,getPackageName());
                 break;
         }
     }

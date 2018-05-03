@@ -18,8 +18,10 @@
     <string name="str_update_apk_imme">立即更新</string>
     <string name="str_update_apk_wait">稍后更新</string>
     <string name="str_need_sdcard_permission">本功能需要读写SDCARD权限</string>
-    <!--JPush-->
+    <string name="str_no_alarm_hint">您还没有学习闹钟，请添加学习闹钟</string>
 
+
+    <!--JPush-->
     <string name="hello">Hello World, JPush!</string>
     <string name="tag_hint">Tag can be number, alphabet, underscore, Chinese. Use , to split many tags.</string>
     <string name="alias_hint">Alias can be number, alphabet, underscore, Chinese.</string>
