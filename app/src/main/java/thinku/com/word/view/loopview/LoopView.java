@@ -31,7 +31,7 @@ public class LoopView extends View {
 
     private float scaleX = 1.05F;
 
-    private static final int DEFAULT_TEXT_SIZE = (int) (Resources.getSystem().getDisplayMetrics().density * 15);
+    private static final int DEFAULT_TEXT_SIZE = (int) (Resources.getSystem().getDisplayMetrics().density * 8);
 
     private static final float DEFAULT_LINE_SPACE = 2f;
 

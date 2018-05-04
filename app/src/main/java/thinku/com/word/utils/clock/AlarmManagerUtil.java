@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import java.util.Calendar;
 
@@ -12,6 +13,7 @@ import java.util.Calendar;
  * Created by loonggg on 2016/3/21.
  */
 public class AlarmManagerUtil {
+    private static final String TAG = "Base";
     public static final String ALARM_ACTION = "com.loonggg.alarm.clock";
 
     public static void setAlarmTime(Context context, long timeInMillis, Intent intent) {
@@ -28,6 +30,7 @@ public class AlarmManagerUtil {
         Intent intent = new Intent(ALARM_ACTION);
         PendingIntent pi = PendingIntent.getBroadcast(context, id, intent, PendingIntent
                 .FLAG_CANCEL_CURRENT);
+        Log.e(TAG, "cancelAlarm: " + id );
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         am.cancel(pi);
     }
@@ -44,6 +47,7 @@ public class AlarmManagerUtil {
      */
     public static void setAlarm(Context context, int flag, int hour, int minute, int id, int
             week, String tips, int soundOrVibrator) {
+        Log.e(TAG, "setAlarm: " + id );
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         long intervalMillis = 0;

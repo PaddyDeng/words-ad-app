@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -91,9 +92,10 @@ public class AlarmActivity extends BaseActivity {
         if (!TextUtils.isEmpty(time)) {
             String[] times = time.split(":");
             if ("每天".equals(cycle)) {//是每天的闹钟
+                String id = times[0] + times[1] + 0 ;
                 AlarmManagerUtil.setAlarm(this, 0, Integer.parseInt(times[0]), Integer.parseInt
-                        (times[1]), 0, 0, "该复习单词了", 2);
-                clock.setC_id(0+"");
+                        (times[1]), Integer.parseInt(id), 1, "该复习单词了", 2);
+                clock.setC_id(id);
 //            } if(cycle == -1){//是只响一次的闹钟
 //                AlarmManagerUtil.setAlarm(this, 1, Integer.parseInt(times[0]), Integer.parseInt
 //                        (times[1]), 0, 0, "该复习单词了", 2);
@@ -102,19 +104,18 @@ public class AlarmActivity extends BaseActivity {
                 String id = "";
                 for (int i = 0; i < weeks.length; i++) {
                     int ring = parseRepeat(weeks[i]);
+                    String o_id = times[0] + times[1] + ring ;
                     AlarmManagerUtil.setAlarm(this, 2, Integer.parseInt(times[0]), Integer
-                            .parseInt(times[1]), i, ring, "该复习单词了", 2);
-                     id=i+"\t";
-                    clock.setC_id(id);
+                            .parseInt(times[1]), Integer.parseInt(o_id), ring, "该复习单词了", 2);
+                    id=o_id+",";
+                    Log.e(TAG, "setClock: " + o_id +  "   "+ Integer.parseInt(o_id) );
                 }
+                clock.setC_id(id);
             }
             Toast.makeText(this, "闹钟设置成功", Toast.LENGTH_LONG).show();
         }
 
     }
-
-
-
 
     public int parseRepeat(String week) {
         int weekNum = -1;
@@ -189,7 +190,7 @@ public class AlarmActivity extends BaseActivity {
             public void toggleToOff(SwitchView view, int position) {
                 Clock clock = clocks.get(position);
                 cancelClock(clock);
-//                view.setOpened(false);
+                view.setOpened(false);
                 clock.setClock(false);
                 clockDao.updateClock(clock);
             }
@@ -204,9 +205,13 @@ public class AlarmActivity extends BaseActivity {
      */
     public void cancelClock(Clock clock){
         String c_id  = clock.getC_id();
-        String c_ids[] = c_id.split("\\t");
-        for (int i = 0 ; i< c_ids.length ; i++){
-            AlarmManagerUtil.cancelAlarm(this ,Integer.getInteger(c_ids[i]));
+        Log.e(TAG, "cancelClock: "  + c_id );
+        String c_ids[] = c_id.split(",");
+        if (c_ids.length > 0) {
+            for (int i = 0; i < c_ids.length; i++) {
+                Log.e(TAG, "cancelClock: " + c_ids );
+                AlarmManagerUtil.cancelAlarm(this, Integer.parseInt(c_ids[i]));
+            }
         }
     }
 

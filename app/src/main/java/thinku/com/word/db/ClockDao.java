@@ -36,7 +36,7 @@ public class ClockDao {
 
     public int addClock(Clock clock){
         try{
-            clockDaoOpo.create(clock);
+            clockDaoOpo.createOrUpdate(clock);
             return (int) clockDaoOpo.countOf();
         } catch (SQLException e) {
             e.printStackTrace();
