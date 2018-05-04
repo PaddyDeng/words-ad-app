@@ -155,7 +155,7 @@ public class LoopView extends View {
         flingGestureDetector.setIsLongpressEnabled(false);
 
         TypedArray typedArray = context.obtainStyledAttributes(attributeset, R.styleable.androidWheelView);
-        textSize = typedArray.getInteger(R.styleable.androidWheelView_awv_textsize, DEFAULT_TEXT_SIZE);
+        textSize = typedArray.getDimensionPixelSize(R.styleable.androidWheelView_awv_textsize, DEFAULT_TEXT_SIZE);
         textSize = (int) (Resources.getSystem().getDisplayMetrics().density * textSize);
         lineSpacingMultiplier = typedArray.getFloat(R.styleable.androidWheelView_awv_lineSpace, DEFAULT_LINE_SPACE);
         centerTextColor = typedArray.getInteger(R.styleable.androidWheelView_awv_centerTextColor, 0xff313131);

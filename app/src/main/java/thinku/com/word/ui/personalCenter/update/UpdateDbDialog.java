@@ -141,19 +141,6 @@ public class UpdateDbDialog extends BaseNoBackgDialog implements View.OnClickLis
                 .create(new FlowableOnSubscribe<Integer>() {
                     @Override
                     public void subscribe(final FlowableEmitter<Integer> e) throws Exception {
-
-                        DBUtil.getInstance().updateLocalDb(question, tiku, parse, serialTikus, serials,
-                                new ICallBack<Integer>() {
-                                    @Override
-                                    public void onSuccess(Integer integer) {
-                                        e.onNext(integer.intValue());
-                                    }
-
-                                    @Override
-                                    public void onFail() {
-                                        e.onError(new Exception());
-                                    }
-                                });
                         e.onComplete();
                     }
                 }, BackpressureStrategy.BUFFER)

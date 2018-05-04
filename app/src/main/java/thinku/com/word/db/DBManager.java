@@ -1,16 +1,20 @@
 package thinku.com.word.db;
 
 import android.content.Context;
-import android.util.Log;
+
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import thinku.com.word.utils.Utils;
+
 public class DBManager {
+    private static final String TAG = DBManager.class.getSimpleName();
     private final int BUFFER_SIZE = 1024;
-    public static final String DB_NAME = "word.db";
+    public static final String DB_OLD_NAME = "gmat13.db";
+    public static final String DB_NAME = "word_version.db";
     private Context mContext;
 
     public DBManager(Context context) {
@@ -22,14 +26,13 @@ public class DBManager {
         File dbFile = mContext.getDatabasePath(DB_NAME);
         //true 未复制，false需要复制
         if (!dbFile.exists()) {
-
             InputStream is = null;
             FileOutputStream fos = null;
             try {
                 dbFile.getParentFile().mkdirs();
                 dbFile.createNewFile();
 
-                is = mContext.getAssets().open("word_11.sqlite");
+                is = mContext.getAssets().open("gmat_13.sqlite");
 
                 fos = new FileOutputStream(dbFile);
 
@@ -40,9 +43,9 @@ public class DBManager {
                     fos.flush();
                 }
 
-                Log.i("DMService" , "write success");
+                Utils.logh("DBService", "copy success");
             } catch (IOException e) {
-                Log.i("DMService", "write exception");
+                Utils.logh("DMService", "write exception");
                 return false;
             } finally {
                 try {

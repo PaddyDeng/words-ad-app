@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.io.InterruptedIOException;
 import java.net.SocketException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -12,6 +13,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.plugins.RxJavaPlugins;
+import thinku.com.word.db.bean.Clock;
 import thinku.com.word.http.SchedulerTransformer;
 
 /**
