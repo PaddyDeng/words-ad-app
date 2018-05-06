@@ -112,7 +112,6 @@ public class AlarmAddActivity extends BaseActivity {
                 minuteTxt = index < 10 ? "0" + index : ""+ index;
             }
         });
-        choseWeeksText = new StringBuilder();
     }
 
     @OnClick({R.id.chose_weeks, R.id.back, R.id.title_iv})
@@ -132,10 +131,11 @@ public class AlarmAddActivity extends BaseActivity {
 
 
     public void choseWeeks() {
-        final ClockDialog clockDialog = new ClockDialog(this);
+        final ClockDialog clockDialog = new ClockDialog(this ,weeks.getText().toString().trim());
         clockDialog.setOnReviewClickListener(new ClockDialog.OnReviewClickListener() {
             @Override
             public void onReviewClick() {
+                StringBuilder choseWeeksText = new StringBuilder();
                 for (int i = 0; i < clockDialog.checkBoxes.length; i++) {
                     boolean isCheckAll = true;
                     if (clockDialog.checkBoxes[i].isChecked()) {

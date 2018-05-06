@@ -67,7 +67,6 @@ public class AlarmActivity extends BaseActivity {
     }
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +91,7 @@ public class AlarmActivity extends BaseActivity {
         if (!TextUtils.isEmpty(time)) {
             String[] times = time.split(":");
             if ("每天".equals(cycle)) {//是每天的闹钟
-                String id = times[0] + times[1] + 0 ;
+                String id = times[0] + times[1] + 0;
                 AlarmManagerUtil.setAlarm(this, 0, Integer.parseInt(times[0]), Integer.parseInt
                         (times[1]), Integer.parseInt(id), 1, "该复习单词了", 2);
                 clock.setC_id(id);
@@ -104,11 +103,10 @@ public class AlarmActivity extends BaseActivity {
                 String id = "";
                 for (int i = 0; i < weeks.length; i++) {
                     int ring = parseRepeat(weeks[i]);
-                    String o_id = times[0] + times[1] + ring ;
+                    String o_id = times[0] + times[1] + ring;
                     AlarmManagerUtil.setAlarm(this, 2, Integer.parseInt(times[0]), Integer
                             .parseInt(times[1]), Integer.parseInt(o_id), ring, "该复习单词了", 2);
-                    id=o_id+",";
-                    Log.e(TAG, "setClock: " + o_id +  "   "+ Integer.parseInt(o_id) );
+                    id = o_id + ",";
                 }
                 clock.setC_id(id);
             }
@@ -162,15 +160,15 @@ public class AlarmActivity extends BaseActivity {
         clockAdapter.setSelectRlClickListener(new SelectRlClickListener() {
             @Override
             public void setClickListener(int position, RecyclerView.ViewHolder viewHolder, View view) {
-                    Clock clock = clocks.get(position);
-                   AlarmAddActivity.toAddAlarm(AlarmActivity.this ,clock);
+                Clock clock = clocks.get(position);
+                AlarmAddActivity.toAddAlarm(AlarmActivity.this, clock);
             }
         });
         clockAdapter.setLongClickLisetener(new LongClickLisetener() {
             @Override
             public void LongClickListener(int position, RecyclerView.ViewHolder hodler, View view) {
                 Clock clock = clocks.get(position);
-                if (clock.isClock()){
+                if (clock.isClock()) {
                     cancelClock(clock);
                 }
                 deleteClock(position);
@@ -201,15 +199,14 @@ public class AlarmActivity extends BaseActivity {
 
     /**
      * 取消闹钟
+     *
      * @param clock
      */
-    public void cancelClock(Clock clock){
-        String c_id  = clock.getC_id();
-        Log.e(TAG, "cancelClock: "  + c_id );
+    public void cancelClock(Clock clock) {
+        String c_id = clock.getC_id();
         String c_ids[] = c_id.split(",");
         if (c_ids.length > 0) {
             for (int i = 0; i < c_ids.length; i++) {
-                Log.e(TAG, "cancelClock: " + c_ids );
                 AlarmManagerUtil.cancelAlarm(this, Integer.parseInt(c_ids[i]));
             }
         }
