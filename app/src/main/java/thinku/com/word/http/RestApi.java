@@ -38,6 +38,7 @@ import thinku.com.word.bean.WordReportMonthBeen;
 import thinku.com.word.bean.WordResultBeen;
 import thinku.com.word.bean.WordReviewTodayBeen;
 import thinku.com.word.bean.WrongIndexBeen;
+import thinku.com.word.ui.periphery.bean.RoundBean;
 import thinku.com.word.ui.personalCenter.bean.ImageBean;
 import thinku.com.word.ui.personalCenter.update.bean.VersionInfo;
 import thinku.com.word.ui.personalCenter.update.localdb.UpdateLocalDbData;
@@ -275,4 +276,7 @@ public interface RestApi {
     @FormUrlEncoded
     @POST(NetworkChildren.FEED_BACK)
     Observable<ResultBeen<Void>> feedback(@Field("content") String content);
+
+    @POST(NetworkChildren.RIM)
+    Observable<RoundBean> roundHome();
 }

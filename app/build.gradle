@@ -95,5 +95,6 @@ dependencies {
     compile 'ch.ielse:switchbutton:1.0.1'
     compile files('libs/ormlite-android-5.1.jar')
     compile files('libs/ormlite-android-5.1-sources.jar')
-    compile files('libs/ormlite-core-5.1.jar')
+    compile 'cn.bingoogolapple:bga-refreshlayout:1.1.8@aar'
+    compile 'com.jude:rollviewpager:1.4.6'
 }

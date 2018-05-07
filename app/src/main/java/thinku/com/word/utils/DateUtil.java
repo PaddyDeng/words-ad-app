@@ -134,7 +134,51 @@ public class DateUtil {
      */
     public static String dateToString(){
         Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
         return format.format(date);
+    }
+
+
+    /**
+     * 比较两日期的大小
+     * @param currentTime
+     * @param liveTime
+     * @return
+     */
+    public static boolean compare(String currentTime ,String liveTime){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
+        try{
+            Date currentDate = simpleDateFormat.parse(currentTime);
+            Date liveDate = simpleDateFormat.parse(liveTime);
+            if (currentDate.getTime() > liveDate.getTime()){
+                return false ;
+            }else{
+                return true ;
+            }
+        }catch (ParseException e){
+            Log.i("date" ,e.getMessage());
+            return false ;
+        }
+    }
+
+    /**
+     * 比较两日期的大小
+     * @param currentTime
+     * @param liveTime
+     * @return
+     */
+    public static boolean compare(long currentTime ,String liveTime){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
+        try{
+            Date liveDate = simpleDateFormat.parse(liveTime);
+            if (currentTime > liveDate.getTime()){
+                return false ;
+            }else{
+                return true ;
+            }
+        }catch (ParseException e){
+            Log.i("date" ,e.getMessage());
+            return false ;
+        }
     }
 }

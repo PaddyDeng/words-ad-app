@@ -47,7 +47,6 @@ public class AlarmAddActivity extends BaseActivity {
     @BindView(R.id.chose_weeks)
     RelativeLayout choseWeeks;
 
-    private StringBuilder choseWeeksText;
     private String minuteTxt;
     private String hourTxt;
     private ClockDao clockDao;

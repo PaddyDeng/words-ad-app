@@ -79,4 +79,10 @@ public class NetworkChildren {
     public static final String EMAIL_CODE = "app-api/send-mail" ;   //  邮箱验证接口
     public static final String FEED_BACK = "app-api/add-feedback" ;   //  意见反馈接口
 
+
+    /**
+     * 周边
+     */
+    public static final String RIM = "app-api/rim" ;  //  周边首页
+    public static final String COURSE_LIST = "app-api/course-list" ;  // 课程列表
 }

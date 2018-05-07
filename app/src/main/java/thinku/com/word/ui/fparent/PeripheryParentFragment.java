@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
 import thinku.com.word.ui.periphery.PeripheryFragment;
+import thinku.com.word.ui.periphery.RoundFragment;
 import thinku.com.word.ui.recite.ReciteFragment;
 
 /**
@@ -37,8 +38,8 @@ public class PeripheryParentFragment extends BaseFragment {
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-        if (findChildFragment(PeripheryParentFragment.class) == null){
-            loadRootFragment(R.id.parent , PeripheryFragment.newInstance());
+        if (findChildFragment(RoundFragment.class) == null){
+            loadRootFragment(R.id.parent , RoundFragment.newInstance());
         }
     }
 }

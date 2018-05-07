@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+    <View android:layout_width="match_parent"
+        android:layout_height="20px"
+        android:id="@+id/interval"
+        android:background="@color/color_interval_line" />
+    <ImageView
+        android:layout_below="@id/interval"
+        android:layout_width="250px"
+        android:layout_height="250px"
+        android:id="@+id/course_img"
+        android:src="@color/mainColor"
+        android:layout_marginTop="20px"
+        android:layout_marginLeft="40px"/>
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:maxEms="18"
+        android:ellipsize="end"
+        android:text="GMAT暑期精彩课程"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:layout_toRightOf="@id/course_img"
+        android:layout_marginTop="50px"
+        android:layout_marginLeft="40px"
+        android:id="@+id/name"/>
+
+    <ImageView
+        style="@style/course_item"
+        android:src="@mipmap/people"
+        android:layout_marginTop="10px"
+        android:layout_below="@id/name"
+        android:id="@+id/people_img"
+        />
+    <TextView
+       style="@style/course_text"
+        android:id="@+id/people"
+        android:text="19541人已加入"
+        android:layout_toRightOf="@id/people_img"
+        android:layout_alignTop="@id/people_img"
+        android:layout_marginLeft="20px"/>
+
+    <TextView
+        style="@style/course_text"
+        android:text="评分"
+        android:layout_below="@id/people"
+        android:layout_toRightOf="@id/course_img"
+        android:layout_marginLeft="50px"
+        android:layout_marginTop="10px"
+        android:id="@+id/score"
+        />
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/score"
+        android:orientation="horizontal"
+        android:layout_alignTop="@id/score"
+        android:layout_marginLeft="20px"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/yellow_star"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/yellow_star"
+            android:layout_marginLeft="10px"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10px"
+            android:src="@mipmap/yellow_star"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10px"
+            android:src="@mipmap/yellow_star"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10px"
+            android:src="@mipmap/yellow_star"/>
+    </com.zhy.autolayout.AutoLinearLayout>
+    
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="200px"
+        android:layout_height="70px"
+        android:background="@drawable/main_10round_tv"
+        android:orientation="horizontal"
+        android:layout_alignLeft="@id/people_img"
+        android:layout_below="@id/score"
+        android:layout_marginTop="10px"
+        android:id="@+id/listen"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20px"
+            android:src="@mipmap/listen"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:text="试听"
+            android:layout_marginLeft="10px"
+          />
+    </com.zhy.autolayout.AutoLinearLayout>
+
+</com.zhy.autolayout.AutoRelativeLayout>

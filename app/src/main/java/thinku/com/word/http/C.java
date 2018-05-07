@@ -15,4 +15,13 @@ public class C {
     public static String LGEmailCode = "2" ;
 
     public static String DEFAULT_PWD = "123456";
+
+
+    //  课程列表type
+    public static String LG_COURSE_GMAT = "1" ;  // GMAT
+    public static String LG_COURSE_TOEFL = "2" ;  // TOEFL
+    public static String LG_COURSE_IELTS = "3" ;  // yasi
+    public static String LG_COURSE_SAT= "4" ;  // SAT
+    public static String LG_COURSE_GRE = "5" ;  // gre
+    public static String LG_COURSE_SCHOOL = "6" ;  // 留学
 }

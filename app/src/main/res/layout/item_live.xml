@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="330px">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle_green"/>
+    <thinku.com.word.view.DashView
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        app:dashWidth = "5px"
+        app:lineWidth="5dp"
+        app:lineHeight="1px"
+        app:dashOrientation="1"
+        app:lineColor="@color/gray_text"
+        android:layout_gravity="center_horizontal"
+        />
+    </LinearLayout>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10px">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/yellow_right_round"
+            android:text="雅思课程"
+            android:id="@+id/title"
+            android:textSize="13sp"
+            />
+        <TextView
+            android:layout_width="220px"
+            android:layout_height="50px"
+            android:background="@color/mainColor"
+            android:text="08-27 20:00:00"
+            android:layout_below="@id/title"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_marginTop="10px"
+            android:id="@+id/time"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="40分钟洞悉自己！不正经留学申请治疗中心！2期"
+            android:maxLines="1"
+            android:maxEms="18"
+            android:ellipsize="end"
+            android:id="@+id/name"
+            android:textSize="15sp"
+            android:layout_below="@id/time"
+            android:layout_marginTop="10px"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_white"
+            android:text="40分钟洞悉自己！不正经留学申请治疗中心！2期"
+            android:maxLines="1"
+            android:maxEms="18"
+            android:ellipsize="end"
+            android:id="@+id/introduction"
+            android:textSize="13sp"
+            android:layout_below="@id/name"
+            android:layout_marginTop="10px"
+            />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="100px"
+            android:layout_height="100px"
+            android:src="@mipmap/a"
+            android:layout_below="@id/introduction"
+            android:id="@+id/teacher_image"
+            android:layout_marginTop="10px"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="100px"
+            android:textSize="15sp"
+            android:textColor="@color/gray_white"
+            android:text="tina老师"
+            android:id="@+id/teacher_name"
+            android:gravity="center"
+            android:layout_marginLeft="10px"
+            android:layout_alignTop="@id/teacher_image"
+            android:layout_toRightOf="@id/teacher_image"/>
+
+        <TextView
+            android:layout_width="150px"
+            android:layout_height="50px"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="预约"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/yellow_10round"
+            android:layout_marginBottom="50px"
+            android:id="@+id/reserve"
+            />
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+</com.zhy.autolayout.AutoLinearLayout>
