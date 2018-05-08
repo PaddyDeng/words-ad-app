@@ -130,7 +130,7 @@ public class ClassDetailActivity extends BaseNoImmActivity {
         GlideUtils.load(this , NetworkTitle.OPENRESOURE+dataBean.getImage() ,courseImg);
         name.setText(dataBean.getName());
         people.setText(dataBean.getViewCount()+"人已加入");
-        String s = HtmlUtil.repairContent(dataBean.getAlternatives(), NetworkTitle.DomainSmartApplyResourceNormal);
+        String s = HtmlUtil.repairContent(dataBean.getSentenceNumber(), NetworkTitle.DomainSmartApplyResourceNormal);
         String html = HtmlUtil.getHtml(s,0);
         content.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
         listen.setVisibility(View.GONE);

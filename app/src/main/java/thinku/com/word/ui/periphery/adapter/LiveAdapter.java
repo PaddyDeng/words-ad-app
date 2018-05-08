@@ -51,7 +51,7 @@ public class LiveAdapter extends RecyclerView.Adapter {
         liveHolder.title.setText(dataBean.getCatName());
         liveHolder.date.setText(dataBean.getCnName());
         liveHolder.name.setText(dataBean.getName());
-        liveHolder.introduction.setText(dataBean.getArticle());
+        liveHolder.introduction.setText(dataBean.getAlternatives());
         GlideUtils.load(context , NetworkTitle.OPENRESOURE + dataBean.getArticle()  ,liveHolder.teacher_image);
         liveHolder.teacher_name.setText(dataBean.getListeningFile());
         if (!TextUtils.isEmpty(dataBean.getIsTitle())){

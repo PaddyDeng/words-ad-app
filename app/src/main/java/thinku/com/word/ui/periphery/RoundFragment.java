@@ -157,6 +157,7 @@ public class RoundFragment extends BaseFragment {
             }
         });
         live.setLayoutManager(new ScrollLinearLayoutManager(_mActivity));
+        live.setNestedScrollingEnabled(false);
         live.setAdapter(liveAdapter);
         caseBeanList = new ArrayList<>();
         evaAdapter = new EvaAdapter(_mActivity, caseBeanList);
