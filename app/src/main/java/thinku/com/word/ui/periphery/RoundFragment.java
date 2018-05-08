@@ -342,7 +342,7 @@ public class RoundFragment extends BaseFragment {
                 ClassDetailActivity.start(_mActivity ,choicenessBeanList.get(6));
                 break;
             case R.id.calss2:
-                ClassDetailActivity.start(_mActivity ,choicenessBeanList.get(2));
+                ClassDetailActivity.start(_mActivity ,choicenessBeanList.get(1));
                 break;
             default:
                 break;

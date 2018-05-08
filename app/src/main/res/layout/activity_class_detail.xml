@@ -10,6 +10,7 @@
         android:src="@mipmap/class_bg"
         android:padding="-3dp"
         android:scaleType="fitXY"
+        android:id="@+id/course_bg"
        />
     <RelativeLayout
         android:layout_width="match_parent"
@@ -168,7 +169,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/content"
-        android:layout_below="@id/aa"
+        android:layout_below="@id/course_bg"
         android:layout_marginTop="10dp"
         />
 

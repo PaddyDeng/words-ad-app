@@ -4,15 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="330px">
+    android:layout_height="200dp">
 
     <TextView
-        android:layout_width="30dp"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:maxEms="2"
         android:textColor="@color/mainColor"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:id="@+id/month"/>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -49,8 +49,8 @@
             android:textSize="13sp"
             />
         <TextView
-            android:layout_width="220px"
-            android:layout_height="50px"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
             android:background="@color/mainColor"
             android:text="08-27 20:00:00"
             android:layout_below="@id/title"
@@ -81,7 +81,7 @@
             android:textColor="@color/gray_white"
             android:text="40分钟洞悉自己！不正经留学申请治疗中心！2期"
             android:maxLines="1"
-            android:maxEms="18"
+            android:maxEms="40"
             android:ellipsize="end"
             android:id="@+id/introduction"
             android:textSize="13sp"
@@ -90,28 +90,28 @@
             />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="100px"
-            android:layout_height="100px"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@mipmap/a"
             android:layout_below="@id/introduction"
             android:id="@+id/teacher_image"
-            android:layout_marginTop="10px"
+            android:layout_marginTop="5dp"
             />
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="100px"
+            android:layout_height="50dp"
             android:textSize="15sp"
             android:textColor="@color/gray_white"
             android:text="tina老师"
             android:id="@+id/teacher_name"
             android:gravity="center"
-            android:layout_marginLeft="10px"
+            android:layout_marginLeft="5dp"
             android:layout_alignTop="@id/teacher_image"
             android:layout_toRightOf="@id/teacher_image"/>
 
         <TextView
-            android:layout_width="150px"
-            android:layout_height="50px"
+            android:layout_width="75dp"
+            android:layout_height="30dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:text="预约"
