@@ -7,7 +7,7 @@
     android:layout_height="200dp">
 
     <TextView
-        android:layout_width="40dp"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:maxEms="2"

@@ -33,7 +33,6 @@ import thinku.com.word.ui.periphery.adapter.LiveAdapter;
 import thinku.com.word.ui.periphery.adapter.RecentClassAdapter;
 import thinku.com.word.ui.periphery.bean.RoundBean;
 import thinku.com.word.utils.DateUtil;
-import thinku.com.word.view.ScrollLinearLayoutManager;
 
 import static thinku.com.word.http.C.LG_COURSE_GMAT;
 import static thinku.com.word.http.C.LG_COURSE_GRE;
@@ -131,7 +130,8 @@ public class RoundFragment extends BaseFragment {
     private TextView[] titles = new TextView[7];
     private TextView[] contents = new TextView[7];
 
-    private List<RoundBean.ChoicenessBean > choicenessBeanList ;
+    private List<RoundBean.ChoicenessBean> choicenessBeanList;
+
     public static RoundFragment newInstance() {
         RoundFragment peripheryFragment = new RoundFragment();
         return peripheryFragment;
@@ -147,17 +147,17 @@ public class RoundFragment extends BaseFragment {
         return view;
     }
 
+
     public void init() {
         dataBeanList = new ArrayList<>();
         liveAdapter = new LiveAdapter(_mActivity, dataBeanList);
         liveAdapter.SelectListener(new SelectListener() {
             @Override
             public void setListener(int position) {
-               ClassDetailActivity.start(_mActivity ,dataBeanList.get(position));
+                ClassDetailActivity.start(_mActivity, dataBeanList.get(position));
             }
         });
-        live.setLayoutManager(new ScrollLinearLayoutManager(_mActivity));
-        live.setNestedScrollingEnabled(false);
+        live.setLayoutManager(new LinearLayoutManager(_mActivity));
         live.setAdapter(liveAdapter);
         caseBeanList = new ArrayList<>();
         evaAdapter = new EvaAdapter(_mActivity, caseBeanList);
@@ -169,20 +169,20 @@ public class RoundFragment extends BaseFragment {
         });
         evaList.setLayoutManager(new LinearLayoutManager(_mActivity));
         evaList.setAdapter(evaAdapter);
-        titles[0] = title1 ;
-        titles[1] = title2 ;
-        titles[2] = title3 ;
-        titles[3] = title4 ;
-        titles[4] = title5 ;
-        titles[5] = title6 ;
-        titles[6] = title7 ;
-        contents[0] = content1 ;
-        contents[1] = content2 ;
-        contents[2] = content3 ;
-        contents[3] = content4 ;
-        contents[4] = content5 ;
-        contents[5] = content6 ;
-        contents[6] = content7 ;
+        titles[0] = title1;
+        titles[1] = title2;
+        titles[2] = title3;
+        titles[3] = title4;
+        titles[4] = title5;
+        titles[5] = title6;
+        titles[6] = title7;
+        contents[0] = content1;
+        contents[1] = content2;
+        contents[2] = content3;
+        contents[3] = content4;
+        contents[4] = content5;
+        contents[5] = content6;
+        contents[6] = content7;
     }
 
     /**
@@ -226,17 +226,17 @@ public class RoundFragment extends BaseFragment {
         setClass(roundBean.getChoiceness());
     }
 
-    public void setClass(List<RoundBean.ChoicenessBean > choicenessBeanList){
-        this.choicenessBeanList = choicenessBeanList ;
-        for (int i = 0 ;  i< choicenessBeanList.size() ; i++){
+    public void setClass(List<RoundBean.ChoicenessBean> choicenessBeanList) {
+        this.choicenessBeanList = choicenessBeanList;
+        for (int i = 0; i < choicenessBeanList.size(); i++) {
             titles[i].setText(getClassType(choicenessBeanList.get(i).getCategoryId()));
             contents[i].setText(choicenessBeanList.get(i).getName());
         }
     }
 
-    public String getClassType(String id){
+    public String getClassType(String id) {
         String type = "";
-        switch (id){
+        switch (id) {
             case "1":
                 type = "GMAT";
                 break;
@@ -258,51 +258,54 @@ public class RoundFragment extends BaseFragment {
             default:
                 break;
         }
-        return type ;
+        return type;
     }
 
     public void choseLiveList(List<RoundBean.LivePreviewBean> livePreviewBeanList) {
         for (RoundBean.LivePreviewBean livePreviewBean : livePreviewBeanList) {
-            int i = 0 ;
+            int i = 0;
             if (DateUtil.compare(DateUtil.dateToString(), livePreviewBean.getDate())) {
 
-                for (RoundBean.LivePreviewBean.DataBean dataBean : livePreviewBean.getData()) {
-                    i++ ;
-                    if (i == 1){
+                for (int j = 0; j < livePreviewBean.getData().size(); j++) {
+                    RoundBean.LivePreviewBean.DataBean dataBean = livePreviewBean.getData().get(j);
+                    i++;
+                    if (i == 1) {
                         dataBean.setIsTitle(livePreviewBean.getDate());
                     }
                     if (DateUtil.compare(System.currentTimeMillis(), dataBean.getCnName())) {
                         dataBeanList.add(dataBean);
-                    }else{
+                    } else {
                         dataBeanList.add(dataBean);
                     }
                 }
             } else {
-                for (RoundBean.LivePreviewBean.DataBean dataBean : livePreviewBean.getData()) {
-                    i++ ;
-                    if (i == 1){
-                        dataBean.setTitle(livePreviewBean.getDate());
+                for (int j = 0; j < livePreviewBean.getData().size(); j++) {
+                    RoundBean.LivePreviewBean.DataBean dataBean = livePreviewBean.getData().get(j);
+                    i++;
+                    if (i == 1) {
+                        dataBean.setIsTitle(livePreviewBean.getDate());
                     }
                     if (DateUtil.compare(System.currentTimeMillis(), dataBean.getCnName())) {
                         dataBeanList.add(dataBean);
-                    }else{
+                    } else {
                         dataBeanList.add(dataBean);
                     }
-                }
             }
         }
-        if (dataBeanList.isEmpty()) {
-            openClass.setVisibility(View.GONE);
-            oepnClassTitle.setVisibility(View.GONE);
-        } else {
-            openClass.setVisibility(View.VISIBLE);
-            oepnClassTitle.setVisibility(View.VISIBLE);
-            liveAdapter.notifyDataSetChanged();
-        }
+    }
+        if(dataBeanList.isEmpty()) {
+        openClass.setVisibility(View.GONE);
+        oepnClassTitle.setVisibility(View.GONE);
+    } else {
+        openClass.setVisibility(View.VISIBLE);
+        oepnClassTitle.setVisibility(View.VISIBLE);
+        liveAdapter.notifyDataSetChanged();
     }
 
+}
+
     @OnClick({R.id.case_more, R.id.gmat, R.id.gre, R.id.toefl, R.id.IELTS, R.id.abroad,
-    R.id.class1 ,R.id.class3 ,R.id.class4 ,R.id.class5 ,R.id.class6 ,R.id.class7 ,R.id.calss2})
+            R.id.class1, R.id.class3, R.id.class4, R.id.class5, R.id.class6, R.id.class7, R.id.calss2})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.case_more:
@@ -324,25 +327,25 @@ public class RoundFragment extends BaseFragment {
                 PeripheryFragment.start(_mActivity, LG_COURSE_SCHOOL);
                 break;
             case R.id.class1:
-                ClassDetailActivity.start(_mActivity ,choicenessBeanList.get(0));
+                ClassDetailActivity.start(_mActivity, choicenessBeanList.get(0));
                 break;
             case R.id.class3:
-                ClassDetailActivity.start(_mActivity ,choicenessBeanList.get(2));
+                ClassDetailActivity.start(_mActivity, choicenessBeanList.get(2));
                 break;
             case R.id.class4:
-                ClassDetailActivity.start(_mActivity ,choicenessBeanList.get(3));
+                ClassDetailActivity.start(_mActivity, choicenessBeanList.get(3));
                 break;
             case R.id.class5:
-                ClassDetailActivity.start(_mActivity ,choicenessBeanList.get(4));
+                ClassDetailActivity.start(_mActivity, choicenessBeanList.get(4));
                 break;
             case R.id.class6:
-                ClassDetailActivity.start(_mActivity ,choicenessBeanList.get(5));
+                ClassDetailActivity.start(_mActivity, choicenessBeanList.get(5));
                 break;
             case R.id.class7:
-                ClassDetailActivity.start(_mActivity ,choicenessBeanList.get(6));
+                ClassDetailActivity.start(_mActivity, choicenessBeanList.get(6));
                 break;
             case R.id.calss2:
-                ClassDetailActivity.start(_mActivity ,choicenessBeanList.get(1));
+                ClassDetailActivity.start(_mActivity, choicenessBeanList.get(1));
                 break;
             default:
                 break;

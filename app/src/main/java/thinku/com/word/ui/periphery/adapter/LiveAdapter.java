@@ -3,6 +3,7 @@ package thinku.com.word.ui.periphery.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ import thinku.com.word.utils.StringUtils;
  */
 
 public class LiveAdapter extends RecyclerView.Adapter {
-
+    private static final String TAG =LiveAdapter.class.getSimpleName();
     private List<RoundBean.LivePreviewBean.DataBean> dataBeanList ;
     private Context context ;
     private SelectListener selectListener ;
@@ -55,7 +56,9 @@ public class LiveAdapter extends RecyclerView.Adapter {
         GlideUtils.load(context , NetworkTitle.OPENRESOURE + dataBean.getArticle()  ,liveHolder.teacher_image);
         liveHolder.teacher_name.setText(dataBean.getListeningFile());
         if (!TextUtils.isEmpty(dataBean.getIsTitle())){
-            liveHolder.month.setText(Integer.parseInt(StringUtils.spiltInt(dataBean.getIsTitle()).get(1)) +"月课程");
+            liveHolder.month.setText(Integer.parseInt(StringUtils.spiltInt(dataBean.getIsTitle()).get(1)) +" 月课程");
+        }else{
+            liveHolder.month.setText("");
         }
         liveHolder.reserve.setOnClickListener(new View.OnClickListener() {
             @Override
