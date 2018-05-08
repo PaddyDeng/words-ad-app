@@ -549,6 +549,7 @@ public class RoundBean {
             image = in.readString();
             content = in.readString();
             details = in.readString();
+            createTime = in.readLong();
         }
 
         public static final Creator<CaseBean> CREATOR = new Creator<CaseBean>() {
@@ -614,6 +615,7 @@ public class RoundBean {
             dest.writeString(image);
             dest.writeString(content);
             dest.writeString(details);
+            dest.writeLong(createTime);
         }
     }
 }
