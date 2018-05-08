@@ -1,5 +1,8 @@
 package thinku.com.word.ui.periphery.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -47,7 +50,7 @@ public class RoundBean {
         this.caseX = caseX;
     }
 
-    public static class RecentClassBean {
+    public static class RecentClassBean implements Parcelable {
         /**
          * id : 3356
          * pid : 0
@@ -72,6 +75,41 @@ public class RoundBean {
         private String image;
         private String cnName;
         private String sentenceNumber;
+        private String viewCount ;
+
+
+        public RecentClassBean(){}
+
+        protected RecentClassBean(Parcel in) {
+            name = in.readString();
+            title = in.readString();
+            image = in.readString();
+            cnName = in.readString();
+            sentenceNumber = in.readString();
+            viewCount = in.readString();
+        }
+
+
+        public static final Creator<RecentClassBean> CREATOR = new Creator<RecentClassBean>() {
+            @Override
+            public RecentClassBean createFromParcel(Parcel in) {
+                return new RecentClassBean(in);
+            }
+
+            @Override
+            public RecentClassBean[] newArray(int size) {
+                return new RecentClassBean[size];
+            }
+        };
+
+
+        public String getViewCount() {
+            return viewCount;
+        }
+
+        public void setViewCount(String viewCount) {
+            this.viewCount = viewCount;
+        }
 
         public String getName() {
             return name;
@@ -112,6 +150,22 @@ public class RoundBean {
         public void setSentenceNumber(String sentenceNumber) {
             this.sentenceNumber = sentenceNumber;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(name);
+            dest.writeString(title);
+            dest.writeString(image);
+            dest.writeString(cnName);
+            dest.writeString(sentenceNumber);
+            dest.writeString(viewCount);
+
+        }
     }
 
     public static class LivePreviewBean {
@@ -139,7 +193,7 @@ public class RoundBean {
             this.data = data;
         }
 
-        public static class DataBean {
+        public static class DataBean implements Parcelable {
             /**
              * id : 3356
              * pid : 0
@@ -201,6 +255,50 @@ public class RoundBean {
             private String cnName;
             private String sentenceNumber;
             private String catName ;
+            private String isTitle ;
+            private String viewCount ;
+
+            protected DataBean(Parcel in) {
+                name = in.readString();
+                title = in.readString();
+                image = in.readString();
+                alternatives = in.readString();
+                article = in.readString();
+                listeningFile = in.readString();
+                cnName = in.readString();
+                sentenceNumber = in.readString();
+                catName = in.readString();
+                isTitle = in.readString();
+                viewCount = in.readString();
+            }
+
+            public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
+                @Override
+                public DataBean createFromParcel(Parcel in) {
+                    return new DataBean(in);
+                }
+
+                @Override
+                public DataBean[] newArray(int size) {
+                    return new DataBean[size];
+                }
+            };
+
+            public String getViewCount() {
+                return viewCount;
+            }
+
+            public void setViewCount(String viewCount) {
+                this.viewCount = viewCount;
+            }
+
+            public String getIsTitle() {
+                return isTitle;
+            }
+
+            public void setIsTitle(String isTitle) {
+                this.isTitle = isTitle;
+            }
 
             public String getCatName() {
                 return catName;
@@ -273,10 +371,30 @@ public class RoundBean {
             public void setSentenceNumber(String sentenceNumber) {
                 this.sentenceNumber = sentenceNumber;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(name);
+                dest.writeString(title);
+                dest.writeString(image);
+                dest.writeString(alternatives);
+                dest.writeString(article);
+                dest.writeString(listeningFile);
+                dest.writeString(cnName);
+                dest.writeString(sentenceNumber);
+                dest.writeString(catName);
+                dest.writeString(isTitle);
+                dest.writeString(viewCount);
+            }
         }
     }
 
-    public static class ChoicenessBean {
+    public static class ChoicenessBean implements Parcelable {
         /**
          * id : 2
          * categoryId : 1
@@ -298,6 +416,31 @@ public class RoundBean {
         private String createTime;
         private String content;
         private String image;
+
+        public ChoicenessBean(){}
+
+        protected ChoicenessBean(Parcel in) {
+            id = in.readString();
+            categoryId = in.readString();
+            name = in.readString();
+            relationId = in.readString();
+            url = in.readString();
+            createTime = in.readString();
+            content = in.readString();
+            image = in.readString();
+        }
+
+        public static final Creator<ChoicenessBean> CREATOR = new Creator<ChoicenessBean>() {
+            @Override
+            public ChoicenessBean createFromParcel(Parcel in) {
+                return new ChoicenessBean(in);
+            }
+
+            @Override
+            public ChoicenessBean[] newArray(int size) {
+                return new ChoicenessBean[size];
+            }
+        };
 
         public String getId() {
             return id;
@@ -362,9 +505,26 @@ public class RoundBean {
         public void setImage(String image) {
             this.image = image;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(id);
+            dest.writeString(categoryId);
+            dest.writeString(name);
+            dest.writeString(relationId);
+            dest.writeString(url);
+            dest.writeString(createTime);
+            dest.writeString(content);
+            dest.writeString(image);
+        }
     }
 
-    public static class CaseBean {
+    public static class CaseBean implements Parcelable {
         /**
          * id : 5246
          * name : 恭喜雷哥网lgw的z同学继BC之后 又拿到了华威大学金融专业的offer~~
@@ -379,6 +539,37 @@ public class RoundBean {
         private String image;
         private String content;
         private String details;
+        private long createTime ;
+
+
+
+
+        protected CaseBean(Parcel in) {
+            name = in.readString();
+            image = in.readString();
+            content = in.readString();
+            details = in.readString();
+        }
+
+        public static final Creator<CaseBean> CREATOR = new Creator<CaseBean>() {
+            @Override
+            public CaseBean createFromParcel(Parcel in) {
+                return new CaseBean(in);
+            }
+
+            @Override
+            public CaseBean[] newArray(int size) {
+                return new CaseBean[size];
+            }
+        };
+
+        public long getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(long createTime) {
+            this.createTime = createTime;
+        }
 
         public String getName() {
             return name;
@@ -410,6 +601,19 @@ public class RoundBean {
 
         public void setDetails(String details) {
             this.details = details;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(name);
+            dest.writeString(image);
+            dest.writeString(content);
+            dest.writeString(details);
         }
     }
 }

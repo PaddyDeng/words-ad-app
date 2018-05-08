@@ -1,310 +1,515 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
-<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <View
+    <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_height"/>
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
 
-    <com.zhy.autolayout.AutoRelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="550px">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="400px"
-        android:src="@mipmap/round_title"
-        android:id="@+id/title"
-        android:scaleType="fitXY"
-        />
-
-    <View android:layout_width="match_parent"
-        android:layout_height="150px"
-        android:background="@color/color_interval_line"
-        android:layout_below="@id/title"
-        />
-        
-        <com.zhy.autolayout.AutoLinearLayout
+        <com.zhy.autolayout.AutoRelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="200px"
-            android:background="@drawable/white_10round"
-            android:layout_marginLeft="20px"
-            android:layout_marginRight="20px"
-            android:orientation="horizontal"
-            android:layout_marginBottom="50px"
-            android:layout_alignParentBottom="true"
-            android:weightSum="5"
-            >
-            <com.zhy.autolayout.AutoLinearLayout
-               style="@style/linear_layout"
-                android:id="@+id/gmat">
+            android:layout_height="275dp">
+
             <ImageView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/round_title" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_below="@id/title"
+                android:background="@color/color_interval_line" />
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/white_10round"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:id="@+id/gmat"
+                    style="@style/linear_layout">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/course_gmat" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="学GMAT"
+                        android:textSize="13sp" />
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:id="@+id/gre"
+                    style="@style/linear_layout">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/course_gre" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="学GRE"
+                        android:textSize="13sp" />
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:id="@+id/toefl"
+                    style="@style/linear_layout">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/course_sat" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="学托福"
+                        android:textSize="13sp" />
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:id="@+id/IELTS"
+                    style="@style/linear_layout">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/course_toffle" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="学雅思"
+                        android:textSize="13sp" />
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:id="@+id/abroad"
+                    style="@style/linear_layout">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/course_abroad" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="去留学"
+                        android:textSize="13sp" />
+                </com.zhy.autolayout.AutoLinearLayout>
+            </com.zhy.autolayout.AutoLinearLayout>
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:text="最近公开课"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <com.jude.rollviewpager.RollPagerView
+            android:id="@+id/rollPager"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="10dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/color_interval_line" />
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="25dp"
+            android:orientation="horizontal"
+            android:id="@+id/oepn_class_title"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/triangle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/course_gmat"
-                />
+                android:layout_centerVertical="true"
+                android:src="@mipmap/triangle" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20px"
-                android:layout_marginBottom="20px"
-                android:text="学GMAT"
-                android:textSize="13sp"
-                />
-            </com.zhy.autolayout.AutoLinearLayout>
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/triangle"
+                android:text="最近公开课"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
-            <com.zhy.autolayout.AutoLinearLayout
-                style="@style/linear_layout"
-                android:id="@+id/gre">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/course_gre"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20px"
-                    android:layout_marginBottom="20px"
-                    android:text="学GRE"
-                    android:textSize="13sp"
-                    />
-            </com.zhy.autolayout.AutoLinearLayout>
-
-            <com.zhy.autolayout.AutoLinearLayout
-                style="@style/linear_layout"
-                android:id="@+id/toefl">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/course_sat"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20px"
-                    android:layout_marginBottom="20px"
-                    android:text="学托福"
-                    android:textSize="13sp"
-                    />
-            </com.zhy.autolayout.AutoLinearLayout>
-
-            <com.zhy.autolayout.AutoLinearLayout
-                style="@style/linear_layout"
-                android:id="@+id/IELTS">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/course_toffle"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20px"
-                    android:layout_marginBottom="20px"
-                    android:text="学雅思"
-                    android:textSize="13sp"
-                    />
-            </com.zhy.autolayout.AutoLinearLayout>
-            <com.zhy.autolayout.AutoLinearLayout
-                style="@style/linear_layout"
-                android:id="@+id/abroad">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/course_abroad"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20px"
-                    android:layout_marginBottom="20px"
-                    android:text="去留学"
-                    android:textSize="13sp"
-                    />
-            </com.zhy.autolayout.AutoLinearLayout>
-        </com.zhy.autolayout.AutoLinearLayout>
-    </com.zhy.autolayout.AutoRelativeLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10px"
-        android:text="最近公开课"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:layout_gravity="center_horizontal"
-        />
-
-    <com.jude.rollviewpager.RollPagerView
-        android:layout_width="match_parent"
-        android:layout_height="250px"
-        android:layout_marginTop="20px"
-        android:layout_marginBottom="20px"
-        android:layout_marginLeft="50px"
-        android:layout_marginRight="50px"
-        android:id="@+id/rollPager" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="20px"
-        android:background="@color/color_interval_line"/>
-
-    <com.zhy.autolayout.AutoRelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="100px"
-        android:layout_marginLeft="50px"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/triangle"
-            android:id="@+id/triangle"
-            android:layout_centerVertical="true"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="最近公开课"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:layout_toRightOf="@id/triangle"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10px"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="more>"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="50px"
-            android:layout_alignParentRight="true"
-            />
-    </com.zhy.autolayout.AutoRelativeLayout>
-
-    <com.zhy.autolayout.AutoLinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="700px"
-        android:orientation="horizontal"
-        android:layout_marginLeft="50px"
-        android:layout_marginRight="50px"
-        android:layout_marginTop="20px">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_height="wrap_content"
-        android:textColor="@color/mainColor"
-        android:maxEms="2"
-        android:text="8 月课程"
-        android:textSize="15sp"/>
-    <android.support.v7.widget.RecyclerView
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20px"
-        android:id="@+id/live" />
-    </com.zhy.autolayout.AutoLinearLayout>
-
-    <com.zhy.autolayout.AutoLinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100px"
-        android:layout_marginLeft="50px"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/triangle"
-            android:layout_gravity="center_vertical"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="经典课程"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10px"
-            />
-    </com.zhy.autolayout.AutoLinearLayout>
-    
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20px"
-        android:layout_marginLeft="20px"
-        android:layout_marginRight="20px">
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="300px"
-            android:layout_weight="3">
-
-        <com.zhy.autolayout.AutoRelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@mipmap/diy_blue"
-                android:scaleType="fitXY"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="25dp"
+                android:text="more>"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
-            <com.zhy.autolayout.AutoRelativeLayout
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:id="@+id/open_class"
+            android:visibility="gone"
+            >
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/live"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="10px">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@mipmap/diy_blue"
-                    android:scaleType="fitXY"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true" />
-            </com.zhy.autolayout.AutoRelativeLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1" />
+        </com.zhy.autolayout.AutoLinearLayout>
 
-            <com.zhy.autolayout.AutoRelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="10px">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@mipmap/diy_blue"
-                    android:scaleType="fitXY"/>
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginLeft="25dp"
+            android:orientation="horizontal">
 
-            </com.zhy.autolayout.AutoRelativeLayout>
-        </TableRow>
-        <TableRow
-            android:layout_width=""
-            android:layout_height="300px"
-            android:layout_weight="1"
-            android:layout_span ="2">
-        </TableRow>
-        <TableRow
-            android:layout_width="0dp"
-            android:layout_height="300px"
-            android:layout_weight="1"
-            android:background="@color/black">
-        </TableRow>
-    </TableLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/triangle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:text="经典课程"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/border_space"
+            android:layout_marginRight="@dimen/border_space"
+            android:layout_marginTop="@dimen/border_space">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.zhy.autolayout.AutoRelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/round_tab"
+                    android:layout_weight="1"
+                    android:id="@+id/class1">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/diy_black_1v2" />
+
+                    <TextView
+                        style="@style/round_tab_title"
+                        android:background="@drawable/translucent_10round"
+                        android:layout_marginTop="@dimen/border_space"
+                        android:id="@+id/title1"
+                        />
+
+                    <TextView
+                        style="@style/round_text"
+                        android:layout_below="@id/title1"
+                        android:gravity="center"
+                        android:id="@+id/content1"
+                        />
+                </com.zhy.autolayout.AutoRelativeLayout>
+
+                <com.zhy.autolayout.AutoRelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/round_tab"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:id="@+id/calss2">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/diy_red" />
+
+                    <TextView
+                        style="@style/round_tab_title"
+                        android:background="@drawable/translucent_10round"
+                        android:layout_marginTop="@dimen/border_space"
+                        android:id="@+id/title2"/>
+
+                    <TextView
+                        style="@style/round_text"
+                        android:layout_below="@id/title2"
+                        android:gravity="center"
+                        android:id="@+id/content2"
+                        />
+                </com.zhy.autolayout.AutoRelativeLayout>
+
+                <com.zhy.autolayout.AutoRelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/round_tab"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:id="@+id/class3">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/diy_green" />
+
+                    <TextView
+                        style="@style/round_tab_title"
+                        android:background="@drawable/translucent_10round"
+                        android:layout_marginTop="@dimen/border_space"
+                        android:id="@+id/title3"/>
+
+                    <TextView
+                        style="@style/round_text"
+                        android:layout_below="@id/title3"
+                        android:gravity="center"
+                        android:id="@+id/content3"
+                        />
+
+                </com.zhy.autolayout.AutoRelativeLayout>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:weightSum="3">
+
+                <com.zhy.autolayout.AutoRelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="205dp"
+                    android:layout_weight="1"
+                    android:id="@+id/class4">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/diy_large_heige" />
 
 
-</com.zhy.autolayout.AutoLinearLayout>
-    </ScrollView>
+                    <TextView
+                        style="@style/round_tab_title"
+                        android:background="@drawable/translucent_10round"
+                        android:layout_marginTop="@dimen/border_space_max_max"
+                        android:id="@+id/title4"/>
+
+                    <TextView
+                        style="@style/round_text"
+                        android:layout_below="@id/title4"
+                        android:layout_marginTop="25dp"
+                        android:gravity="center"
+                        android:id="@+id/content4"
+                        />
+                </com.zhy.autolayout.AutoRelativeLayout>
+
+                <TableLayout android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="205dp"
+                    android:layout_marginLeft="5dp"
+                    >
+
+                    <TableRow
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="@dimen/round_tab"
+                        android:weightSum="2">
+
+                        <com.zhy.autolayout.AutoRelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/round_tab"
+                            android:layout_weight="1"
+                            android:id="@+id/class5">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="fitXY"
+                                android:src="@mipmap/diy_yellow" />
+
+
+                            <TextView
+                                style="@style/round_tab_title"
+                                android:background="@drawable/translucent_10round"
+                                android:layout_marginTop="@dimen/border_space"
+                                android:id="@+id/title5"/>
+
+                            <TextView
+                                style="@style/round_text"
+                                android:layout_below="@id/title5"
+                                android:gravity="center"
+                                android:id="@+id/content5"
+                                />
+                        </com.zhy.autolayout.AutoRelativeLayout>
+
+                        <com.zhy.autolayout.AutoRelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/round_tab"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="5dp"
+                            android:id="@+id/class6">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="fitXY"
+                                android:src="@mipmap/diy_blue" />
+
+
+                            <TextView
+                                style="@style/round_tab_title"
+                                android:background="@drawable/translucent_10round"
+                                android:layout_marginTop="@dimen/border_space"
+                                android:id="@+id/title6"/>
+
+                            <TextView
+                                style="@style/round_text"
+                                android:layout_below="@id/title6"
+                                android:gravity="center"
+                                android:id="@+id/content6"
+                                />
+                        </com.zhy.autolayout.AutoRelativeLayout>
+
+                    </TableRow>
+
+                    <TableRow android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        >
+                        <com.zhy.autolayout.AutoRelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/round_tab"
+                            android:layout_weight="1"
+                            android:id="@+id/class7"
+                           >
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="fitXY"
+                                android:src="@mipmap/diy_large_width" />
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/border_space_sec"
+                                android:textColor="@color/white"
+                                android:background="@drawable/translucent_10round"
+                                android:layout_marginTop="@dimen/border_space_sec_max_m"
+                                android:id="@+id/title7"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/border_space_sec"
+                                android:layout_marginTop="@dimen/border_space_sec_m"
+                                android:textColor="@color/white"
+                                android:layout_below="@id/title7"
+                                android:gravity="center"
+                                android:id="@+id/content7"
+                                />
+                        </com.zhy.autolayout.AutoRelativeLayout>
+                    </TableRow>
+                </TableLayout>
+            </TableRow>
+        </TableLayout>
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="25dp"
+            android:orientation="horizontal"
+            android:id="@+id/case_more">
+
+            <ImageView
+                android:id="@+id/triangle_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/triangle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/triangle_1"
+                android:text="案列列表"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="25dp"
+                android:text="more>"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:id="@+id/eva_list" />
+    </com.zhy.autolayout.AutoLinearLayout>
+</ScrollView>

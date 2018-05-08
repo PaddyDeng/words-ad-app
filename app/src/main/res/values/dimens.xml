@@ -23,4 +23,9 @@
     <dimen name="border_space_max_max">50dip</dimen>
 
     <dimen name="text_size_ms">15sp</dimen>
+
+
+    <dimen name="round_tab">100dp</dimen>
+
+
 </resources>

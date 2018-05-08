@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 import thinku.com.word.R;
 import thinku.com.word.ui.periphery.bean.CourseBean;
+import thinku.com.word.utils.GlideUtils;
 
 /**
  * Created by Administrator on 2018/5/7.
@@ -36,17 +38,21 @@ public class CourseAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         CourseHolder courseHolder = (CourseHolder) holder;
-//        CourseBean courseBean = courseBeanList.get(position);
+        CourseBean courseBean = courseBeanList.get(position);
+        courseHolder.name.setText(courseBean.getName());
+        courseHolder.people.setText(courseBean.getView()+"人已加入");
+        new GlideUtils().load(context ,courseBean.getImage() , courseHolder.course_img);
+
     }
 
     @Override
     public int getItemCount() {
-//        return courseBeanList == null? 0 : courseBeanList.size();
-        return 10 ;
+        return courseBeanList == null? 0 : courseBeanList.size();
     }
 
      class CourseHolder extends RecyclerView.ViewHolder{
          private TextView name ,people ;
+         private ImageView course_img ;
          private LinearLayout listen ;
          public CourseHolder(View itemView) {
              super(itemView);
@@ -54,6 +60,7 @@ public class CourseAdapter extends RecyclerView.Adapter {
              name = (TextView) itemView.findViewById(R.id.name);
              people = (TextView) itemView.findViewById(R.id.people);
              listen = (LinearLayout) itemView.findViewById(R.id.listen);
+             course_img = (ImageView) itemView.findViewById(R.id.course_img);
          }
      }
 }

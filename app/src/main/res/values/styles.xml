@@ -266,4 +266,26 @@
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
+
+    <style name="center_text_re" parent="wrap">
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
+
+    <style name="round_tab_title" parent="center_text_re">
+        <item name="android:paddingStart">@dimen/border_space_sec</item>
+        <item name="android:paddingEnd">@dimen/border_space_sec</item>
+        <item name="android:paddingTop">2px</item>
+        <item name="android:paddingBottom">2px</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+
+    <style name="round_text" parent="center_text_re">
+        <item name="android:layout_marginTop">@dimen/border_space_sec</item>
+        <item name="android:maxLines">6</item>
+    </style>
 </resources>

@@ -1,25 +1,30 @@
 package thinku.com.word.ui.periphery;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
-import thinku.com.word.base.BaseFragment;
+import thinku.com.word.base.BaseActivity;
+import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.periphery.adapter.CourseAdapter;
 import thinku.com.word.ui.periphery.bean.CourseBean;
 import thinku.com.word.utils.HttpUtils;
@@ -28,7 +33,7 @@ import thinku.com.word.utils.HttpUtils;
  * 周边
  */
 
-public class PeripheryFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate {
+public class PeripheryFragment extends BaseActivity implements BGARefreshLayout.BGARefreshLayoutDelegate {
 
     @BindView(R.id.back)
     ImageView back;
@@ -44,27 +49,63 @@ public class PeripheryFragment extends BaseFragment implements BGARefreshLayout.
 
     private List<CourseBean> courseBeanList;
     private CourseAdapter courseAdapter;
-    public static PeripheryFragment newInstance() {
-        PeripheryFragment peripheryFragment = new PeripheryFragment();
-        return peripheryFragment;
+
+    private int type ;
+    public static void start(Context context , int type){
+        Intent intent = new Intent(context ,PeripheryFragment.class);
+        intent.putExtra("type" , type);
+        context.startActivity(intent);
     }
 
-    @Nullable
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_periphery, container, false);
-        unbinder = ButterKnife.bind(this, view);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_periphery);
+        unbinder = ButterKnife.bind(this);
+        try{
+            type = getIntent().getIntExtra("type" , 1);
+        }catch (Exception e){
+
+        }
         init();
         initRefreshLayout();
-        return view;
+        initData();
     }
+
+
+    public void initData(){
+        addToCompositeDis(HttpUtil.courseBeanObservable(type)
+        .doOnSubscribe(new Consumer<Disposable>() {
+            @Override
+            public void accept(@NonNull Disposable disposable) throws Exception {
+                showLoadDialog();
+            }
+        }).subscribe(new Consumer<List<CourseBean>>() {
+                    @Override
+                    public void accept(@NonNull List<CourseBean> courseBeans) throws Exception {
+                        dismissLoadDialog();
+                        if (courseBeans != null && courseBeans.size() > 0){
+                            courseBeanList.addAll(courseBeans);
+                            courseAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        dismissLoadDialog();
+                        toTast(PeripheryFragment.this ,throwable.toString());
+                    }
+                }));
+    }
+
 
 
     public void initRefreshLayout(){
         // 为BGARefreshLayout 设置代理
         swipeRefer.setDelegate(this);
         // 设置下拉刷新和上拉加载更多的风格     参数1：应用程序上下文，参数2：是否具有上拉加载更多功能
-        BGARefreshViewHolder refreshViewHolder = new BGANormalRefreshViewHolder(_mActivity, true);
+        BGARefreshViewHolder refreshViewHolder = new BGANormalRefreshViewHolder(this, true);
         // 设置下拉刷新和上拉加载更多的风格
         swipeRefer.setRefreshViewHolder(refreshViewHolder);
 //
@@ -87,31 +128,33 @@ public class PeripheryFragment extends BaseFragment implements BGARefreshLayout.
 //        // 可选配置  -------------END
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
+    @OnClick(R.id.back)
+    public void back(){
+        this.finishWithAnim();
     }
 
     public void init() {
         titleT.setText("课程列表");
-        courseAdapter = new CourseAdapter(_mActivity, courseBeanList);
-        courseList.setLayoutManager(new LinearLayoutManager(_mActivity));
+        courseBeanList = new ArrayList<>();
+        courseAdapter = new CourseAdapter(this, courseBeanList);
+        courseList.setLayoutManager(new LinearLayoutManager(this));
         courseList.setAdapter(courseAdapter);
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    protected void onDestroy() {
+        super.onDestroy();
         unbinder.unbind();
     }
 
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout bgaRefreshLayout) {
-        if (HttpUtils.isConnected(_mActivity)){    //  有网   加载数据
+        if (HttpUtils.isConnected(this)){    //  有网   加载数据
             swipeRefer.endRefreshing();
+            initData();
         }else{
             // 网络不可用，结束下拉刷新
-            toTast(_mActivity ,"网络不可用");
+            toTast(this ,"网络不可用");
             swipeRefer.endRefreshing();
         }
     }
@@ -119,12 +162,12 @@ public class PeripheryFragment extends BaseFragment implements BGARefreshLayout.
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout bgaRefreshLayout) {
         // 在这里加载更多数据，或者更具产品需求实现上拉刷新也可以
-        if (HttpUtils.isConnected(_mActivity)){    //  有网   加载数据
+        if (HttpUtils.isConnected(this)){    //  有网   加载数据
             swipeRefer.endLoadingMore();
             return true ;
         }else{
             // 网络不可用，结束下拉刷新
-            toTast(_mActivity ,"网络不可用");
+            toTast(this ,"网络不可用");
             swipeRefer.endLoadingMore();
             return false;
         }

@@ -16,7 +16,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * Created by Administrator on 2018/3/21.
  */
 
-public class BaseFragmentActivitiy extends BaseActivity implements ISupportActivity {
+public class BaseNoImmFragmentActivitiy extends BaseNoImmActivity implements ISupportActivity {
     final SupportActivityDelegate mDelegate = new SupportActivityDelegate(this);  //  fragment 功能 对象
 
     @Override

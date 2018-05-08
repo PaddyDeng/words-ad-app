@@ -6,42 +6,31 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.yanzhenjie.permission.Permission;
-
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.yokeyword.fragmentation.SupportActivity;
 import me.yokeyword.fragmentation.SupportFragment;
 import thinku.com.word.R;
-import thinku.com.word.base.BaseActivity;
-import thinku.com.word.base.BaseFragment;
-import thinku.com.word.base.BaseFragmentActivitiy;
+import thinku.com.word.base.BaseNoImmFragmentActivitiy;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
 import thinku.com.word.callback.PermissionCallback;
-import thinku.com.word.callback.ReferImage;
-import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.fparent.PKParentFragment;
 import thinku.com.word.ui.fparent.PeripheryParentFragment;
 import thinku.com.word.ui.fparent.ReportParentFragment;
 import thinku.com.word.ui.fparent.WordParentFragment;
-import thinku.com.word.ui.personalCenter.bean.ImageBean;
-import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
-public class MainActivity extends BaseFragmentActivitiy implements View.OnClickListener {
+public class MainActivity extends BaseNoImmFragmentActivitiy implements View.OnClickListener {
     private String[] permissions = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE ,Manifest.permission.WRITE_EXTERNAL_STORAGE
     };

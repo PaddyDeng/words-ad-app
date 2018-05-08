@@ -38,6 +38,7 @@ import thinku.com.word.bean.WordReportMonthBeen;
 import thinku.com.word.bean.WordResultBeen;
 import thinku.com.word.bean.WordReviewTodayBeen;
 import thinku.com.word.bean.WrongIndexBeen;
+import thinku.com.word.ui.periphery.bean.CourseBean;
 import thinku.com.word.ui.periphery.bean.RoundBean;
 import thinku.com.word.ui.personalCenter.bean.ImageBean;
 import thinku.com.word.ui.personalCenter.update.bean.VersionInfo;
@@ -279,4 +280,11 @@ public interface RestApi {
 
     @POST(NetworkChildren.RIM)
     Observable<RoundBean> roundHome();
+
+    @POST(NetworkChildren.CASE_LIST)
+    Observable<List<RoundBean.CaseBean>> caseList();
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.COURSE_LIST)
+    Observable<List<CourseBean>> courseList(@Field("type") int  type);
 }

@@ -59,6 +59,8 @@ dependencies {
     // 此处以JPush 3.1.1 版本为例。
 
     // 此处以JCore 1.1.9 版本为例。
+    compile files('libs/ormlite-android-5.1.jar')
+    compile files('libs/ormlite-android-5.1-sources.jar')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -87,14 +89,12 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'cn.jiguang.sdk:jpush:3.1.1'
     compile 'cn.jiguang.sdk:jcore:1.1.9'
+    compile 'ch.ielse:switchbutton:1.0.1'
+    compile 'cn.bingoogolapple:bga-refreshlayout:1.1.8@aar'
+    compile 'com.jude:rollviewpager:1.4.6'
     testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-    compile 'ch.ielse:switchbutton:1.0.1'
-    compile files('libs/ormlite-android-5.1.jar')
-    compile files('libs/ormlite-android-5.1-sources.jar')
-    compile 'cn.bingoogolapple:bga-refreshlayout:1.1.8@aar'
-    compile 'com.jude:rollviewpager:1.4.6'
 }

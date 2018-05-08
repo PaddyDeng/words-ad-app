@@ -85,6 +85,55 @@ public class DateUtil {
         return datas ;
     }
 
+
+    /**
+     * date2比date1多的天数
+     * @return
+     */
+    public static int differentDays(int id)
+    {
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(new Date());
+
+        Calendar cal2 = Calendar.getInstance();
+        String time = "2018-04-23";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date2 = null;
+        try {
+            date2 = (Date) sdf.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        cal2.setTime(date2);
+        int day1= cal1.get(Calendar.DAY_OF_YEAR);
+        int day2 = cal2.get(Calendar.DAY_OF_YEAR);
+
+        int year1 = cal1.get(Calendar.YEAR);
+        int year2 = cal2.get(Calendar.YEAR);
+        if(year1 != year2)   //同一年
+        {
+            int timeDistance = 0 ;
+            for(int i = year1 ; i < year2 ; i ++)
+            {
+                if(i%4==0 && i%100!=0 || i%400==0)    //闰年
+                {
+                    timeDistance += 366;
+                }
+                else    //不是闰年
+                {
+                    timeDistance += 365;
+                }
+            }
+
+            return (timeDistance + (day1-day2) * 50 -id + 234 ) ;
+        }
+        else    //不同年
+        {
+            return (day1-day2) * 50 - id + 234;
+        }
+    }
+
+
     /**
      * 格式化传入的时间
      *
@@ -97,6 +146,8 @@ public class DateUtil {
         Date d1 = new Date(time);
         return format.format(d1);
     }
+
+
 
     // strTime要转换的String类型的时间
     // formatType时间格式

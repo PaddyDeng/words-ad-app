@@ -31,7 +31,7 @@ public class StringUtils {
         }
 
     /**
-     * 以 //n  分割字符串
+     * 以 -  分割字符串
      * @param s
      * @return
      */

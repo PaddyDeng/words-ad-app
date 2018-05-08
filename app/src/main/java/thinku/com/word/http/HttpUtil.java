@@ -30,6 +30,7 @@ import thinku.com.word.bean.WordReportMonthBeen;
 import thinku.com.word.bean.WordResultBeen;
 import thinku.com.word.bean.WordReviewTodayBeen;
 import thinku.com.word.bean.WrongIndexBeen;
+import thinku.com.word.ui.periphery.bean.CourseBean;
 import thinku.com.word.ui.periphery.bean.RoundBean;
 import thinku.com.word.ui.personalCenter.bean.ImageBean;
 import thinku.com.word.ui.personalCenter.update.bean.VersionInfo;
@@ -356,6 +357,15 @@ public class HttpUtil {
     //  周边首页数据
     public static Observable<RoundBean> roundBeanObservable() {
         return getRestApi(HostType.WORDS_URL_HOST).roundHome().compose(new SchedulerTransformer<RoundBean>());
+    }
+
+    //  案列列表
+    public static Observable<List<RoundBean.CaseBean>> caseBeanObservable() {
+        return getRestApi(HostType.WORDS_URL_HOST).caseList().compose(new SchedulerTransformer<List<RoundBean.CaseBean>>());
+    }
+    //  课程列表
+    public static Observable<List<CourseBean>> courseBeanObservable(int type) {
+        return getRestApi(HostType.WORDS_URL_HOST).courseList(type).compose(new SchedulerTransformer<List<CourseBean>>());
     }
 
 }
