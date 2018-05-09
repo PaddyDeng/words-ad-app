@@ -295,11 +295,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
 
-        <!--课程详情-->
-        <activity android:name=".ui.periphery.ClassDetailActivity"
+        <!-- 课程详情 -->
+        <activity
+            android:name=".ui.periphery.ClassDetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!-- JPUSH -->
         <!-- !& For test only  用户自定义的广播接收器&ndash;&gt; -->
         <receiver
@@ -325,6 +325,7 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".ui.periphery.PlayActivity"></activity>
     </application>
 
 </manifest>

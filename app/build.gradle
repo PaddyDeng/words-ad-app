@@ -97,4 +97,9 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    compile files('libs/gensee_baseplayer.jar')
+    compile files('libs/gensee_common.jar')
+    compile files('libs/gensee_doc.jar')
+    compile files('libs/gensee_hb.jar')
+    compile files('libs/gensee_vod_ol.jar')
 }
