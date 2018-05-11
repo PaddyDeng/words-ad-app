@@ -62,4 +62,8 @@
     <color name="title_transparent_black">#22000000</color>
     <color name="light_black">#141414</color>
     <color name="line_and_outline_grey">#d9d9d9</color>
+
+    <!--播放-->
+    <color name="bg_video_controller">#A6000000</color>
+    <color name="bg_video_controller_divider">#FDFDFD</color>
 </resources>

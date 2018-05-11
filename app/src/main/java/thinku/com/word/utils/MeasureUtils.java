@@ -1,7 +1,11 @@
 package thinku.com.word.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Point;
+import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 /**
@@ -53,5 +57,43 @@ public class MeasureUtils {
         Point screenSize = new Point();
         wm.getDefaultDisplay().getSize(screenSize);
         return screenSize;
+    }
+
+
+    /**
+     * 获取屏幕宽度
+     */
+    public static int getScreenWidthPixels(Activity context) {
+        DisplayMetrics metric = new DisplayMetrics();
+        context.getWindowManager().getDefaultDisplay().getMetrics(metric);
+        return metric.widthPixels;
+    }
+
+    /**
+     * 获取屏幕高度
+     */
+    public static int getScreenHeightPixels(Activity context) {
+        DisplayMetrics metric = new DisplayMetrics();
+        context.getWindowManager().getDefaultDisplay().getMetrics(metric);
+        return metric.heightPixels;
+    }
+
+    /**
+     * 切换屏幕的方向.
+     */
+    public static void toggleScreenOrientation(Activity activity) {
+        activity.setRequestedOrientation(isPortrait(activity)
+                ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    /**
+     * 获得当前屏幕的方向.
+     *
+     * @return 是否竖屏.
+     */
+    public static boolean isPortrait(Context context) {
+        int orientation = context.getResources().getConfiguration().orientation;
+        return orientation == Configuration.ORIENTATION_PORTRAIT;
     }
 }

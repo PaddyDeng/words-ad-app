@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -19,11 +20,14 @@ import butterknife.Unbinder;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseNoImmActivity;
 import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.ui.periphery.bean.Conf;
 import thinku.com.word.ui.periphery.bean.RoundBean;
+import thinku.com.word.ui.periphery.bean.VideoDetailInfo;
 import thinku.com.word.ui.pk.OnlineActivity;
 import thinku.com.word.utils.DateUtil;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.HtmlUtil;
+import thinku.com.word.utils.XmlUtils;
 
 public class ClassDetailActivity extends BaseNoImmActivity {
 
@@ -58,6 +62,9 @@ public class ClassDetailActivity extends BaseNoImmActivity {
     private RoundBean.RecentClassBean recentClassBean ;
     private RoundBean.ChoicenessBean choicenessBean ;
     private RoundBean.LivePreviewBean.DataBean dataBean ;
+    private String url ;
+    private boolean hasAsyncFree = false;
+    private String contentTxt ;
     public static void start(Context context , RoundBean.RecentClassBean recentClassBean){
         Intent intent = new Intent(context ,ClassDetailActivity.class);
         intent.putExtra("data" ,recentClassBean);
@@ -83,6 +90,7 @@ public class ClassDetailActivity extends BaseNoImmActivity {
         try{
             recentClassBean = getIntent().getParcelableExtra("data");
             init(recentClassBean);
+            hasAsyncFree = true ;
         }catch (Exception e){
 
         }
@@ -90,6 +98,7 @@ public class ClassDetailActivity extends BaseNoImmActivity {
         try{
             choicenessBean = getIntent().getParcelableExtra("data");
             init(choicenessBean);
+            hasAsyncFree = true ;
         }catch (Exception e){
 
         }
@@ -97,6 +106,7 @@ public class ClassDetailActivity extends BaseNoImmActivity {
         try{
             dataBean = getIntent().getParcelableExtra("data");
             init(dataBean);
+            hasAsyncFree = true ;
         }catch (Exception e){
 
         }
@@ -123,6 +133,8 @@ public class ClassDetailActivity extends BaseNoImmActivity {
         String html = HtmlUtil.getHtml(s,0);
         content.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
         listen.setVisibility(View.VISIBLE);
+        url = choicenessBean.getUrl();
+        contentTxt = choicenessBean.getContent();
     }
 
     public void init(RoundBean.LivePreviewBean.DataBean dataBean){
@@ -136,7 +148,7 @@ public class ClassDetailActivity extends BaseNoImmActivity {
         listen.setVisibility(View.GONE);
     }
 
-    @OnClick({R.id.back  , R.id.online})
+    @OnClick({R.id.back  , R.id.online,R.id.listen})
     public void click(View view){
       switch (view.getId()){
           case R.id.back:
@@ -145,11 +157,32 @@ public class ClassDetailActivity extends BaseNoImmActivity {
           case R.id.online:
               OnlineActivity.start(this);
               break;
+          case R.id.listen:
+              PlayActivity.start(this,contentTxt,name.getText().toString().trim() ,url);
+//              startPlay(name.getText().toString().trim() , url);
           default:
               break;
       }
     }
 
+    public void startPlay(final String name ,String url){
+        showLoadDialog();
+//        "http:\/\/bjsy.gensee.com\/training\/site\/v\/48510525?nickname=XXX"
+        final String vidUrl ="http://bjsy.gensee.com/training/site/v/" + url;
+        if (!hasAsyncFree) return ;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Conf conf = XmlUtils.main(vidUrl);
+                dismissLoadDialog();
+                jump(name,conf);
+            }
+        }).start();
+    }
+
+    public void jump(String name , Conf info){
+        PlayForModuleActivity.startPlay(this ,name,info);
+    }
 
     @Override
     protected void onDestroy() {

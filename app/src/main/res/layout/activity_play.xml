@@ -7,32 +7,98 @@
     tools:context="thinku.com.word.ui.periphery.PlayActivity">
 
     <RelativeLayout
+        android:id="@+id/parent"
         android:layout_width="match_parent"
         android:layout_height="200dp">
 
-        <com.gensee.view.GSDocViewGx
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/gsDocViewGx"/>
-        
-        
-        <com.gensee.view.GSVideoView
+        <thinku.com.word.ui.periphery.MoveGSVideoView
+            android:id="@+id/gsVideoView"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:id="@+id/gsVideoView"/>
+            android:layout_alignParentRight="true" />
+
+        <com.gensee.view.GSDocViewGx
+            android:id="@+id/gsDocViewGx"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <thinku.com.word.ui.periphery.view.VideoSystemOverlay
+            android:id="@+id/video_system_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone">
+
+       </thinku.com.word.ui.periphery.view.VideoSystemOverlay>
+
+
+        <ImageView
+            android:id="@+id/player_lock_screen"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="24dp"
+            android:src="@drawable/video_unlock"
+            android:visibility="visible" />
+
+        <thinku.com.word.ui.periphery.view.VideoErrorView
+            android:id="@+id/video_controller_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:id="@+id/layout_title"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_top_shadow"
+            android:gravity="center_vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/video_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="32dp"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+            <!--<TextView-->
+            <!--android:id="@+id/close_btn"-->
+            <!--android:layout_width="25dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="关闭\n视频"-->
+            <!--android:textSize="11sp"-->
+            <!--android:visibility="gone"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--/>-->
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/video_back"
+            android:layout_width="32dp"
+            android:layout_height="44dp"
+            android:layout_alignTop="@id/layout_title"
+            android:padding="12dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_back_white" />
 
         <LinearLayout
+            android:id="@+id/layout_bottom"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/bg_bottom_shadow"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingRight="14dp"
-            android:visibility="gone"
-            android:layout_marginBottom="5dp">
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/player_pause"
@@ -73,26 +139,14 @@
                 android:paddingTop="14dp"
                 android:src="@drawable/ic_video_fullscreen" />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:background="@drawable/bg_top_shadow"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="5dp">
-
-            <TextView
-                android:id="@+id/video_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:maxLines="1"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
-        </LinearLayout>
     </RelativeLayout>
+
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/content"
+        android:layout_below="@id/course_bg"
+        android:layout_marginTop="10dp"
+        />
+
 </LinearLayout>

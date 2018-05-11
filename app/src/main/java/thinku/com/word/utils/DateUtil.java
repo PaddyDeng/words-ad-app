@@ -232,4 +232,15 @@ public class DateUtil {
             return false ;
         }
     }
+
+    /**
+     * 播放中获取时间
+     * @param time
+     * @return
+     */
+    public static String getTime(int time) {
+        return String.format("%02d", time / 3600) + ":"
+                + String.format("%02d", time % 3600 / 60) + ":"
+                + String.format("%02d", time % 3600 % 60);
+    }
 }

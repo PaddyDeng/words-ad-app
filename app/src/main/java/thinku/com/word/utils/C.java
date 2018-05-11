@@ -56,4 +56,22 @@ public class C {
 
 
 
+    public int ERR_UN_INVOKE_GETOBJECT = -201;    //没有调用getVodObject
+    public int ERR_VOD_INTI_FAIL = 14;                    //点播初始化失败
+    public int ERR_VOD_NUM_UNEXIST = 15;            //点播编号不存在或点播不存在
+    public int ERR_VOD_PWD_ERR = 16;                //点播密码错误
+    public int ERR_VOD_ACC_PWD_ERR = 17;                 //帐号或帐号密码错误
+    public int ERR_UNSURPORT_MOBILE = 18;         //不支持移动设备
+    public int ERR_DOMAIN = -100;                                // domain不正确
+    public int ERR_TIME_OUT = -101;                              // 超时
+    public int ERR_UNKNOWN = -102;                                    // 未知错误
+    public int ERR_SITE_UNUSED = -103;                       // 站点不可用
+    public int ERR_UN_NET = -104;                                 // 无网络
+    public int ERR_DATA_TIMEOUT = -105;                     // 数据过期
+    public int ERR_SERVICE = -106;                               // 服务不正确
+    public int ERR_PARAM = -107;                                  // 参数不正确
+    public int ERR_THIRD_CERTIFICATION_AUTHORITY = -108; //第三方认证失败
+
+
+
 }
