@@ -59,6 +59,7 @@ import thinku.com.word.utils.RxHelper;
 import thinku.com.word.utils.StringUtils;
 import thinku.com.word.view.SuccessDialog;
 
+import static thinku.com.word.R.id.height;
 import static thinku.com.word.R.id.list;
 
 
@@ -98,9 +99,17 @@ public class DictionDetailActivity extends BaseActivity {
     private RecitWordBeen recitWord;
 
     private int wordIdIndex =  0 ;  //  数组中wordIn 下标位置
+    private Disposable countTime ;
     public  static void  start(Context context , ArrayList<String> wordList){
         Intent intent  = new Intent(context ,DictionDetailActivity.class);
         intent.putStringArrayListExtra("words" ,wordList);
+        context.startActivity(intent);
+    }
+
+    public static void start(Context context ,String wordId , int size){
+        Intent intent  = new Intent(context ,DictionDetailActivity.class);
+        intent.putExtra("wordId" ,wordId);
+        intent.putExtra("wordSize" ,size);
         context.startActivity(intent);
     }
 
@@ -115,7 +124,6 @@ public class DictionDetailActivity extends BaseActivity {
         }catch (Exception e){
 
         }
-
         initView();
     }
 
@@ -147,6 +155,9 @@ public class DictionDetailActivity extends BaseActivity {
         texts = new ArrayList<>();
         word_word = new HashMap<>();
         referData();
+        if (countTime != null){
+            countTime.dispose();
+        }
         addToCompositeDis(HttpUtil.wordDetailsObservable(wordsId)
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -188,28 +199,28 @@ public class DictionDetailActivity extends BaseActivity {
     public void initTimeText(){
         choseTxt.setText("16");
 //        choseTxt.setTextSize(MeasureUtils.sp2px(this ,16));
-
-        addToCompositeDis(RxHelper.countDown(time)
-        .subscribe(new Consumer<Integer>() {
-            @Override
-            public void accept(@NonNull Integer integer) throws Exception {
-                choseTxt.setText(integer+"");
-            }
-        }));
-
+        countTime = RxHelper.countDown(time)
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(@NonNull Integer integer) throws Exception {
+                        choseTxt.setText(integer+"");
+                    }
+                });
+        addToCompositeDis(countTime);
     }
 
     /**
      *  添加上面的word TextView  ;
      */
     public void addUpWordView(){
+        //  words.size()
         for (int i = 0 ; i < words.size() ; i++){
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT , ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.gravity = Gravity.BOTTOM;
             layoutParams.setMargins(MeasureUtils.dp2px(this ,10) , 0 ,0 ,0);
             TextView textView = new TextView(this);
             textView.setLayoutParams(layoutParams);
-            textView.setWidth(MeasureUtils.dp2px(this ,70));
+            textView.setWidth(MeasureUtils.dp2px(this ,48));
             textView.setHeight(MeasureUtils.dp2px(this ,30));
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
             textView.setBackgroundResource(R.drawable.text_bottom);

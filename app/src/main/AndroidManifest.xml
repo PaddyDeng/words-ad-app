@@ -304,6 +304,11 @@
             android:name=".ui.periphery.PlayActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
+
+        <activity android:name=".ocr.camera.CameraActivity"
+            android:configChanges="screenSize|orientation"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"/> />
         <!-- JPUSH -->
         <!-- !& For test only  用户自定义的广播接收器&ndash;&gt; -->
         <receiver

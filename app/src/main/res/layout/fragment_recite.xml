@@ -19,30 +19,27 @@
             android:layout_width="100px"
             android:layout_height="100px"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="40px"
-             />
+            android:layout_marginLeft="40px" />
 
         <LinearLayout
             android:id="@+id/input_lookup"
-            android:layout_width="500px"
+            android:layout_width="150dp"
             android:layout_height="90px"
             android:layout_alignTop="@+id/linearLayout"
             android:layout_centerHorizontal="true"
             android:background="@drawable/search_ll"
             android:gravity="center_vertical">
 
-            <ImageView
-                android:layout_width="40px"
-                android:layout_height="40px"
-                android:layout_marginLeft="30px"
-                android:background="@mipmap/seacher" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30px"
-                android:text="搜索单词"
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:drawableLeft="@mipmap/seacher"
+                android:drawablePadding="10dp"
+                android:hint="搜索单词"
+                android:paddingLeft="10dp"
                 android:textColor="@color/white"
+                android:textColorHint="@color/white"
                 android:textSize="40px" />
         </LinearLayout>
 

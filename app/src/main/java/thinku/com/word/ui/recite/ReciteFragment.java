@@ -1,5 +1,6 @@
 package thinku.com.word.ui.recite;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,10 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import org.greenrobot.eventbus.EventBus;
-
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.MyApplication;
@@ -23,23 +21,20 @@ import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.UserData;
-import thinku.com.word.callback.ReferImage;
 import thinku.com.word.http.HttpUtil;
-import thinku.com.word.http.NetworkChildren;
 import thinku.com.word.http.NetworkTitle;
-import thinku.com.word.http.SchedulerTransformer;
+import thinku.com.word.ocr.camera.CameraActivity;
 import thinku.com.word.ui.personalCenter.PersonalCenterActivity;
-import thinku.com.word.utils.C;
+import thinku.com.word.utils.FileUtil;
 import thinku.com.word.utils.GlideUtils;
-import thinku.com.word.utils.RxBus;
-import thinku.com.word.utils.RxHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
  * 背单词
  */
 
-public class ReciteFragment extends BaseFragment implements View.OnClickListener{
+public class ReciteFragment extends BaseFragment implements View.OnClickListener {
+    private static final int REQUEST_CODE_GENERAL = 105;
     private static final String TAG = ReciteFragment.class.getSimpleName();
     private CircleImageView portrait;
     private LinearLayout input_lookup;
@@ -65,8 +60,6 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     }
 
 
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -90,29 +83,29 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     private void initView() {
         addToCompositeDis(HttpUtil.getUserData()
                 .subscribe(new Consumer<ResultBeen<UserData>>() {
-            @Override
-            public void accept(@NonNull ResultBeen<UserData> been) throws Exception {
-                if (getHttpResSuc(been.getCode())) {
-                    UserData userData = been.getData();
-                    if (userData != null && !TextUtils.isEmpty(userData.getPassword())) {
-                        SharedPreferencesUtils.setPlanWords(_mActivity, userData.getPlanWords());
-                        new GlideUtils().loadCircle(_mActivity , NetworkTitle.WORDRESOURE + userData.getImage(),portrait);
-                        SharedPreferencesUtils.setImage(_mActivity ,userData.getImage());
-                        if (TextUtils.isEmpty(userData.getPlanWords())) {
-                            setFragment(0);
+                    @Override
+                    public void accept(@NonNull ResultBeen<UserData> been) throws Exception {
+                        if (getHttpResSuc(been.getCode())) {
+                            UserData userData = been.getData();
+                            if (userData != null && !TextUtils.isEmpty(userData.getPassword())) {
+                                SharedPreferencesUtils.setPlanWords(_mActivity, userData.getPlanWords());
+                                new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + userData.getImage(), portrait);
+                                SharedPreferencesUtils.setImage(_mActivity, userData.getImage());
+                                if (TextUtils.isEmpty(userData.getPlanWords())) {
+                                    setFragment(0);
+                                } else {
+                                    setFragment(1);
+                                }
+                            }
                         } else {
-                            setFragment(1);
+                            setFragment(0);
                         }
                     }
-                }else {
-                    setFragment(0);
-                }
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(@NonNull Throwable throwable) throws Exception {
-            }
-        }));
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                    }
+                }));
     }
 
 
@@ -142,12 +135,22 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
             case R.id.speech_lookup:
                 break;
             case R.id.take_photo:
+                picSearch();
                 break;
         }
     }
 
+    private void picSearch() {
+        Intent intent = new Intent(getActivity(), CameraActivity.class);
+        intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
+                FileUtil.getSaveFile(getActivity()).getAbsolutePath());
+        intent.putExtra(CameraActivity.KEY_CONTENT_TYPE,
+                CameraActivity.CONTENT_TYPE_GENERAL);
+        startActivityForResult(intent, REQUEST_CODE_GENERAL);
+    }
+
     public void setFragment(int tag) {
-        if (tag ==1){
+        if (tag == 1) {
             portrait.setVisibility(View.VISIBLE);
         }
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();

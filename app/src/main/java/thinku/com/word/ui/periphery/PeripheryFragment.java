@@ -24,6 +24,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
+import thinku.com.word.callback.SelectListener;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.periphery.adapter.CourseAdapter;
 import thinku.com.word.ui.periphery.bean.CourseBean;
@@ -137,6 +138,15 @@ public class PeripheryFragment extends BaseActivity implements BGARefreshLayout.
         titleT.setText("课程列表");
         courseBeanList = new ArrayList<>();
         courseAdapter = new CourseAdapter(this, courseBeanList);
+        courseAdapter.setSelectListener(new SelectListener() {
+            @Override
+            public void setListener(int position) {
+                CourseBean courseBean = courseBeanList.get(position);
+                if (courseBean!= null ) {
+                    PlayActivity.start(PeripheryFragment.this,courseBean.getContent(),courseBean.getName() ,courseBean.getUrl() );
+                }
+            }
+        });
         courseList.setLayoutManager(new LinearLayoutManager(this));
         courseList.setAdapter(courseAdapter);
     }

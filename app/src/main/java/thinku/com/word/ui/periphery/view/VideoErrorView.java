@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.boredream.bdvideoplayer.R;
-import com.boredream.bdvideoplayer.listener.OnVideoControlListener;
+import thinku.com.word.R;
+
 
 /**
  * 视频错误View
@@ -48,19 +48,19 @@ public class VideoErrorView extends FrameLayout {
     }
 
     private void init() {
-        LayoutInflater.from(getContext()).inflate(R.layout.video_controller_error, this);
-
-        video_error_info = (TextView) findViewById(R.id.video_error_info);
-        video_error_retry = (Button) findViewById(R.id.video_error_retry);
-
-        video_error_retry.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onVideoControlListener != null) {
-                    onVideoControlListener.onRetry(curStatus);
-                }
-            }
-        });
+//        LayoutInflater.from(getContext()).inflate(R.layout.video_controller_error, this);
+//
+//        video_error_info = (TextView) findViewById(R.id.video_error_info);
+//        video_error_retry = (Button) findViewById(R.id.video_error_retry);
+//
+//        video_error_retry.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (onVideoControlListener != null) {
+//                    onVideoControlListener.onRetry(curStatus);
+//                }
+//            }
+//        });
 
         hideError();
     }
@@ -104,9 +104,9 @@ public class VideoErrorView extends FrameLayout {
         curStatus = STATUS_NORMAL;
     }
 
-    private OnVideoControlListener onVideoControlListener;
-
-    public void setOnVideoControlListener(OnVideoControlListener onVideoControlListener) {
-        this.onVideoControlListener = onVideoControlListener;
-    }
+//    private OnVideoControlListener onVideoControlListener;
+//
+//    public void setOnVideoControlListener(OnVideoControlListener onVideoControlListener) {
+//        this.onVideoControlListener = onVideoControlListener;
+//    }
 }

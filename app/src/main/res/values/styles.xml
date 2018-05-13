@@ -243,7 +243,7 @@
     <style name="course_item">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">50px</item>
+        <item name="android:layout_marginLeft">20dp</item>
         <item name="android:layout_toRightOf">@id/course_img</item>
     </style>
 
@@ -301,5 +301,33 @@
         <item name="android:minHeight">2.5dp</item>
         <item name="android:progressDrawable">@drawable/video_progressbar</item>
         <item name="android:thumbOffset">5dp</item>
+    </style>
+
+    <!--搜题-->
+    <style name="custome_title_bar_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/border_space_max_min</item>
+        <item name="android:background">@color/black</item>
+    </style>
+
+
+    <style name="user_act_style" parent="wrap">
+        <item name="android:layout_margin">@dimen/border_space_sec_max</item>
+        <item name="android:src">@drawable/lr_back</item>
+    </style>
+
+    <style name="title_back" parent="user_act_style">
+        <item name="android:onClick">leftBack</item>
+    </style>
+
+    <style name="black_bg_title_back" parent="title_back">
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:paddingLeft">@dimen/border_space_sec_max</item>
+        <item name="android:paddingRight">@dimen/border_space_sec_max</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:src">@drawable/icon_back</item>
     </style>
 </resources>

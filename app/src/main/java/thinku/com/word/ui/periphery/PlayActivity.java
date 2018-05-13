@@ -11,6 +11,7 @@ import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -451,10 +452,22 @@ public class PlayActivity extends BaseNoImmActivity implements VodSite.OnVodList
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        VodSite.release();   //   释放
+//        VodSite.release();   //   释放
+        mVodPlayer.stop();
+        mVodPlayer.release();
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            onBackPressed();
+            return false;
+        }else {
+            return super.onKeyDown(keyCode, event);
+        }
+
+    }
 
     private void stopPlay() {
         if (mVodPlayer != null) {

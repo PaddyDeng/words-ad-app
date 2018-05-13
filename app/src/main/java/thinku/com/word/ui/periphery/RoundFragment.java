@@ -261,6 +261,10 @@ public class RoundFragment extends BaseFragment {
         return type;
     }
 
+    /**
+     *  大于当前日期的直播才显示在屏幕上
+     * @param livePreviewBeanList
+     */
     public void choseLiveList(List<RoundBean.LivePreviewBean> livePreviewBeanList) {
         for (RoundBean.LivePreviewBean livePreviewBean : livePreviewBeanList) {
             int i = 0;
@@ -274,24 +278,9 @@ public class RoundFragment extends BaseFragment {
                     }
                     if (DateUtil.compare(System.currentTimeMillis(), dataBean.getCnName())) {
                         dataBeanList.add(dataBean);
-                    } else {
-                        dataBeanList.add(dataBean);
                     }
                 }
-            } else {
-                for (int j = 0; j < livePreviewBean.getData().size(); j++) {
-                    RoundBean.LivePreviewBean.DataBean dataBean = livePreviewBean.getData().get(j);
-                    i++;
-                    if (i == 1) {
-                        dataBean.setIsTitle(livePreviewBean.getDate());
-                    }
-                    if (DateUtil.compare(System.currentTimeMillis(), dataBean.getCnName())) {
-                        dataBeanList.add(dataBean);
-                    } else {
-                        dataBeanList.add(dataBean);
-                    }
             }
-        }
     }
         if(dataBeanList.isEmpty()) {
         openClass.setVisibility(View.GONE);

@@ -20,14 +20,11 @@ import butterknife.Unbinder;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseNoImmActivity;
 import thinku.com.word.http.NetworkTitle;
-import thinku.com.word.ui.periphery.bean.Conf;
 import thinku.com.word.ui.periphery.bean.RoundBean;
-import thinku.com.word.ui.periphery.bean.VideoDetailInfo;
 import thinku.com.word.ui.pk.OnlineActivity;
 import thinku.com.word.utils.DateUtil;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.HtmlUtil;
-import thinku.com.word.utils.XmlUtils;
 
 public class ClassDetailActivity extends BaseNoImmActivity {
 
@@ -110,7 +107,6 @@ public class ClassDetailActivity extends BaseNoImmActivity {
         }catch (Exception e){
 
         }
-
     }
 
     public void init(RoundBean.RecentClassBean recentClassBean){
@@ -121,7 +117,7 @@ public class ClassDetailActivity extends BaseNoImmActivity {
         String s = HtmlUtil.repairContent(recentClassBean.getSentenceNumber(), NetworkTitle.DomainSmartApplyResourceNormal);
         String html = HtmlUtil.getHtml(s,0);
         content.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
-        listen.setVisibility(View.VISIBLE);
+        listen.setVisibility(View.GONE);
     }
 
     public void init(RoundBean.ChoicenessBean choicenessBean){
@@ -159,30 +155,11 @@ public class ClassDetailActivity extends BaseNoImmActivity {
               break;
           case R.id.listen:
               PlayActivity.start(this,contentTxt,name.getText().toString().trim() ,url);
-//              startPlay(name.getText().toString().trim() , url);
           default:
               break;
       }
     }
 
-    public void startPlay(final String name ,String url){
-        showLoadDialog();
-//        "http:\/\/bjsy.gensee.com\/training\/site\/v\/48510525?nickname=XXX"
-        final String vidUrl ="http://bjsy.gensee.com/training/site/v/" + url;
-        if (!hasAsyncFree) return ;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Conf conf = XmlUtils.main(vidUrl);
-                dismissLoadDialog();
-                jump(name,conf);
-            }
-        }).start();
-    }
-
-    public void jump(String name , Conf info){
-        PlayForModuleActivity.startPlay(this ,name,info);
-    }
 
     @Override
     protected void onDestroy() {

@@ -21,6 +21,9 @@
     <string name="str_no_alarm_hint">您还没有学习闹钟，请添加学习闹钟</string>
     <string name="toefl_class">托福班</string>
     <string name="half_diy">半DIY留学服\n务课程</string>
+    <string name="tip_title">请拖动裁剪框四角选择一行题目</string>
+    <string name="no_tip">不在提示</string>
+    <string name="go_on">继续</string>
 
     <!--JPush-->
     <string name="hello">Hello World, JPush!</string>

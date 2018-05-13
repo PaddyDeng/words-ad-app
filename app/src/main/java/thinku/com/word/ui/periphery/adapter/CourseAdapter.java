@@ -14,6 +14,7 @@ import com.zhy.autolayout.utils.AutoUtils;
 import java.util.List;
 
 import thinku.com.word.R;
+import thinku.com.word.callback.SelectListener;
 import thinku.com.word.ui.periphery.bean.CourseBean;
 import thinku.com.word.utils.GlideUtils;
 
@@ -24,10 +25,14 @@ import thinku.com.word.utils.GlideUtils;
 public class CourseAdapter extends RecyclerView.Adapter {
     private List<CourseBean> courseBeanList ;
     private Context context ;
-
+    private SelectListener selectListener ;
     public CourseAdapter(Context context ,List<CourseBean> courseBeanList ){
         this.context = context ;
         this.courseBeanList = courseBeanList ;
+    }
+
+    public void  setSelectListener(SelectListener selectListener){
+        this.selectListener  = selectListener ;
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,13 +41,18 @@ public class CourseAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         CourseHolder courseHolder = (CourseHolder) holder;
         CourseBean courseBean = courseBeanList.get(position);
         courseHolder.name.setText(courseBean.getName());
         courseHolder.people.setText(courseBean.getView()+"人已加入");
         new GlideUtils().load(context ,courseBean.getImage() , courseHolder.course_img);
-
+        courseHolder.listen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectListener.setListener(position);
+            }
+        });
     }
 
     @Override

@@ -122,4 +122,10 @@ public class Utils {
         return Build.VERSION.SDK_INT < version;
     }
 
+    public static void controlTvFocus(View view) {
+        view.setFocusable(true);
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+    }
+
 }
