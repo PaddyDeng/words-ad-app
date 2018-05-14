@@ -35,11 +35,11 @@ public class VideoSystemOverlay extends FrameLayout {
     }
 
     private void initialize(Context context) {
-//        LayoutInflater.from(context).inflate(R.layout.video_overlay_system, this);
-//
-//        mSystemTitle = (TextView) findViewById(R.id.system_ui_title);
-//        mSystemImage = (ImageView) findViewById(R.id.system_ui_image);
-//        mProgressBar = (ProgressBar) findViewById(R.id.system_ui_seek_bar);
+        LayoutInflater.from(context).inflate(R.layout.video_overlay_system, this);
+
+        mSystemTitle = (TextView) findViewById(R.id.system_ui_title);
+        mSystemImage = (ImageView) findViewById(R.id.system_ui_image);
+        mProgressBar = (ProgressBar) findViewById(R.id.system_ui_seek_bar);
 
         hide();
     }

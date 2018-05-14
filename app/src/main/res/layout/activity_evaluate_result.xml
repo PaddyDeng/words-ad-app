@@ -41,6 +41,7 @@
                         android:layout_height="150px"
                         android:layout_marginTop="190px"
                         android:layout_marginLeft="200px"
+                        android:id="@+id/result"
                         />
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:layout_width="130px"

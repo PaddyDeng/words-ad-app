@@ -191,18 +191,18 @@ public class HomeFragment extends BaseFragment {
         if (nowTime.equals(windowTime)) {
             thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity, needNum.getText().toString().trim(), C.NORMAL_RECITE);
         } else {
-
-            addToCompositeDis(HttpUtil.reciteWordObservable()
-            .subscribe(new Consumer<ResultBeen<Void>>() {
-                @Override
-                public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                        if (voidResultBeen.getCode() ==97){
-                            reviewCase();
-                        } else{
-                            thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity, needNum.getText().toString().trim(), C.NORMAL_RECITE);
-                        }
-                }
-            }));
+            thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity, needNum.getText().toString().trim(), C.NORMAL_RECITE);
+//            addToCompositeDis(HttpUtil.reciteWordObservable()
+//            .subscribe(new Consumer<ResultBeen<Void>>() {
+//                @Override
+//                public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+//                        if (voidResultBeen.getCode() ==97){
+//                            reviewCase();
+//                        } else{
+//
+//                        }
+//                }
+//            }));
         }
     }
 
@@ -211,7 +211,7 @@ public class HomeFragment extends BaseFragment {
         .subscribe(new Consumer<ReviewDialogBeen>() {
             @Override
             public void accept(@NonNull ReviewDialogBeen reviewDialogBeen) throws Exception {
-                showReviewDialog(reviewDialogBeen);
+//                showReviewDialog(reviewDialogBeen);
             }
         }));
     }

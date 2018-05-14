@@ -18,6 +18,7 @@ import thinku.com.word.bean.BackCode;
 import thinku.com.word.bean.Dictation;
 import thinku.com.word.bean.EVAnswerBeen;
 import thinku.com.word.bean.EvaWordBeen;
+import thinku.com.word.bean.EventPkListData;
 import thinku.com.word.bean.Package;
 import thinku.com.word.bean.PackageDetails;
 import thinku.com.word.bean.PkIndexBeen;
@@ -44,6 +45,7 @@ import thinku.com.word.ui.personalCenter.bean.ImageBean;
 import thinku.com.word.ui.personalCenter.update.bean.VersionInfo;
 import thinku.com.word.ui.personalCenter.update.localdb.UpdateLocalDbData;
 import thinku.com.word.ui.pk.been.PkWordData;
+import thinku.com.word.ui.seacher.WordBean;
 
 /**
  * Created by fire on 2017/5/3 15:18.
@@ -287,4 +289,8 @@ public interface RestApi {
     @FormUrlEncoded
     @POST(NetworkChildren.COURSE_LIST)
     Observable<List<CourseBean>> courseList(@Field("type") int  type);
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.SEARCH_WORDS)
+    Observable<List<WordBean>> search(@Field("str") String str);
 }

@@ -25,6 +25,7 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ocr.camera.CameraActivity;
 import thinku.com.word.ui.personalCenter.PersonalCenterActivity;
+import thinku.com.word.ui.seacher.TopicSearchActivity;
 import thinku.com.word.utils.FileUtil;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
@@ -133,6 +134,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
             case R.id.input_lookup:
                 break;
             case R.id.speech_lookup:
+                TopicSearchActivity.start(_mActivity);
                 break;
             case R.id.take_photo:
                 picSearch();

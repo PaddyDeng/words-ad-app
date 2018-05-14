@@ -19,6 +19,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseNoImmActivity;
 import thinku.com.word.ui.other.MainActivity;
+import thinku.com.word.ui.seacher.PicSearchActivity;
 import thinku.com.word.utils.FileUtil;
 import thinku.com.word.utils.Utils;
 
@@ -68,7 +69,7 @@ public class CameraSearchActivity extends BaseNoImmActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     Utils.controlTvFocus(cameraIv);
-//                    PicSearchActivity.startAct(mContext, content.trim());
+                    PicSearchActivity.startAct(mContext, content.trim());
                 }
             }
         });
@@ -77,19 +78,19 @@ public class CameraSearchActivity extends BaseNoImmActivity {
 
     private void initRecognizeResult() {
 
-//        RecognizeService.recGeneral(FileUtil.getSaveFile(mContext).getAbsolutePath(),
-//                new RecognizeService.ServiceListener() {
-//                    @Override
-//                    public void onResult(String result) {
-//                        Utils.setGone(mProgressBar);
-//                        content = result;
-//                        recognResultTv.setText(content);
-//                        questionEt.setText(content);
-//                        if (!TextUtils.isEmpty(content) && !TextUtils.equals("[283504] Network error", content)) {
-//                            PicSearchActivity.startAct(mContext, content.trim());
-//                        }
-//                    }
-//                });
+        RecognizeService.recGeneral(FileUtil.getSaveFile(mContext).getAbsolutePath(),
+                new RecognizeService.ServiceListener() {
+                    @Override
+                    public void onResult(String result) {
+                        Utils.setGone(mProgressBar);
+                        content = result;
+                        recognResultTv.setText(content);
+                        questionEt.setText(content);
+                        if (!TextUtils.isEmpty(content) && !TextUtils.equals("[283504] Network error", content)) {
+                            PicSearchActivity.startAct(mContext, content.trim());
+                        }
+                    }
+                });
 
 
     }
