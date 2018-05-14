@@ -71,7 +71,7 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
                 setSelect(1);
                 break;
             case R.id.evaluate:
-                start(EvaluateFirstFragment.newInstance());
+                EvaluateFirstFragment.start(_mActivity);
                 break;
         }
     }

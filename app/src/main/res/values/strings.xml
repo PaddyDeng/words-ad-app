@@ -24,6 +24,11 @@
     <string name="tip_title">请拖动裁剪框四角选择一行题目</string>
     <string name="no_tip">不在提示</string>
     <string name="go_on">继续</string>
+    <string name="str_language_search">语音找单词</string>
+    <!-- 请替换成在语音云官网申请的appid -->
+    <string name="text_begin">请开始说话…</string>
+    <string name="str_please_write_search_content">请输入查询内容</string>
+    <string name="str_search_no_result">没有查找到相关内容</string>
 
     <!--JPush-->
     <string name="hello">Hello World, JPush!</string>

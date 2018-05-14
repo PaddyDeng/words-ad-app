@@ -3,6 +3,7 @@ package thinku.com.word.ui.pk;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +28,7 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.MeasureUtils;
+import thinku.com.word.utils.ShareUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 public class PKResultActivity extends BaseActivity {
@@ -134,7 +138,7 @@ public class PKResultActivity extends BaseActivity {
         matchName.setText(SharedPreferencesUtils.getPKMatchName(PKResultActivity.this));
     }
 
-    @OnClick({R.id.user_image, R.id.match_image , R.id.back})
+    @OnClick({R.id.user_image, R.id.match_image , R.id.back , R.id.share})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.user_image:
@@ -142,6 +146,9 @@ public class PKResultActivity extends BaseActivity {
                 break;
             case R.id.match_image:
                 setImage(matchImage);
+                break;
+            case R.id.share:
+                share();
                 break;
             case R.id.back:
                 this.finishWithAnim();
@@ -158,5 +165,12 @@ public class PKResultActivity extends BaseActivity {
         Log.d(TAG, "layout height: " + layoutParams.height);
         Log.d(TAG, "layout width: " + layoutParams.width);
 
+    }
+
+    public void share(){
+        String sdCardPath = Environment.getExternalStorageDirectory().getPath();
+        // 图片文件路径
+        String filePath = sdCardPath + File.separator + System.currentTimeMillis() + ".png";
+        ShareUtils.shareOnlyImage(this ,filePath);
     }
 }

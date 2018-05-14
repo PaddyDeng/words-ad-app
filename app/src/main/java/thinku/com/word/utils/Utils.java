@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -41,6 +42,11 @@ public class Utils {
         return false;
     }
 
+    public static void keyBordShowFromWindow(Context context, View v) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+//        imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
+    }
     public static void toastShort(Context context, int id) {
         makeText(context, context.getString(id), Toast.LENGTH_SHORT).show();
     }

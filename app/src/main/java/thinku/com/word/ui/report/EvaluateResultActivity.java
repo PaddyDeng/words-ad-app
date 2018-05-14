@@ -4,18 +4,17 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -36,13 +36,16 @@ import thinku.com.word.callback.ISHCallBack;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.Screenshot;
+import thinku.com.word.utils.ShareUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
+import thinku.com.word.view.FuckView;
 
 /**
  * 测评结果
  */
 
-public class EvaluateResultActivity extends BaseActivity implements View.OnClickListener ,ISHCallBack {
+public class EvaluateResultActivity extends BaseActivity implements View.OnClickListener, ISHCallBack {
 
     @BindView(R.id.back)
     ImageView back;
@@ -85,14 +88,17 @@ public class EvaluateResultActivity extends BaseActivity implements View.OnClick
     TextView recent;
     @BindView(R.id.down_title)
     ImageView downTitle;
+    @BindView(R.id.result)
+    FuckView result;
 
     private EVWordResultAdapter evWordResultAdapter;
     private List<WrodRateData> wrodRateDataList;
 
-    private ObjectAnimator objectAnimatorShow ;
-    private ObjectAnimator objectAnimatorHide ;
+    private ObjectAnimator objectAnimatorShow;
+    private ObjectAnimator objectAnimatorHide;
 
-    private MyApplication myApplication ;
+    private MyApplication myApplication;
+
     public static void start(Context context) {
         Intent intent = new Intent(context, EvaluateResultActivity.class);
         context.startActivity(intent);
@@ -150,20 +156,27 @@ public class EvaluateResultActivity extends BaseActivity implements View.OnClick
     public void referUi(WordResultBeen wordResultBeen) {
         WordResultBeen.ResultBean resultBeen = wordResultBeen.getResult();
         if (resultBeen != null) {
+            result.setFuckText(resultBeen.getNum());
             new GlideUtils().loadCircle(EvaluateResultActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(this), headImage);
             name.setText(SharedPreferencesUtils.getString("nickname", EvaluateResultActivity.this));
             level.setText(resultBeen.getLevel());
             recent.setText(resultBeen.getBit() * 100 + "%");
-            knowNum.setText("（" +resultBeen.getKnow()  + "）");
-            unknowNum.setText( "（" +resultBeen.getNotKnow() + "）");
+            knowNum.setText("（" + resultBeen.getKnow() + "）");
+            unknowNum.setText("（" + resultBeen.getNotKnow() + "）");
             wrodRateDataList.clear();
 
-            if (choseAddItem(resultBeen.getFour()))  wrodRateDataList.add(new WrodRateData("四级", resultBeen.getFour() + "%"));
-            if (choseAddItem(resultBeen.getSix()))   wrodRateDataList.add(new WrodRateData("六级", resultBeen.getSix() + "%"));
-            if (choseAddItem(resultBeen.getIelts())) wrodRateDataList.add(new WrodRateData("雅思", resultBeen.getIelts() + "%"));
-            if (choseAddItem(resultBeen.getToefl())) wrodRateDataList.add(new WrodRateData("托福", resultBeen.getToefl() + "%"));
-            if (choseAddItem(resultBeen.getGmat()))  wrodRateDataList.add(new WrodRateData("GMAT", resultBeen.getGmat() + "%"));
-            if (choseAddItem(resultBeen.getGre()))   wrodRateDataList.add(new WrodRateData("GRE", resultBeen.getGre() + "%"));
+            if (choseAddItem(resultBeen.getFour()))
+                wrodRateDataList.add(new WrodRateData("四级", resultBeen.getFour() + "%"));
+            if (choseAddItem(resultBeen.getSix()))
+                wrodRateDataList.add(new WrodRateData("六级", resultBeen.getSix() + "%"));
+            if (choseAddItem(resultBeen.getIelts()))
+                wrodRateDataList.add(new WrodRateData("雅思", resultBeen.getIelts() + "%"));
+            if (choseAddItem(resultBeen.getToefl()))
+                wrodRateDataList.add(new WrodRateData("托福", resultBeen.getToefl() + "%"));
+            if (choseAddItem(resultBeen.getGmat()))
+                wrodRateDataList.add(new WrodRateData("GMAT", resultBeen.getGmat() + "%"));
+            if (choseAddItem(resultBeen.getGre()))
+                wrodRateDataList.add(new WrodRateData("GRE", resultBeen.getGre() + "%"));
             evWordResultAdapter.notifyDataSetChanged();
             referShowHideUi(knowList);
         }
@@ -172,13 +185,13 @@ public class EvaluateResultActivity extends BaseActivity implements View.OnClick
     private void findView() {
         titleT.setText("测评结果");
         titleIv.setBackgroundResource(R.mipmap.share);
-        objectAnimatorShow = ObjectAnimator.ofFloat(downTitle ,"rotation" ,0f ,180f);
-        objectAnimatorHide = ObjectAnimator.ofFloat(downTitle ,"rotation" ,180f ,360f);
+        objectAnimatorShow = ObjectAnimator.ofFloat(downTitle, "rotation", 0f, 180f);
+        objectAnimatorHide = ObjectAnimator.ofFloat(downTitle, "rotation", 180f, 360f);
         objectAnimatorHide.setDuration(300);
         objectAnimatorShow.setDuration(300);
     }
 
-    @OnClick({R.id.back, R.id.title_iv, R.id.know_rl, R.id.ranking })
+    @OnClick({R.id.back, R.id.title_iv, R.id.know_rl, R.id.ranking})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back:
@@ -186,6 +199,7 @@ public class EvaluateResultActivity extends BaseActivity implements View.OnClick
                 myApplication.finishAllActivity();
                 break;
             case R.id.title_iv:
+                share();
                 break;
             case R.id.know_rl:
                 showHideClick(knowList);
@@ -213,10 +227,11 @@ public class EvaluateResultActivity extends BaseActivity implements View.OnClick
         }
 
     }
-    public void referShowHideUi(View  view){
+
+    public void referShowHideUi(View view) {
         if (view.getVisibility() == View.VISIBLE) {
             objectAnimatorShow.start();
-        }else{
+        } else {
             objectAnimatorHide.start();
         }
     }
@@ -224,15 +239,21 @@ public class EvaluateResultActivity extends BaseActivity implements View.OnClick
     /**
      * 当rate大于0 时  添加  否则不添加
      */
-    public boolean choseAddItem(String value){
-        boolean isAdd  =false ;
-        try{
-           if(Integer.parseInt(value) > 0 ) isAdd = true ;
-        }catch (Exception e){
+    public boolean choseAddItem(String value) {
+        boolean isAdd = false;
+        try {
+            if (Integer.parseInt(value) > 0) isAdd = true;
+        } catch (Exception e) {
 
         }
-        return isAdd ;
+        return isAdd;
+    }
 
 
+    public void share(){
+        String sdCardPath = Environment.getExternalStorageDirectory().getPath();
+        // 图片文件路径
+        String filePath = sdCardPath + File.separator + System.currentTimeMillis() + ".png";
+        ShareUtils.shareOnlyImage(this ,filePath);
     }
 }

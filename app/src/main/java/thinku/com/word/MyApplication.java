@@ -1,10 +1,13 @@
 package thinku.com.word;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechUtility;
+import com.mob.MobSDK;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.yanzhenjie.nohttp.InitializationConfig;
@@ -27,7 +30,7 @@ import thinku.com.word.utils.SharedPreferencesUtils;
  * Created by Administrator on 2017/12/5.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
     private static final String TAG = MyApplication.class.getSimpleName();
     private static Context mContext;
     public static int MemoryMode = 0;  //  初始化记忆模式
@@ -81,6 +84,8 @@ public class MyApplication extends Application {
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         refWatcher = LeakCanary.install(this);
+        MobSDK.init(this);   //  分享设置
+        SpeechUtility.createUtility(this, SpeechConstant.APPID +"=5af9002c");  //  讯飞语音
 //        Stetho.initializeWithDefaults(this);
     }
 
@@ -187,5 +192,6 @@ public class MyApplication extends Application {
         }
 
     };
+
 
 }

@@ -21,7 +21,7 @@ public class NetworkChildren {
     public static final String ADD_PACKAGE = "app-api/add-package" ;  //  添加词包
     public static final String USER_PAGE   = "app-api/user-package" ;   //  用户词包
     public static final String INDEX  = "app-api/index" ;    //  选择词包和计划用户进入
-    public static final String RECITE_WORDS = "app-api/recite-words"; // 复习单词
+    public static final String RECITE_WORDS = "app-api/recite-words"; // 背单词
     public static final String UPDATA_STATUS = "app-api/update-status" ;  //  上传单词状态
     public static final String IS_REVIEW = "app-api/is-review" ;  // 是否为复习
     public static final String REVIEW_CASE = "app-api/review-case" ;  //  复习情况
@@ -86,4 +86,7 @@ public class NetworkChildren {
     public static final String RIM = "app-api/rim" ;  //  周边首页
     public static final String COURSE_LIST = "app-api/course-list" ;  // 课程列表
     public static final String CASE_LIST = "app-api/case-list" ;  // 案列列表
+
+    //  搜索单词
+    public static final String SEARCH_WORDS = "app-api/search-words" ;  // 搜索单词
 }

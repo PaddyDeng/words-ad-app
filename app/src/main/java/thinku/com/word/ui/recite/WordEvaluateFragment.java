@@ -26,6 +26,7 @@ import thinku.com.word.base.BaseFragment;
 import thinku.com.word.bean.RecitWordBeen;
 import thinku.com.word.bean.ReciteWordParent;
 import thinku.com.word.bean.WordEvaluateEvent;
+import thinku.com.word.ui.report.bean.WordBean;
 import thinku.com.word.utils.C;
 
 public class WordEvaluateFragment extends BaseFragment {
@@ -46,6 +47,7 @@ public class WordEvaluateFragment extends BaseFragment {
     LinearLayout bottomClick;
     Unbinder unbinder;
     private RecitWordBeen recitWordBeen;
+    private WordBean wordBean ;
     private List<ReciteWordParent> reciteWordParents;
     private ReciteWordParentAdapter reciteWordParentAdapter;
 
@@ -62,11 +64,20 @@ public class WordEvaluateFragment extends BaseFragment {
         return fragment;
     }
 
+    public static WordEvaluateFragment newInstance(WordBean recitWordBeen) {
+        WordEvaluateFragment fragment = new WordEvaluateFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("wordBean", recitWordBeen);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             recitWordBeen = getArguments().getParcelable("data");
+            wordBean = getArguments().getParcelable("wordBean");
         }
     }
 

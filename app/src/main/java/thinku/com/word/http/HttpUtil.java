@@ -36,6 +36,7 @@ import thinku.com.word.ui.personalCenter.bean.ImageBean;
 import thinku.com.word.ui.personalCenter.update.bean.VersionInfo;
 import thinku.com.word.ui.personalCenter.update.localdb.UpdateLocalDbData;
 import thinku.com.word.ui.pk.been.PkWordData;
+import thinku.com.word.ui.seacher.WordBean;
 
 public class HttpUtil {
     private HttpUtil() {
@@ -366,6 +367,11 @@ public class HttpUtil {
     //  课程列表
     public static Observable<List<CourseBean>> courseBeanObservable(int type) {
         return getRestApi(HostType.WORDS_URL_HOST).courseList(type).compose(new SchedulerTransformer<List<CourseBean>>());
+    }
+
+    //  搜索单词
+    public static Observable<List<WordBean>> seacherWordObservable(String words) {
+        return getRestApi(HostType.WORDS_URL_HOST).search(words).compose(new SchedulerTransformer<List<WordBean>>());
     }
 
 }

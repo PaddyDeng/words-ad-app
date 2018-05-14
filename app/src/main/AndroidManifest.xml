@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <!-- Jpush配置 -->
@@ -28,6 +27,15 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!--获取手机录音机使用权限，听写、识别、语义理解需要用到此权限 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <!--读取手机信息权限 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!--读取联系人权限，上传联系人需要用到此权限 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <!--定位信息是敏感信息，可通过Setting.setLocationEnable(false)关闭定位请求 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:name=".MyApplication"
@@ -242,6 +250,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
 
+        <!--报告 立即评估-->
+        <activity android:name=".ui.report.EvaluateFirstFragment"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+
         <!-- 修改字体 -->
         <activity
             android:name=".ui.personalCenter.FontSizeSettingActivity"
@@ -300,15 +313,28 @@
             android:name=".ui.periphery.ClassDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <!--播放视频-->
         <activity
             android:name=".ui.periphery.PlayActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
 
+        <!--相机-->
         <activity android:name=".ocr.camera.CameraActivity"
             android:configChanges="screenSize|orientation"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"/> />
+
+        <!--语音听写-->
+        <activity android:name=".ui.seacher.TopicSearchActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <!--搜索单词-->
+        <activity android:name=".ui.seacher.SearchQuestionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!-- JPUSH -->
         <!-- !& For test only  用户自定义的广播接收器&ndash;&gt; -->
         <receiver

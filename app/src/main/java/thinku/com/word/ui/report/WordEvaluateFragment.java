@@ -71,7 +71,12 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
     private ArrayList<String> words;
     private int i = 0;  //  遍历word的位置
 
-
+    /**
+     *
+     * @param context
+     * @param planWords
+     * @param tag
+     */
     public static void start(Context context, String planWords, int tag) {
         Intent intent = new Intent(context, WordEvaluateFragment.class);
         intent.putExtra("planWords", planWords);
@@ -85,25 +90,34 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
         context.startActivity(intent);
     }
 
+    public static void start(Context context ,String wordId){
+        Intent intent = new Intent(context ,EvaluateFirstFragment.class);
+        intent.putExtra("wordId" ,wordId);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_evaluate);
         ButterKnife.bind(this);
-        try {
+        Intent intent = null ;
+        intent = getIntent();
+        if (intent != null){
             planWords = getIntent().getStringExtra("planWords");
             tag = getIntent().getIntExtra("tag", 100);
-        } catch (Exception e) {
-
-        }
-
-        try {
             words = getIntent().getStringArrayListExtra("words");
-            reciteWords(words);
-        } catch (Exception e) {
-            reciteWords();
+            wordId = getIntent().getStringExtra("wordId");
+            if (!TextUtils.isEmpty(planWords)) {
+                reciteWords();
+            }
+            if (words != null && words.size() > 0) {
+                    reciteWords(words);
+                }
+            if (!TextUtils.isEmpty(wordId)){
+                fromWordsIdGetWordDetails(wordId ,1+"" ,1+"" ,C.NORMAL_RECITE+"");
+            }
         }
-
         EventBusActivityScope.getDefault(WordEvaluateFragment.this).register(this);
     }
 

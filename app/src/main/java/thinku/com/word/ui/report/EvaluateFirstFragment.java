@@ -1,5 +1,7 @@
 package thinku.com.word.ui.report;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
+import thinku.com.word.base.BaseActivity;
 import thinku.com.word.base.BaseFragment;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.http.HttpUtil;
@@ -25,11 +28,11 @@ import thinku.com.word.utils.SharedPreferencesUtils;
  * 评估首页
  */
 
-public class EvaluateFirstFragment extends BaseFragment {
+public class EvaluateFirstFragment extends BaseActivity {
 
-    public static EvaluateFirstFragment newInstance(){
-        EvaluateFirstFragment evaluateFirstFragment = new EvaluateFirstFragment();
-        return evaluateFirstFragment ;
+    public  static void start(Context context){
+        Intent intent = new Intent(context ,EvaluateFirstFragment.class);
+        context.startActivity(intent);
     }
     @BindView(R.id.back)
     ImageView back;
@@ -50,20 +53,10 @@ public class EvaluateFirstFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_evaluate_first);
+        unbinder = ButterKnife.bind(this);
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_evaluate_first, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
-    }
 
     @Override
     public void onResume() {
@@ -73,22 +66,23 @@ public class EvaluateFirstFragment extends BaseFragment {
 
     public void initView(){
         titleT.setText("评估");
-        int evaNum = SharedPreferencesUtils.getEvaluationNum(_mActivity);
-        String nametxt = SharedPreferencesUtils.getString("nickname",_mActivity);
+        int evaNum = SharedPreferencesUtils.getEvaluationNum(this);
+        String nametxt = SharedPreferencesUtils.getString("nickname",this);
         name.setText(nametxt);
         if (evaNum == 0) state.setText("未评估");
         else state.setText(evaNum+"");
     }
 
+
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    protected void onDestroy() {
+        super.onDestroy();
         unbinder.unbind();
     }
 
     @OnClick(R.id.back)
     public void back() {
-        pop();
+        this.finishWithAnim();
     }
 
     @OnClick(R.id.evaluate)
@@ -103,7 +97,7 @@ public class EvaluateFirstFragment extends BaseFragment {
                     @Override
                     public void accept(ResultBeen<Void> voidResultBeen) throws Exception {
                         if (getHttpResSuc(voidResultBeen.getCode())){
-                            EvaWordActivity.start(_mActivity);
+                            EvaWordActivity.start(EvaluateFirstFragment.this);
                         }
                     }
                 }));

@@ -66,4 +66,5 @@
     <!--播放-->
     <color name="bg_video_controller">#A6000000</color>
     <color name="bg_video_controller_divider">#FDFDFD</color>
+    <color name="color_translucence">#B2000000</color>
 </resources>
