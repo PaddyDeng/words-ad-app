@@ -12,12 +12,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseNoImmActivity;
+import thinku.com.word.thrlib.RecognizeService;
 import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.seacher.PicSearchActivity;
 import thinku.com.word.utils.FileUtil;
@@ -35,7 +38,7 @@ public class CameraSearchActivity extends BaseNoImmActivity {
     @BindView(R.id.question_search_input)
     EditText questionEt;
     private String content;
-
+    private Unbinder unbinder ;
     public static void startAct(Context c, String content) {
         Intent intent = new Intent(c, CameraSearchActivity.class);
         intent.putExtra(Intent.EXTRA_TEXT, content);
@@ -46,7 +49,7 @@ public class CameraSearchActivity extends BaseNoImmActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_layout);
-
+        unbinder = ButterKnife.bind(this);
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
             public void accept(@NonNull Throwable throwable) throws Exception {
@@ -93,6 +96,12 @@ public class CameraSearchActivity extends BaseNoImmActivity {
                 });
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 
     @OnClick({R.id.question_search_cancel_btn, R.id.go_on_camera, R.id.camera_crop_iv})

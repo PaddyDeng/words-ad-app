@@ -200,7 +200,6 @@ public class PicSearchActivity extends BaseNoImmActivity {
                     }
                 }));
 
-        //  搜索单词
     }
 
     @OnClick({R.id.question_search_cancel_btn})

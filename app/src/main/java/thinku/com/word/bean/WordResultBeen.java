@@ -60,7 +60,7 @@ public class WordResultBeen {
         private String gre;
         private String know;
         private String notKnow;
-        private int bit;
+        private float bit;
 
         public String getId() {
             return id;
@@ -158,11 +158,11 @@ public class WordResultBeen {
             this.notKnow = notKnow;
         }
 
-        public int getBit() {
+        public float getBit() {
             return bit;
         }
 
-        public void setBit(int bit) {
+        public void setBit(float bit) {
             this.bit = bit;
         }
     }

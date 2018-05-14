@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_white">
+        android:background="@color/white">
 
         <Button
             android:id="@+id/question_search_cancel_btn"

@@ -39,6 +39,7 @@ import thinku.com.word.ocr.crop.CropView;
 import thinku.com.word.ocr.crop.FrameOverlayView;
 import thinku.com.word.ocr.dialog.TipDialog;
 import thinku.com.word.ocr.util.SPUtils;
+import thinku.com.word.ui.recite.search.CameraSearchActivity;
 
 public class CameraActivity extends FragmentActivity {
 
@@ -367,12 +368,12 @@ public class CameraActivity extends FragmentActivity {
 //                Intent intent = new Intent();
 //                intent.putExtra(CameraActivity.KEY_CONTENT_TYPE, contentType);
 //                setResult(Activity.RESULT_OK, intent);
-
+//
 //                RecognizeService.recGeneral(outputFile.getAbsolutePath(),
 //                        new RecognizeService.ServiceListener() {
 //                            @Override
 //                            public void onResult(String result) {
-//                CameraSearchActivity.startAct(CameraActivity.this, "");
+                CameraSearchActivity.startAct(CameraActivity.this, "");
 //                            }
 //                        });
 //                finish();

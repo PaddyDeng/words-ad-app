@@ -210,7 +210,7 @@ public class DictionDetailActivity extends BaseActivity {
     }
 
     /**
-     *  添加上面的word TextView  ;
+     *  添加上面的word TextView
      */
     public void addUpWordView(){
         //  words.size()

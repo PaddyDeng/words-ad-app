@@ -71,7 +71,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:multidex:'
+//    compile 'com.android.support:multidex:'
     //  方法超出数量
 
     //沉浸式
@@ -132,4 +132,5 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     compile files('libs/Msc.jar')
     compile files('libs/Sunflower.jar')
+    compile files('libs/ocr-sdk.jar')
 }

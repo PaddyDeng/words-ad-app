@@ -41,3 +41,8 @@
 #讯飞语音
 -keep class com.iflytek.**{*;}
 -keepattributes Signature
+
+
+#百度文字识别
+-keep class com.baidu.ocr.sdk.**{*;}
+-dontwarn com.baidu.ocr.**

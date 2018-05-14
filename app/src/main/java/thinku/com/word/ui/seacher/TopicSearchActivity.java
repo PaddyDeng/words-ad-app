@@ -157,7 +157,7 @@ public class TopicSearchActivity extends BaseNoImmActivity {
         // 使用UI听写功能，请根据sdk文件目录下的notice.txt,放置布局文件和图片资源
         mIatDialog = new RecognizerDialog(this, mInitListener);
 
-        SearchQuestionActivity.startAct(mContext, "word");
+//        SearchQuestionActivity.startAct(mContext, "word");
 
 //        mToast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
     }

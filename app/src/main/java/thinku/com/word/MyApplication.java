@@ -1,8 +1,8 @@
 package thinku.com.word;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.iflytek.cloud.SpeechConstant;
@@ -30,7 +30,7 @@ import thinku.com.word.utils.SharedPreferencesUtils;
  * Created by Administrator on 2017/12/5.
  */
 
-public class MyApplication extends MultiDexApplication {
+public class MyApplication extends Application {
     private static final String TAG = MyApplication.class.getSimpleName();
     private static Context mContext;
     public static int MemoryMode = 0;  //  初始化记忆模式

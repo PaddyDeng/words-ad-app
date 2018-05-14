@@ -3,6 +3,7 @@ package thinku.com.word.ui.report;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,7 @@ import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.TrackBeen;
 import thinku.com.word.bean.UserRankBeen;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.utils.ShareUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
@@ -48,12 +51,12 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
         setContentView(R.layout.activity_evaluate_ranking);
         findView();
         setClick();
+        addNet();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        addNet();
     }
 
     private void setClick() {
@@ -99,6 +102,7 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
         title_t.setText("评估排名");
         share = (ImageView) findViewById(R.id.title_iv);
         share.setBackgroundResource(R.mipmap.share);
+        share.setOnClickListener(this);
         portrait = (ImageView) findViewById(R.id.portrait);
         name = (TextView) findViewById(R.id.name);
         num = (TextView) findViewById(R.id.num);
@@ -133,7 +137,15 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
                 finish();
                 break;
             case R.id.title_iv:
+                share();
                 break;
         }
+    }
+
+    public void share(){
+        String sdCardPath = Environment.getExternalStorageDirectory().getPath();
+        // 图片文件路径
+        String filePath = sdCardPath + File.separator + System.currentTimeMillis() + ".png";
+        ShareUtils.shareOnlyImage(this ,filePath);
     }
 }

@@ -91,7 +91,7 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
     }
 
     public static void start(Context context ,String wordId){
-        Intent intent = new Intent(context ,EvaluateFirstFragment.class);
+        Intent intent = new Intent(context ,WordEvaluateFragment.class);
         intent.putExtra("wordId" ,wordId);
         context.startActivity(intent);
     }

@@ -16,7 +16,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="500px"
+                android:layout_height="250dp"
                 android:background="@color/mainColor" />
 
             <LinearLayout
@@ -26,49 +26,49 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="700px"
+                    android:layout_height="350dp"
                     >
                     <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="700px"
-                        android:layout_marginLeft="60px"
-                        android:layout_marginRight="60px"
+                        android:layout_height="350dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
                         android:background="@mipmap/eva_result_bg"
                         android:layout_centerHorizontal="true"
                         android:id="@+id/imageView" />
                     <thinku.com.word.view.FuckView
-                        android:layout_width="700px"
-                        android:layout_height="150px"
-                        android:layout_marginTop="190px"
-                        android:layout_marginLeft="200px"
+                        android:layout_width="350dp"
+                        android:layout_height="75dp"
+                        android:layout_marginTop="95dp"
+                        android:layout_marginLeft="100dp"
+                        android:layout_marginRight="100dp"
                         android:id="@+id/result"
                         />
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="130px"
-                        android:layout_height="130px"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
                         android:id="@+id/head_image"
-                        android:layout_marginLeft="200px"
+                        android:layout_marginLeft="60dp"
                         android:layout_alignParentBottom="true"
-                        android:src="@mipmap/a"
-                        android:layout_marginBottom="150px"/>
+                        android:layout_marginBottom="75dp"/>
 
                     <TextView
                         style="@style/wrap"
                         android:id="@+id/name"
                         android:text="Tina小姐姐"
-                        android:textSize="13dp"
+                        android:textSize="13sp"
                         android:layout_toRightOf="@id/head_image"
-                        android:layout_marginTop="400px"
-                        android:layout_marginLeft="50px"
+                        android:layout_marginTop="200dp"
+                        android:layout_marginLeft="25dp"
                         />
 
                     <TextView
                         style="@style/wrap"
                         android:id="@+id/level"
                         android:text="大学四级"
-                        android:textSize="16dp"
+                        android:textSize="16sp"
                         android:textColor="@color/mainColor"
-                        android:layout_marginTop="10px"
+                        android:layout_marginTop="5dp"
                         android:layout_below="@id/name"
                         android:layout_toRightOf="@id/head_image"
                        android:layout_alignLeft="@id/name"
@@ -80,23 +80,23 @@
                         android:textSize="13dp"
                         android:layout_toRightOf="@id/level"
                         android:layout_alignBottom="@id/level"
-                        android:layout_marginLeft="10px"
+                        android:layout_marginLeft="5dp"
                         />
 
                     <TextView
                         style="@style/wrap"
                         android:text="打败全国大约"
                         android:id="@+id/text1"
-                        android:textSize="13dp"
+                        android:textSize="14sp"
                         android:layout_alignLeft="@id/level"
-                        android:layout_marginTop="10px"
+                        android:layout_marginTop="5dp"
                         android:layout_below="@id/level"
                         />
 
                     <TextView
                         style="@style/wrap"
                         android:text="50%"
-                        android:textSize="13dp"
+                        android:textSize="14sp"
                         android:layout_alignTop="@id/text1"
                         android:layout_toRightOf="@id/text1"
                         android:textColor="@color/mainColor"
@@ -107,7 +107,7 @@
                     <TextView
                         style="@style/wrap"
                         android:text="的用户"
-                        android:textSize="13dp"
+                        android:textSize="14sp"
                         android:layout_alignTop="@id/text1"
                         android:layout_toRightOf="@id/recent"
                         />

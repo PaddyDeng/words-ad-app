@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -39,6 +40,7 @@ import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.Screenshot;
 import thinku.com.word.utils.ShareUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
+import thinku.com.word.utils.StringUtils;
 import thinku.com.word.view.FuckView;
 
 /**
@@ -148,7 +150,7 @@ public class EvaluateResultActivity extends BaseActivity implements View.OnClick
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         dismissLoadDialog();
-                        toTast("请求网络失败");
+                        toTast(throwable.getMessage());
                     }
                 }));
     }
@@ -156,11 +158,12 @@ public class EvaluateResultActivity extends BaseActivity implements View.OnClick
     public void referUi(WordResultBeen wordResultBeen) {
         WordResultBeen.ResultBean resultBeen = wordResultBeen.getResult();
         if (resultBeen != null) {
-            result.setFuckText(resultBeen.getNum());
+            result.setFuckText("词汇量    ：     "+resultBeen.getNum());
+            Log.e(TAG, "referUi: " + SharedPreferencesUtils.getImage(this));
             new GlideUtils().loadCircle(EvaluateResultActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(this), headImage);
             name.setText(SharedPreferencesUtils.getString("nickname", EvaluateResultActivity.this));
             level.setText(resultBeen.getLevel());
-            recent.setText(resultBeen.getBit() * 100 + "%");
+            recent.setText((int) (resultBeen.getBit() * 100) + "%");
             knowNum.setText("（" + resultBeen.getKnow() + "）");
             unknowNum.setText("（" + resultBeen.getNotKnow() + "）");
             wrodRateDataList.clear();

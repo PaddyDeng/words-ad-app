@@ -23,6 +23,7 @@ import thinku.com.word.base.BaseNoImmFragmentActivitiy;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
 import thinku.com.word.callback.PermissionCallback;
+import thinku.com.word.thrlib.OCRProxy;
 import thinku.com.word.ui.fparent.PKParentFragment;
 import thinku.com.word.ui.fparent.PeripheryParentFragment;
 import thinku.com.word.ui.fparent.ReportParentFragment;
@@ -62,6 +63,7 @@ public class MainActivity extends BaseNoImmFragmentActivitiy implements View.OnC
         login();
         findView();
         setClick();
+        OCRProxy.initToken(mContext);
         // 获取权限
         getPermission(permissions, 1, "需要文件读写权限", 2, new PermissionCallback() {
             @Override

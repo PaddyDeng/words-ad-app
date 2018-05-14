@@ -25,6 +25,7 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ocr.camera.CameraActivity;
 import thinku.com.word.ui.personalCenter.PersonalCenterActivity;
+import thinku.com.word.ui.seacher.SearchQuestionActivity;
 import thinku.com.word.ui.seacher.TopicSearchActivity;
 import thinku.com.word.utils.FileUtil;
 import thinku.com.word.utils.GlideUtils;
@@ -132,6 +133,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                 PersonalCenterActivity.start(_mActivity);
                 break;
             case R.id.input_lookup:
+                startActivity(new Intent(getActivity(), SearchQuestionActivity.class));
                 break;
             case R.id.speech_lookup:
                 TopicSearchActivity.start(_mActivity);
@@ -188,9 +190,9 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden) {
-            initView();
-        }
+//        if (!hidden) {
+//            initView();
+//        }
     }
 
 }

@@ -69,13 +69,13 @@ public class WordReportFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_word_report, container, false);
         unbinder = ButterKnife.bind(this, view);
         initDataPicker();
+        addNet();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        addNet();
     }
 
     //  网络请求

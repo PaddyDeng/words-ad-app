@@ -1,6 +1,6 @@
 package thinku.com.word.bean;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/4/17.
@@ -11,12 +11,12 @@ public class WordReportBeen {
     /**
      * code : 1
      * week : {"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"}
-     * data : {"1":{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"start":"04.01","end":"04.01"},"2":{"data":{"all":"34","knowWell":"1","know":"3","dim":"0","notKnow":"27","forget":"0"},"start":"04.02","end":"04.08"},"3":{"data":{"all":"16","knowWell":"1","know":"5","dim":"0","notKnow":"10","forget":"0"},"start":"04.09","end":"04.15"},"4":{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"start":"04.16","end":"04.22"},"5":{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"start":"04.23","end":"04.29"},"6":{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"start":"04.30","end":"04.30"}}
+     * data : {"re":[{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-04-30"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-01"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-02"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-03"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-04"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-05"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-06"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-07"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-08"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-09"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-10"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-11"},{"data":{"all":"5","knowWell":"1","know":"3","dim":"1","notKnow":"0","forget":"0"},"date":"2018-05-12"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-13"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-14"}],"re1":[{"data":5,"date":"2018-05-15"},{"data":0,"date":"2018-05-16"},{"data":0,"date":"2018-05-17"},{"data":5,"date":"2018-05-18"},{"data":0,"date":"2018-05-19"},{"data":0,"date":"2018-05-20"},{"data":0,"date":"2018-05-21"},{"data":0,"date":"2018-05-22"},{"data":0,"date":"2018-05-23"},{"data":0,"date":"2018-05-24"},{"data":0,"date":"2018-05-25"},{"data":5,"date":"2018-05-26"},{"data":0,"date":"2018-05-27"},{"data":0,"date":"2018-05-28"}]}
      */
 
     private int code;
     private WeekBean week;
-    private DataBeanMonth data;
+    private DataBeanX data;
 
     public int getCode() {
         return code;
@@ -34,11 +34,11 @@ public class WordReportBeen {
         this.week = week;
     }
 
-    public DataBeanMonth getData() {
+    public DataBeanX getData() {
         return data;
     }
 
-    public void setData(DataBeanMonth data) {
+    public void setData(DataBeanX data) {
         this.data = data;
     }
 
@@ -108,87 +108,34 @@ public class WordReportBeen {
         }
     }
 
-    public static class DataBeanMonth {
-        /**
-         * 1 : {"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"start":"04.01","end":"04.01"}
-         * 2 : {"data":{"all":"34","knowWell":"1","know":"3","dim":"0","notKnow":"27","forget":"0"},"start":"04.02","end":"04.08"}
-         * 3 : {"data":{"all":"16","knowWell":"1","know":"5","dim":"0","notKnow":"10","forget":"0"},"start":"04.09","end":"04.15"}
-         * 4 : {"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"start":"04.16","end":"04.22"}
-         * 5 : {"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"start":"04.23","end":"04.29"}
-         * 6 : {"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"start":"04.30","end":"04.30"}
-         */
+    public static class DataBeanX {
+        private List<ReBean> re;
+        private List<Re1Bean> re1;
 
-        @SerializedName("1")
-        private MonthWeekBean _$1;
-        @SerializedName("2")
-        private MonthWeekBean _$2;
-        @SerializedName("3")
-        private MonthWeekBean _$3;
-        @SerializedName("4")
-        private MonthWeekBean _$4;
-        @SerializedName("5")
-        private MonthWeekBean _$5;
-        @SerializedName("6")
-        private MonthWeekBean _$6;
-
-        public MonthWeekBean get_$1() {
-            return _$1;
+        public List<ReBean> getRe() {
+            return re;
         }
 
-        public void set_$1(MonthWeekBean _$1) {
-            this._$1 = _$1;
+        public void setRe(List<ReBean> re) {
+            this.re = re;
         }
 
-        public MonthWeekBean get_$2() {
-            return _$2;
+        public List<Re1Bean> getRe1() {
+            return re1;
         }
 
-        public void set_$2(MonthWeekBean _$2) {
-            this._$2 = _$2;
+        public void setRe1(List<Re1Bean> re1) {
+            this.re1 = re1;
         }
 
-        public MonthWeekBean get_$3() {
-            return _$3;
-        }
-
-        public void set_$3(MonthWeekBean _$3) {
-            this._$3 = _$3;
-        }
-
-        public MonthWeekBean get_$4() {
-            return _$4;
-        }
-
-        public void set_$4(MonthWeekBean _$4) {
-            this._$4 = _$4;
-        }
-
-        public MonthWeekBean get_$5() {
-            return _$5;
-        }
-
-        public void set_$5(MonthWeekBean _$5) {
-            this._$5 = _$5;
-        }
-
-        public MonthWeekBean get_$6() {
-            return _$6;
-        }
-
-        public void set_$6(MonthWeekBean _$6) {
-            this._$6 = _$6;
-        }
-
-        public static class MonthWeekBean {
+        public static class ReBean {
             /**
              * data : {"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"}
-             * start : 04.01
-             * end : 04.01
+             * date : 2018-04-30
              */
 
             private DataBean data;
-            private String start;
-            private String end;
+            private String date;
 
             public DataBean getData() {
                 return data;
@@ -198,20 +145,12 @@ public class WordReportBeen {
                 this.data = data;
             }
 
-            public String getStart() {
-                return start;
+            public String getDate() {
+                return date;
             }
 
-            public void setStart(String start) {
-                this.start = start;
-            }
-
-            public String getEnd() {
-                return end;
-            }
-
-            public void setEnd(String end) {
-                this.end = end;
+            public void setDate(String date) {
+                this.date = date;
             }
 
             public static class DataBean {
@@ -278,6 +217,32 @@ public class WordReportBeen {
                 public void setForget(String forget) {
                     this.forget = forget;
                 }
+            }
+        }
+
+        public static class Re1Bean {
+            /**
+             * data : 5
+             * date : 2018-05-15
+             */
+
+            private int data;
+            private String date;
+
+            public int getData() {
+                return data;
+            }
+
+            public void setData(int data) {
+                this.data = data;
+            }
+
+            public String getDate() {
+                return date;
+            }
+
+            public void setDate(String date) {
+                this.date = date;
             }
         }
     }

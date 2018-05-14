@@ -335,6 +335,15 @@
         <activity android:name=".ui.seacher.SearchQuestionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <!--照相搜索-->
+        <activity android:name=".ui.recite.search.CameraSearchActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity android:name=".ui.seacher.PicSearchActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <!-- JPUSH -->
         <!-- !& For test only  用户自定义的广播接收器&ndash;&gt; -->
         <receiver
