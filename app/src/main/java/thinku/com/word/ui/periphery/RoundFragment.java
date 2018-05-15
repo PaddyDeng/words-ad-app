@@ -267,20 +267,27 @@ public class RoundFragment extends BaseFragment {
      */
     public void choseLiveList(List<RoundBean.LivePreviewBean> livePreviewBeanList) {
         for (RoundBean.LivePreviewBean livePreviewBean : livePreviewBeanList) {
-            int i = 0;
-            if (DateUtil.compare(DateUtil.dateToString(), livePreviewBean.getDate())) {
-
-                for (int j = 0; j < livePreviewBean.getData().size(); j++) {
-                    RoundBean.LivePreviewBean.DataBean dataBean = livePreviewBean.getData().get(j);
-                    i++;
-                    if (i == 1) {
-                        dataBean.setIsTitle(livePreviewBean.getDate());
-                    }
-                    if (DateUtil.compare(System.currentTimeMillis(), dataBean.getCnName())) {
-                        dataBeanList.add(dataBean);
-                    }
+            for ( RoundBean.LivePreviewBean.DataBean dataBean : livePreviewBean.getData()) {
+                if (DateUtil.compare(System.currentTimeMillis(), dataBean.getCnName())) {
+                    dataBean.setIsTitle(livePreviewBean.getDate());
+                    dataBeanList.add(dataBean);
                 }
             }
+//            int i = 0;
+//            if (DateUtil.compare(DateUtil.dateToString(), livePreviewBean.getDate())) {
+//
+//                for (int j = 0; j < livePreviewBean.getData().size(); j++) {
+//                    RoundBean.LivePreviewBean.DataBean dataBean = livePreviewBean.getData().get(j);
+//                    i++;
+//                    if (i == 1) {
+//                        dataBean.setIsTitle(livePreviewBean.getDate());
+//                    }
+//                    if (DateUtil.compare(System.currentTimeMillis(), dataBean.getCnName())) {
+//                        dataBeanList.add(dataBean);
+//                    }
+//                }
+//            }
+
     }
         if(dataBeanList.isEmpty()) {
         openClass.setVisibility(View.GONE);

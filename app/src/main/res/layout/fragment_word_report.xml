@@ -230,5 +230,91 @@
             app:xylinewidth="1dp"
             app:xytextcolor="#7e7e7e"
             app:xytextsize="12sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp">
+        <View
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:background="@color/color_paint1"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="熟识量"
+            android:layout_marginLeft="20dp"/>
+
+        <View
+            android:layout_marginLeft="20dp"
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:background="@color/color_paint2"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="认识量"
+            android:layout_marginLeft="20dp"/>
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp">
+            <View
+                android:layout_width="80dp"
+                android:layout_height="20dp"
+                android:background="@color/color_paint3"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="模糊量"
+                android:layout_marginLeft="20dp"/>
+
+            <View
+                android:layout_marginLeft="20dp"
+                android:layout_width="80dp"
+                android:layout_height="20dp"
+                android:background="@color/color_paint4"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="不认识量"
+                android:layout_marginLeft="20dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp">
+            <View
+                android:layout_width="80dp"
+                android:layout_height="20dp"
+                android:background="@color/color_paint5"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="忘记量"
+                android:layout_marginLeft="20dp"/>
+
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

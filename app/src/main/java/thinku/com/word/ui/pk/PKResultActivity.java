@@ -59,7 +59,14 @@ public class PKResultActivity extends BaseActivity {
     ImageView pkResultBg;
     @BindView(R.id.image_rl)
     RelativeLayout imageRl;
-
+    @BindView(R.id.user_victory)
+    ImageView userVictory ;
+    @BindView(R.id.match_victory)
+    ImageView matchVictory ;
+    @BindView(R.id.match_image_big)
+    ImageView matchBig ;
+    @BindView(R.id.user_image_big)
+    ImageView userBig;
     private String matchUid;
     private String totalId;
 
@@ -100,8 +107,10 @@ public class PKResultActivity extends BaseActivity {
     public void referUi(PkResultBeen pkResultBeen) {
         if (pkResultBeen.getType() == 1) {  //  胜利
             pkSuccess();
+            setUserVictory();
         } else {
             pkFailure();
+            setMatchVictory();
         }
 
         PkResultBeen.DataBean userBeen = pkResultBeen.getData().get(0);
@@ -132,21 +141,14 @@ public class PKResultActivity extends BaseActivity {
         userErrorNum.getBackground().setAlpha(50);
         matchCurrentNum.getBackground().setAlpha(50);
         matchErrorNum.getBackground().setAlpha(50);
-        new GlideUtils().loadCircle(PKResultActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(PKResultActivity.this), userImage);
-        new GlideUtils().loadCircle(PKResultActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getPKMatchImage(PKResultActivity.this), matchImage);
         userName.setText(SharedPreferencesUtils.getNickName(PKResultActivity.this));
         matchName.setText(SharedPreferencesUtils.getPKMatchName(PKResultActivity.this));
+        setUserVictory();
     }
 
-    @OnClick({R.id.user_image, R.id.match_image , R.id.back , R.id.share})
+    @OnClick({ R.id.back , R.id.share})
     public void click(View view) {
         switch (view.getId()) {
-            case R.id.user_image:
-                setImage(userImage);
-                break;
-            case R.id.match_image:
-                setImage(matchImage);
-                break;
             case R.id.share:
                 share();
                 break;
@@ -155,16 +157,27 @@ public class PKResultActivity extends BaseActivity {
         }
     }
 
-    public void setImage(ImageView imageView) {
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) userImage.getLayoutParams();
-        Log.d(TAG, "layout height0: " + layoutParams.height);
-        Log.d(TAG, "layout width0: " + layoutParams.width);
-        layoutParams.width = MeasureUtils.px2dp(this, 500);
-        layoutParams.height = MeasureUtils.px2dp(this, 500);
-        userImage.setLayoutParams(layoutParams);
-        Log.d(TAG, "layout height: " + layoutParams.height);
-        Log.d(TAG, "layout width: " + layoutParams.width);
+    public void setUserVictory(){
+        new GlideUtils().loadCircle(PKResultActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(PKResultActivity.this), userBig);
+        new GlideUtils().loadCircle(PKResultActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getPKMatchImage(PKResultActivity.this), matchImage);
+        userVictory.setVisibility(View.VISIBLE);
+        userBig.setVisibility(View.VISIBLE);
+        matchImage.setVisibility(View.VISIBLE);
+        userImage.setVisibility(View.GONE);
+        matchBig.setVisibility(View.GONE);
+        matchVictory.setVisibility(View.GONE);
+    }
 
+
+    public void setMatchVictory(){
+        new GlideUtils().loadCircle(PKResultActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(PKResultActivity.this), matchBig);
+        new GlideUtils().loadCircle(PKResultActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getPKMatchImage(PKResultActivity.this), userImage);
+        userVictory.setVisibility(View.GONE);
+        userBig.setVisibility(View.GONE);
+        matchImage.setVisibility(View.GONE);
+        matchVictory.setVisibility(View.VISIBLE);
+        matchBig.setVisibility(View.VISIBLE);
+        userImage.setVisibility(View.VISIBLE);
     }
 
     public void share(){

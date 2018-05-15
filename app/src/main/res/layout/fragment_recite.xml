@@ -29,18 +29,20 @@
             android:layout_centerHorizontal="true"
             android:background="@drawable/search_ll"
             android:gravity="center_vertical">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:drawableLeft="@mipmap/seacher"
-                android:drawablePadding="10dp"
-                android:hint="搜索单词"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/seacher"
+                android:layout_marginLeft="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="搜索单词"
                 android:paddingLeft="10dp"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="40px" />
+                android:textSize="40px"
+                android:layout_gravity="center_vertical"
+                />
         </LinearLayout>
 
         <LinearLayout

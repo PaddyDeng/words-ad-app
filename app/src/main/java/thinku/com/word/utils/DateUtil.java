@@ -241,10 +241,10 @@ public class DateUtil {
         try{
             Date currentDate = simpleDateFormat.parse(currentTime);
             Date liveDate = simpleDateFormat.parse(liveTime);
-            if (currentDate.getTime() > liveDate.getTime()){
-                return false ;
-            }else{
+            if (currentDate.getTime() == liveDate.getTime()){
                 return true ;
+            }else{
+                return false ;
             }
         }catch (ParseException e){
             Log.i("date" ,e.getMessage());

@@ -51,7 +51,7 @@ public class WordReportFragment extends BaseFragment {
     @BindView(R.id.week)
     PieView week;
     List<WeekData> weekDataList = new ArrayList<>();
-
+    private int poisition = 0  ;
     //  日报图
     private List<String> xValue = new ArrayList<>();
     private List<Integer> yValue = new ArrayList<>();
@@ -124,13 +124,14 @@ public class WordReportFragment extends BaseFragment {
         setyValue(wordReportBeen.getData());
     }
 
-
     public void getXValue(WordReportBeen.DataBeanX dataBeanX){
         if (dataBeanX.getRe() != null && dataBeanX.getRe().size() > 0) {
+            poisition = dataBeanX.getRe().size() - 1 ;
             XValueString(dataBeanX.getRe());
         }
         if (dataBeanX.getRe1() != null && dataBeanX.getRe1().size() > 0) {
             XValueString(dataBeanX.getRe1());
+
         }
     }
 
@@ -142,14 +143,14 @@ public class WordReportFragment extends BaseFragment {
         int max = 0 ;
         if (dataBeanX.getRe() != null && dataBeanX.getRe().size() > 0) {
             for (WordReportBeen.DataBeanX.ReBean reBean: dataBeanX.getRe()){
-                int all = setAll(reBean.getData()) ;
+                int all = StringToInt(reBean.getData().getAll());
                 if (all > max) max = all ;
                 Value.put(DateToInt(reBean.getDate()),setXDateListValue(reBean.getData()));
             }
         }
         if (dataBeanX.getRe1() != null && dataBeanX.getRe1().size() > 0) {
             for (WordReportBeen.DataBeanX.ReBean reBean: dataBeanX.getRe1()){
-                    int all = setAll(reBean.getData()) ;
+                int all = StringToInt(reBean.getData().getAll());
                     if (all > max) max =all  ;
                 Value.put(DateToInt(reBean.getDate()),setXDateListValue(reBean.getData()));
             }
@@ -199,12 +200,10 @@ public class WordReportFragment extends BaseFragment {
             int instance = DateUtil.differentDays(reBean.getDate());
             if (instance > 0){
                 xValue.add(instance +"天后");
-                Collections.sort(xValue);
             }else if (instance  == 0){
-                xValue.add("今天");
+                xValue.add(poisition ,"今天");
             }else{
                 xValue.add(Math.abs(instance) +"天前");
-                Collections.sort(xValue);
             }
         }
 

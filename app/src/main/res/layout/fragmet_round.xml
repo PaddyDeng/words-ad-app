@@ -193,7 +193,7 @@
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
             android:layout_marginTop="10dp"
@@ -201,7 +201,6 @@
             android:id="@+id/open_class"
             android:visibility="gone"
             >
-
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/live"

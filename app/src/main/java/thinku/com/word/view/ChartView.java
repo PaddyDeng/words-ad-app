@@ -13,6 +13,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -265,25 +266,23 @@ public class ChartView extends View {
     }
     /**
      * 绘制折线
-     *
      * @param canvas
      */
     private void drawBrokenLine(Canvas canvas) {
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setColor(linecolor);
         //绘制折线
-        for (int i = 0; i < xValue.size(); i++) {
+        for (int i  = 0; i < xValue.size(); i++) {
             List<Integer> yVlaue = value.get(xValue.get(i));
+            float lastX = xInit + interval * i;
             float lastY  = yOri ;
             if (yVlaue != null) {
                 Paint paint = null ;
-                for (int j = 0; j < yVlaue.size(); j++) {
+                for (int j = 1; j < yVlaue.size(); j++) {
                     paint = paints.get(j);
-                    paint.setColor(Color.RED);
-                    float lastX = xInit + interval * i;
-                    float newX = xInit + interval * i + interval / 2;
-                    float newY = lastY - yOri * (1 - 0.1f) * (yVlaue.get(j) / max);
-                    canvas.drawRect(newX, newY, lastX, lastY, paint);
+                    float newY = lastY - yOri * (yVlaue.get(j) / max);
+                    canvas.drawLine(lastX , newY,lastX + interval / 2 ,lastY ,paint);
+                    canvas.drawRect(lastX, newY, lastX + interval / 2, lastY, paint);
                     lastY = newY;
                 }
             }
@@ -454,7 +453,6 @@ public class ChartView extends View {
         }
         return 0;
     }
-
 
 
     /**

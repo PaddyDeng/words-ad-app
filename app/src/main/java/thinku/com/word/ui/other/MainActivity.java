@@ -1,3 +1,4 @@
+
 package thinku.com.word.ui.other;
 
 import android.Manifest;
@@ -24,8 +25,6 @@ import thinku.com.word.R;
 import thinku.com.word.base.BaseNoImmFragmentActivitiy;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
-import thinku.com.word.callback.PermissionCallback;
-import thinku.com.word.ocr.camera.CameraActivity;
 import thinku.com.word.thrlib.OCRProxy;
 import thinku.com.word.ui.fparent.PKParentFragment;
 import thinku.com.word.ui.fparent.PeripheryParentFragment;
@@ -36,7 +35,7 @@ import thinku.com.word.utils.SharedPreferencesUtils;
 
 public class MainActivity extends BaseNoImmFragmentActivitiy implements View.OnClickListener {
     private String[] permissions = new String[]{
-            Manifest.permission.READ_EXTERNAL_STORAGE ,Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     private static final String TAG = MainActivity.class.getSimpleName();
     private LinearLayout recite_ll, report_ll, pk_ll, periphery_ll;
@@ -54,8 +53,8 @@ public class MainActivity extends BaseNoImmFragmentActivitiy implements View.OnC
     private PKParentFragment pkFragment;
     private PeripheryParentFragment peripheryFragment;
 
-    public static void toMain(Context context){
-        Intent intent = new Intent(context ,MainActivity.class);
+    public static void toMain(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
         context.startActivity(intent);
     }
 
@@ -69,7 +68,7 @@ public class MainActivity extends BaseNoImmFragmentActivitiy implements View.OnC
     }
 
     public void checkPermission() {
-        mRxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE ,Manifest.permission.READ_EXTERNAL_STORAGE)
+        mRxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(@NonNull Boolean aBoolean) throws Exception {
@@ -96,9 +95,9 @@ public class MainActivity extends BaseNoImmFragmentActivitiy implements View.OnC
     /**
      * session 失效重新登录
      */
-    public void login(){
+    public void login() {
         UserInfo userInfo = SharedPreferencesUtils.getUserInfo(MainActivity.this);
-        if (userInfo != null & !TextUtils.isEmpty(userInfo.getPhone())& !"".equals(userInfo.getPhone()) ){
+        if (userInfo != null & !TextUtils.isEmpty(userInfo.getPhone()) & !"".equals(userInfo.getPhone())) {
             LoginHelper.setSession(MainActivity.this, userInfo, new ICallBack() {
                 @Override
                 public void onSuccess(Object o) {
