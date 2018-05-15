@@ -28,7 +28,6 @@ import thinku.com.word.base.BaseNoImmActivity;
 import thinku.com.word.callback.SelectListener;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.periphery.adapter.SearchQuestionAdapter;
-import thinku.com.word.ui.report.WordEvaluateFragment;
 import thinku.com.word.utils.Utils;
 
 import static thinku.com.word.utils.LogUtils.log;

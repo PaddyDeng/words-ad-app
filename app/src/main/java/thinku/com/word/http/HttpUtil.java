@@ -37,6 +37,7 @@ import thinku.com.word.ui.personalCenter.update.bean.VersionInfo;
 import thinku.com.word.ui.personalCenter.update.localdb.UpdateLocalDbData;
 import thinku.com.word.ui.pk.been.PkWordData;
 import thinku.com.word.ui.seacher.WordBean;
+import thinku.com.word.ui.seacher.WordListBean;
 
 public class HttpUtil {
     private HttpUtil() {
@@ -155,6 +156,11 @@ public class HttpUtil {
     //单词详情
     public static Observable<RecitWordBeen> wordDetailsObservable(String wordId){
         return getRestApi(HostType.WORDS_URL_HOST).wordDetails(wordId).compose(new SchedulerTransformer<RecitWordBeen>());
+    }
+
+    //单词详情
+    public static Observable<WordListBean> wordDetailsObservable2(String wordId){
+        return getRestApi(HostType.WORDS_URL_HOST).wordDetails2(wordId).compose(new SchedulerTransformer<WordListBean>());
     }
 
     //根据复习模式后台返回改复习情况

@@ -46,6 +46,7 @@ import thinku.com.word.ui.personalCenter.update.bean.VersionInfo;
 import thinku.com.word.ui.personalCenter.update.localdb.UpdateLocalDbData;
 import thinku.com.word.ui.pk.been.PkWordData;
 import thinku.com.word.ui.seacher.WordBean;
+import thinku.com.word.ui.seacher.WordListBean;
 
 /**
  * Created by fire on 2017/5/3 15:18.
@@ -130,6 +131,10 @@ public interface RestApi {
     @FormUrlEncoded
     @POST(NetworkChildren.WORD_DETAILS)
     Observable<RecitWordBeen> wordDetails(@Field("wordsId") String wordId);
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.WORD_DETAILS)
+    Observable<WordListBean> wordDetails2(@Field("wordsId") String wordId);
 
     @POST(NetworkChildren.IS_REVIEW)
     Observable<ResultBeen<Void>> isReview();
