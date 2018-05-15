@@ -110,7 +110,7 @@ public class WordReportBeen {
 
     public static class DataBeanX {
         private List<ReBean> re;
-        private List<Re1Bean> re1;
+        private List<ReBean> re1;
 
         public List<ReBean> getRe() {
             return re;
@@ -120,11 +120,11 @@ public class WordReportBeen {
             this.re = re;
         }
 
-        public List<Re1Bean> getRe1() {
+        public List<ReBean> getRe1() {
             return re1;
         }
 
-        public void setRe1(List<Re1Bean> re1) {
+        public void setRe1(List<ReBean> re1) {
             this.re1 = re1;
         }
 
@@ -220,30 +220,5 @@ public class WordReportBeen {
             }
         }
 
-        public static class Re1Bean {
-            /**
-             * data : 5
-             * date : 2018-05-15
-             */
-
-            private int data;
-            private String date;
-
-            public int getData() {
-                return data;
-            }
-
-            public void setData(int data) {
-                this.data = data;
-            }
-
-            public String getDate() {
-                return date;
-            }
-
-            public void setDate(String date) {
-                this.date = date;
-            }
-        }
     }
 }

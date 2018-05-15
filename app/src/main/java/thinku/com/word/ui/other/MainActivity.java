@@ -17,12 +17,15 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import me.yokeyword.fragmentation.SupportFragment;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseNoImmFragmentActivitiy;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
 import thinku.com.word.callback.PermissionCallback;
+import thinku.com.word.ocr.camera.CameraActivity;
 import thinku.com.word.thrlib.OCRProxy;
 import thinku.com.word.ui.fparent.PKParentFragment;
 import thinku.com.word.ui.fparent.PeripheryParentFragment;
@@ -60,25 +63,35 @@ public class MainActivity extends BaseNoImmFragmentActivitiy implements View.OnC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        login();
         findView();
         setClick();
-        OCRProxy.initToken(mContext);
-        // 获取权限
-        getPermission(permissions, 1, "需要文件读写权限", 2, new PermissionCallback() {
-            @Override
-            public void onSuccessful() {
-                initView();
-            }
-
-            @Override
-            public void onFailure() {
-                toTast("获取权限失败");
-                finish();
-            }
-        });
+        checkPermission();
     }
 
+    public void checkPermission() {
+        mRxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE ,Manifest.permission.READ_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(@NonNull Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            initView();
+                            login();
+                            OCRProxy.initToken(mContext);
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        toTast("获取权限失败");
+                        finish();
+                    }
+                });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     /**
      * session 失效重新登录

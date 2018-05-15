@@ -17,6 +17,8 @@ import static thinku.com.word.utils.SharePref.PREFS_NAME;
 public class SharedPreferencesUtils {
     private static final String TAG = SharedPreferencesUtils.class.getSimpleName();
 
+    protected static String PREFS_NAME = "UserInfo";
+
     private final static String PREFS_KEY_USER_PWD = "prefs_key_user_pwd";
     private final static String PREFS_KEY_MEMORY_MODE = "prefs_key_memory_mode";
     private final static String PREFS_KEY_PALN_WORDS = "prefs_key_plan_words" ;

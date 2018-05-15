@@ -99,7 +99,7 @@
         android:gravity="center"
         android:rotation="-90"
         android:lineSpacingMultiplier="1.4"
-        android:text="请按横屏拍照\n剪辑一行题目搜索"
+        android:text="请按横屏拍照\n剪辑单词搜索"
         android:textColor="@android:color/white"/>
 
 </thinku.com.word.ocr.camera.OCRCameraLayout>

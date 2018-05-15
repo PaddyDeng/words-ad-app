@@ -1,6 +1,7 @@
 package thinku.com.word.thrlib;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.baidu.ocr.sdk.OCR;
 import com.baidu.ocr.sdk.OnResultListener;
@@ -12,18 +13,33 @@ public class OCRProxy {
     }
 
     public static void initToken(Context context) {
-        OCR.getInstance().initAccessTokenWithAkSk(new OnResultListener<AccessToken>() {
+//        OCR.getInstance().initAccessTokenWithAkSk(new OnResultListener<AccessToken>() {
+//            @Override
+//            public void onResult(AccessToken result) {
+////                String token = result.getAccessToken();
+//            }
+//
+//            @Override
+//            public void onError(OCRError error) {
+//                error.printStackTrace();
+////                alertText("AK，SK方式获取token失败", error.getMessage());
+//            }
+//        }, context, "fBmjCWalVR0V8u628ZU8du3V", "57qubjY9BoEAA50p3cFLMWZfowlwduL8");
+
+                OCR.getInstance().initAccessToken(new OnResultListener<AccessToken>() {
             @Override
             public void onResult(AccessToken result) {
-//                String token = result.getAccessToken();
+                String token = result.getAccessToken();
+                Log.e("token", "onResult: " + token );
             }
 
             @Override
             public void onError(OCRError error) {
                 error.printStackTrace();
+                Log.e("token", "error: " + error.toString() );
 //                alertText("AK，SK方式获取token失败", error.getMessage());
             }
-        }, context, "70zHhz3fhaESNELQLnnSua0E", "tf3RP1FSmGTHLmqLSj3Aqniwpavir5j8");
+        }, context);
     }
 
     public static void orcRelease() {

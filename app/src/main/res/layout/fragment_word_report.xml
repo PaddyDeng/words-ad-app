@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -209,32 +210,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60px"
-                android:text="月报"
+                android:text="日报"
                 android:textSize="45px" />
 
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:text="9月30日-10月30日"
-                android:textSize="40px" />
-
-            <ImageView
-                android:id="@+id/setting_date"
-                android:layout_width="60px"
-                android:layout_height="60px"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="50px"
-                android:background="@color/black" />
         </RelativeLayout>
 
-        <TextView
+        <thinku.com.word.view.ChartView
             android:layout_width="match_parent"
             android:layout_height="600px"
             android:background="@color/colorAccent"
+            android:id="@+id/date_report"
             android:gravity="center"
-            android:text="统计图" />
+            android:text="统计图"
+            app:bgcolor="#ffffff"
+            app:interval="50dp"
+            app:isScroll="false"
+            app:linecolor="#02bbb7"
+            app:xylinecolor="#e2e2e2"
+            app:xylinewidth="1dp"
+            app:xytextcolor="#7e7e7e"
+            app:xytextsize="12sp" />
     </LinearLayout>
 </ScrollView>

@@ -1,23 +1,22 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.jakewharton.butterknife'
 apply plugin:'com.mob.sdk'
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.3'
     defaultConfig {
         applicationId "thinku.com.word"
-        minSdkVersion 19
+        minSdkVersion 17
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
-        ndk {
-            //选择要添加的对应cpu类型的.so库。
-            abiFilters 'armeabi', 'armeabi-v7a', 'x86'
-            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
-        }
+//        ndk {
+//            //选择要添加的对应cpu类型的.so库。
+//            abiFilters 'armeabi', 'armeabi-v7a', 'x86'
+//            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+//        }
 
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
@@ -35,6 +34,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
         }
     }
 
@@ -71,7 +76,8 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-//    compile 'com.android.support:multidex:'
+    //    compile 'com.android.support:multidex:'
+
     //  方法超出数量
 
     //沉浸式
@@ -133,4 +139,5 @@ dependencies {
     compile files('libs/Msc.jar')
     compile files('libs/Sunflower.jar')
     compile files('libs/ocr-sdk.jar')
+    compile files('libs/license.jar')
 }
