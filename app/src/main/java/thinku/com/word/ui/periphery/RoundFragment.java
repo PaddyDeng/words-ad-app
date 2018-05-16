@@ -193,7 +193,6 @@ public class RoundFragment extends BaseFragment {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
-
                     }
                 }).subscribe(new Consumer<RoundBean>() {
                     @Override
@@ -205,7 +204,6 @@ public class RoundFragment extends BaseFragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        toTast(_mActivity, throwable.getMessage());
                     }
                 }));
     }

@@ -5,6 +5,12 @@
     android:background="@drawable/word_package_bg"
     android:id="@+id/rl">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/status"
+        android:textColor="@color/white"
+        android:layout_alignParentRight="true"/>
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circle_img"
         android:layout_width="5dp"

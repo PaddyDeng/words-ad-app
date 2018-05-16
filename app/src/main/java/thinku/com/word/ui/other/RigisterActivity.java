@@ -23,13 +23,24 @@ import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.BackCode;
+import thinku.com.word.bean.ResultBeen;
+import thinku.com.word.bean.UserInfo;
+import thinku.com.word.callback.RequestCallback;
+import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkChildren;
 import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.ui.personalCenter.SetNickNameActivity;
+import thinku.com.word.ui.personalCenter.feature.AuthCode;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.PhoneAndEmailUtils;
+import thinku.com.word.utils.RegexValidateUtil;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
@@ -38,13 +49,14 @@ import thinku.com.word.utils.SharedPreferencesUtils;
 
 public class RigisterActivity extends BaseActivity implements View.OnClickListener {
 
-    private ImageView back,agree;
-    private EditText num_et,code_et,pass_et;
-    private TextView send,rigister,protocol,to_login;
-    private boolean isAgree=true;
+    private ImageView back, agree;
+    private EditText num_et, code_et, pass_et;
+    private TextView send, rigister, protocol, to_login;
+    private boolean isAgree = true;
     private boolean isSendCode;
     private Timer timer;
     private int recLen = 60;
+    private AuthCode mAuthCode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,178 +86,275 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
         protocol = (TextView) findViewById(R.id.protocol);
         to_login = (TextView) findViewById(R.id.to_login);
         agree.setSelected(true);
-        LoginHelper.initMessage(RigisterActivity.this);
+        mAuthCode = new AuthCode(60 * 1000, 1000, this, send, R.drawable.register_p_or_e_auth_code_gb);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.back:
                 finish();
                 break;
             case R.id.send:
-                if(!isSendCode) {
+                if (!isSendCode) {
                     if (TextUtils.isEmpty(num_et.getText())) {
                         Toast.makeText(RigisterActivity.this, "请填写账号", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    String num=num_et.getText().toString();
-                    if(PhoneAndEmailUtils.isMobileNO(num_et.getText().toString())){
-                        sendCode(num,0);
-                    }else if(PhoneAndEmailUtils.isEmail(num_et.getText().toString())){
-                        sendCode(num,1);
-                    }else{
-                        Toast.makeText(RigisterActivity.this,"请输入有效的手机号/邮箱",Toast.LENGTH_SHORT).show();
+                    String num = num_et.getText().toString();
+                    if (PhoneAndEmailUtils.isMobileNO(num_et.getText().toString())) {
+                        getAuthCode(false, num);
+                    } else if (PhoneAndEmailUtils.isEmail(num_et.getText().toString())) {
+                        getAuthCode(true, num);
+                    } else {
+                        Toast.makeText(RigisterActivity.this, "请输入有效的手机号/邮箱", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
 
                 break;
             case R.id.rigister:
-                if(!isAgree){
-                    Toast.makeText(RigisterActivity.this,"请阅读并同意《用户协议》",Toast.LENGTH_SHORT).show();
+                if (!isAgree) {
+                    Toast.makeText(RigisterActivity.this, "请阅读并同意《用户协议》", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(TextUtils.isEmpty(num_et.getText())){
-                    Toast.makeText(RigisterActivity.this,"请填写账号",Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(num_et.getText())) {
+                    Toast.makeText(RigisterActivity.this, "请填写账号", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(TextUtils.isEmpty(code_et.getText())){
-                    Toast.makeText(RigisterActivity.this,"请填写验证码",Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(code_et.getText())) {
+                    Toast.makeText(RigisterActivity.this, "请填写验证码", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(TextUtils.isEmpty(pass_et.getText())){
-                    Toast.makeText(RigisterActivity.this,"请填写密码",Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(pass_et.getText())) {
+                    Toast.makeText(RigisterActivity.this, "请填写密码", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                int type =1;
-                final String num =num_et.getText().toString();
-                final String pass =pass_et.getText().toString();
-                String code =code_et.getText().toString();
-                if(PhoneAndEmailUtils.isMobileNO(num)){
-                    type=1;
-                }else if(PhoneAndEmailUtils.isEmail(num)){
-                    type=2;
-                }else{
-                    Toast.makeText(RigisterActivity.this,"请填写有效的手机号/邮箱",Toast.LENGTH_SHORT).show();
+                int type = 1;
+                final String num = num_et.getText().toString();
+                final String pass = pass_et.getText().toString();
+                String code = code_et.getText().toString();
+                if (PhoneAndEmailUtils.isMobileNO(num)) {
+                    type = 1;
+                } else if (PhoneAndEmailUtils.isEmail(num)) {
+                    type = 2;
+                } else {
+                    Toast.makeText(RigisterActivity.this, "请填写有效的手机号/邮箱", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 showLoadDialog();
                 //参数需要对一下
-                Request<String> req = NoHttp.createStringRequest(NetworkTitle.DomainLoginNormal + NetworkChildren.REGISTER, RequestMethod.POST);
-                req.set("registerStr",num).set("pass",pass).set("code",code).set("userName","").set("source","3").set("belong","2").set("type",type+"");
-                String session = SharedPreferencesUtils.getSession(RigisterActivity.this,1);
-                if(!TextUtils.isEmpty(session)){
-                    req.setHeader("Cookie","PHPSESSID="+session);
-                }
-                request(0, req, new SimpleResponseListener<String>() {
-                    @Override
-                    public void onSucceed(int what, Response<String> response) {
-                        dismissLoadDialog();
-                        if(response.isSucceed()){
-                            try {
-                                BackCode praiseBack = JSON.parseObject(response.get(), BackCode.class);
-                                if(praiseBack.getCode()==1){
-                                    Toast.makeText(RigisterActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
-//                                    LoginHelper.againLogin(RigisterActivity.this,num ,pass,1);
-                                    //跳转修改昵称
-//                                    Intent intent =new Intent(RigisterActivity.this, NameActivity.class);
-//                                    intent.putExtra("tag",1);
-//                                    startActivity(intent);
-                                    finish();
-                                }else{
-                                    Toast.makeText(RigisterActivity.this,praiseBack.getMessage(),Toast.LENGTH_SHORT).show();
-                                }
-                            }catch (JSONException e){
-
+                addToCompositeDis(HttpUtil.register(type+"" ,num ,pass ,code ,"" ,"3")
+                        .doOnSubscribe(new Consumer<Disposable>() {
+                            @Override
+                            public void accept(@NonNull Disposable disposable) throws Exception {
+                                showLoadDialog();
                             }
+                        })
+                .subscribe(new Consumer<ResultBeen<Void>>() {
+                    @Override
+                    public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                        if (getHttpResSuc(voidResultBeen.getCode())) {
+                            Toast.makeText(RigisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                            LoginHelper.againLoginRetrofit(RigisterActivity.this, num, pass, new RequestCallback<UserInfo>() {
+                                @Override
+                                public void beforeRequest() {
+                                }
 
+                                @Override
+                                public void requestFail(String msg) {
+                                    dismissLoadDialog();
+                                    toTast(RigisterActivity.this, msg);
+                                }
+
+                                @Override
+                                public void requestSuccess(UserInfo userInfo) {
+                                    dismissLoadDialog();
+                                    if (TextUtils.isEmpty(userInfo.getNickname())) {
+                                        startActivity(new Intent(RigisterActivity.this, SetNickNameActivity.class));
+                                        RigisterActivity.this.finishWithAnim();
+                                    }
+                                }
+
+                                @Override
+                                public void otherDeal(UserInfo userInfo) {
+
+                                }
+                            });
                         }
                     }
-
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void onFailed(int what, Response<String> response) {
+                    public void accept(@NonNull Throwable throwable) throws Exception {
                         dismissLoadDialog();
+                        toTast(RigisterActivity.this ,"网络出错");
                     }
-                });
-
-
-
-
+                }));
                 break;
             case R.id.agree:
-                isAgree=!isAgree;
+                isAgree = !isAgree;
                 agree.setSelected(isAgree);
                 break;
             case R.id.protocol:
 
                 break;
             case R.id.to_login:
-                finish();
+                RigisterActivity.this.finishWithAnim();
                 break;
         }
     }
 
-
     /**
-     *   发送
-     * @param num
-     * @param i
+     * 获取验证码
      */
-    private void sendCode(String num, int i) {
-
-        StringBuffer sb =new StringBuffer();
-        sb.append(NetworkTitle.DomainLoginNormal);
-        boolean isPhone;
-        if(i==0){
-            sb.append(NetworkChildren.PHONECODE);
-            isPhone=true;
-        }else{
-            sb.append(NetworkChildren.MAILCODE);
-            isPhone=false;
-        }
-        showLoadDialog();
-        isSendCode =true;
-        Request<String> req = NoHttp.createStringRequest(sb.toString(), RequestMethod.POST);
-        if(!isPhone)req.set("email",num);
-        else if(isPhone)req.set("phoneNum",num);
-        req.set("type","1");
-        String session = SharedPreferencesUtils.getSession(RigisterActivity.this,1);
-        if(!TextUtils.isEmpty(session)){
-            req.setHeader("Cookie","PHPSESSID="+session);
-        }
-        request(0, req, new SimpleResponseListener<String>() {
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                dismissLoadDialog();
-                if(response.isSucceed()){
-                    try {
-                        BackCode backCode = JSON.parseObject(response.get(), BackCode.class);
-                        if(backCode.getCode()==1){
-                            Toast.makeText(RigisterActivity.this,"发送成功",Toast.LENGTH_SHORT).show();
-                            timerClick();
-                        }else {
-                            Toast.makeText(RigisterActivity.this,backCode.getMessage(),Toast.LENGTH_SHORT).show();
+    private void getAuthCode(final boolean modifyEmail, final String content) {
+        addToCompositeDis(HttpUtil.sendCode()
+                .subscribe(new Consumer<ResultBeen<Void>>() {
+                    @Override
+                    public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                        if (voidResultBeen.getCode() == 1) {
+                            if (modifyEmail) {
+                                sendAuthCode(HttpUtil.emailCodeObservable(content), content, modifyEmail);
+                            } else {
+                                sendAuthCode(HttpUtil.phoneCodeObservable(content), content, modifyEmail);
+                            }
+                        } else {
+                            toTast(RigisterActivity.this, voidResultBeen.getMessage());
                         }
-                    }catch (JSONException e){
-
                     }
+                }));
+    }
 
+    private void sendAuthCode(Observable<ResultBeen<Void>> observable, String content, boolean modifyEmail) {
+        if (check(content, modifyEmail)) {
+            mAuthCode.start();
+            addToCompositeDis(observable.subscribe(new Consumer<ResultBeen<Void>>() {
+                @Override
+                public void accept(@NonNull ResultBeen<Void> o) throws Exception {
+                    if (o.getCode() != 1) {
+                        mAuthCode.sendAgain();
+                    } else {
+                        toTast(RigisterActivity.this, o.getMessage());
+                    }
                 }
-            }
+            }, new Consumer<Throwable>() {
+                @Override
+                public void accept(@NonNull Throwable throwable) throws Exception {
+                    mAuthCode.sendAgain();
+                }
+            }));
+        }
+    }
 
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                dismissLoadDialog();
-            }
-        });
+
+    private boolean check(final String content, final boolean modifyEmail) {
+        if (modifyEmail) {
+            if (checkEmail(content)) return false;
+        } else {
+            if (checkPhone(content)) return false;
+        }
+        return true;
+    }
+
+    private boolean checkEmail(String acc) {
+        if (TextUtils.isEmpty(acc)) {
+            toTast(this, "请填写邮箱");
+            return true;
+        } else if (!RegexValidateUtil.checkEmail(acc)) {
+            toTast(this, "邮箱格式错误");
+            return true;
+        } else if (acc.equals(SharedPreferencesUtils.getUserInfo(this).getEmail())) {
+            toTast(this, "与当前邮箱一致，无须修改");
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkPhone(String acc) {
+        if (TextUtils.isEmpty(acc)) {
+            toTast(this, "请填写手机号");
+            return true;
+        } else if (!RegexValidateUtil.checkPhoneNumber(acc)) {
+            toTast(this, "手机号格式错误");
+            return true;
+        } else if (acc.equals(SharedPreferencesUtils.getUserInfo(this).getPhone())) {
+            toTast(this, "与当前手机号一致，无须修改");
+            return true;
+        }
+        return false;
     }
 
     /**
-     *  启动计时器
+     * 发送
+     *
+     * @param num
+     * @param i
      */
-    public void timerClick(){
+    private void sendCode(final String num, final int i) {
+
+        addToCompositeDis(HttpUtil.sendCode()
+                .subscribe(new Consumer<ResultBeen<Void>>() {
+                    @Override
+                    public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                        if (voidResultBeen.getCode() == 1) {
+                            StringBuffer sb = new StringBuffer();
+                            sb.append(NetworkTitle.DomainLoginNormal);
+                            boolean isPhone;
+                            if (i == 0) {
+                                sb.append(NetworkChildren.PHONECODE);
+                                isPhone = true;
+                            } else {
+                                sb.append(NetworkChildren.MAILCODE);
+                                isPhone = false;
+                            }
+                            showLoadDialog();
+                            isSendCode = true;
+                            Request<String> req = NoHttp.createStringRequest(sb.toString(), RequestMethod.POST);
+                            if (!isPhone) req.set("email", num);
+                            else if (isPhone) req.set("phoneNum", num);
+                            req.set("type", "1");
+                            String session = SharedPreferencesUtils.getSession(RigisterActivity.this, 1);
+                            if (!TextUtils.isEmpty(session)) {
+                                req.setHeader("Cookie", "PHPSESSID=" + session);
+                            }
+                            request(0, req, new SimpleResponseListener<String>() {
+                                @Override
+                                public void onSucceed(int what, Response<String> response) {
+                                    dismissLoadDialog();
+                                    if (response.isSucceed()) {
+                                        try {
+                                            BackCode backCode = JSON.parseObject(response.get(), BackCode.class);
+                                            if (backCode.getCode() == 1) {
+                                                Toast.makeText(RigisterActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
+                                                timerClick();
+                                            } else {
+                                                Toast.makeText(RigisterActivity.this, backCode.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        } catch (JSONException e) {
+
+                                        }
+
+                                    }
+                                }
+
+                                @Override
+                                public void onFailed(int what, Response<String> response) {
+                                    dismissLoadDialog();
+                                }
+                            });
+                        } else {
+                            toTast(RigisterActivity.this, voidResultBeen.getMessage());
+                        }
+                    }
+                }));
+
+    }
+
+    /**
+     * 启动计时器
+     */
+    public void timerClick() {
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -258,16 +367,16 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
         }, 1000, 1000);
     }
 
-    final Handler handler = new Handler(){
+    final Handler handler = new Handler() {
         @Override
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    send.setText(recLen+"s");
-                    if(recLen < 0){
+                    send.setText(recLen + "s");
+                    if (recLen < 0) {
                         timer.cancel();
-                        isSendCode =false;
-                        recLen=60;
+                        isSendCode = false;
+                        recLen = 60;
                         send.setText("验证码");
                     }
             }

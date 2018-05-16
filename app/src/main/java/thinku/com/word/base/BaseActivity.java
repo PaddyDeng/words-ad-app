@@ -312,4 +312,7 @@ public class BaseActivity extends AutoLayoutActivity {
         Toast.makeText(mContext,mContext.getString(contentId) ,Toast.LENGTH_SHORT).show();
     }
 
+    protected void forword(Class<?> c) {
+        startActivity(new Intent(this, c));
+    }
 }

@@ -2,10 +2,17 @@ package thinku.com.word.ui.report;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
@@ -20,6 +27,7 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
     private TextView total,statistics ,evaluate;
     private ProcessFragment processFragment  ;  // 背单词轨迹fragment
     private WordReportFragment wordReportFragment ; //  单词报表fragment
+//    private Map<Integer ,Fragment> fragmentList = new HashMap<>();
     public static ReportFragment newInstance(){
         ReportFragment reportFragment = new ReportFragment() ;
         return reportFragment ;
@@ -33,22 +41,23 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         findView(view);
-        addFragment();
         setClick();
         setSelect(0);
+        addFragment();
     }
 
+
     public void addFragment(){
-        processFragment = findFragment(ProcessFragment.class);
-        if (processFragment == null ) {
+        if (findChildFragment( WordReportFragment.class )== null){
+            wordReportFragment = WordReportFragment.newInstance() ;
             processFragment = ProcessFragment.newInstance();
-            wordReportFragment = WordReportFragment.newInstance();
-            loadMultipleRootFragment(R.id.fl, 2, processFragment, wordReportFragment);
+            loadMultipleRootFragment(R.id.fl ,1 , wordReportFragment ,processFragment);
         }else{
-            processFragment = findFragment(ProcessFragment.class);
-            wordReportFragment = findFragment(WordReportFragment.class);
+            wordReportFragment = findChildFragment(WordReportFragment.class);
+            processFragment = findChildFragment(ProcessFragment.class);
         }
     }
+
     private void setClick() {
         total.setOnClickListener(this);
         statistics.setOnClickListener(this);
@@ -77,9 +86,31 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void setSelect(int i){
-        if(i==0){
+//        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+//        if (oldPage != -1) {
+//            ft.hide(fragmentList.get(oldPage));
+//        }
+//        if (null != fragmentList.get(i) && fragmentList.get(i).isAdded()) {
+//            ft.show(fragmentList.get(i));
+//        }else {
+//            if (i == 0) {
+//                statistics.setSelected(false);
+//                total.setSelected(true);
+//                processFragment = ProcessFragment.newInstance();
+//                fragmentList.put(i ,processFragment);
+//                ft.add(R.id.fl,processFragment);
+//            } else {
+//                total.setSelected(false);
+//                statistics.setSelected(true);
+//                wordReportFragment = WordReportFragment.newInstance();
+//                fragmentList.put(i ,wordReportFragment);
+//                ft.add(R.id.fl,wordReportFragment);
+//            }
+//            oldPage = i ;
+//        }
+        if (i == 0){
             statistics.setSelected(false);
-            total.setSelected(true);
+                total.setSelected(true);
             showHideFragment(processFragment , wordReportFragment);
         }else{
             total.setSelected(false);
@@ -87,4 +118,5 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
             showHideFragment(wordReportFragment , processFragment);
         }
     }
+
 }

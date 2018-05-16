@@ -294,8 +294,8 @@ public class SharedPreferencesUtils {
      *
      * @return
      */
-    public  static void saveMemoryMode(Context context, int value) {
-        setInt(PREFS_KEY_MEMORY_MODE, context, value);
+    public  static void saveMemoryMode(Context context, String value) {
+        setString(PREFS_KEY_MEMORY_MODE, context, value);
     }
 
     /**
@@ -303,8 +303,8 @@ public class SharedPreferencesUtils {
      *
      * @return
      */
-    public static int getMemoryMode(Context context) {
-        int mode = getInt(PREFS_KEY_MEMORY_MODE , context);
+    public static String getMemoryMode(Context context) {
+        String mode = getString(PREFS_KEY_MEMORY_MODE , context);
         return mode;
     }
 
@@ -389,6 +389,18 @@ public class SharedPreferencesUtils {
         editor.commit();
     }
 
+
+    public static boolean getFirstOpen(Context context){
+        SharedPreferences sp =context.getSharedPreferences("firstOpen",Context.MODE_PRIVATE);
+        return sp.getBoolean("isfirst",true);
+    }
+
+    public static void setFirstOpen(Context context ){
+        SharedPreferences sp =context.getSharedPreferences("firstOpen",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("isfirst" ,false);
+        editor.commit();
+    }
 
 
 }

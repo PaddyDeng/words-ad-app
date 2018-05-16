@@ -15,6 +15,7 @@ import java.util.List;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
 import thinku.com.word.ui.personalCenter.TypeSettingActivity;
+import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
  * 未选择记忆模式和设置词包进入该页
@@ -35,6 +36,7 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         findView(view);
         setClick();
+        init();
     }
 
     private void setClick() {
@@ -48,6 +50,11 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
         word_depot = (TextView) view.findViewById(R.id.word_depot);
     }
 
+    public void init(){
+        String mode = SharedPreferencesUtils.getMemoryMode(_mActivity);
+        now_type.setText(mode);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -55,7 +62,7 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
                 TypeSettingActivity.start(getActivity());
                 break;
             case R.id.word_depot:
-                MyPlanActivity.start(getActivity());
+                WordPackageActivity.start(getActivity());
                 break;
         }
     }

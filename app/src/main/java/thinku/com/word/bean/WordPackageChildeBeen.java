@@ -13,6 +13,15 @@ public class WordPackageChildeBeen {
     private String type ;
     private String total ;
     private String userWords ;
+    private int  is ;
+
+    public int getIs() {
+        return is;
+    }
+
+    public void setIs(int is) {
+        this.is = is;
+    }
 
     public String getId() {
         return id;

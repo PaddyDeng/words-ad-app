@@ -5,7 +5,6 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -13,7 +12,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -87,7 +85,7 @@ public class ChartView extends View {
     private VelocityTracker velocityTracker;
     // Max 最大值
     private float max ;
-
+    float textXHeight ;
     public ChartView(Context context) {
         this(context, null);
     }
@@ -213,7 +211,7 @@ public class ChartView extends View {
             xOri = (int) (dp2 + textYWdith + dp2 + xylinewidth);//dp2是y轴文本距离左边，以及距离y轴的距离
 //            //X轴文本最大高度
             xValueRect = getTextBounds("000", xyTextPaint);
-            float textXHeight = xValueRect.height();
+            textXHeight = xValueRect.height();
             for (int i = 0; i < xValue.size(); i++) {//求取x轴文本最大的高度
                 Rect rect = getTextBounds(xValue.get(i) + "", xyTextPaint);
                 if (rect.height() > textXHeight)
@@ -221,7 +219,7 @@ public class ChartView extends View {
                 if (rect.width() > xValueRect.width())
                     xValueRect = rect;
             }
-            yOri = (int) (height - dp2 - textXHeight - dp3 - xylinewidth);//dp3是x轴文本距离底边，dp2是x轴文本距离x轴的距离
+            yOri = (int) (height - dp2 - textXHeight  - dp3 - xylinewidth);//dp3是x轴文本距离底边，dp2是x轴文本距离x轴的距离
             xInit = interval / 2  + xOri;
             minXInit = width - (width - xOri) * 0.1f - interval * (xValue.size() - 1);//减去0.1f是因为最后一个X周刻度距离右边的长度为X轴可见长度的10%
             maxXInit = xInit;
@@ -338,9 +336,9 @@ public class ChartView extends View {
                 //绘制X轴文本
                 String text = xValue.get(i);
                 Rect rect = getTextBounds(text, xyTextPaint);
-                canvas.drawText(text, 0, text.length(), x , yOri + xylinewidth + dpToPx(2) + rect.height(), xyTextPaint);
+                canvas.drawText(text, 0, text.length(), x , yOri + xylinewidth + dpToPx(2)+ rect.height(), xyTextPaint);
             }
-        }
+            }
     }
 
     private float startX;
@@ -477,15 +475,6 @@ public class ChartView extends View {
             velocityTracker.recycle();
             velocityTracker = null;
         }
-    }
-
-    public int getSelectIndex() {
-        return selectIndex;
-    }
-
-    public void setSelectIndex(int selectIndex) {
-        this.selectIndex = selectIndex;
-        invalidate();
     }
 
     public void setxValue(List<String> xValue) {

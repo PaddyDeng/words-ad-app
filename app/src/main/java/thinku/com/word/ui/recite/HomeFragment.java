@@ -132,6 +132,7 @@ public class HomeFragment extends BaseFragment {
         }).subscribe(new Consumer<UserIndex>() {
                             @Override
                             public void accept(@NonNull UserIndex userIndex) throws Exception {
+                                dismissLoadDialog();
                                     days.setText("已坚持" + userIndex.getInsistDay() + "天");
                                     surplusDay.setText(userIndex.getSurplusDay());
                                     needNum.setText(userIndex.getUserPackage().getPlanWords());
@@ -147,7 +148,6 @@ public class HomeFragment extends BaseFragment {
                         }, new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                Toast.makeText(_mActivity ,throwable.getMessage() ,Toast.LENGTH_SHORT).show();
                             }
                         })
         );

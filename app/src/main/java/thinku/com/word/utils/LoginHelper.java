@@ -26,6 +26,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
+import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
 import thinku.com.word.callback.RequestCallback;
@@ -43,55 +44,6 @@ import thinku.com.word.ui.other.dialog.NeedLoginDialog;
 public class LoginHelper {
     private static final String TAG = LoginHelper.class.getSimpleName();
     private static String needLogin = "还未登录，请先登录";
-
-//    /**
-//     * @param context
-//     * @param tag     0改名字 1打开app重置\注册  2 忘记密码 3正常登录
-//     */
-//    public static void againLogin(final Context context, String phone, String password, final int tag) {
-//        if (!TextUtils.isEmpty(phone)) {
-//            Request<String> req = NoHttp.createStringRequest(NetworkTitle.DomainLoginNormal + NetworkChildren.LOGIN, RequestMethod.POST);
-//            req.set("userName", phone).set("userPass", password);
-//            ((BaseActivity) context).request(0, req, new SimpleResponseListener<String>() {
-//                @Override
-//                public void onSucceed(int what, Response<String> response) {
-//                    if (response.isSucceed()) {
-//                        try {
-//                            UserInfo login = JSON.parseObject(response.get(), UserInfo.class);
-//                            if (login.getCode() == 1) {//登录成功
-//                                List<HttpCookie> cookies = response.getHeaders().getCookies();
-//                                if (cookies.isEmpty() || TextUtils.isEmpty(cookies.get(0).getValue())) {
-//                                    Toast.makeText(context, "重置session失败，需重新登录", Toast.LENGTH_SHORT).show();
-//                                } else {
-//                                    SharedPreferencesUtils.setPassword(context, TextUtils.isEmpty(login.getPhone()) ? login.getEmail() : login.getPhone(), login.getPassword());
-////                                    SharedPreferencesUtils.setSession(context, 4, cookies.get(0).getValue());
-//                                    SharedPreferencesUtils.setLogin(context, login);
-//                                    if (tag == 0) {
-//                                        login(context, login, 2);
-//                                    } else if (tag == 1) {
-//                                        login(context, login, 1);
-//                                    } else if (tag == 2) {
-//                                        login(context, login, 3);
-//                                    } else if (tag == 3) {
-//                                        login(context, login, 4);
-//                                    }
-//                                }
-//                            } else {
-//
-//                            }
-//                        } catch (JSONException e) {
-//
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailed(int what, Response<String> response) {
-//                    super.onFailed(what, response);
-//                }
-//            });
-//        }
-//    }
     /**
      * @param context
      * @param
@@ -296,28 +248,15 @@ public class LoginHelper {
     }
 
     public static void initMessage(final Context context) {
-        String session = SharedPreferencesUtils.getSession(context, 1);
-        Request<String> req = NoHttp.createStringRequest(NetworkTitle.DomainLoginNormal + NetworkChildren.MESSAGEINIT, RequestMethod.GET);
-        if (!TextUtils.isEmpty(session)) {
-            req.setHeader("Cookie", "PHPSESSID=" + session);
-        }
-        ((BaseActivity) context).request(0, req, new SimpleResponseListener<String>() {
+        addToCompositeDis(HttpUtil.sendCode()
+        .subscribe(new Consumer<ResultBeen<Void>>() {
             @Override
-            public void onSucceed(int what, Response<String> response) {
-                if (response.isSucceed()) {
-                    List<HttpCookie> cookies = response.getHeaders().getCookies();
-                    if (null != cookies && cookies.size() != 0) {
-                        SharedPreferencesUtils.setSession(context, 1, cookies.get(0).getValue());
-                    }
-                }
-            }
+            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
 
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                super.onFailed(what, response);
             }
-        });
+        }));
     }
+
 
     protected static void addToCompositeDis(Disposable disposable) {
 //        if (mCompositeDisposable == null) {

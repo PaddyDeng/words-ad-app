@@ -84,6 +84,22 @@ public class HttpUtil {
     }
 
     /**
+     * 注册
+     * @param type
+     * @param registerStr
+     * @param pass
+     * @param code
+     * @param userName
+     * @param source
+     * @return
+     */
+    public static Observable<ResultBeen<Void>> register(String type, String registerStr, String pass, String code,
+                                                  String userName, String source) {
+        return getRestApi(HostType.LOGIN_REGIST_HOST).register(type, registerStr, pass, code, userName, source, "2").
+                compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
+    /**
      *   背单词接口
      */
     //  获取用户信息

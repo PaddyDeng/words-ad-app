@@ -118,7 +118,6 @@ public class ProcessFragment extends BaseFragment {
                     SharedPreferencesUtils.setEvaluationNum(_mActivity ,trackBeen.getData().getNum());
                     SharedPreferencesUtils.setRankScore(_mActivity ,trackBeen.getData().getRank()+"");
                     SharedPreferencesUtils.setRankNum(_mActivity ,trackBeen.getData().getNum()+"");
-
                 }
             }
         }, new Consumer<Throwable>() {

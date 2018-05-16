@@ -37,7 +37,7 @@ public class PKParentFragment extends BaseFragment {
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-        if (findChildFragment(PKParentFragment.class) == null){
+        if (findChildFragment(PKFragment.class) == null){
             loadRootFragment(R.id.parent , PKFragment.newInstance());
         }
     }

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.MyApplication;
 import thinku.com.word.R;
@@ -68,22 +70,14 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
         initView();
     }
 
-    /**
-     * 是否选择记忆模式
-     *
-     * @return
-     */
-    public boolean isChooseMemeryMode() {
-        MyApplication.MemoryMode = SharedPreferencesUtils.getMemoryMode(_mActivity);
-        if (MyApplication.MemoryMode != 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     private void initView() {
         addToCompositeDis(HttpUtil.getUserData()
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                    }
+                })
                 .subscribe(new Consumer<ResultBeen<UserData>>() {
                     @Override
                     public void accept(@NonNull ResultBeen<UserData> been) throws Exception {
@@ -106,6 +100,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
+                        Log.e(TAG, "accept: " + throwable.toString() );
                     }
                 }));
     }
@@ -187,12 +182,13 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-//        if (!hidden) {
-//            initView();
-//        }
+        if (!hidden) {
+            initView();
+        }
     }
 
 }

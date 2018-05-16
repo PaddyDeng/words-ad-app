@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
@@ -73,14 +74,23 @@ public class PkWordFragment extends BaseFragment {
      */
     public void addNet(){
         addToCompositeDis(HttpUtil.pkDiscoverObservable(page +"" ,"20")
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                    }
+                })
         .subscribe(new Consumer<PkWordData>() {
             @Override
             public void accept(@NonNull PkWordData pkWordData) throws Exception {
-                if (getHttpResSuc(pkWordData.getCode())){
-                    if (pkWordData.getData()!= null && pkWordData.getData().size() >0){
+                if (getHttpResSuc(pkWordData.getCode())) {
+                    if (pkWordData.getData() != null && pkWordData.getData().size() > 0) {
                         referUi(pkWordData.getData());
                     }
                 }
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(@NonNull Throwable throwable) throws Exception {
             }
         }));
     }

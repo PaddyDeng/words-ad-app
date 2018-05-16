@@ -32,6 +32,7 @@ import thinku.com.word.base.BaseActivity;
 import thinku.com.word.base.BaseFragment;
 import thinku.com.word.bean.BackCode;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.recite.MyPlanActivity;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
@@ -61,13 +62,22 @@ public class TypeSettingActivity extends BaseActivity {
     Unbinder unbinder;
     private int oldPage = -1;
     private static int status = 1;
-
+    boolean isFirst = false ;
+    private String mode ;   //  模式文字
+    public static void start(Context context ,boolean isFirst){
+        Intent intent = new Intent(context ,TypeSettingActivity.class);
+        intent.putExtra("first" , isFirst);
+        context.startActivity(intent);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_setting);
         unbinder = ButterKnife.bind(this);
+        if (getIntent() != null){
+            isFirst = getIntent().getBooleanExtra("first" ,false);
+        }
     }
 
 
@@ -79,16 +89,25 @@ public class TypeSettingActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.title_right:
-                choseStudyMode();
+                if (!isFirst) {
+                    choseStudyMode();
+                }else{
+                    SharedPreferencesUtils.saveMemoryMode(TypeSettingActivity.this, mode);
+                    MainActivity.toMain(this);
+                    this.finishWithAnim();
+                }
                 break;
             case R.id.ebbinghaus:
                 setSelect(0);
+                mode = ebbinghaus.getText().toString().trim();
                 break;
             case R.id.review:
                 setSelect(1);
+                mode = review.getText().toString().trim();
                 break;
             case R.id.only_new:
                 setSelect(2);
+                mode = onlyNew.getText().toString().trim();
                 break;
         }
     }
@@ -153,7 +172,7 @@ public class TypeSettingActivity extends BaseActivity {
                         toTast(TypeSettingActivity.this, backCode.getMessage());
                     } else {
                         toTast(TypeSettingActivity.this, backCode.getMessage());
-                        SharedPreferencesUtils.saveMemoryMode(TypeSettingActivity.this, status);
+                        SharedPreferencesUtils.saveMemoryMode(TypeSettingActivity.this, mode);
                         finish();
                     }
                 }else{

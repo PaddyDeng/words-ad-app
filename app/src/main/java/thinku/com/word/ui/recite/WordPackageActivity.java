@@ -21,6 +21,7 @@ import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.WordPackageBeen;
 import thinku.com.word.callback.SelectListener;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.utils.LoginHelper;
 
 public class WordPackageActivity extends BaseActivity {
     private static final String TAG = WordPackageActivity.class.getSimpleName() ;
@@ -43,7 +44,6 @@ public class WordPackageActivity extends BaseActivity {
         ButterKnife.bind(this);
         titleT.setText("雷哥词包");
         initRecy();
-        initData();
     }
 
     public void initRecy(){
@@ -54,6 +54,7 @@ public class WordPackageActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        initData();
     }
 
     public static void start(Context context){
@@ -77,6 +78,9 @@ public class WordPackageActivity extends BaseActivity {
                     @Override
                     public void accept( final @NonNull WordPackageBeen wordpackage) throws Exception {
                         dismissLoadDialog();
+                        if (wordpackage.getCode() == 99) {
+                            LoginHelper.needLogin(WordPackageActivity.this , "您还没有登陆，请先登录");
+                        } else {
                             wordPackageAdapter = new WordPackageAdapter(WordPackageActivity.this, wordpackage.getPackages(), new SelectListener() {
                                 @Override
                                 public void setListener(int position) {
@@ -84,19 +88,19 @@ public class WordPackageActivity extends BaseActivity {
                                     packageTwoAdapter = new PackageTwoAdapter(WordPackageActivity.this, new SelectListener() {
                                         @Override
                                         public void setListener(int position) {
-                                            WordbagDetailActivity.start(WordPackageActivity.this ,wordPackageBeen.getChild().get(position).getId()
-                                                    ,wordPackageBeen.getChild().get(position).getTotal() ,wordPackageBeen.getChild().get(position).getUserWords()
-                                                    ,wordPackageBeen.getChild().get(position).getName());
+                                            WordbagDetailActivity.start(WordPackageActivity.this, wordPackageBeen.getChild().get(position).getId()
+                                                    , wordPackageBeen.getChild().get(position).getTotal(), wordPackageBeen.getChild().get(position).getUserWords()
+                                                    , wordPackageBeen.getChild().get(position).getName());
                                         }
                                     }, wordPackageBeen.getChild()
                                     );
                                     wordPackage.setLayoutManager(new LinearLayoutManager(WordPackageActivity.this));
                                     wordPackage.setAdapter(packageTwoAdapter);
-
                                 }
                             });
                             wordPackageTitle.setAdapter(wordPackageAdapter);
                         }
+                    }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {

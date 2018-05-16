@@ -35,7 +35,7 @@ import thinku.com.word.utils.SharedPreferencesUtils;
 
 public class MainActivity extends BaseNoImmFragmentActivitiy implements View.OnClickListener {
     private String[] permissions = new String[]{
-            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE , Manifest.permission.WRITE_SETTINGS
     };
     private static final String TAG = MainActivity.class.getSimpleName();
     private LinearLayout recite_ll, report_ll, pk_ll, periphery_ll;

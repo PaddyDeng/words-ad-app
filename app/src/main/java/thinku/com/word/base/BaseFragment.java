@@ -219,17 +219,9 @@ public abstract class BaseFragment extends SupportFragment  {
         if (getChildFragmentManager().getBackStackEntryCount() > 1) {
             popChild();
         } else {
-//            if (this instanceof ZhihuFirstFragment) {   // 如果是 第一个Fragment 则退出app
-//                _mActivity.finish();
-//            } else {                                    // 如果不是,则回到第一个Fragment
-//                _mBackToFirstListener.onBackToFirstFragment();
-//            }
             _mActivity.finish();
         }
         return true;
     }
 
-    public interface OnBackToFirstListener {
-        void onBackToFirstFragment();
-    }
 }

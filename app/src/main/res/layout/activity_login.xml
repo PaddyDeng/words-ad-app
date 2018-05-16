@@ -65,6 +65,7 @@
                 android:textColor="@color/white"
                 android:textSize="45px"
                 android:textColorHint="@color/white"
+                android:inputType="textPassword"
                 android:background="@null"
                 android:gravity="center"
                 android:layout_width="match_parent"

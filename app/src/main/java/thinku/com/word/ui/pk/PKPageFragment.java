@@ -13,6 +13,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.adapter.PkRankAdapter;
@@ -71,6 +73,11 @@ public class PKPageFragment extends BaseFragment{
 
     public void addNet(){
         addToCompositeDis(HttpUtil.pkIndexObservable()
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                    }
+                })
                 .subscribe(new Consumer<PkIndexBeen>() {
                     @Override
                     public void accept(PkIndexBeen pkIndexBeen) throws Exception {

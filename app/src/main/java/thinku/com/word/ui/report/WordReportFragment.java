@@ -125,12 +125,13 @@ public class WordReportFragment extends BaseFragment {
     }
 
     public void getXValue(WordReportBeen.DataBeanX dataBeanX){
+        xValue.clear();
         if (dataBeanX.getRe() != null && dataBeanX.getRe().size() > 0) {
             poisition = dataBeanX.getRe().size() - 1 ;
             XValueString(dataBeanX.getRe());
         }
         if (dataBeanX.getRe1() != null && dataBeanX.getRe1().size() > 0) {
-            XValueString(dataBeanX.getRe1());
+            XValueString1(dataBeanX.getRe1());
 
         }
     }
@@ -140,28 +141,33 @@ public class WordReportFragment extends BaseFragment {
      * @param dataBeanX
      */
     public void setyValue(WordReportBeen.DataBeanX dataBeanX){
-        int max = 0 ;
-        if (dataBeanX.getRe() != null && dataBeanX.getRe().size() > 0) {
-            for (WordReportBeen.DataBeanX.ReBean reBean: dataBeanX.getRe()){
-                int all = StringToInt(reBean.getData().getAll());
-                if (all > max) max = all ;
-                Value.put(DateToInt(reBean.getDate()),setXDateListValue(reBean.getData()));
+        if (Value.size() ==0) {
+            int max = 0;
+            if (dataBeanX.getRe() != null && dataBeanX.getRe().size() > 0) {
+                for (WordReportBeen.DataBeanX.ReBean reBean : dataBeanX.getRe()) {
+                    int all = StringToInt(reBean.getData().getAll());
+                    if (all > max) max = all;
+                    Value.put(DateToInt(reBean.getDate()), setXDateListValue(reBean.getData()));
+                }
             }
-        }
-        if (dataBeanX.getRe1() != null && dataBeanX.getRe1().size() > 0) {
-            for (WordReportBeen.DataBeanX.ReBean reBean: dataBeanX.getRe1()){
-                int all = StringToInt(reBean.getData().getAll());
+            if (dataBeanX.getRe1() != null && dataBeanX.getRe1().size() > 0) {
+            for (WordReportBeen.DataBeanX.Re1Bean  re1Bean: dataBeanX.getRe1()){
+                List<Integer> after   = new ArrayList<>();
+                int all = re1Bean.getData();
                     if (all > max) max =all  ;
-                Value.put(DateToInt(reBean.getDate()),setXDateListValue(reBean.getData()));
+                after.add(all);
+                Value.put(DateToInt(re1Bean.getDate()),after);
             }
-        }
-        dateReport.setMax(max);
-        int percent = max / 7 ;
-        for (int i = 0 ; i < 7 ; i ++){
-            yValue.add(percent * i );
-        }
+            }
+            dateReport.setMax(max);
+            int percent = max / 7;
+            yValue.clear();
+            for (int i = 0; i < 7; i++) {
+                yValue.add(percent * i);
+            }
 
-        dateReport.setValue(Value ,xValue ,yValue);
+            dateReport.setValue(Value, xValue, yValue);
+        }
     }
 
     public List<Integer> setXDateListValue(WordReportBeen.DataBeanX.ReBean.DataBean dataBean){
@@ -198,8 +204,26 @@ public class WordReportFragment extends BaseFragment {
     public  void XValueString(List<WordReportBeen.DataBeanX.ReBean > reBeanList){
         for (WordReportBeen.DataBeanX.ReBean reBean : reBeanList ){
             int instance = DateUtil.differentDays(reBean.getDate());
-            if (instance > 0){
-                xValue.add(instance +"天后");
+            if (instance < 0){
+                xValue.add(Math.abs(instance) +"天后");
+            }else if (instance  == 0){
+                xValue.add(poisition ,"今天");
+            }else{
+                xValue.add(Math.abs(instance) +"天前");
+            }
+        }
+
+    }
+
+    /**
+     * 将日期转化为天数  ， 比如 一天前 ， 一天后
+     * @param reBeanList
+     */
+    public  void XValueString1(List<WordReportBeen.DataBeanX.Re1Bean > reBeanList){
+        for (WordReportBeen.DataBeanX.Re1Bean reBean : reBeanList ){
+            int instance = DateUtil.differentDays(reBean.getDate());
+            if (instance < 0){
+                xValue.add(Math.abs(instance) +"天后");
             }else if (instance  == 0){
                 xValue.add(poisition ,"今天");
             }else{
@@ -215,9 +239,9 @@ public class WordReportFragment extends BaseFragment {
     public String DateToInt(String time){
         String times ="" ;
         int instance = DateUtil.differentDays(time);
-        if (instance > 0){
+        if (instance < 0){
           times =   Math.abs(instance) +"天后" ;
-        }else if (instance < 0){
+        }else if (instance > 0){
             times =   Math.abs(instance) +"天前" ;
         }else{
            times = "今天";
@@ -228,6 +252,7 @@ public class WordReportFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        addNet();
     }
 
     @Override
@@ -252,6 +277,7 @@ public class WordReportFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
 
 
 }

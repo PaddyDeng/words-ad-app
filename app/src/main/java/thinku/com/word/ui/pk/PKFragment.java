@@ -44,11 +44,12 @@ public class PKFragment extends BaseFragment implements View.OnClickListener {
         if (findChildFragment(PKPageFragment.class) == null){
             pkPageFragment = PKPageFragment.newInstance();
             pkWordFragment = PkWordFragment.newInstance();
+            loadMultipleRootFragment(R.id.fl  ,2,pkPageFragment , pkWordFragment);
         }else {
             pkPageFragment = findFragment(PKPageFragment.class);
             pkWordFragment = findFragment(PkWordFragment.class);
         }
-        loadMultipleRootFragment(R.id.fl  ,2,pkPageFragment , pkWordFragment);
+
     }
 
     private void setClick() {

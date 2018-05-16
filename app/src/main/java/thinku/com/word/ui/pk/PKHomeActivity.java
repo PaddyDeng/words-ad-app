@@ -138,6 +138,7 @@ public class PKHomeActivity extends BaseActivity {
                     @Override
                     public void accept(ResultBeen<Void> voidResultBeen) throws Exception {
                         if (getHttpResSuc(voidResultBeen.getCode())) {
+
                         }
                     }
                 }));

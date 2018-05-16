@@ -10,8 +10,8 @@ public class WordReportBeen {
 
     /**
      * code : 1
-     * week : {"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"}
-     * data : {"re":[{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-04-30"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-01"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-02"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-03"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-04"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-05"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-06"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-07"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-08"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-09"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-10"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-11"},{"data":{"all":"5","knowWell":"1","know":"3","dim":"1","notKnow":"0","forget":"0"},"date":"2018-05-12"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-13"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-14"}],"re1":[{"data":5,"date":"2018-05-15"},{"data":0,"date":"2018-05-16"},{"data":0,"date":"2018-05-17"},{"data":5,"date":"2018-05-18"},{"data":0,"date":"2018-05-19"},{"data":0,"date":"2018-05-20"},{"data":0,"date":"2018-05-21"},{"data":0,"date":"2018-05-22"},{"data":0,"date":"2018-05-23"},{"data":0,"date":"2018-05-24"},{"data":0,"date":"2018-05-25"},{"data":5,"date":"2018-05-26"},{"data":0,"date":"2018-05-27"},{"data":0,"date":"2018-05-28"}]}
+     * week : {"all":"52","knowWell":"1","know":"24","dim":"1","notKnow":"26","forget":"0"}
+     * data : {"re":[{"data":{"all":"40","knowWell":"1","know":"9","dim":"16","notKnow":"14","forget":"0"},"date":"2018-05-02"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-03"},{"data":{"all":"19","knowWell":"0","know":"14","dim":"0","notKnow":"5","forget":"0"},"date":"2018-05-04"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-05"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-06"},{"data":{"all":"8","knowWell":"0","know":"7","dim":"0","notKnow":"1","forget":"0"},"date":"2018-05-07"},{"data":{"all":"38","knowWell":"0","know":"36","dim":"0","notKnow":"2","forget":"0"},"date":"2018-05-08"},{"data":{"all":"10","knowWell":"0","know":"9","dim":"0","notKnow":"1","forget":"0"},"date":"2018-05-09"},{"data":{"all":"18","knowWell":"0","know":"10","dim":"0","notKnow":"8","forget":"0"},"date":"2018-05-10"},{"data":{"all":"73","knowWell":"6","know":"27","dim":"14","notKnow":"26","forget":"0"},"date":"2018-05-11"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-12"},{"data":{"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-13"},{"data":{"all":"6","knowWell":"0","know":"5","dim":"0","notKnow":"1","forget":"0"},"date":"2018-05-14"},{"data":{"all":"2","knowWell":"1","know":"1","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-15"},{"data":{"all":"1","knowWell":"0","know":"1","dim":"0","notKnow":"0","forget":"0"},"date":"2018-05-16"}],"re1":[{"data":1,"date":"2018-05-17"},{"data":2,"date":"2018-05-18"},{"data":1,"date":"2018-05-19"},{"data":0,"date":"2018-05-20"},{"data":2,"date":"2018-05-21"},{"data":1,"date":"2018-05-22"},{"data":0,"date":"2018-05-23"},{"data":0,"date":"2018-05-24"},{"data":0,"date":"2018-05-25"},{"data":0,"date":"2018-05-26"},{"data":0,"date":"2018-05-27"},{"data":0,"date":"2018-05-28"},{"data":2,"date":"2018-05-29"},{"data":1,"date":"2018-05-30"}]}
      */
 
     private int code;
@@ -44,11 +44,11 @@ public class WordReportBeen {
 
     public static class WeekBean {
         /**
-         * all : 0
-         * knowWell : 0
-         * know : 0
-         * dim : 0
-         * notKnow : 0
+         * all : 52
+         * knowWell : 1
+         * know : 24
+         * dim : 1
+         * notKnow : 26
          * forget : 0
          */
 
@@ -110,7 +110,7 @@ public class WordReportBeen {
 
     public static class DataBeanX {
         private List<ReBean> re;
-        private List<ReBean> re1;
+        private List<Re1Bean> re1;
 
         public List<ReBean> getRe() {
             return re;
@@ -120,18 +120,18 @@ public class WordReportBeen {
             this.re = re;
         }
 
-        public List<ReBean> getRe1() {
+        public List<Re1Bean> getRe1() {
             return re1;
         }
 
-        public void setRe1(List<ReBean> re1) {
+        public void setRe1(List<Re1Bean> re1) {
             this.re1 = re1;
         }
 
         public static class ReBean {
             /**
-             * data : {"all":"0","knowWell":"0","know":"0","dim":"0","notKnow":"0","forget":"0"}
-             * date : 2018-04-30
+             * data : {"all":"40","knowWell":"1","know":"9","dim":"16","notKnow":"14","forget":"0"}
+             * date : 2018-05-02
              */
 
             private DataBean data;
@@ -155,11 +155,11 @@ public class WordReportBeen {
 
             public static class DataBean {
                 /**
-                 * all : 0
-                 * knowWell : 0
-                 * know : 0
-                 * dim : 0
-                 * notKnow : 0
+                 * all : 40
+                 * knowWell : 1
+                 * know : 9
+                 * dim : 16
+                 * notKnow : 14
                  * forget : 0
                  */
 
@@ -220,5 +220,30 @@ public class WordReportBeen {
             }
         }
 
+        public static class Re1Bean {
+            /**
+             * data : 1
+             * date : 2018-05-17
+             */
+
+            private int data;
+            private String date;
+
+            public int getData() {
+                return data;
+            }
+
+            public void setData(int data) {
+                this.data = data;
+            }
+
+            public String getDate() {
+                return date;
+            }
+
+            public void setDate(String date) {
+                this.date = date;
+            }
+        }
     }
 }

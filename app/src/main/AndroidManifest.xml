@@ -29,13 +29,13 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <!--获取手机录音机使用权限，听写、识别、语义理解需要用到此权限 -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!--读取手机信息权限 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!--读取联系人权限，上传联系人需要用到此权限 -->
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <!--定位信息是敏感信息，可通过Setting.setLocationEnable(false)关闭定位请求 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".MyApplication"
@@ -55,16 +55,28 @@
         <activity
             android:name=".ui.other.MainActivity"
             android:configChanges="keyboardHidden|screenSize"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme">
+
+        </activity>
+        <!-- 登录 -->
+
+        <activity
+            android:name=".ui.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/main_activity_style">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- 登录 -->
+
+        <activity
+            android:name=".ui.GuideActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
         <activity
             android:name=".ui.other.LoginActivity"
             android:configChanges="keyboardHidden|screenSize"
@@ -251,7 +263,8 @@
             android:theme="@style/NoTitleTheme" />
 
         <!--报告 立即评估-->
-        <activity android:name=".ui.report.EvaluateFirstFragment"
+        <activity
+            android:name=".ui.report.EvaluateFirstFragment"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
 
@@ -317,34 +330,41 @@
         <!--播放视频-->
         <activity
             android:name=".ui.periphery.PlayActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <!--相机-->
-        <activity android:name=".ocr.camera.CameraActivity"
+        <activity
+            android:name=".ocr.camera.CameraActivity"
             android:configChanges="screenSize|orientation"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"/> />
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
+        />
 
         <!--语音听写-->
-        <activity android:name=".ui.seacher.TopicSearchActivity"
+        <activity
+            android:name=".ui.seacher.TopicSearchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <!--搜索单词-->
-        <activity android:name=".ui.seacher.SearchQuestionActivity"
+        <activity
+            android:name=".ui.seacher.SearchQuestionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!--照相搜索-->
-        <activity android:name=".ui.recite.search.CameraSearchActivity"
+        <activity
+            android:name=".ui.recite.search.CameraSearchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <activity android:name=".ui.seacher.PicSearchActivity"
+        <activity
+            android:name=".ui.seacher.PicSearchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <activity android:name=".ui.seacher.WordEvaluateFragment"
+        <activity
+            android:name=".ui.seacher.WordEvaluateFragment"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
 

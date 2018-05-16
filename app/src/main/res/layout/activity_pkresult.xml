@@ -43,7 +43,9 @@
             app:civ_border_color="@color/yellow_right_round"
             app:civ_border_width="5px"
             android:visibility="gone"/>
-
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_image_big"
             android:layout_width="120dp"
@@ -53,16 +55,15 @@
             app:civ_border_color="@color/yellow_right_round"
             app:civ_border_width="5px"
             android:visibility="gone"/>
-
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:id="@+id/user_victory"
             android:layout_alignTop="@id/user_image_big"
-            android:src="@mipmap/a1"
-            android:layout_alignRight="@id/user_image_big"
-            android:visibility="gone"/>
-
+            android:src="@mipmap/pk_win_image"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
+        </RelativeLayout>
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/match_image"
             android:layout_width="100dp"
@@ -73,13 +74,15 @@
             app:civ_border_color="@color/color_red"
             app:civ_border_width="5px"
             android:visibility="gone"/>
-
+        <RelativeLayout
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/match_image_big"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
             android:src="@mipmap/a"
             app:civ_border_color="@color/color_red"
             app:civ_border_width="5px"
@@ -89,10 +92,10 @@
             android:layout_height="50dp"
             android:id="@+id/match_victory"
             android:layout_alignTop="@id/match_image_big"
-            android:src="@mipmap/a1"
-            android:layout_alignRight="@id/match_image_big"
+            android:src="@mipmap/pk_win_image"
+            android:layout_centerHorizontal="true"
             android:visibility="gone"/>
-
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/pk_vs"

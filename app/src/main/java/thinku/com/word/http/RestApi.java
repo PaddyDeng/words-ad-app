@@ -298,4 +298,13 @@ public interface RestApi {
     @FormUrlEncoded
     @POST(NetworkChildren.SEARCH_WORDS)
     Observable<List<WordBean>> search(@Field("str") String str);
+
+    /**
+     * 注册
+     */
+    @FormUrlEncoded
+    @POST("app-api/register")
+    Observable<ResultBeen<Void>> register(@Field("type") String type, @Field("registerStr") String registerStr,
+                                      @Field("pass") String pass, @Field("code") String code,
+                                      @Field("userName") String userName, @Field("source") String source, @Field("belong") String belong);
 }

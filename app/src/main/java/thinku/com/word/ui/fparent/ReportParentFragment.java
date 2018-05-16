@@ -37,7 +37,7 @@ public class ReportParentFragment extends BaseFragment {
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-        if (findChildFragment(ReportParentFragment.class) == null){
+        if (findChildFragment(ReportFragment.class) == null){
             loadRootFragment(R.id.parent , ReportFragment.newInstance());
         }
     }

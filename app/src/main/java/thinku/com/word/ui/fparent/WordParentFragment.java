@@ -38,7 +38,7 @@ public class WordParentFragment extends BaseFragment  {
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-        if (findChildFragment(WordParentFragment.class) == null){
+        if (findChildFragment(ReciteFragment.class) == null){
             loadRootFragment(R.id.parent , ReciteFragment.newInstance());
         }
     }

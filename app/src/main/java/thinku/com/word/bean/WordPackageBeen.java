@@ -1,18 +1,21 @@
 package thinku.com.word.bean;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+
+import thinku.com.word.base.bean.ResultBaseBean;
 
 /**
  * Created by Administrator on 2018/3/27.
  */
 
-public class WordPackageBeen {
+public class WordPackageBeen extends ResultBaseBean {
+
     @SerializedName("package")
     public List<WordPackage> packages;
-    public static  class WordPackage {
+
+    public static class WordPackage {
         private String id;
         private String name;
         private String pid;
