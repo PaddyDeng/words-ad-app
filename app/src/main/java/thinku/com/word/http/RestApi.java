@@ -307,4 +307,16 @@ public interface RestApi {
     Observable<ResultBeen<Void>> register(@Field("type") String type, @Field("registerStr") String registerStr,
                                       @Field("pass") String pass, @Field("code") String code,
                                       @Field("userName") String userName, @Field("source") String source, @Field("belong") String belong);
+
+    /**
+     * 找密码
+     * @param type
+     * @param num
+     * @param pass
+     * @param code
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(NetworkChildren.FindPass)
+    Observable<ResultBeen<Void>> findPass(@Field("type") String type ,@Field("registerStr") String num ,@Field("pass") String pass ,@Field("code") String code);
 }

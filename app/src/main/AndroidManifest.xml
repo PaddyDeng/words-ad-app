@@ -28,13 +28,13 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <!--获取手机录音机使用权限，听写、识别、语义理解需要用到此权限 -->
+    <!-- 获取手机录音机使用权限，听写、识别、语义理解需要用到此权限 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <!--读取手机信息权限 -->
+    <!-- 读取手机信息权限 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!--读取联系人权限，上传联系人需要用到此权限 -->
+    <!-- 读取联系人权限，上传联系人需要用到此权限 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <!--定位信息是敏感信息，可通过Setting.setLocationEnable(false)关闭定位请求 -->
+    <!-- 定位信息是敏感信息，可通过Setting.setLocationEnable(false)关闭定位请求 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -57,9 +57,7 @@
             android:configChanges="keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme">
-
-        </activity>
+            android:theme="@style/NoTitleTheme"></activity>
         <!-- 登录 -->
 
         <activity
@@ -72,7 +70,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.GuideActivity"
             android:screenOrientation="portrait"
@@ -262,7 +259,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
 
-        <!--报告 立即评估-->
+        <!-- 报告 立即评估 -->
         <activity
             android:name=".ui.report.EvaluateFirstFragment"
             android:screenOrientation="portrait"
@@ -327,13 +324,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <!--播放视频-->
+        <!-- 播放视频 -->
         <activity
             android:name=".ui.periphery.PlayActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <!--相机-->
+        <!-- 相机 -->
         <activity
             android:name=".ocr.camera.CameraActivity"
             android:configChanges="screenSize|orientation"
@@ -341,28 +338,26 @@
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
         />
 
-        <!--语音听写-->
+        <!-- 语音听写 -->
         <activity
             android:name=".ui.seacher.TopicSearchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <!--搜索单词-->
+        <!-- 搜索单词 -->
         <activity
             android:name=".ui.seacher.SearchQuestionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <!--照相搜索-->
+        <!-- 照相搜索 -->
         <activity
             android:name=".ui.recite.search.CameraSearchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
         <activity
             android:name=".ui.seacher.PicSearchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
         <activity
             android:name=".ui.seacher.WordEvaluateFragment"
             android:screenOrientation="portrait"
@@ -393,7 +388,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.periphery.PlayForModuleActivity"></activity>
+        <activity android:name=".ui.periphery.PlayForModuleActivity" />
+        <activity android:name=".ui.recite.AddMyPlanActivity"></activity>
     </application>
 
 </manifest>
