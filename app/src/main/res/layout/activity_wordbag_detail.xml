@@ -15,7 +15,7 @@
         <LinearLayout
             android:id="@+id/ll"
             android:layout_width="match_parent"
-            android:layout_height="100px"
+            android:layout_height="60dp"
             android:layout_below="@id/title"
             android:background="@color/gray_white"
             android:gravity="center_vertical">
@@ -47,6 +47,94 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textSize="40px" />
+
+            <LinearLayout
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="40dp"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_vertical"
+                >
+                <View
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:background="@color/gray"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="没背"
+                    android:textSize="10sp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_horizontal"
+                >
+                <View
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:background="@color/mainColor"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="认识"
+                    android:textSize="10sp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_horizontal"
+                >
+                <View
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:background="@color/color_red"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="不认识"
+                    android:textSize="10sp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_horizontal"
+                >
+                <View
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:background="@color/yellow_right_round"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="模糊"
+                    android:textSize="10sp"
+                    android:gravity="center"/>
+            </LinearLayout>
         </LinearLayout>
 
         <TextView

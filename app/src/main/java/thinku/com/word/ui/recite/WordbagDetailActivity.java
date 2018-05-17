@@ -91,13 +91,11 @@ public class WordbagDetailActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        try {
+        if (intent != null) {
             catId = intent.getStringExtra("catId");
             total = intent.getStringExtra("total");
             userwords = intent.getStringExtra("userwords");
-            name  = intent.getStringExtra("name");
-        } catch (Exception e) {
-
+            name = intent.getStringExtra("name");
         }
         setContentView(R.layout.activity_wordbag_detail);
         ButterKnife.bind(this);
@@ -150,7 +148,7 @@ public class WordbagDetailActivity extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back:
-                finish();
+                finishWithAnim();
                 break;
             case R.id.to_recite:
                 recite_word();
@@ -162,7 +160,7 @@ public class WordbagDetailActivity extends BaseActivity {
      * 开始背单词
      */
     public void recite_word(){
-        addToCompositeDis(HttpUtil.addPackageObservable(catId+"")
+        addToCompositeDis(HttpUtil.addPackageObservable(catId)
         .doOnSubscribe(new Consumer<Disposable>() {
             @Override
             public void accept(@NonNull Disposable disposable) throws Exception {
@@ -174,9 +172,7 @@ public class WordbagDetailActivity extends BaseActivity {
             public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
                 dismissLoadDialog();
                 if (getHttpResSuc(voidResultBeen.getCode())){
-                    toTast(WordbagDetailActivity.this ,voidResultBeen.getMessage());
-                    Intent intent = new Intent(WordbagDetailActivity.this ,MyPlanActivity.class);
-                    startActivity(intent);
+                    AddMyPlanActivity.start(WordbagDetailActivity.this ,catId  ,total);
                 }else{
                     toTast(WordbagDetailActivity.this ,voidResultBeen.getMessage());
                 }

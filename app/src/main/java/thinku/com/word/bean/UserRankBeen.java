@@ -8,12 +8,15 @@ import java.util.List;
 
 public class UserRankBeen {
 
+
     /**
      * code : 1
-     * rank : [{"nickname":"Test222","image":"/files/upload/image5abc50f205dd8.jpg","uid":"26967","num":"3880"},{"nickname":"obelisk","image":null,"uid":"17053","num":"1840"},{"nickname":"以梦为马","image":null,"uid":"28244","num":"1680"},{"nickname":"nickw","image":null,"uid":"29456","num":"1640"}]
+     * rank : [{"nickname":"我要背单词","image":"/files/upload/image5af3d8ab88ff6.jpg","uid":"31869","num":"4480"},{"nickname":"牛小刀","image":"/files/upload/image5af2547b89513.jpg","uid":"31619","num":"3640"},{"nickname":"obelisk","image":"/files/upload/image5af269ef60210.jpg","uid":"17053","num":"1840"},{"nickname":"以梦为马","image":"/files/upload/image5aded8caa9551.jpg","uid":"28244","num":"1680"},{"nickname":"恩蜗居拉黑","image":"/files/upload/image5abc50f205dd8.jpg","uid":"26967","num":"1440"},{"nickname":"fasfasas","image":"/files/upload/image5afd602ef2ea2.jpg","uid":"29456","num":"240"}]
+     * data : {"num":"240","rank":6}
      */
 
     private int code;
+    private DataBean data;
     private List<RankBean> rank;
 
     public int getCode() {
@@ -24,6 +27,14 @@ public class UserRankBeen {
         this.code = code;
     }
 
+    public DataBean getData() {
+        return data;
+    }
+
+    public void setData(DataBean data) {
+        this.data = data;
+    }
+
     public List<RankBean> getRank() {
         return rank;
     }
@@ -32,12 +43,38 @@ public class UserRankBeen {
         this.rank = rank;
     }
 
+    public static class DataBean {
+        /**
+         * num : 240
+         * rank : 6
+         */
+
+        private String num;
+        private int rank;
+
+        public String getNum() {
+            return num;
+        }
+
+        public void setNum(String num) {
+            this.num = num;
+        }
+
+        public int getRank() {
+            return rank;
+        }
+
+        public void setRank(int rank) {
+            this.rank = rank;
+        }
+    }
+
     public static class RankBean {
         /**
-         * nickname : Test222
-         * image : /files/upload/image5abc50f205dd8.jpg
-         * uid : 26967
-         * num : 3880
+         * nickname : 我要背单词
+         * image : /files/upload/image5af3d8ab88ff6.jpg
+         * uid : 31869
+         * num : 4480
          */
 
         private String nickname;

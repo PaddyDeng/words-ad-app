@@ -104,7 +104,6 @@ public class ProcessFragment extends BaseFragment {
                     totalNum.setText(trackBeen.getUserAllWords());
                     knowNum.setText(trackBeen.getKnow());
                     unknowNum.setText(trackBeen.getNotKnow());
-//                    new GlideUtils().load(_mActivity ,WORDRESOURE + SharedPreferencesUtils.getString(""));
                     name.setText(SharedPreferencesUtils.getString("nickname" ,_mActivity));
                     totalWordNum.setText(trackBeen.getData().getNum()+"");
                     ranking.setText(trackBeen.getData().getRank()+"");

@@ -89,6 +89,7 @@ public class PKResultActivity extends BaseActivity {
 
         }
         init();
+        setMatchVictory();
         addNet();
     }
 
@@ -146,7 +147,7 @@ public class PKResultActivity extends BaseActivity {
         setUserVictory();
     }
 
-    @OnClick({ R.id.back , R.id.share})
+    @OnClick({ R.id.back , R.id.share , R.id.user_image ,R.id.match_image})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.share:
@@ -154,6 +155,14 @@ public class PKResultActivity extends BaseActivity {
                 break;
             case R.id.back:
                 this.finishWithAnim();
+                break;
+            case R.id.user_image :
+                Log.e(TAG, "click: user " );
+//                setUserVictory();
+                break;
+            case R.id.match_image:
+//                setMatchVictory();
+                break;
         }
     }
 

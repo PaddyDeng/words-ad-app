@@ -22,7 +22,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import me.yokeyword.fragmentation.SupportFragment;
 import thinku.com.word.R;
-import thinku.com.word.base.BaseNoImmFragmentActivitiy;
+import thinku.com.word.base.BaseFragmentActivitiy;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
 import thinku.com.word.thrlib.OCRProxy;
@@ -33,9 +33,9 @@ import thinku.com.word.ui.fparent.WordParentFragment;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
-public class MainActivity extends BaseNoImmFragmentActivitiy implements View.OnClickListener {
+public class MainActivity extends BaseFragmentActivitiy implements View.OnClickListener {
     private String[] permissions = new String[]{
-            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE , Manifest.permission.WRITE_SETTINGS
+            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_SETTINGS
     };
     private static final String TAG = MainActivity.class.getSimpleName();
     private LinearLayout recite_ll, report_ll, pk_ll, periphery_ll;
@@ -90,6 +90,14 @@ public class MainActivity extends BaseNoImmFragmentActivitiy implements View.OnC
     @Override
     protected void onResume() {
         super.onResume();
+
+    }
+
+    /**
+     * 提醒登录
+     */
+    public void exitLoginHint(){
+        LoginHelper.needLogin(this ,getResources().getString(R.string.str_need_login));
     }
 
     /**

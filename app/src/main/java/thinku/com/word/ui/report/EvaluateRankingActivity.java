@@ -10,18 +10,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.adapter.RankAdapter;
 import thinku.com.word.base.BaseActivity;
-import thinku.com.word.bean.TrackBeen;
 import thinku.com.word.bean.UserRankBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.utils.ShareUtils;
@@ -33,15 +35,17 @@ import thinku.com.word.utils.SharedPreferencesUtils;
 
 public class EvaluateRankingActivity extends BaseActivity implements View.OnClickListener {
 
-    private ImageView back,share,portrait , ranking_bg ;
-    private TextView title_t,name,num,ranking_num,tv;
+    private ImageView back, share, portrait, ranking_bg;
+    private TextView title_t, name, num, ranking_num, tv;
     private RecyclerView ranking_list;
-    private SwipeRefreshLayout refer ;
+    private SwipeRefreshLayout refer;
 
-    private RankAdapter rankAdapter ;
-    private List<UserRankBeen.RankBean> rankBeanList ;
-    public static void start(Context context){
-        Intent intent = new Intent(context ,EvaluateRankingActivity.class);
+
+    private RankAdapter rankAdapter;
+    private List<UserRankBeen.RankBean> rankBeanList;
+
+    public static void start(Context context) {
+        Intent intent = new Intent(context, EvaluateRankingActivity.class);
         context.startActivity(intent);
     }
 
@@ -49,6 +53,7 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evaluate_ranking);
+        ButterKnife.bind(this);
         findView();
         setClick();
         addNet();
@@ -64,18 +69,18 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
         share.setOnClickListener(this);
     }
 
-    public void addNet(){
+    public void addNet() {
         addToCompositeDis(HttpUtil.evRankObservable()
-        .doOnSubscribe(new Consumer<Disposable>() {
-            @Override
-            public void accept(Disposable disposable) throws Exception {
-                showLoadDialog();
-            }
-        }).subscribe(new Consumer<UserRankBeen>() {
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        showLoadDialog();
+                    }
+                }).subscribe(new Consumer<UserRankBeen>() {
                     @Override
                     public void accept(UserRankBeen userRankBeen) throws Exception {
                         dismissLoadDialog();
-                        if (userRankBeen != null){
+                        if (userRankBeen != null) {
                             referUI(userRankBeen);
                         }
                     }
@@ -87,13 +92,13 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
                 }));
     }
 
-    public void referUI(UserRankBeen userRankBeen){
+    public void referUI(UserRankBeen userRankBeen) {
         rankBeanList.clear();
         rankBeanList.addAll(userRankBeen.getRank());
         rankAdapter.notifyDataSetChanged();
-        name.setText(SharedPreferencesUtils.getString("nickname" ,EvaluateRankingActivity.this));
-        num.setText(SharedPreferencesUtils.getRankNum(EvaluateRankingActivity.this));
-        ranking_num.setText(SharedPreferencesUtils.getRankNum(EvaluateRankingActivity.this));
+        name.setText(SharedPreferencesUtils.getString("nickname", EvaluateRankingActivity.this));
+        num.setText(userRankBeen.getData().getNum());
+        ranking_num.setText(userRankBeen.getData().getRank() +"");
     }
 
     private void findView() {
@@ -111,8 +116,8 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
         tv.setVisibility(View.VISIBLE);
         ranking_list = (RecyclerView) findViewById(R.id.ranking_list);
         rankBeanList = new ArrayList<>();
-        rankAdapter = new RankAdapter(EvaluateRankingActivity.this  ,rankBeanList);
-        LinearLayoutManager manager =new LinearLayoutManager(EvaluateRankingActivity.this,LinearLayoutManager.VERTICAL,false);
+        rankAdapter = new RankAdapter(EvaluateRankingActivity.this, rankBeanList);
+        LinearLayoutManager manager = new LinearLayoutManager(EvaluateRankingActivity.this, LinearLayoutManager.VERTICAL, false);
         ranking_list.setLayoutManager(manager);
         ranking_list.setAdapter(rankAdapter);
         ranking_bg = (ImageView) findViewById(R.id.ranking_bg);
@@ -132,7 +137,7 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.back:
                 finish();
                 break;
@@ -142,10 +147,10 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
         }
     }
 
-    public void share(){
+    public void share() {
         String sdCardPath = Environment.getExternalStorageDirectory().getPath();
         // 图片文件路径
         String filePath = sdCardPath + File.separator + System.currentTimeMillis() + ".png";
-        ShareUtils.shareOnlyImage(this ,filePath);
+        ShareUtils.shareOnlyImage(this, filePath);
     }
 }

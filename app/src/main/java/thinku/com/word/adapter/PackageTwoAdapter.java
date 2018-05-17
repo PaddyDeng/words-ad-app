@@ -61,8 +61,12 @@ public class PackageTwoAdapter  extends RecyclerView.Adapter{
             packTwoHolder.progress.setProgressBarFrameHeight(3);
             if (childeBeens.getIs() == 1 &&  userwords == total){
                 packTwoHolder.status.setText("已完成");
-            }else{
+                packTwoHolder.status.setVisibility(View.VISIBLE);
+            }else if (childeBeens.getIs() ==1 ){
                 packTwoHolder.status.setText("已选择");
+                packTwoHolder.status.setVisibility(View.VISIBLE);
+            }else{
+                packTwoHolder.status.setVisibility(View.GONE);
             }
         }catch (Exception e){
             packTwoHolder.progress.setProgressBankgroundColor(context.getResources().getColor(R.color.color_progress_side));

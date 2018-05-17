@@ -164,7 +164,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                     HomeFirstFragment homeFirstFragment = new HomeFirstFragment();
                     fragments.put(tag, homeFirstFragment);
                     ft.add(R.id.fl, fragments.get(tag));
-                    portrait.setVisibility(View.GONE);
+                    portrait.setVisibility(View.INVISIBLE);
                     break;
                 case 1://选好了的
                     HomeFragment homeFragment = new HomeFragment();

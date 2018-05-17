@@ -20,7 +20,7 @@
             android:layout_width="100px"
             android:layout_height="100px"
             android:layout_marginTop="50px"
-            android:src="@mipmap/a" />
+             />
 
         <TextView
             android:id="@+id/name"

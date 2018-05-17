@@ -22,19 +22,15 @@ public class CirView extends View {
 
     private static final int defultSize = 100;
     private Paint paint;
-    private String text1 = "2000";
-    private String text2 = "3000";
     private static int mear;
     private static final String NewLableFirst = "平均每天新";
     private static final String NewLableSecond = " 学单词量";
     private static final String ReviewLableFirst = " 平均每天复";
     private static final String ReviewLableSecond = "习单词量";
-    String text4 = "平均每天复习单词量";
     private Rect lableWidth;
     private Rect lableSecondWidth;
     private TextPaint textPaintLable;
     private TextPaint textPaintNum;
-    private TextPaint textPaintCircle;   //  圈内字体
     private float reviewX;
     private float reviewY;
     private float newX;
@@ -113,13 +109,11 @@ public class CirView extends View {
         paint.setColor(Color.GREEN);
         RectF rect = new RectF(-radius, -radius, radius, radius);
         canvas.drawArc(rect, -90, (float) Math.round((reviewValue / totalValue) * 360), true, paint);
-        paint.setColor(context.getResources().getColor(R.color.vague));
+        paint.setColor(context.getResources().getColor(R.color.circle_green));
         canvas.drawArc(rect, (float) Math.round((reviewValue / totalValue) * 360 - 90), (Math.round((newValue / totalValue) * 360)), true, paint);
         //  求出扇形的中间坐标
         onInitValue();
 
-        // 圈内字体
-        drawTextCircle(canvas);
         //  划线
         paint.setColor(Color.BLACK);
         paint.setAntiAlias(true);
@@ -144,21 +138,6 @@ public class CirView extends View {
         }
     }
 
-    /**
-     * 画圈内字体
-     *
-     * @param canvas
-     */
-    private void drawTextCircle(Canvas canvas) {
-        textPaintCircle = new TextPaint();
-        textPaintCircle.setTextAlign(Paint.Align.CENTER);
-        textPaintCircle.setColor(Color.WHITE);
-        textPaintCircle.setTextSize(baseTextSize);
-        canvas.drawText((int) reviewValue + "", reviewX / 2, reviewY / 2, textPaintCircle);
-        Rect rect = new Rect();
-        textPaintCircle.getTextBounds(newValue + "", 0, (newValue + "").length(), rect);
-        canvas.drawText((int) newValue + "", newX / 2, newY / 2, textPaintCircle);
-    }
 
     /**
      * 根据角度大小来确定xy 的正负值
@@ -203,7 +182,7 @@ public class CirView extends View {
                         + (lableSecondWidth.bottom - lableSecondWidth.top) / 2, textPaintLable);
         Rect rect = new Rect();
         textPaintNum.getTextBounds(newWord, 0, newWord.length(), rect);
-        textPaintNum.setColor(context.getResources().getColor(R.color.vague));
+        textPaintNum.setColor(context.getResources().getColor(R.color.circle_green));
         canvas.drawText(newWord, centerTextX(newX), newBaseY + (lableWidth.bottom - lableWidth.top) +
                 (lableSecondWidth.bottom - lableSecondWidth.top) + (rect.bottom - rect.top), textPaintNum);
     }
@@ -213,7 +192,7 @@ public class CirView extends View {
         canvas.drawText(ReviewLableSecond, centerTextX(reviewX), reviewBaseY + (lableWidth.bottom - lableWidth.top) + (lableSecondWidth.bottom - lableSecondWidth.top) / 2, textPaintLable);
         Rect rect = new Rect();
         textPaintNum.getTextBounds(reviewWord, 0, reviewWord.length(), rect);
-        textPaintNum.setColor(Color.GREEN);
+        textPaintNum.setColor(context.getResources().getColor(R.color.circle_yellow));
         canvas.drawText(reviewWord, centerTextX(reviewX), reviewBaseY + (lableWidth.bottom - lableWidth.top) + (lableSecondWidth.bottom - lableSecondWidth.top) + (rect.bottom - rect.top), textPaintNum);
     }
 
@@ -238,7 +217,7 @@ public class CirView extends View {
         lableWidth = new Rect();
         lableSecondWidth = new Rect();
         paint = new Paint();
-        paint.setColor(Color.BLUE);
+        paint.setColor(context.getResources().getColor(R.color.circle_yellow));
         textPaintLable = new TextPaint();
         textPaintLable.setAntiAlias(true);
         textPaintLable.setColor(Color.BLACK);

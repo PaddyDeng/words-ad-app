@@ -24,8 +24,8 @@
 
     <dimen name="text_size_ms">15sp</dimen>
 
-
-    <dimen name="round_tab">100dp</dimen>
+    <dimen name="text_size_s">17sp</dimen>
+    <dimen name="round_tab">80dp</dimen>
 
 
 </resources>

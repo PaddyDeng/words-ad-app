@@ -50,12 +50,14 @@ public class GMATBagAdapter extends RecyclerView.Adapter {
                 wordBagHolder.progressBar.setProgress((packageBean.getConsole() / Float.parseFloat(packageBean.getAll())) * 100);
                 wordBagHolder.progressBar.setProgressColor(ColorUtils.getProgressColor(context ,Float.parseFloat(packageBean.getAll()) ,packageBean.getConsole()));
                 wordBagHolder.progressBar.setProgressBarFrameHeight(3);
+                wordBagHolder.progressBar.setProgressBankgroundColor(context.getResources().getColor(R.color.report_dialog_bg));
             }catch (Exception e){
                 wordBagHolder.name.setText(packageBean.getName());
                 wordBagHolder.num.setText("（" + packageBean.getConsole() + "/" + packageBean.getAll() + "）");
                 wordBagHolder.progressBar.setProgress((packageBean.getConsole() / Integer.parseInt(packageBean.getAll())) * 100);
                 wordBagHolder.progressBar.setProgressColor(context.getResources().getColor(R.color.progress_clolor1));
                 wordBagHolder.progressBar.setProgressBarFrameHeight(3);
+                wordBagHolder.progressBar.setProgressBankgroundColor(context.getResources().getColor(R.color.report_dialog_bg));
             }
         }
     }

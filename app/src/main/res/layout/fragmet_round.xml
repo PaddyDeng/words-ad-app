@@ -2,36 +2,39 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white"
-    >
-
+     >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@mipmap/title" />
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:background="@color/white"
         android:orientation="vertical">
 
         <com.zhy.autolayout.AutoRelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="275dp">
+            android:layout_height="225dp">
 
             <ImageView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
                 android:scaleType="fitXY"
                 android:src="@mipmap/round_title" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_height="65dp"
                 android:layout_below="@id/title"
                 android:background="@color/color_interval_line" />
 
             <com.zhy.autolayout.AutoLinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="90dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="25dp"
                 android:layout_marginLeft="10dp"
@@ -148,7 +151,8 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            app:rollviewpager_hint_paddingBottom="20dp" />
 
         <View
             android:layout_width="match_parent"
@@ -333,7 +337,7 @@
 
                 <com.zhy.autolayout.AutoRelativeLayout
                     android:layout_width="0dp"
-                    android:layout_height="205dp"
+                    android:layout_height="170dp"
                     android:layout_weight="1"
                     android:id="@+id/class4">
 

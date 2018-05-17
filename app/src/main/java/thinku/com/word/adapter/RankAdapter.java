@@ -42,12 +42,16 @@ public class RankAdapter extends RecyclerView.Adapter {
         UserRankBeen.RankBean rankBean = rankBeanList.get(position % rankBeanList.size());
         if (position == 0){
             rankHolder.ranking_bg.setBackgroundResource(R.mipmap.rank_1);
+            rankHolder.ranking_num.setTextColor(context.getResources().getColor(R.color.white));
         }else if(position ==1 ){
             rankHolder.ranking_bg.setBackgroundResource(R.mipmap.rank_2);
+            rankHolder.ranking_num.setTextColor(context.getResources().getColor(R.color.white));
         }else if(position ==2 ){
             rankHolder.ranking_bg.setBackgroundResource(R.mipmap.rank_3);
+            rankHolder.ranking_num.setTextColor(context.getResources().getColor(R.color.white));
         }else{
             rankHolder.ranking_bg.setBackgroundResource(R.mipmap.rank_no);
+            rankHolder.ranking_num.setTextColor(context.getResources().getColor(R.color.black));
         }
 
         if (rankBean != null){

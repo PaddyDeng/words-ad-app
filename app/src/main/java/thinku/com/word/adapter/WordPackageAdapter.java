@@ -29,6 +29,8 @@ public class WordPackageAdapter extends RecyclerView.Adapter {
     private Context context;
     private List<WordPackageBeen.WordPackage> packageList;
     private SelectListener selectListener;
+    private int mPosition = 1 ;
+
     public WordPackageAdapter(Context context, List<WordPackageBeen.WordPackage> packageList, SelectListener selectListener) {
         this.context = context;
         this.packageList = packageList;
@@ -36,6 +38,11 @@ public class WordPackageAdapter extends RecyclerView.Adapter {
     }
 
 
+    public void setmPosition(int mPosition){
+        this.mPosition = mPosition ;
+        selectListener.setListener(mPosition);
+        notifyDataSetChanged();
+    }
     public void setData(List<WordPackageBeen.WordPackage> packageList){
        this.packageList = packageList ;
         notifyDataSetChanged();
@@ -51,12 +58,18 @@ public class WordPackageAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         PackageHolder packageHolder = (PackageHolder) holder;
         WordPackageBeen.WordPackage data = packageList.get(position);
+        if (mPosition == position) {
+            packageHolder.rl.setBackgroundColor(context.getResources().getColor(R.color.gray));
+        } else {
+            packageHolder.rl.setBackgroundColor(context.getResources().getColor(R.color.white));
+        }
         if (!TextUtils.isEmpty(data.getImage())) new GlideUtils().load(context, data.getImage(), packageHolder.packageImg);
         packageHolder.title.setText(data.getName());
         packageHolder.rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectListener.setListener(position);
+                setmPosition(position);
             }
         });
     }

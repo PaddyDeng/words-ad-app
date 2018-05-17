@@ -1,5 +1,6 @@
 package thinku.com.word.ui.other.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ public class NeedLoginDialog extends Dialog{
     private Context context;
     private TextView n,y,content_t;
     private String content;
+    private int requestCode ;
     public NeedLoginDialog(@NonNull Context context, @StyleRes int themeResId) {
         super(context, themeResId);
         this.context =context;
@@ -28,6 +30,10 @@ public class NeedLoginDialog extends Dialog{
     public void setContent(String s){
         this.content=s;
         if(null!=content_t)content_t.setText(content);
+    }
+
+    public void setRequestCode(int requestCode){
+        this.requestCode = requestCode ;
     }
 
     @Override
@@ -47,8 +53,12 @@ public class NeedLoginDialog extends Dialog{
         y.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginHelper.toLogin(context);
-                dismiss();
+                if (requestCode != 0){
+                    LoginHelper.toRequestCodeLogin((Activity) context, requestCode);
+                }else {
+                    LoginHelper.toLogin(context);
+                    dismiss();
+                }
             }
         });
     }

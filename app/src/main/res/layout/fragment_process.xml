@@ -7,15 +7,17 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:weightSum="1">
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="270px">
+                android:layout_height="80dp"
+                android:layout_weight="0.05">
                 <RelativeLayout
                     android:layout_width="300px"
                     android:layout_height="170px">
                     <ImageView
-                        android:background="@color/yellow_right_round"
+                        android:background="@mipmap/all_day"
                         android:layout_marginTop="50px"
                         android:layout_width="match_parent"
                         android:layout_height="120px" />

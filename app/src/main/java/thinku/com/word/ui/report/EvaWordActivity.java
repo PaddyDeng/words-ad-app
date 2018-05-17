@@ -104,7 +104,7 @@ public class EvaWordActivity extends BaseActivity {
                         type = 0 ;
                     }
                 }else {
-                    evaHolder.rl.setBackgroundResource(R.drawable.yellow_20round);
+                    evaHolder.rl.setBackgroundResource(R.drawable.yellow_red_20round);
                     isKnow = 1 ;
                     userAnswer = "不认识";
                 }
@@ -134,7 +134,7 @@ public class EvaWordActivity extends BaseActivity {
                                 toTast( evAnswerBeen.getMessage());
                                 myApplication.finishAllActivity();
                                 EvaluateResultActivity.start(EvaWordActivity.this);
-//                                refreshActivity();
+                                refreshActivity();
                             } else if (evAnswerBeen.getCode() == 2) {
                                 //  跳转结果页
                                 myApplication.finishAllActivity();

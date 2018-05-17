@@ -57,7 +57,7 @@
             android:configChanges="keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme"></activity>
+            android:theme="@style/NoTitleTheme" />
         <!-- 登录 -->
 
         <activity
@@ -233,7 +233,13 @@
         <activity
             android:name=".ui.pk.PKResultActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme" />
+            android:theme="@style/NoTitleTheme" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+            </activity>
 
         <!-- pk发现页详情 -->
         <activity
@@ -388,8 +394,10 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.periphery.PlayForModuleActivity" />
-        <activity android:name=".ui.recite.AddMyPlanActivity"></activity>
+        <activity android:name=".ui.recite.AddMyPlanActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme"
+            />
     </application>
 
 </manifest>

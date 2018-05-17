@@ -10,9 +10,6 @@
 
 
     <style name="main_activity_style" parent="NoTitleTheme">
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowDisablePreview">false</item>
-        <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@mipmap/launch</item>
         <item name="android:background">@null</item>
     </style>
@@ -265,7 +262,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:layout_marginTop">20px</item>
+        <item name="android:layout_marginTop">10dp</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
 

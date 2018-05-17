@@ -25,6 +25,7 @@ import thinku.com.word.utils.LoginHelper;
 
 public class WordPackageActivity extends BaseActivity {
     private static final String TAG = WordPackageActivity.class.getSimpleName() ;
+    private static final int REQUEST_CODE = 101 ;
     @BindView(R.id.back)
     ImageView back;
     @BindView(R.id.title_t)
@@ -37,6 +38,7 @@ public class WordPackageActivity extends BaseActivity {
     RecyclerView wordPackage;
     private WordPackageAdapter wordPackageAdapter  ;
     private PackageTwoAdapter packageTwoAdapter ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,7 @@ public class WordPackageActivity extends BaseActivity {
         ButterKnife.bind(this);
         titleT.setText("雷哥词包");
         initRecy();
+        initData();
     }
 
     public void initRecy(){
@@ -54,7 +57,6 @@ public class WordPackageActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        initData();
     }
 
     public static void start(Context context){
@@ -79,7 +81,8 @@ public class WordPackageActivity extends BaseActivity {
                     public void accept( final @NonNull WordPackageBeen wordpackage) throws Exception {
                         dismissLoadDialog();
                         if (wordpackage.getCode() == 99) {
-                            LoginHelper.needLogin(WordPackageActivity.this , "您还没有登陆，请先登录");
+                           toTast(WordPackageActivity.this ,"您还没登录，请先登录");
+                           LoginHelper.needLogin(WordPackageActivity.this  ,getResources().getString(R.string.str_need_login) ,REQUEST_CODE);
                         } else {
                             wordPackageAdapter = new WordPackageAdapter(WordPackageActivity.this, wordpackage.getPackages(), new SelectListener() {
                                 @Override
@@ -99,6 +102,7 @@ public class WordPackageActivity extends BaseActivity {
                                 }
                             });
                             wordPackageTitle.setAdapter(wordPackageAdapter);
+                            wordPackageAdapter.setmPosition(0);
                         }
                     }
                 }, new Consumer<Throwable>() {
@@ -109,4 +113,12 @@ public class WordPackageActivity extends BaseActivity {
                 }));
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE){
+             initData();
+        }
+    }
 }

@@ -2,6 +2,7 @@ package thinku.com.word.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;

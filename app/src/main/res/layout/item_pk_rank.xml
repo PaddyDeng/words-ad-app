@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="80dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
         android:layout_width="60px"
         android:layout_height="60px"
         android:id="@+id/rank_bg"
         android:layout_centerVertical="true"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:layout_marginLeft="30dp"
+        />
     <TextView
         android:id="@+id/rank"
         android:text="0"
@@ -18,40 +20,41 @@
         android:layout_width="60px"
         android:layout_height="60px"
         android:visibility="invisible"
+        android:layout_marginLeft="30dp"
         android:paddingLeft="10px"/>
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:id="@+id/head_image"
-        android:src="@mipmap/a"
         android:layout_centerVertical="true"
         android:layout_marginLeft="80px" />
 
     <TextView
         android:id="@+id/name"
         android:text="名字"
-        android:textSize="45px"
+        android:textSize="35px"
         android:textColor="@color/dark_gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:gravity="center"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/head_image"
-        android:layout_alignTop="@id/head_image"/>
+        android:layout_alignTop="@id/head_image"
+        />
     <ImageView
         android:id="@+id/iv1"
         android:src="@mipmap/pk_win"
-        android:layout_width="50px"
-        android:layout_height="50px"
+        android:layout_width="35px"
+        android:layout_height="35px"
         android:layout_alignLeft="@id/name"
         android:layout_below="@id/name"
+        android:layout_marginTop="10px"
         />
 
     <TextView
         android:id="@+id/win_num"
         android:text="win:0"
-        android:textSize="40px"
+        android:textSize="35px"
         android:textColor="@color/win_yellow"
         android:layout_marginLeft="10px"
         android:layout_alignTop="@id/iv1"
@@ -65,13 +68,13 @@
         android:src="@mipmap/pk_lose"
         android:id="@+id/pk_lose"
         android:layout_alignTop="@id/iv1"
-        android:layout_width="50px"
-        android:layout_height="50px" />
+        android:layout_width="35px"
+        android:layout_height="35px" />
 
     <TextView
         android:id="@+id/lose_num"
         android:text="lose:0"
-        android:textSize="40px"
+        android:textSize="35px"
         android:layout_marginLeft="10px"
         android:layout_alignTop="@id/iv1"
         android:layout_toRightOf="@id/pk_lose"
@@ -81,12 +84,13 @@
     <TextView
         android:id="@+id/vocabulary"
         android:text="0"
-        android:textSize="60px"
+        android:textSize="45px"
         android:textColor="@color/mainColor"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"/>
 
     <thinku.com.word.view.DashView
         android:layout_width="match_parent"

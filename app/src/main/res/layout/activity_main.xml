@@ -7,26 +7,28 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="150px">
+        android:layout_height="50dp"
+       >
         <LinearLayout
             android:id="@+id/recite_ll"
             android:layout_weight="1"
             android:layout_width="0px"
             android:orientation="vertical"
             android:background="@drawable/main_title_select"
-            android:gravity="center_horizontal"
+            android:gravity="center"
+
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/recite_iv"
                 android:layout_marginTop="20px"
                 android:background="@drawable/word_main_image_select"
-                android:layout_width="60px"
-                android:layout_height="60px" />
+                android:layout_width="50px"
+                android:layout_height="50px" />
             <TextView
                 android:id="@+id/recite_tv"
                 android:text="背单词"
                 android:layout_marginTop="10px"
-                android:textSize="40px"
+                android:textSize="13sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -36,7 +38,7 @@
             android:layout_width="0px"
             android:orientation="vertical"
             android:background="@drawable/main_title_select"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/report_iv"
@@ -58,7 +60,7 @@
             android:layout_width="0px"
             android:orientation="vertical"
             android:background="@drawable/main_title_select"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:layout_height="match_parent">
 
             <ImageView
@@ -82,7 +84,7 @@
             android:layout_width="0px"
             android:orientation="vertical"
             android:background="@drawable/main_title_select"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/periphery_iv"

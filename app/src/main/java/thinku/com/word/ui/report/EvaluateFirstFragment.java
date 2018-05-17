@@ -20,8 +20,11 @@ import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.base.BaseFragment;
+import thinku.com.word.bean.PkResultBeen;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
@@ -66,6 +69,7 @@ public class EvaluateFirstFragment extends BaseActivity {
 
     public void initView(){
         titleT.setText("评估");
+        new GlideUtils().loadCircle(this ,NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(this) , portrait);
         int evaNum = SharedPreferencesUtils.getEvaluationNum(this);
         String nametxt = SharedPreferencesUtils.getString("nickname",this);
         name.setText(nametxt);
@@ -101,5 +105,10 @@ public class EvaluateFirstFragment extends BaseActivity {
                         }
                     }
                 }));
+    }
+
+    @OnClick(R.id.check_result)
+    public void check(){
+        EvaluateRankingActivity.start(EvaluateFirstFragment.this);
     }
 }

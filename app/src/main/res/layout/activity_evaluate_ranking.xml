@@ -1,32 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/refer"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-    <include
-        android:id="@+id/title"
-        layout="@layout/title_layout_share" />
-
-    <LinearLayout
-        android:id="@+id/bottom_ll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <include layout="@layout/item_ranking" />
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/ranking_list"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom_ll"
-        android:layout_below="@+id/title"
-        android:background="@color/mainColor" />
+        android:layout_height="match_parent">
 
-</RelativeLayout>
+        <include
+            android:id="@+id/title"
+            layout="@layout/title_layout_share" />
+
+        <LinearLayout
+            android:id="@+id/bottom_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/result_bg_rank">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/portrait"
+                    android:layout_width="100px"
+                    android:layout_height="100px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="80px" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="40px"
+                    android:layout_toRightOf="@+id/portrait"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="名字"
+                        android:textSize="40px"
+                        android:textColor="@color/black"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:layout_marginTop="5px"
+                            android:text="词汇量："
+                            android:textSize="40px"
+                            android:textColor="@color/black"/>
+
+                        <TextView
+                            android:id="@+id/num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/mainColor"
+                            android:textSize="40px" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="80px">
+
+                    <ImageView
+                        android:id="@+id/ranking_bg"
+                        android:layout_width="120px"
+                        android:layout_height="100px"
+                        />
+
+                    <TextView
+                        android:id="@+id/ranking_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="20px"
+                        android:text="0"
+                        android:textColor="@color/white"
+                        android:textSize="45px" />
+
+                    <TextView
+                        android:id="@+id/tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ranking_num"
+                        android:layout_marginTop="10dp"
+                        android:text="你的排名"
+                        android:textColor="@color/mainColor"
+                        android:textSize="30px"
+                        android:visibility="visible" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/ranking_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bottom_ll"
+            android:layout_below="@+id/title"
+            android:background="@color/mainColor" />
+
+    </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

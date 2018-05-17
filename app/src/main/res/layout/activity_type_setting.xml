@@ -3,13 +3,16 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <View
-        android:background="@color/mainColor"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_height"/>
+        android:layout_height="@dimen/title_bar_height"
+        android:visibility="visible"
+        android:id="@+id/title_1"/>
     <RelativeLayout
         android:background="@color/mainColor"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_height">
+        android:layout_height="@dimen/title_height"
+        android:id="@+id/title"
+        android:visibility="gone">
         <ImageView
             android:id="@+id/back"
             android:layout_centerVertical="true"

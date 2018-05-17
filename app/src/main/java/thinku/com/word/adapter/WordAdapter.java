@@ -17,6 +17,7 @@ import java.util.List;
 import thinku.com.word.R;
 import thinku.com.word.bean.PackageDetails;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
+import thinku.com.word.utils.ColorUtils;
 import thinku.com.word.utils.StringUtils;
 
 /**
@@ -41,11 +42,13 @@ public class WordAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         WordHolder wordHolder = (WordHolder) holder;
+
         final  PackageDetails.Word word = wordList.get(position);
         wordHolder.word.setText(word.getWord());
         String translate = StringUtils.spilt(word.getTranslate());
         wordHolder.phonetic_uk.setText(word.getPhonetic_us());
         wordHolder.translate.setText(translate);
+        wordHolder.rl.setBackgroundColor(ColorUtils.getPackDetailsColor(context ,word.getFirstStatus()));
         wordHolder.rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

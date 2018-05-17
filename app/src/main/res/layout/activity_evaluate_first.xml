@@ -20,7 +20,7 @@
             android:layout_toRightOf="@+id/portrait"
             android:layout_centerVertical="true"
             android:textSize="45px"
-            android:textColor="@color/color_black_text"
+            android:textColor="@color/black"
             android:layout_marginLeft="40px"
             android:text="名字"
             android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
             <TextView
                 android:text="词汇量"
                 android:textSize="40px"
-                android:textColor="@color/color_black_text"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
@@ -73,6 +73,19 @@
         android:background="@color/mainColor"
         android:gravity="center"
         android:text="立即评估"
+        android:textColor="@color/white"
+        android:textSize="45px" />
+
+    <TextView
+        android:id="@+id/check_result"
+        android:layout_width="match_parent"
+        android:layout_height="120px"
+        android:layout_marginLeft="150px"
+        android:layout_marginRight="150px"
+        android:layout_marginTop="20dp"
+        android:background="@color/mainColor"
+        android:gravity="center"
+        android:text="查看评估排行榜"
         android:textColor="@color/white"
         android:textSize="45px" />
 </LinearLayout>

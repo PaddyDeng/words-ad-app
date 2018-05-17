@@ -202,11 +202,6 @@
                     android:layout_width="50px"
                     android:layout_height="50px" />
             </LinearLayout>
-            <!--<thinku.com.word.view.ProgressView-->
-                <!--android:id="@+id/progress"-->
-                <!--android:layout_marginTop="20px"-->
-                <!--android:layout_width="800px"-->
-                <!--android:layout_height="80px" />-->
             <thinku.com.word.view.LoadingCustomView
             android:layout_width="800px"
             android:layout_height="60px"
@@ -233,6 +228,7 @@
                 <TextView
                     android:id="@+id/all_num"
                     android:text="/0"
+                    android:textSize="35px"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -254,13 +250,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="今日需背单词："
+                    android:text="今日新学："
                     android:textSize="35px"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/today_num"
-                    android:text="0/0"
+                    android:text="0"
                     android:textSize="35px"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

@@ -92,7 +92,6 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@mipmap/a"
             android:layout_below="@id/introduction"
             android:id="@+id/teacher_image"
             android:layout_marginTop="5dp"

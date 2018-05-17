@@ -62,7 +62,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="40px"
-                    android:src="@mipmap/a" />
+                    />
 
                 <View
                     android:layout_width="match_parent"

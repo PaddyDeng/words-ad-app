@@ -142,7 +142,7 @@ public class HomeFragment extends BaseFragment {
                                     name.setText(userIndex.getPackageName());
                                     name_text = userIndex.getPackageName();
                                     progress.setProgress((Float.parseFloat(userIndex.getUserPackageWords()) * 100) / Float.parseFloat(userIndex.getAllWords()));
-                                    todayNum.setText(userIndex.getToDayWords() + "/" + userIndex.getUserPackage().getPlanWords());
+                                    todayNum.setText(userIndex.getToDayWords());
                                     reviewNum.setText(userIndex.getUserReviewWords() + "/" + userIndex.getUserNeedReviewWords());
                                 }
                         }, new Consumer<Throwable>() {

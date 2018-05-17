@@ -1,5 +1,6 @@
 package thinku.com.word.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -227,10 +228,6 @@ public class LoginHelper {
                 @Override
                 public void onFailed(int what, Response<String> response) {
                     Toast.makeText(context, "重置session失败,需重新登录", Toast.LENGTH_SHORT).show();
-//                    if(tag==0){
-//                        ((LoginActivity)context).setResult(10);
-//                        ((LoginActivity)context).finish();
-//                    }
                 }
             });
         }
@@ -241,9 +238,21 @@ public class LoginHelper {
         context.startActivity(intent);
     }
 
+    public static void toRequestCodeLogin(Activity context , int code) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivityForResult(intent ,code  );
+    }
+
     public static void needLogin(Context context, String s) {
         NeedLoginDialog dialog = new NeedLoginDialog(context, R.style.AlphaDialogAct);
         dialog.setContent(s);
+        dialog.show();
+    }
+
+    public static void needLogin(Context context, String s , int requestCode) {
+        NeedLoginDialog dialog = new NeedLoginDialog(context, R.style.AlphaDialogAct);
+        dialog.setContent(s);
+        dialog.setRequestCode(requestCode);
         dialog.show();
     }
 

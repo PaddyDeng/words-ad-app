@@ -1,7 +1,11 @@
 package thinku.com.word.ui.recite;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -11,6 +15,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import thinku.com.word.R;
 import thinku.com.word.adapter.MyWheelAdapter;
@@ -25,10 +30,8 @@ public class AddMyPlanActivity extends BaseActivity {
     ImageView back;
     @BindView(title_t)
     TextView titleT;
-    @BindView(R.id.chose_txt)
-    TextView choseTxt;
     @BindView(R.id.title_iv)
-    ImageView titleIv;
+    TextView titleIv;
     @BindView(R.id.day)
     TextView daytext;
     @BindView(R.id.num)
@@ -50,24 +53,56 @@ public class AddMyPlanActivity extends BaseActivity {
     private List<String> dayList, wordList;
     private String words;
     private String days;
-    private int total = 400;
+    private String packId ;
+    private int total ;
+    public static void start(Context context  , String packId , String total){
+        Intent intent = new Intent(context ,AddMyPlanActivity.class);
+        intent.putExtra("packId" ,packId);
+        intent.putExtra("total" , total);
+        context.startActivity(intent);
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_my_plan);
         unbinder = ButterKnife.bind(this);
+        init();
+        Intent intent = getIntent();
+        if (intent != null){
+            packId = intent.getStringExtra("packId");
+            total = Integer.parseInt(intent.getStringExtra("total"));
+            referUi();
+        }
+
+    }
+
+    public void referUi(){
+        setWheel(total ,1 ,1 );
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+
     }
 
     public  void init(){
         titleT.setText("我的计划");
+        titleIv.setText("确定");
+        setTextFlag(daytext);
+        setTextFlag(numtext);
     }
 
+    /**
+     * 设置下划线
+     * @param textView
+     */
+    public void setTextFlag(TextView textView){
+        textView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        textView.getPaint().setAntiAlias(true);
+    }
 
     public void setWheel(final int totals, final int dayInt, int wordInt) {
         dayList = new ArrayList<>();
@@ -97,6 +132,9 @@ public class AddMyPlanActivity extends BaseActivity {
                 }
                 days = numOfDay.getText().toString().trim();
                 words = numOfWord.getText().toString().trim();
+                daytext.setText(days);
+                numtext.setText(words);
+
             }
         });
         wheelViewRl.addView(wheel_day);
@@ -119,6 +157,8 @@ public class AddMyPlanActivity extends BaseActivity {
                 }
                 words = numOfWord.getText().toString().trim();
                 days = numOfDay.getText().toString().trim();
+                daytext.setText(days);
+                numtext.setText(words);
             }
         });
 //        wheel_num.setSelection(totals - wordInt );
@@ -144,4 +184,17 @@ public class AddMyPlanActivity extends BaseActivity {
         numOfDay.setText(dayList.get(n - 1));
         numOfWord.setText(wordList.get(i));
     }
+
+    @OnClick({R.id.back ,R.id.title_iv})
+    public void click(View view){
+        switch (view.getId()){
+            case R.id.back:
+                finishWithAnim();
+                break;
+            case R.id.title_iv:
+                break;
+        }
+    }
+
+
 }

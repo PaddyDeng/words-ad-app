@@ -3,12 +3,15 @@ package thinku.com.word.ui.recite;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -52,7 +55,11 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
 
     public void init(){
         String mode = SharedPreferencesUtils.getMemoryMode(_mActivity);
-        now_type.setText(mode);
+        if (!TextUtils.isEmpty(mode)) {
+            now_type.setText("你正在使用" + mode + "记忆单词");
+        }else{
+            now_type.setText("你还未选择记忆模式");
+        }
     }
 
     @Override

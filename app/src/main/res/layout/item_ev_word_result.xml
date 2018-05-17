@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="40dp">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <thinku.com.word.view.DashView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:dashWidth = "2dp"
+        app:lineWidth="8dp"
+        app:lineHeight="1px"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="2dp"
+        app:lineColor="@color/interal"
+        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1px"

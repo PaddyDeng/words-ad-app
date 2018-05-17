@@ -22,4 +22,33 @@ public class ColorUtils {
             return context.getResources().getColor(R.color.progress_bg);
         }
     }
+
+
+    public static int getPackDetailsColor(Context context ,String status){
+        if (status == null) {
+          return context.getResources().getColor(R.color.gray) ;
+        }
+        int color  ;
+        switch (status){
+            case "":
+                color = context.getResources().getColor(R.color.gray);
+                break;
+            case "5":
+                color = context.getResources().getColor(R.color.color_red);
+                break;
+            case "1":
+                color = context.getResources().getColor(R.color.mainColor);
+                break;
+            case "2":
+                color = context.getResources().getColor(R.color.mainColor);
+                break;
+            case "4":
+                color = context.getResources().getColor(R.color.yellow_right_round);
+                break;
+            default:
+                color = context.getResources().getColor(R.color.gray);
+                break;
+        }
+        return  color ;
+    }
 }
