@@ -88,6 +88,9 @@ public class ProcessFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_process, container, false);
         unbinder = ButterKnife.bind(this, view);
         cirView = (CirView) view.findViewById(R.id.cirView);
+        //  去出焦点， 解决刷新回到recyclerView
+        bagList.setFocusableInTouchMode(false);
+        bagList.requestFocus() ;
         initAdapter();
         referNetUi();
         observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE ,String.class);
@@ -97,6 +100,7 @@ public class ProcessFragment extends BaseFragment {
                 new GlideUtils().loadCircle(_mActivity , NetworkTitle.WORDRESOURE  + s ,portrait);
             }
         });
+        new GlideUtils().loadCircle(_mActivity , NetworkTitle.WORDRESOURE  + SharedPreferencesUtils.getImage(_mActivity) ,portrait);
         return view;
     }
     @Override
