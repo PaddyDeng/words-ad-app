@@ -15,6 +15,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
@@ -24,7 +26,9 @@ import thinku.com.word.bean.PkResultBeen;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
@@ -53,22 +57,31 @@ public class EvaluateFirstFragment extends BaseActivity {
     TextView evaluate;
     Unbinder unbinder;
 
+    private Observable<String> observable ;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evaluate_first);
         unbinder = ButterKnife.bind(this);
+        titleT.setText("评估");
+        initView();
+        observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE ,String.class);
+        observable.subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String s) throws Exception {
+                new GlideUtils().loadCircle(EvaluateFirstFragment.this ,NetworkTitle.WORDRESOURE + s ,portrait);
+            }
+        });
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        initView();
+
     }
 
     public void initView(){
-        titleT.setText("评估");
         new GlideUtils().loadCircle(this ,NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(this) , portrait);
         int evaNum = SharedPreferencesUtils.getEvaluationNum(this);
         String nametxt = SharedPreferencesUtils.getString("nickname",this);
@@ -82,6 +95,7 @@ public class EvaluateFirstFragment extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        RxBus.get().unregister(C.RXBUS_HEAD_IMAGE ,observable);
     }
 
     @OnClick(R.id.back)

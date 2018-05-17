@@ -19,6 +19,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
@@ -26,6 +28,10 @@ import thinku.com.word.adapter.RankAdapter;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.UserRankBeen;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.utils.C;
+import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.ShareUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
@@ -43,7 +49,7 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
 
     private RankAdapter rankAdapter;
     private List<UserRankBeen.RankBean> rankBeanList;
-
+    private Observable<String> observable ;
     public static void start(Context context) {
         Intent intent = new Intent(context, EvaluateRankingActivity.class);
         context.startActivity(intent);
@@ -57,6 +63,13 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
         findView();
         setClick();
         addNet();
+        observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE ,String.class);
+        observable.subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String s) throws Exception {
+                new GlideUtils().loadCircle(EvaluateRankingActivity.this , NetworkTitle.WORDRESOURE + s ,portrait);
+            }
+        });
     }
 
     @Override
@@ -90,6 +103,12 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
                         dismissLoadDialog();
                     }
                 }));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxBus.get().unregister(C.RXBUS_HEAD_IMAGE ,observable);
     }
 
     public void referUI(UserRankBeen userRankBeen) {

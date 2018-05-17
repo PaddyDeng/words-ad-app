@@ -15,10 +15,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
 import thinku.com.word.bean.ResultBeen;
@@ -29,8 +29,10 @@ import thinku.com.word.ocr.camera.CameraActivity;
 import thinku.com.word.ui.personalCenter.PersonalCenterActivity;
 import thinku.com.word.ui.seacher.SearchQuestionActivity;
 import thinku.com.word.ui.seacher.TopicSearchActivity;
+import thinku.com.word.utils.C;
 import thinku.com.word.utils.FileUtil;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
@@ -45,7 +47,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     private ImageView speech_lookup, photo_lookup;
     private SparseArray<Fragment> fragments;
     private int oldPage = -1;
-
+    private Observable<String> observable;
     public static ReciteFragment newInstance() {
         ReciteFragment reciteFragment = new ReciteFragment();
         return reciteFragment;
@@ -54,22 +56,37 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_recite, container, false);
+        View view =  inflater.inflate(R.layout.fragment_recite, container, false);
+        return view ;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         findView(view);
         setClick();
+        initView();
+        observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE ,String.class);
+        observable.subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String s) throws Exception {
+                new GlideUtils().loadCircle(_mActivity ,NetworkTitle.WORDRESOURE + s ,portrait);
+            }
+        });
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        initView();
+
     }
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RxBus.get().unregister(C.RXBUS_HEAD_IMAGE ,observable);
+    }
 
     private void initView() {
         addToCompositeDis(HttpUtil.getUserData()
@@ -186,9 +203,6 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden) {
-            initView();
-        }
     }
 
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -23,7 +24,9 @@ import thinku.com.word.bean.PkIndexBeen;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.RxBus;
 import thinku.com.word.view.ProgressView;
 
 /**
@@ -45,6 +48,7 @@ public class PKPageFragment extends BaseFragment{
         PKPageFragment pkPageFragment = new PKPageFragment();
         return pkPageFragment ;
     }
+    private Observable<String> observable ;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,6 +61,20 @@ public class PKPageFragment extends BaseFragment{
         setClick();
         initRecy();
         addNet();
+        observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE ,String.class);
+        observable.subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String s) throws Exception {
+                new GlideUtils().loadCircle(_mActivity ,NetworkTitle.WORDRESOURE + s ,portrait);
+                addNet();
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RxBus.get().unregister(C.RXBUS_HEAD_IMAGE ,observable);
     }
 
     @Override
@@ -133,8 +151,5 @@ public class PKPageFragment extends BaseFragment{
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden){
-            addNet();
-        }
     }
 }

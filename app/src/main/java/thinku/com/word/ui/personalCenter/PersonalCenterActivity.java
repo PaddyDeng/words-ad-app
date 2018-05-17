@@ -14,13 +14,20 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.personalCenter.bean.ImageBean;
 import thinku.com.word.utils.APPSmart;
+import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
+
+import static thinku.com.word.utils.C.RXBUS_HEAD_IMAGE;
 
 /**
  * Created by Administrator on 2018/2/7.
@@ -32,7 +39,7 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
     private TextView title_t,name,setting;
     private ImageView portrait;
     private RelativeLayout type_setting,sign,feedback,clock,night,service;
-
+    private Observable<String> observable ;
     public static void start(Context context){
         Intent intent = new Intent(context ,PersonalCenterActivity.class);
         context.startActivity(intent);
@@ -43,7 +50,14 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
         setContentView(R.layout.activity_personal_center);
         findView();
         setClick();
-        EventBus.getDefault().register(this);
+        observable =RxBus.get().register(RXBUS_HEAD_IMAGE ,String.class);
+        observable.subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String integer) throws Exception {
+                init();
+            }
+        });
+        init();
     }
 
     private void findView() {
@@ -64,7 +78,6 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
     @Override
     protected void onResume() {
         super.onResume();
-        init();
     }
 
     public void init(){
@@ -81,11 +94,6 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
         clock.setOnClickListener(this);
         night.setOnClickListener(this);
         service.setOnClickListener(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ImageBean imageBean){
-        new GlideUtils().loadCircle(this ,NetworkTitle.WORDRESOURE + imageBean.getImage() ,portrait);
     }
     @Override
     public void onClick(View v) {
@@ -120,6 +128,6 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        RxBus.get().unregister(C.RXBUS_HEAD_IMAGE ,observable);
     }
 }

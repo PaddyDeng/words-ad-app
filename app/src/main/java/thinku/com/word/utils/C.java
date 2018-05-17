@@ -73,5 +73,9 @@ public class C {
     public int ERR_THIRD_CERTIFICATION_AUTHORITY = -108; //第三方认证失败
 
 
+    /**
+     * Rxbus  tag
+     */
+    public static final int RXBUS_HEAD_IMAGE  = 1 ;
 
 }

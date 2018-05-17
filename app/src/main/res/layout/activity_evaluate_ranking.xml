@@ -78,8 +78,10 @@
 
                     <ImageView
                         android:id="@+id/ranking_bg"
-                        android:layout_width="120px"
-                        android:layout_height="100px"
+                        android:layout_width="60dp"
+                        android:layout_height="40dp"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/rank_bg"
                         />
 
                     <TextView
@@ -97,7 +99,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/ranking_num"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:text="你的排名"
                         android:textColor="@color/mainColor"
                         android:textSize="30px"

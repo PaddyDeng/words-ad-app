@@ -26,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -42,6 +43,8 @@ import thinku.com.word.http.NetworkChildren;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.personalCenter.SignActivity;
 import thinku.com.word.utils.C;
+import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.view.AutoZoomTextView;
 import thinku.com.word.view.LoadingCustomView;
@@ -97,20 +100,20 @@ public class HomeFragment extends BaseFragment {
 
     private String name_text;
     private SimpleDateFormat simpleDateFormat;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, view);
         init();
+        initData();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        initData();
+
     }
 
     private void init() {

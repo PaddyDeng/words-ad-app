@@ -59,6 +59,7 @@ import thinku.com.word.ui.personalCenter.update.SimpleUpdateApk;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.ImageUtil;
+import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharePref;
 import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.version.VersionInfo;
@@ -436,7 +437,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         toTast(SettingActivity.this, imageBeanResultBeen.getMessage());
                         if (getHttpResSuc(imageBeanResultBeen.getCode())) {
                             savePhoto(imageBeanResultBeen.getImage());
-                            EventBus.getDefault().post(imageBeanResultBeen);
+                            RxBus.get().post(C.RXBUS_HEAD_IMAGE ,imageBeanResultBeen.getImage());
                         }
                     }
 

@@ -20,6 +20,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.adapter.GMATBagAdapter;
@@ -28,7 +30,10 @@ import thinku.com.word.base.BaseFragment;
 import thinku.com.word.bean.Package;
 import thinku.com.word.bean.TrackBeen;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharePref;
 import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.view.CirView;
@@ -71,7 +76,7 @@ public class ProcessFragment extends BaseFragment {
     private List<TrackBeen.RankBean> rankBeanList ;
     private GMATBagAdapter gmatBagAdapter;
     private WordRankAdapter wordRankAdapter;
-
+    private Observable<String> observable ;
     public static ProcessFragment newInstance() {
         ProcessFragment processFragment = new ProcessFragment();
         return processFragment;
@@ -84,12 +89,20 @@ public class ProcessFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, view);
         cirView = (CirView) view.findViewById(R.id.cirView);
         initAdapter();
+        referNetUi();
+        observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE ,String.class);
+        observable.subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String s) throws Exception {
+                new GlideUtils().loadCircle(_mActivity , NetworkTitle.WORDRESOURE  + s ,portrait);
+            }
+        });
         return view;
     }
     @Override
     public void onResume() {
         super.onResume();
-        referNetUi();
+
     }
 
 
@@ -144,13 +157,11 @@ public class ProcessFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        RxBus.get().unregister(C.RXBUS_HEAD_IMAGE ,observable);
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden){
-            referNetUi();
-        }
     }
 }
