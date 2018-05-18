@@ -144,9 +144,10 @@ public class WordErrorActivity extends BaseActivity {
             public void accept(ResultBeen<Void> voidResultBeen) throws Exception {
                 dismissLoadDialog();
                 if (getHttpResSuc(voidResultBeen.getCode())){
-                    toTast(WordErrorActivity.this ,"修改成功");
+                    toTast(WordErrorActivity.this ,"谢谢提醒");
+                    WordErrorActivity.this.finishWithAnim();
                 }else{
-                    toTast(WordErrorActivity.this ,"修改失败");
+                    toTast(WordErrorActivity.this ,"提交失败");
                 }
             }
         }, new Consumer<Throwable>() {

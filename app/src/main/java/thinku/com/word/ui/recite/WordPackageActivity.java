@@ -21,6 +21,7 @@ import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.WordPackageBeen;
 import thinku.com.word.callback.SelectListener;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.utils.LoginHelper;
 
 public class WordPackageActivity extends BaseActivity {
@@ -81,7 +82,6 @@ public class WordPackageActivity extends BaseActivity {
                     public void accept( final @NonNull WordPackageBeen wordpackage) throws Exception {
                         dismissLoadDialog();
                         if (wordpackage.getCode() == 99) {
-                           toTast(WordPackageActivity.this ,"您还没登录，请先登录");
                            LoginHelper.needLogin(WordPackageActivity.this  ,getResources().getString(R.string.str_need_login) ,REQUEST_CODE);
                         } else {
                             wordPackageAdapter = new WordPackageAdapter(WordPackageActivity.this, wordpackage.getPackages(), new SelectListener() {
@@ -93,7 +93,7 @@ public class WordPackageActivity extends BaseActivity {
                                         public void setListener(int position) {
                                             WordbagDetailActivity.start(WordPackageActivity.this, wordPackageBeen.getChild().get(position).getId()
                                                     , wordPackageBeen.getChild().get(position).getTotal(), wordPackageBeen.getChild().get(position).getUserWords()
-                                                    , wordPackageBeen.getChild().get(position).getName());
+                                                    , wordPackageBeen.getChild().get(position).getName() , wordPackageBeen.getChild().get(position).getIs());
                                         }
                                     }, wordPackageBeen.getChild()
                                     );
@@ -113,12 +113,12 @@ public class WordPackageActivity extends BaseActivity {
                 }));
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE){
-             initData();
+             this.finishWithAnim();
+            MainActivity.toMain(this);
         }
     }
 }

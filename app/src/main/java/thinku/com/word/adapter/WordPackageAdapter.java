@@ -59,7 +59,7 @@ public class WordPackageAdapter extends RecyclerView.Adapter {
         PackageHolder packageHolder = (PackageHolder) holder;
         WordPackageBeen.WordPackage data = packageList.get(position);
         if (mPosition == position) {
-            packageHolder.rl.setBackgroundColor(context.getResources().getColor(R.color.gray));
+            packageHolder.rl.setBackgroundColor(context.getResources().getColor(R.color.report_dialog_bg));
         } else {
             packageHolder.rl.setBackgroundColor(context.getResources().getColor(R.color.white));
         }

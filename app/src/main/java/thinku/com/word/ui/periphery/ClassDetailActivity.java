@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -18,7 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import thinku.com.word.R;
-import thinku.com.word.base.BaseNoImmActivity;
+import thinku.com.word.base.BaseActivity;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.periphery.bean.RoundBean;
 import thinku.com.word.ui.pk.OnlineActivity;
@@ -26,14 +25,12 @@ import thinku.com.word.utils.DateUtil;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.HtmlUtil;
 
-public class ClassDetailActivity extends BaseNoImmActivity {
+public class ClassDetailActivity extends BaseActivity {
 
     @BindView(R.id.back)
     ImageView back;
     @BindView(R.id.title_t)
     TextView titleT;
-    @BindView(R.id.title_right_t)
-    TextView titleRightT;
     @BindView(R.id.title)
     RelativeLayout title;
     @BindView(R.id.course_img)
@@ -55,109 +52,111 @@ public class ClassDetailActivity extends BaseNoImmActivity {
     @BindView(R.id.online)
     TextView online;
 
-    private Unbinder unbinder ;
-    private RoundBean.RecentClassBean recentClassBean ;
-    private RoundBean.ChoicenessBean choicenessBean ;
-    private RoundBean.LivePreviewBean.DataBean dataBean ;
-    private String url ;
+    private Unbinder unbinder;
+    private RoundBean.RecentClassBean recentClassBean;
+    private RoundBean.ChoicenessBean choicenessBean;
+    private RoundBean.LivePreviewBean.DataBean dataBean;
+    private String url;
     private boolean hasAsyncFree = false;
-    private String contentTxt ;
-    public static void start(Context context , RoundBean.RecentClassBean recentClassBean){
-        Intent intent = new Intent(context ,ClassDetailActivity.class);
-        intent.putExtra("data" ,recentClassBean);
+    private String contentTxt;
+
+    public static void start(Context context, RoundBean.RecentClassBean recentClassBean) {
+        Intent intent = new Intent(context, ClassDetailActivity.class);
+        intent.putExtra("data", recentClassBean);
         context.startActivity(intent);
     }
 
-    public static void start(Context context , RoundBean.ChoicenessBean choicenessBean){
-        Intent intent = new Intent(context ,ClassDetailActivity.class);
-        intent.putExtra("data" ,choicenessBean);
+    public static void start(Context context, RoundBean.ChoicenessBean choicenessBean) {
+        Intent intent = new Intent(context, ClassDetailActivity.class);
+        intent.putExtra("data", choicenessBean);
         context.startActivity(intent);
     }
 
-    public static void start(Context context , RoundBean.LivePreviewBean.DataBean dataBean){
-        Intent intent = new Intent(context ,ClassDetailActivity.class);
-        intent.putExtra("data" ,dataBean);
+    public static void start(Context context, RoundBean.LivePreviewBean.DataBean dataBean) {
+        Intent intent = new Intent(context, ClassDetailActivity.class);
+        intent.putExtra("data", dataBean);
         context.startActivity(intent);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_detail);
         unbinder = ButterKnife.bind(this);
-        try{
+        try {
             recentClassBean = getIntent().getParcelableExtra("data");
             init(recentClassBean);
-            hasAsyncFree = true ;
-        }catch (Exception e){
+            hasAsyncFree = true;
+        } catch (Exception e) {
 
         }
 
-        try{
+        try {
             choicenessBean = getIntent().getParcelableExtra("data");
             init(choicenessBean);
-            hasAsyncFree = true ;
-        }catch (Exception e){
+            hasAsyncFree = true;
+        } catch (Exception e) {
 
         }
 
-        try{
+        try {
             dataBean = getIntent().getParcelableExtra("data");
             init(dataBean);
-            hasAsyncFree = true ;
-        }catch (Exception e){
+            hasAsyncFree = true;
+        } catch (Exception e) {
 
         }
     }
 
-    public void init(RoundBean.RecentClassBean recentClassBean){
+    public void init(RoundBean.RecentClassBean recentClassBean) {
         titleT.setText("课程详情");
-        GlideUtils.load(this , NetworkTitle.OPENRESOURE+recentClassBean.getImage() ,courseImg);
+        GlideUtils.load(this, NetworkTitle.OPENRESOURE + recentClassBean.getImage(), courseImg);
         name.setText(recentClassBean.getName());
-        people.setText(recentClassBean.getViewCount()+"人已加入");
+        people.setText(recentClassBean.getViewCount() + "人已加入");
         String s = HtmlUtil.repairContent(recentClassBean.getSentenceNumber(), NetworkTitle.DomainSmartApplyResourceNormal);
-        String html = HtmlUtil.getHtml(s,0);
+        String html = HtmlUtil.getHtml(s, 0);
         content.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
         listen.setVisibility(View.GONE);
     }
 
-    public void init(RoundBean.ChoicenessBean choicenessBean){
+    public void init(RoundBean.ChoicenessBean choicenessBean) {
         titleT.setText("课程详情");
-        GlideUtils.load(this ,choicenessBean.getImage() ,courseImg);
+        GlideUtils.load(this, choicenessBean.getImage(), courseImg);
         name.setText(choicenessBean.getName());
-        people.setText(DateUtil.differentDays(Integer.parseInt(choicenessBean.getId()))+"人已加入");
+        people.setText(DateUtil.differentDays(Integer.parseInt(choicenessBean.getId())) + "人已加入");
         String s = HtmlUtil.repairContent(choicenessBean.getContent(), NetworkTitle.DomainSmartApplyResourceNormal);
-        String html = HtmlUtil.getHtml(s,0);
+        String html = HtmlUtil.getHtml(s, 0);
         content.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
         listen.setVisibility(View.VISIBLE);
         url = choicenessBean.getUrl();
         contentTxt = choicenessBean.getContent();
     }
 
-    public void init(RoundBean.LivePreviewBean.DataBean dataBean){
+    public void init(RoundBean.LivePreviewBean.DataBean dataBean) {
         titleT.setText("课程详情");
-        GlideUtils.load(this , NetworkTitle.OPENRESOURE+dataBean.getImage() ,courseImg);
+        GlideUtils.load(this, NetworkTitle.OPENRESOURE + dataBean.getImage(), courseImg);
         name.setText(dataBean.getName());
-        people.setText(dataBean.getViewCount()+"人已加入");
+        people.setText(dataBean.getViewCount() + "人已加入");
         String s = HtmlUtil.repairContent(dataBean.getSentenceNumber(), NetworkTitle.DomainSmartApplyResourceNormal);
-        String html = HtmlUtil.getHtml(s,0);
+        String html = HtmlUtil.getHtml(s, 0);
         content.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
         listen.setVisibility(View.GONE);
     }
 
-    @OnClick({R.id.back  , R.id.online,R.id.listen})
-    public void click(View view){
-      switch (view.getId()){
-          case R.id.back:
-              this.finishWithAnim();
-              break;
-          case R.id.online:
-              OnlineActivity.start(this);
-              break;
-          case R.id.listen:
-              PlayActivity.start(this,contentTxt,name.getText().toString().trim() ,url);
-          default:
-              break;
-      }
+    @OnClick({R.id.back, R.id.online, R.id.listen})
+    public void click(View view) {
+        switch (view.getId()) {
+            case R.id.back:
+                this.finishWithAnim();
+                break;
+            case R.id.online:
+                OnlineActivity.start(this);
+                break;
+            case R.id.listen:
+                PlayActivity.start(this, contentTxt, name.getText().toString().trim(), url);
+            default:
+                break;
+        }
     }
 
 

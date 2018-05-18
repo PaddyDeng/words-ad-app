@@ -131,9 +131,7 @@ public class EvaWordActivity extends BaseActivity {
                         public void accept(EVAnswerBeen evAnswerBeen) throws Exception {
                             dismissLoadDialog();
                             if (getHttpResSuc(evAnswerBeen.getCode())) {
-                                toTast( evAnswerBeen.getMessage());
                                 myApplication.finishAllActivity();
-                                EvaluateResultActivity.start(EvaWordActivity.this);
                                 refreshActivity();
                             } else if (evAnswerBeen.getCode() == 2) {
                                 //  跳转结果页
@@ -156,10 +154,6 @@ public class EvaWordActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
     /**
      * 请求网络

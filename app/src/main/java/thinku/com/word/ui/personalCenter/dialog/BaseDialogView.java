@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
@@ -70,9 +69,6 @@ public abstract class BaseDialogView extends BaseDialogFragment {
             mCompositeDisposable.dispose();
             WaitDialog.destroyDialog(getActivity());
         }
-
-        RefWatcher refWatcher = MyApplication.getRefWatcher(getActivity());
-        if (null != refWatcher) refWatcher.watch(this);
     }
 
 

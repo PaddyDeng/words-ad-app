@@ -15,9 +15,9 @@
         <LinearLayout
             android:id="@+id/ll"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_below="@id/title"
-            android:background="@color/gray_white"
+            android:background="@color/white"
             android:gravity="center_vertical">
 
             <TextView
@@ -46,6 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
+                android:textColor="@color/black"
                 android:textSize="40px" />
 
             <LinearLayout
@@ -59,7 +60,7 @@
                 <View
                     android:layout_width="30dp"
                     android:layout_height="20dp"
-                    android:background="@color/gray"/>
+                    android:background="@color/word_none"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -81,7 +82,7 @@
                 <View
                     android:layout_width="30dp"
                     android:layout_height="20dp"
-                    android:background="@color/mainColor"/>
+                    android:background="@color/word_know"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -103,7 +104,7 @@
                 <View
                     android:layout_width="30dp"
                     android:layout_height="20dp"
-                    android:background="@color/color_red"/>
+                    android:background="@color/word_not_know"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -125,7 +126,7 @@
                 <View
                     android:layout_width="30dp"
                     android:layout_height="20dp"
-                    android:background="@color/yellow_right_round"/>
+                    android:background="@color/word_dim"/>
 
                 <TextView
                     android:layout_width="wrap_content"

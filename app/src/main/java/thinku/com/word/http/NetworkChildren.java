@@ -42,6 +42,8 @@ public class NetworkChildren {
     public static final String USER_SIGN = "app-api/user-sign" ;  //  用户签到首页
     public static final String SIGN = "app-api/sign" ;  //  用户签到
 
+    public static final String UPDATA_NOW_PACKAGE = "app-api/update-now-package" ;  //  学习中Id
+    public static final String DELETE_PACKAGE = "app-api/delete-package";   //  删除词包
 
     /**
      * 单词报告接口

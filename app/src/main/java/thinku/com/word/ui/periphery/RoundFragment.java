@@ -2,6 +2,7 @@ package thinku.com.word.ui.periphery;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jude.rollviewpager.RollPagerView;
+import com.jude.rollviewpager.hintview.ColorPointHintView;
+import com.jude.rollviewpager.hintview.IconHintView;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -183,6 +186,7 @@ public class RoundFragment extends BaseFragment {
         contents[4] = content5;
         contents[5] = content6;
         contents[6] = content7;
+        rollPager.setHintView(new ColorPointHintView(_mActivity,getResources().getColor(R.color.gray_text),getResources().getColor(R.color.mainColor)));
     }
 
     /**
@@ -260,7 +264,7 @@ public class RoundFragment extends BaseFragment {
     }
 
     /**
-     *  大于当前日期的直播才显示在屏幕上
+     *  等于当前日期的直播才显示在屏幕上
      * @param livePreviewBeanList
      */
     public void choseLiveList(List<RoundBean.LivePreviewBean> livePreviewBeanList) {

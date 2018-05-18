@@ -21,6 +21,7 @@ import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.BackCode;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.other.MainActivity;
+import thinku.com.word.ui.other.dialog.callback.DialogClickListener;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
@@ -28,8 +29,9 @@ import thinku.com.word.utils.SharedPreferencesUtils;
  * 设置模式
  */
 
-public class TypeSettingActivity extends BaseActivity {
+public class TypeSettingActivity extends BaseActivity  implements DialogClickListener{
     private static final String TAG = TypeSettingActivity.class.getSimpleName();
+    private static final int REQUEST_CODE = 10 ;
     private static final int LGStudyEbbinghaus = 1;  // 艾宾浩斯记忆法
     private static final int LGStudyReview = 2;    //  复习记忆法
     private static final int LGStudyOnlyNew = 3;   // 只背新单词
@@ -175,19 +177,13 @@ public class TypeSettingActivity extends BaseActivity {
                         showLoadDialog();
                     }
                 })
-                .doOnError(new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        dismissLoadDialog();
-                    }
-                })
                 .subscribe(new Consumer<BackCode>() {
                     @Override
                     public void accept(@NonNull BackCode backCode) throws Exception {
                         dismissLoadDialog();
                         if (backCode != null) {
                             if (backCode.getCode() == 99) {  //  未登录
-                                LoginHelper.needLogin(TypeSettingActivity.this, "你还没登录，请先登录");
+                                LoginHelper.needLogin(TypeSettingActivity.this, "你还没登录，请先登录", REQUEST_CODE);
                             } else if (backCode.getCode() == 0) {
                                 toTast(TypeSettingActivity.this, backCode.getMessage());
                             } else {
@@ -195,9 +191,12 @@ public class TypeSettingActivity extends BaseActivity {
                                 SharedPreferencesUtils.saveMemoryMode(TypeSettingActivity.this, mode);
                                 finish();
                             }
-                        } else {
-                            LoginHelper.needLogin(TypeSettingActivity.this, "你还没登录，请先登录");
                         }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        dismissLoadDialog();
                     }
                 }));
     }
@@ -213,4 +212,13 @@ public class TypeSettingActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
+    @Override
+    public void clickTrue() {
+        MainActivity.toMain(this);
+    }
+
+    @Override
+    public void clickFalse() {
+        MainActivity.toMain(this);
+    }
 }

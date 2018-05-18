@@ -8,8 +8,6 @@ import android.util.Log;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.mob.MobSDK;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -38,7 +36,6 @@ public class MyApplication extends Application {
     public static String session = "";
     private Stack<Activity> activityStack;
     private static MyApplication myApplication;
-    private RefWatcher refWatcher;
 
     public static Context getInstance() {
         return mContext;
@@ -83,16 +80,16 @@ public class MyApplication extends Application {
 
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
-        refWatcher = LeakCanary.install(this);
+//        refWatcher = LeakCanary.install(this);
         MobSDK.init(this);   //  分享设置
         SpeechUtility.createUtility(this, SpeechConstant.APPID +"=5af9002c");  //  讯飞语音
 //        Stetho.initializeWithDefaults(this);
     }
 
-    public static RefWatcher getRefWatcher(Context context) {
-        MyApplication application = (MyApplication) context.getApplicationContext();
-        return application.refWatcher;
-    }
+//    public static RefWatcher getRefWatcher(Context context) {
+//        MyApplication application = (MyApplication) context.getApplicationContext();
+//        return application.refWatcher;
+//    }
 
     public static MyApplication newInstance() {
         if (myApplication == null) {

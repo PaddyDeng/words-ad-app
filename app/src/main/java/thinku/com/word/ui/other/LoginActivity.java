@@ -12,14 +12,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import io.reactivex.Observable;
 import me.yokeyword.fragmentation.SupportActivity;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.RequestCallback;
+import thinku.com.word.utils.C;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.PhoneAndEmailUtils;
+import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
@@ -33,7 +36,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private TextView login,register_btn,forget_btn;
     private String phone;
     private String pass;
-
+    private Observable<Boolean> observable ;
     public static void toLogin(Context context){
         Intent intent = new Intent(context ,LoginActivity.class);
         context.startActivity(intent);
@@ -94,11 +97,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         dismissLoadDialog();
                         toTast(LoginActivity.this ,msg);
                     }
-
                     @Override
                     public void requestSuccess(UserInfo userInfo) {
                         dismissLoadDialog();
                         if (getHttpResSuc(userInfo.getCode())) {
+                            RxBus.get().post(C.RXBUS_LOGIN ,true);
                             SharedPreferencesUtils.setPassword(LoginActivity.this, TextUtils.isEmpty(userInfo.getPhone()) ? userInfo.getEmail() : userInfo.getPhone(), userInfo.getPassword());
                             SharedPreferencesUtils.setLogin(LoginActivity.this, userInfo);
                             LoginActivity.this.finish();
@@ -127,8 +130,5 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == 10){
-//            startActivity(new Intent(LoginActivity.this ,MainActivity.class));
-//        }
     }
 }

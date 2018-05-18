@@ -47,7 +47,7 @@
     <color name="color_progress_middle">#659FFF</color>
     <color name="color_progress_high">#37BC85</color>
     <color name="color_interval_line">#ECECEC</color>
-    
+    <color name="color_interval_line_1">#EBEBF1</color>
     <color name="color_button_blue">#2E8FE9</color>
     <color name="color_bg_gray">#EBEBEB</color>
     <color name="color_gray_bg">#F0EEE9</color>
@@ -81,4 +81,11 @@
     <color name="report_dialog_bg">#EDEBDE</color>
     <color name="yellow_red">#F2BA09</color>
     <color name="result_bg_rank">#FFEBC0</color>
+    <color name="circle_red">#E9B546</color>
+
+
+    <color name="word_none">#EDEDED</color>
+    <color name="word_know">#B8FFE0</color>
+    <color name="word_not_know">#FCB7B7</color>
+    <color name="word_dim">#FEE7B2</color>
 </resources>

@@ -1,7 +1,6 @@
 
 package thinku.com.word.ui.other;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,8 +17,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import me.yokeyword.fragmentation.SupportFragment;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragmentActivitiy;
@@ -34,9 +31,7 @@ import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 public class MainActivity extends BaseFragmentActivitiy implements View.OnClickListener {
-    private String[] permissions = new String[]{
-            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_SETTINGS
-    };
+
     private static final String TAG = MainActivity.class.getSimpleName();
     private LinearLayout recite_ll, report_ll, pk_ll, periphery_ll;
     private FrameLayout fl;
@@ -64,40 +59,21 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
         setContentView(R.layout.activity_main);
         findView();
         setClick();
-        checkPermission();
-    }
-
-    public void checkPermission() {
-        mRxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(@NonNull Boolean aBoolean) throws Exception {
-                        if (aBoolean) {
-                            initView();
-                            login();
-                            OCRProxy.initToken(mContext);
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        toTast("获取权限失败");
-                        finish();
-                    }
-                });
+        initView();
+        login();
+        OCRProxy.initToken(mContext);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     /**
      * 提醒登录
      */
-    public void exitLoginHint(){
-        LoginHelper.needLogin(this ,getResources().getString(R.string.str_need_login));
+    public void exitLoginHint() {
+        LoginHelper.needLogin(this, getResources().getString(R.string.str_need_login));
     }
 
     /**

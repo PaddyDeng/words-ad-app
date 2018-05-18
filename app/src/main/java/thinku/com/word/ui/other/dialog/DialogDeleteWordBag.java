@@ -22,14 +22,16 @@ public class DialogDeleteWordBag extends Dialog{
     private TextView content_t,y,n;
     private String content;
     private DeleteListener listener;
+    private int position ;
     public DialogDeleteWordBag(@NonNull Context context) {
         super(context, R.style.AlphaDialogAct);
         this.context=context;
     }
 
-    public void setContent(String s,DeleteListener listener){
+    public void setContent(String s,DeleteListener listener , int position){
         this.content=s;
         this.listener=listener;
+        this.position = position ;
         if(null!=content_t)content_t.setText(content);
     }
 
@@ -50,7 +52,7 @@ public class DialogDeleteWordBag extends Dialog{
         y.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.delete();
+                listener.delete(position);
                 dismiss();
             }
         });

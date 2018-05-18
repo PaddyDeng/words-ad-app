@@ -5,9 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.List;
@@ -45,7 +47,6 @@ public class PackageTwoAdapter  extends RecyclerView.Adapter{
         this.wordPackageChildeBeens = wordPackageChildeBeens ;
         notifyDataSetChanged();
     }
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         PackTwoHolder packTwoHolder = (PackTwoHolder) holder;
@@ -53,8 +54,9 @@ public class PackageTwoAdapter  extends RecyclerView.Adapter{
         try {
             float userwords = Float.valueOf(childeBeens.getUserWords());
             float total = Float.valueOf(childeBeens.getTotal());
-            packTwoHolder.word_package_title.setText(childeBeens.getName() + "（" + childeBeens.getUserWords() + "/" + childeBeens.getTotal() + "）");
-            packTwoHolder.progress.setProgressBankgroundColor(context.getResources().getColor(R.color.color_progress_side));
+            packTwoHolder.word_package_title.setText(childeBeens.getName() );
+            packTwoHolder.word_package_num.setText( "（" + childeBeens.getUserWords() + "/" + childeBeens.getTotal() + "）");
+            packTwoHolder.progress.setProgressBankgroundColor(context.getResources().getColor(R.color.report_dialog_bg));
             packTwoHolder.progress.setProgress((userwords / total) * 100);
             packTwoHolder.progress.setProgressBarBankgroundStyle(HOLLOW);
             packTwoHolder.progress.setProgressColor(ColorUtils.getProgressColor(context ,total ,userwords));
@@ -66,10 +68,10 @@ public class PackageTwoAdapter  extends RecyclerView.Adapter{
                 packTwoHolder.status.setText("已选择");
                 packTwoHolder.status.setVisibility(View.VISIBLE);
             }else{
-                packTwoHolder.status.setVisibility(View.GONE);
+                packTwoHolder.status.setVisibility(View.INVISIBLE);
             }
         }catch (Exception e){
-            packTwoHolder.progress.setProgressBankgroundColor(context.getResources().getColor(R.color.color_progress_side));
+            packTwoHolder.progress.setProgressBankgroundColor(context.getResources().getColor(R.color.report_dialog_bg));
             packTwoHolder.progress.setProgress(40f);
             packTwoHolder.progress.setProgressBarBankgroundStyle(HOLLOW);
             packTwoHolder.progress.setProgressColor(context.getResources().getColor(R.color.progress_clolor1));
@@ -90,15 +92,15 @@ public class PackageTwoAdapter  extends RecyclerView.Adapter{
     }
 
     class PackTwoHolder extends RecyclerView.ViewHolder{
-        private TextView word_package_title ,status ;
+        private TextView word_package_title ,status , word_package_num ;
         private LoadingCustomView progress ;
-        private RelativeLayout rl ;
+        private LinearLayout rl ;
         public PackTwoHolder(View itemView) {
             super(itemView);
-            AutoUtils.autoSize(itemView);
             word_package_title = (TextView) itemView.findViewById(R.id.word_package_title);
+            word_package_num = (TextView) itemView.findViewById(R.id.word_package_num);
             progress = (LoadingCustomView) itemView.findViewById(R.id.word_package_progress);
-            rl = (RelativeLayout) itemView.findViewById(R.id.rl);
+            rl = (LinearLayout) itemView.findViewById(R.id.rl);
             status = (TextView) itemView.findViewById(R.id.status);
         }
     }

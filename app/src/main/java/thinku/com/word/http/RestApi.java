@@ -111,6 +111,10 @@ public interface RestApi {
     @POST(NetworkChildren.ADD_PACKAGE)
     Observable<ResultBeen<Void>> addPackage(@Field("packageId") String packageId);
 
+    @FormUrlEncoded
+    @POST(NetworkChildren.ADD_PACKAGE)
+    Observable<ResultBeen<Void>> addPackageOther(@Field("packageId" ) String packageId , @Field("planDay" ) String planDay  ,@Field("planWords" ) String planWords);
+
     @POST(NetworkChildren.RECITE_WORDS)
     Observable<ResultBeen<Void>> reciteWord();
 
@@ -319,4 +323,13 @@ public interface RestApi {
     @FormUrlEncoded
     @POST(NetworkChildren.FindPass)
     Observable<ResultBeen<Void>> findPass(@Field("type") String type ,@Field("registerStr") String num ,@Field("pass") String pass ,@Field("code") String code);
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.UPDATA_NOW_PACKAGE)
+    Observable<ResultBeen<Void>> updataNowPackage(@Field("catId") String catId);
+
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.DELETE_PACKAGE)
+    Observable<ResultBeen<Void>> deletePackage(@Field("id") String id);
 }

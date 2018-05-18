@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import thinku.com.word.R;
+import thinku.com.word.ui.other.dialog.callback.DialogClickListener;
 import thinku.com.word.utils.LoginHelper;
 
 
@@ -18,14 +19,21 @@ import thinku.com.word.utils.LoginHelper;
  * Created by Administrator on 2018/1/15.
  */
 
-public class NeedLoginDialog extends Dialog{
+public class NeedLoginDialog extends Dialog  {
     private Context context;
     private TextView n,y,content_t;
     private String content;
+    private DialogClickListener dialogClickListener ;
     private int requestCode ;
     public NeedLoginDialog(@NonNull Context context, @StyleRes int themeResId) {
         super(context, themeResId);
         this.context =context;
+    }
+
+    public NeedLoginDialog(@NonNull Context context, @StyleRes int themeResId ,DialogClickListener dialogClickListener){
+        super(context ,themeResId);
+        this.context = context ;
+        this.dialogClickListener = dialogClickListener ;
     }
     public void setContent(String s){
         this.content=s;
@@ -48,16 +56,20 @@ public class NeedLoginDialog extends Dialog{
             @Override
             public void onClick(View view) {
                 dismiss();
+                if (dialogClickListener != null){
+                    dialogClickListener.clickFalse();
+                }
             }
         });
         y.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (requestCode != 0){
-                    LoginHelper.toRequestCodeLogin((Activity) context, requestCode);
-                }else {
+                dismiss();
+                if (dialogClickListener != null){
+                    dialogClickListener.clickTrue();
+                }else{
                     LoginHelper.toLogin(context);
-                    dismiss();
+
                 }
             }
         });

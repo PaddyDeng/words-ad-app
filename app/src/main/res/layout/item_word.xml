@@ -4,7 +4,6 @@
      android:layout_height="70dp"
      android:paddingTop="8dp"
      android:id="@+id/rl"
-
     >
 
     <ImageView
@@ -56,6 +55,6 @@
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/color_interval_line" />
+        android:background="@color/report_dialog_bg" />
 
 </RelativeLayout>

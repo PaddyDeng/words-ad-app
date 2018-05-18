@@ -48,6 +48,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     private SparseArray<Fragment> fragments;
     private int oldPage = -1;
     private Observable<String> observable;
+    private Observable<Boolean> booleanObservable ;
     public static ReciteFragment newInstance() {
         ReciteFragment reciteFragment = new ReciteFragment();
         return reciteFragment;
@@ -72,6 +73,15 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                 new GlideUtils().loadCircle(_mActivity ,NetworkTitle.WORDRESOURE + s ,portrait);
             }
         });
+
+        booleanObservable = RxBus.get().register(C.RXBUS_LOGIN ,Boolean.class);
+        booleanObservable.subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean aBoolean) throws Exception {
+                Log.e(TAG, "accept: " + aBoolean );
+                initView();
+            }
+        });
     }
 
 
@@ -80,12 +90,11 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
         super.onResume();
 
     }
-
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         RxBus.get().unregister(C.RXBUS_HEAD_IMAGE ,observable);
+        RxBus.get().unregister(C.RXBUS_LOGIN ,booleanObservable);
     }
 
     private void initView() {
@@ -166,9 +175,6 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     }
 
     public void setFragment(int tag) {
-        if (tag == 1) {
-            portrait.setVisibility(View.VISIBLE);
-        }
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         if (oldPage != -1) {
             ft.hide(fragments.get(oldPage));
@@ -181,13 +187,11 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                     HomeFirstFragment homeFirstFragment = new HomeFirstFragment();
                     fragments.put(tag, homeFirstFragment);
                     ft.add(R.id.fl, fragments.get(tag));
-                    portrait.setVisibility(View.INVISIBLE);
                     break;
                 case 1://选好了的
                     HomeFragment homeFragment = new HomeFragment();
                     fragments.put(tag, homeFragment);
                     ft.add(R.id.fl, fragments.get(tag));
-                    portrait.setVisibility(View.VISIBLE);
                     break;
             }
         }

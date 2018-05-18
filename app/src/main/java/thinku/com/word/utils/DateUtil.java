@@ -219,6 +219,12 @@ public class DateUtil {
         return date.getTime();
     }
 
+
+    public static String longTodate (long time , String format){
+        SimpleDateFormat sdf= new SimpleDateFormat(format);
+        return sdf.format(time );
+    }
+
     /**
      * 获取当前日期
      * @return

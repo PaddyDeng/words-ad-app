@@ -17,9 +17,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.adapter.MyWheelAdapter;
 import thinku.com.word.base.BaseActivity;
+import thinku.com.word.bean.ResultBeen;
+import thinku.com.word.http.HttpUtil;
 import thinku.com.word.view.wheelview.widget.WheelView;
 
 import static thinku.com.word.R.id.title_t;
@@ -117,7 +122,7 @@ public class AddMyPlanActivity extends BaseActivity {
         style.backgroundColor = getResources().getColor(R.color.gray);
         wheel_day = new WheelView(this ,style);
         wheel_day.setWheelAdapter(new MyWheelAdapter(this));
-        wheel_day.setWheelSize(9);
+        wheel_day.setWheelSize(7);
         wheel_day.setSkin(WheelView.Skin.Common);
         wheel_day.setWheelData(dayList);
         wheel_day.setSelection(dayInt -1);
@@ -132,8 +137,8 @@ public class AddMyPlanActivity extends BaseActivity {
                 }
                 days = numOfDay.getText().toString().trim();
                 words = numOfWord.getText().toString().trim();
-                daytext.setText(days);
-                numtext.setText(words);
+                daytext.setText(days.substring(0 ,days.length() - 1));
+                numtext.setText(words.substring(0 ,words.length() - 1));
 
             }
         });
@@ -142,7 +147,7 @@ public class AddMyPlanActivity extends BaseActivity {
 
         wheel_num = new WheelView(this ,style);
         wheel_num.setWheelAdapter(new MyWheelAdapter(this));
-        wheel_num.setWheelSize(9);
+        wheel_num.setWheelSize(7);
         wheel_num.setSkin(WheelView.Skin.Common);
         wheel_num.setWheelData(wordList);
 
@@ -157,11 +162,10 @@ public class AddMyPlanActivity extends BaseActivity {
                 }
                 words = numOfWord.getText().toString().trim();
                 days = numOfDay.getText().toString().trim();
-                daytext.setText(days);
-                numtext.setText(words);
+                daytext.setText(days.substring(0 ,days.length() - 1));
+                numtext.setText(words.substring(0 ,words.length() - 1));
             }
         });
-//        wheel_num.setSelection(totals - wordInt );
         wheelViewR2.addView(wheel_num);
         numOfWord.setText(wordList.get(totals - wordInt));
         days = dayList.get(dayInt - 1);
@@ -171,7 +175,6 @@ public class AddMyPlanActivity extends BaseActivity {
 
     private void day2num(int i) {
         int n = (int) Math.ceil(Double.valueOf(total) / (i + 1));
-//        wheel_num.(wordList, total - n);
         wheel_num.setSelection(total - n);
         numOfDay.setText(dayList.get(i));
         numOfWord.setText(wordList.get(total - n));
@@ -179,7 +182,6 @@ public class AddMyPlanActivity extends BaseActivity {
 
     private void num2day(int i) {
         int n = (int) Math.ceil(Double.valueOf(total) / (total - i));
-//        wheel_day.setItems(dayList, n - 1);
         wheel_day.setSelection(n -1 );
         numOfDay.setText(dayList.get(n - 1));
         numOfWord.setText(wordList.get(i));
@@ -192,8 +194,34 @@ public class AddMyPlanActivity extends BaseActivity {
                 finishWithAnim();
                 break;
             case R.id.title_iv:
+                addPack(packId ,daytext.getText().toString().trim() ,numtext.getText().toString().trim());
                 break;
         }
+    }
+
+    public void addPack(String id ,String day , String word){
+        addToCompositeDis(HttpUtil.addPackageObservableOther(id ,day , word)
+        .doOnSubscribe(new Consumer<Disposable>() {
+            @Override
+            public void accept(@NonNull Disposable disposable) throws Exception {
+                showLoadDialog();
+            }
+        }).subscribe(new Consumer<ResultBeen<Void>>() {
+                    @Override
+                    public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                        dismissLoadDialog();
+                        if (getHttpResSuc(voidResultBeen.getCode())) {
+                            //  添加词包成功
+                            MyPlanActivity.start(AddMyPlanActivity.this);
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        dismissLoadDialog();
+                        toTast(AddMyPlanActivity.this ,"添加词包失败");
+                    }
+                }));
     }
 
 

@@ -75,14 +75,16 @@ public class WordbagDetailActivity extends BaseActivity {
     private String userwords;
     private WordAdapter wordAdapter ;
     private String name ;
+    private int getIs ;
     private List<PackageDetails.Word> words = new ArrayList<>();
 
-    public static void start(Context context, String catId,String total ,String userwords , String name) {
+    public static void start(Context context, String catId,String total ,String userwords , String name , int getIs) {
         Intent intent = new Intent(context, WordbagDetailActivity.class);
         intent.putExtra("catId", catId);
         intent.putExtra("total" ,total);
         intent.putExtra("userwords" ,userwords);
         intent.putExtra("name" ,name);
+        intent.putExtra("getIs" ,getIs);
         context.startActivity(intent);
     }
 
@@ -96,6 +98,7 @@ public class WordbagDetailActivity extends BaseActivity {
             total = intent.getStringExtra("total");
             userwords = intent.getStringExtra("userwords");
             name = intent.getStringExtra("name");
+            getIs = intent.getIntExtra("getIs" ,0);
         }
         setContentView(R.layout.activity_wordbag_detail);
         ButterKnife.bind(this);
@@ -160,29 +163,11 @@ public class WordbagDetailActivity extends BaseActivity {
      * 开始背单词
      */
     public void recite_word(){
-        addToCompositeDis(HttpUtil.addPackageObservable(catId)
-        .doOnSubscribe(new Consumer<Disposable>() {
-            @Override
-            public void accept(@NonNull Disposable disposable) throws Exception {
-                showLoadDialog();
-            }
-        })
-        .subscribe(new Consumer<ResultBeen<Void>>() {
-            @Override
-            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                dismissLoadDialog();
-                if (getHttpResSuc(voidResultBeen.getCode())){
-                    AddMyPlanActivity.start(WordbagDetailActivity.this ,catId  ,total);
-                }else{
-                    toTast(WordbagDetailActivity.this ,voidResultBeen.getMessage());
-                }
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(@NonNull Throwable throwable) throws Exception {
-                dismissLoadDialog();
-            }
-        }));
+        if (getIs == 1){
+            toTast("已添加该词包");
+        }else{
+            AddMyPlanActivity.start(this ,catId ,total);
+        }
     }
 
 }

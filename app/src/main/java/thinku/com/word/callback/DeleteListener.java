@@ -5,5 +5,5 @@ package thinku.com.word.callback;
  */
 
 public interface DeleteListener {
-    void delete();
+    void delete(int poisition);
 }

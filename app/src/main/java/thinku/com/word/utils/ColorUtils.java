@@ -13,13 +13,13 @@ public class ColorUtils {
     public static int  getProgressColor( Context context ,float total , float userWords){
         float desc = userWords / total ;
         if (desc > 0 && desc <= 0.3f){
-            return context.getResources().getColor(R.color.color_progress_low);
+            return context.getResources().getColor(R.color.circle_red);
         }else if (desc <= 0.6f){
             return context.getResources().getColor(R.color.color_progress_middle);
         }else if (desc <= 1f){
             return context.getResources().getColor(R.color.color_progress_high);
         }else{
-            return context.getResources().getColor(R.color.progress_bg);
+            return context.getResources().getColor(R.color.tittle);
         }
     }
 
@@ -31,22 +31,22 @@ public class ColorUtils {
         int color  ;
         switch (status){
             case "":
-                color = context.getResources().getColor(R.color.gray);
+                color = context.getResources().getColor(R.color.word_none);
                 break;
-            case "5":
-                color = context.getResources().getColor(R.color.color_red);
+            case "3":
+                color = context.getResources().getColor(R.color.word_not_know);
                 break;
             case "1":
-                color = context.getResources().getColor(R.color.mainColor);
+                color = context.getResources().getColor(R.color.word_know);
                 break;
             case "2":
-                color = context.getResources().getColor(R.color.mainColor);
+                color = context.getResources().getColor(R.color.word_know);
                 break;
             case "4":
-                color = context.getResources().getColor(R.color.yellow_right_round);
+                color = context.getResources().getColor(R.color.word_dim);
                 break;
             default:
-                color = context.getResources().getColor(R.color.gray);
+                color = context.getResources().getColor(R.color.word_none);
                 break;
         }
         return  color ;

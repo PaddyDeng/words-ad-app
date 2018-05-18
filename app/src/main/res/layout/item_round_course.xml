@@ -2,20 +2,34 @@
 <com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:background="@color/white"
+    >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/mainColor"
+        android:id="@+id/inter_1"/>
     <View android:layout_width="match_parent"
         android:layout_height="10dp"
         android:id="@+id/interval"
-        android:background="@color/color_interval_line" />
+        android:background="@color/color_interval_line_1"
+        android:layout_below="@id/inter_1"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/mainColor"
+        android:id="@+id/inter_2"
+        android:layout_below="@id/interval"/>
     <ImageView
-        android:layout_below="@id/interval"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_below="@id/inter_2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:id="@+id/course_img"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:scaleType="fitXY"
-        android:layout_marginBottom="10dp"/>
+         />
     
     <TextView
         android:layout_width="wrap_content"
@@ -24,7 +38,7 @@
         android:maxEms="18"
         android:ellipsize="end"
         android:textColor="@color/black"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:layout_toRightOf="@id/course_img"
         android:layout_marginTop="25dp"
         android:layout_marginLeft="20dp"
@@ -90,7 +104,7 @@
     </com.zhy.autolayout.AutoLinearLayout>
     
     <com.zhy.autolayout.AutoLinearLayout
-        android:layout_width="80dp"
+        android:layout_width="90dp"
         android:layout_height="25dp"
         android:background="@drawable/main_10round_tv"
         android:orientation="horizontal"
@@ -113,7 +127,7 @@
             android:textColor="@color/white"
             android:textSize="13sp"
             android:text="试听"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="10dp"
           />
     </com.zhy.autolayout.AutoLinearLayout>
 

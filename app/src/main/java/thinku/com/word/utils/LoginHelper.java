@@ -37,6 +37,7 @@ import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.jpush.TagAliasOperatorHelper;
 import thinku.com.word.ui.other.LoginActivity;
 import thinku.com.word.ui.other.dialog.NeedLoginDialog;
+import thinku.com.word.ui.other.dialog.callback.DialogClickListener;
 
 
 /**
@@ -168,7 +169,7 @@ public class LoginHelper {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
-                        setJpushAlians(context, mUserInfo.getUid());
+//                        setJpushAlians(context, mUserInfo.getUid());
                         mICallBack.onSuccess(o);
                     }
                 }, new Consumer<Throwable>() {
@@ -253,6 +254,12 @@ public class LoginHelper {
         NeedLoginDialog dialog = new NeedLoginDialog(context, R.style.AlphaDialogAct);
         dialog.setContent(s);
         dialog.setRequestCode(requestCode);
+        dialog.show();
+    }
+
+    public static void needLogin(Context context , String s , DialogClickListener dialogClickListener){
+        NeedLoginDialog dialog = new NeedLoginDialog(context, R.style.AlphaDialogAct , dialogClickListener);
+        dialog.setContent(s);
         dialog.show();
     }
 

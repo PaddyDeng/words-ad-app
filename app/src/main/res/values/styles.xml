@@ -254,7 +254,7 @@
 
     <style name="course_text" parent="wrap">
         <item name="android:textSize">13sp</item>
-        <item name="android:textColor">@color/gray_white</item>
+        <item name="android:textColor">@color/gray_text</item>
     </style>
 
     <style name="linear_layout">

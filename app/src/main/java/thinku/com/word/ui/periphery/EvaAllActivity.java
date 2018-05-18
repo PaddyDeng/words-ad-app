@@ -66,8 +66,8 @@ public class EvaAllActivity extends BaseActivity {
     public void initData(RoundBean.CaseBean caseBean) {
         titleT.setText("学员案列");
         name.setText(caseBean.getName());
-        new GlideUtils().loadRoundCircle(this ,caseBean.getImage() ,image);
-        time.setText(DateUtil.getCustonFormatTime(caseBean.getCreateTime() ,"yyyy-MM-dd"));
+        new GlideUtils().loadCircle(this ,caseBean.getImage() ,image);
+        time.setText(DateUtil.longTodate(caseBean.getCreateTime() * 1000 ,"yyyy-MM-dd"));
         String s = HtmlUtil.repairContent(caseBean.getDetails(), NetworkTitle.DomainSmartApplyResourceNormal);
         String html = HtmlUtil.getHtml(s, 0);
         webView.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);

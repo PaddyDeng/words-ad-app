@@ -9,6 +9,17 @@ import java.util.List;
  */
 
 public class Package {
+
+    private int nowPackage;
+
+    public int getNowPackage() {
+        return nowPackage;
+    }
+
+    public void setNowPackage(int nowPackage) {
+        this.nowPackage = nowPackage;
+    }
+
     @SerializedName("package")
     private List<PackData> packDatas ;
     public static class PackData{

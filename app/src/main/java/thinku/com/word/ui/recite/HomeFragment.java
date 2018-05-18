@@ -42,6 +42,7 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkChildren;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.personalCenter.SignActivity;
+import thinku.com.word.ui.personalCenter.TypeSettingActivity;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.RxBus;
@@ -164,10 +165,10 @@ public class HomeFragment extends BaseFragment {
                 SignActivity.start(_mActivity);
                 break;
             case R.id.change_plan:
-                MyPlanActivity.start(_mActivity);
+                TypeSettingActivity.start(_mActivity);
                 break;
             case R.id.modify_word_package:
-                WordPackageActivity.start(_mActivity);
+                MyPlanActivity.start(_mActivity);
                 break;
             case R.id.start_recite:  // 背单词
                 reciteWord();

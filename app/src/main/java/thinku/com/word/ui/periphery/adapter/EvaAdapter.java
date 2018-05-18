@@ -47,7 +47,7 @@ public class EvaAdapter extends RecyclerView.Adapter {
         EvaHolder evaHolder = (EvaHolder) holder;
         RoundBean.CaseBean caseBean = caseBeanList.get(position);
         evaHolder.name.setText(caseBean.getName());
-        new GlideUtils().loadRoundCircle(context ,caseBean.getImage() ,evaHolder.image);
+        new GlideUtils().loadCircle(context ,caseBean.getImage() ,evaHolder.image);
         evaHolder.eva_rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

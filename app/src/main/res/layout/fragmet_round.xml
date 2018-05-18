@@ -153,7 +153,9 @@
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
             android:layout_marginTop="10dp"
-            app:rollviewpager_hint_paddingBottom="20dp" />
+            app:rollviewpager_hint_paddingTop="10dp"
+            app:rollviewpager_play_delay="3000"
+             />
 
         <View
             android:layout_width="match_parent"
@@ -338,7 +340,7 @@
 
                 <com.zhy.autolayout.AutoRelativeLayout
                     android:layout_width="0dp"
-                    android:layout_height="170dp"
+                    android:layout_height="165dp"
                     android:layout_weight="1"
                     android:id="@+id/class4">
 
@@ -366,7 +368,7 @@
 
                 <TableLayout android:layout_width="0dp"
                     android:layout_weight="2"
-                    android:layout_height="205dp"
+                    android:layout_height="165dp"
                     android:layout_marginLeft="5dp"
                     >
 
@@ -435,7 +437,6 @@
 
                     <TableRow android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_weight="1"
                         >
                         <com.zhy.autolayout.AutoRelativeLayout
@@ -497,7 +498,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/triangle_1"
-                android:text="案列列表"
+                android:text="学员案列"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 

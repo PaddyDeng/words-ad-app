@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jude.rollviewpager.RollPagerView;
@@ -47,9 +48,10 @@ public class RecentClassAdapter extends LoopPagerAdapter {
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
         TextView textView = (TextView) view.findViewById(R.id.date_and_time);
         TextView inquire = (TextView) view.findViewById(R.id.inquire);
+        LinearLayout rl = (LinearLayout) view.findViewById(R.id.rl);
         GlideUtils.load(context, NetworkTitle.OPENRESOURE + recentClassBean.getImage(), imageView);
         textView.setText(recentClassBean.getCnName());
-        inquire.setOnClickListener(new View.OnClickListener() {
+        rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectListener.setListener(i);

@@ -144,6 +144,11 @@ public class HttpUtil {
         return getRestApi(HostType.WORDS_URL_HOST).addPackage(packageId).compose(new SchedulerTransformer<ResultBeen<Void>>());
     }
 
+    // 添加词包
+    public static Observable<ResultBeen<Void>> addPackageObservableOther(String packageId , String planDay ,String planWords){
+        return getRestApi(HostType.WORDS_URL_HOST).addPackageOther(packageId ,planDay , planWords).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
     //  开始背单词
     public static Observable<ResultBeen<Void>> reciteWordObservable(){
         return getRestApi(HostType.WORDS_URL_HOST).reciteWord().compose(new SchedulerTransformer<ResultBeen<Void>>());
@@ -394,6 +399,12 @@ public class HttpUtil {
     //  搜索单词
     public static Observable<List<WordBean>> seacherWordObservable(String words) {
         return getRestApi(HostType.WORDS_URL_HOST).search(words).compose(new SchedulerTransformer<List<WordBean>>());
+    }
+
+    // 学习中
+
+    public static Observable<ResultBeen<Void>> updataNowPackage(String catId){
+        return getRestApi(HostType.WORDS_URL_HOST).updataNowPackage(catId).compose(new SchedulerTransformer<ResultBeen<Void>>());
     }
 
 }
