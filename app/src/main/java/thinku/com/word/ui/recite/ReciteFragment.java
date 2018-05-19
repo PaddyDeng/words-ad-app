@@ -32,8 +32,10 @@ import thinku.com.word.ui.seacher.TopicSearchActivity;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.FileUtil;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
+import thinku.com.word.utils.WaitUtils;
 
 /**
  * 背单词
@@ -78,7 +80,6 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
         booleanObservable.subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(@NonNull Boolean aBoolean) throws Exception {
-                Log.e(TAG, "accept: " + aBoolean );
                 initView();
             }
         });
@@ -102,11 +103,15 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
+                        WaitUtils.show(_mActivity,"TAG");
                     }
                 })
                 .subscribe(new Consumer<ResultBeen<UserData>>() {
                     @Override
                     public void accept(@NonNull ResultBeen<UserData> been) throws Exception {
+                        if(WaitUtils.isRunning("TAG")){
+                            WaitUtils.dismiss("TAG");
+                        }
                         if (getHttpResSuc(been.getCode())) {
                             UserData userData = been.getData();
                             if (userData != null && !TextUtils.isEmpty(userData.getPassword())) {
@@ -114,10 +119,13 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                                 new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + userData.getImage(), portrait);
                                 SharedPreferencesUtils.setImage(_mActivity, userData.getImage());
                                 if (TextUtils.isEmpty(userData.getPlanWords())) {
+                                    toTast(_mActivity ,"请先选择背单词计划");
                                     setFragment(0);
                                 } else {
                                     setFragment(1);
                                 }
+                            }else if (been.getCode() == 99){
+                                LoginHelper.needLogin(_mActivity ,"您还未登陆，请先登陆");
                             }
                         } else {
                             setFragment(0);
@@ -126,7 +134,9 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        Log.e(TAG, "accept: " + throwable.toString() );
+                        if(WaitUtils.isRunning("TAG")){
+                            WaitUtils.dismiss("TAG");
+                        }
                     }
                 }));
     }

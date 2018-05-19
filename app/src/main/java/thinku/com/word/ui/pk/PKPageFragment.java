@@ -27,6 +27,7 @@ import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.RxBus;
+import thinku.com.word.utils.WaitUtils;
 import thinku.com.word.view.ProgressView;
 
 /**
@@ -94,11 +95,15 @@ public class PKPageFragment extends BaseFragment{
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
+                        WaitUtils.show(_mActivity ,TAG);
                     }
                 })
                 .subscribe(new Consumer<PkIndexBeen>() {
                     @Override
                     public void accept(PkIndexBeen pkIndexBeen) throws Exception {
+                        if (WaitUtils.isRunning(TAG)){
+                            WaitUtils.dismiss(TAG);
+                        }
                         if (pkIndexBeen != null){
                             referUi(pkIndexBeen);
                         }
@@ -106,6 +111,9 @@ public class PKPageFragment extends BaseFragment{
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
+                        if (WaitUtils.isRunning(TAG)){
+                            WaitUtils.dismiss(TAG);
+                        }
                     }
                 }));
     }

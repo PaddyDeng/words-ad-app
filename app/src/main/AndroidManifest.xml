@@ -354,7 +354,9 @@
         <activity
             android:name=".ui.seacher.SearchQuestionActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:configChanges="keyboard|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="adjustPan"/>
         <!-- 照相搜索 -->
         <activity
             android:name=".ui.recite.search.CameraSearchActivity"

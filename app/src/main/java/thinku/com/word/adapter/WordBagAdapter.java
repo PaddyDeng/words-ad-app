@@ -16,7 +16,6 @@ import java.util.List;
 
 import thinku.com.word.R;
 import thinku.com.word.bean.Package;
-import thinku.com.word.callback.DeleteListener;
 import thinku.com.word.callback.SelectListener;
 import thinku.com.word.callback.SelectRlClickListener;
 import thinku.com.word.ui.other.dialog.DialogDeleteWordBag;
@@ -31,11 +30,10 @@ public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHold
     private Context context;
     private List<Package.PackData> datas;
     private boolean isDelete;
-    private SelectRlClickListener listener;
+    private SelectListener listener;
     private int selectP = 0;
-    public DeleteListener deleteListener ;
 
-    public WordBagAdapter(Context context, List<Package.PackData> datas, SelectRlClickListener listener) {
+    public WordBagAdapter(Context context, List<Package.PackData> datas, SelectListener listener) {
         this.context = context;
         this.datas = datas;
         this.listener = listener;
@@ -46,8 +44,10 @@ public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHold
         notifyDataSetChanged();
     }
 
-    public void setDeleteListener(DeleteListener deleteListener){
-        this.deleteListener = deleteListener ;
+
+    public void setSelectP(int selectP) {
+        this.selectP = selectP;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -84,6 +84,22 @@ public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHold
         });
 
         if (position != datas.size()) {
+            if (selectP == position) {
+                holder.study.setVisibility(View.VISIBLE);
+                holder.rl.setSelected(true);
+                holder.name.setTextColor(context.getResources().getColor(R.color.white));
+                holder.num.setTextColor(context.getResources().getColor(R.color.white));
+                //设置进度条颜色
+                holder.progress.setColor(android.R.color.transparent, R.color.white, R.color.drak_green);
+            }else{
+                holder.study.setVisibility(View.INVISIBLE);
+                holder.rl.setSelected(false);
+                holder.name.setTextColor(context.getResources().getColor(R.color.gray_text));
+                holder.num.setTextColor(context.getResources().getColor(R.color.gray_text));
+                //设置进度条颜色
+                holder.progress.setColor(android.R.color.transparent, R.color.white, R.color.white);
+            }
+
             final Package.PackData packData = datas.get(position);
             holder.name.setText(packData.getName());
             holder.num.setText("(" + packData.getUserWords() + "/" + packData.getTotal() + ")");
@@ -94,7 +110,7 @@ public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHold
             holder.rl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.setClickListener(position , holder ,v);
+                    listener.setListener(position);
                     selectP = position;
                     notifyDataSetChanged();
                 }
@@ -104,7 +120,7 @@ public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHold
                 public void onClick(View v) {
                     DialogDeleteWordBag dialog = new DialogDeleteWordBag(context);
                     dialog.show();
-                    dialog.setContent("你确定删除" + packData.getName() + "词包的" + packData.getTotal() + "个单词？" , deleteListener , position);
+//                    dialog.setContent("你确定删除" + packData.getName() + "词包的" + packData.getTotal() + "个单词？", deleteListener, position);
                 }
             });
         }
@@ -138,7 +154,7 @@ public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHold
             study = (TextView) v.findViewById(R.id.study);
         }
 
-        public void autoClick(){
+        public void autoClick() {
             rl.performClick();
         }
     }

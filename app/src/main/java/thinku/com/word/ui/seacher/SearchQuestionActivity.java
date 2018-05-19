@@ -197,7 +197,7 @@ public class SearchQuestionActivity extends BaseNoImmActivity {
             // 点击“取消”按钮，及半透明背景，均退出页面
             case R.id.question_search_cancel_btn:
             case R.id.question_search_shadow:
-                finish();
+                finishWithAnim();
                 break;
         }
     }

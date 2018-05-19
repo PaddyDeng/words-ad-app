@@ -25,6 +25,7 @@ import thinku.com.word.bean.WeekData;
 import thinku.com.word.bean.WordReportBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.utils.DateUtil;
+import thinku.com.word.utils.WaitUtils;
 import thinku.com.word.view.ChartView;
 import thinku.com.word.view.PieView;
 
@@ -69,7 +70,6 @@ public class WordReportFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_word_report, container, false);
         unbinder = ButterKnife.bind(this, view);
-        addNet();
         return view;
     }
 
@@ -84,11 +84,15 @@ public class WordReportFragment extends BaseFragment {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
+                        WaitUtils.show(_mActivity ,TAG);
                     }
                 })
                 .subscribe(new Consumer<WordReportBeen>() {
                     @Override
                     public void accept(WordReportBeen wordReportBeen) throws Exception {
+                        if(WaitUtils.isRunning(TAG)){
+                            WaitUtils.dismiss(TAG);
+                        }
                         if (getHttpResSuc(wordReportBeen.getCode())) {
                             referUi(wordReportBeen);
                         }
@@ -96,7 +100,9 @@ public class WordReportFragment extends BaseFragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Log.e(TAG, "accept: " + throwable.getMessage());
+                        if(WaitUtils.isRunning(TAG)){
+                            WaitUtils.dismiss(TAG);
+                        }
                     }
                 }));
     }
@@ -250,14 +256,8 @@ public class WordReportFragment extends BaseFragment {
     }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        addNet();
-    }
-
-    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
+        addNet();
     }
 
 

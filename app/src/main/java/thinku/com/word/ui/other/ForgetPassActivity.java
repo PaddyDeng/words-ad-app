@@ -12,13 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONException;
+import com.google.gson.Gson;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
+
+import org.json.JSONException;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -133,47 +134,44 @@ public class ForgetPassActivity extends BaseActivity implements View.OnClickList
                     @Override
                     public void onSucceed(int what, Response<String> response) {
                         if(response.isSucceed()){
-                            try {
-                                BackCode praiseBack = JSON.parseObject(response.get(), BackCode.class);
-                                if(praiseBack.getCode()==1){
-                                    LoginHelper.againLoginRetrofit(ForgetPassActivity.this, num ,pass ,new RequestCallback<UserInfo>(){
+                            Gson gson = new Gson();
+                            BackCode praiseBack = gson.fromJson(response.get(), BackCode.class);
+                            if(praiseBack.getCode()==1){
+                                LoginHelper.againLoginRetrofit(ForgetPassActivity.this, num ,pass ,new RequestCallback<UserInfo>(){
 
-                                                @Override
-                                                public void beforeRequest() {
+                                            @Override
+                                            public void beforeRequest() {
 
+                                            }
+
+                                            @Override
+                                            public void requestFail(String msg) {
+                                                dismissLoadDialog();
+                                                toTast(ForgetPassActivity.this ,msg);
+                                            }
+
+                                            @Override
+                                            public void requestSuccess(UserInfo userInfo) {
+                                                dismissLoadDialog();
+                                                Toast.makeText(ForgetPassActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
+                                                if (getHttpResSuc(userInfo.getCode())) {
+                                                    SharedPreferencesUtils.setPassword(ForgetPassActivity.this, TextUtils.isEmpty(userInfo.getPhone()) ? userInfo.getEmail() : userInfo.getPhone(), userInfo.getPassword());
+                                                    SharedPreferencesUtils.setLogin(ForgetPassActivity.this, userInfo);
+                                                    ForgetPassActivity.this.finishWithAnim();
+                                                    startActivity(new Intent(ForgetPassActivity.this ,MainActivity.class));
+                                                }else{
+                                                    toTast(userInfo.getMessage());
                                                 }
+                                            }
 
-                                                @Override
-                                                public void requestFail(String msg) {
-                                                    dismissLoadDialog();
-                                                    toTast(ForgetPassActivity.this ,msg);
-                                                }
+                                            @Override
+                                            public void otherDeal(UserInfo userInfo) {
 
-                                                @Override
-                                                public void requestSuccess(UserInfo userInfo) {
-                                                    dismissLoadDialog();
-                                                    Toast.makeText(ForgetPassActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
-                                                    if (getHttpResSuc(userInfo.getCode())) {
-                                                        SharedPreferencesUtils.setPassword(ForgetPassActivity.this, TextUtils.isEmpty(userInfo.getPhone()) ? userInfo.getEmail() : userInfo.getPhone(), userInfo.getPassword());
-                                                        SharedPreferencesUtils.setLogin(ForgetPassActivity.this, userInfo);
-                                                        ForgetPassActivity.this.finishWithAnim();
-                                                        startActivity(new Intent(ForgetPassActivity.this ,MainActivity.class));
-                                                    }else{
-                                                        toTast(userInfo.getMessage());
-                                                    }
-                                                }
+                                            }
+                                        });
 
-                                                @Override
-                                                public void otherDeal(UserInfo userInfo) {
-
-                                                }
-                                            });
-
-                                }else{
-                                    Toast.makeText(ForgetPassActivity.this,praiseBack.getMessage(),Toast.LENGTH_SHORT).show();
-                                }
-                            }catch (JSONException e){
-
+                            }else{
+                                Toast.makeText(ForgetPassActivity.this,praiseBack.getMessage(),Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -230,13 +228,14 @@ public class ForgetPassActivity extends BaseActivity implements View.OnClickList
                                     dismissLoadDialog();
                                     if(response.isSucceed()){
                                         try {
-                                            BackCode backCode = JSON.parseObject(response.get(), BackCode.class);
+                                            Gson gson = new Gson();
+                                            BackCode backCode = gson.fromJson(response.get(), BackCode.class);
                                             if(backCode.getCode()==1){
                                                 Toast.makeText(ForgetPassActivity.this,"发送成功",Toast.LENGTH_SHORT).show();
                                             }else {
                                                 Toast.makeText(ForgetPassActivity.this,backCode.getMessage(),Toast.LENGTH_SHORT).show();
                                             }
-                                        }catch (JSONException e){
+                                        }catch (Exception e){
 
                                         }
 

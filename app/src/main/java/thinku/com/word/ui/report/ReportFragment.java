@@ -5,17 +5,22 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.yokeyword.fragmentation.SupportFragment;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
+import thinku.com.word.ui.recite.HomeFirstFragment;
+import thinku.com.word.ui.recite.HomeFragment;
 import thinku.com.word.ui.recite.ReciteFragment;
 
 /**
@@ -23,19 +28,21 @@ import thinku.com.word.ui.recite.ReciteFragment;
  */
 
 public class ReportFragment extends BaseFragment implements View.OnClickListener {
-
+    private static final String TAG = ReportFragment.class.getSimpleName();
     private TextView total,statistics ,evaluate;
-    private ProcessFragment processFragment  ;  // 背单词轨迹fragment
-    private WordReportFragment wordReportFragment ; //  单词报表fragment
-//    private Map<Integer ,Fragment> fragmentList = new HashMap<>();
+    private int oldPage = -1 ;
+    private Map< Integer,SupportFragment> fragments ;
     public static ReportFragment newInstance(){
         ReportFragment reportFragment = new ReportFragment() ;
         return reportFragment ;
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_report,container,false);
+       View view  =inflater.inflate(R.layout.fragment_report,container,false);
+        fragments = new HashMap<>();
+        return view ;
     }
 
     @Override
@@ -43,20 +50,8 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
         findView(view);
         setClick();
         setSelect(0);
-        addFragment();
     }
 
-
-    public void addFragment(){
-        if (findChildFragment( WordReportFragment.class )== null){
-            wordReportFragment = WordReportFragment.newInstance() ;
-            processFragment = ProcessFragment.newInstance();
-            loadMultipleRootFragment(R.id.fl ,1 , wordReportFragment ,processFragment);
-        }else{
-            wordReportFragment = findChildFragment(WordReportFragment.class);
-            processFragment = findChildFragment(ProcessFragment.class);
-        }
-    }
 
     private void setClick() {
         total.setOnClickListener(this);
@@ -86,36 +81,43 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void setSelect(int i){
-//        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-//        if (oldPage != -1) {
-//            ft.hide(fragmentList.get(oldPage));
-//        }
-//        if (null != fragmentList.get(i) && fragmentList.get(i).isAdded()) {
-//            ft.show(fragmentList.get(i));
-//        }else {
-//            if (i == 0) {
-//                statistics.setSelected(false);
-//                total.setSelected(true);
-//                processFragment = ProcessFragment.newInstance();
-//                fragmentList.put(i ,processFragment);
-//                ft.add(R.id.fl,processFragment);
-//            } else {
-//                total.setSelected(false);
-//                statistics.setSelected(true);
-//                wordReportFragment = WordReportFragment.newInstance();
-//                fragmentList.put(i ,wordReportFragment);
-//                ft.add(R.id.fl,wordReportFragment);
-//            }
-//            oldPage = i ;
-//        }
         if (i == 0){
             statistics.setSelected(false);
-                total.setSelected(true);
-            showHideFragment(processFragment , wordReportFragment);
+            total.setSelected(true);
         }else{
             total.setSelected(false);
             statistics.setSelected(true);
-            showHideFragment(wordReportFragment , processFragment);
+        }
+        setFragment(i);
+    }
+
+    public void setFragment(int tag) {
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        if (oldPage != -1) {
+            ft.hide(fragments.get(oldPage));
+        }
+        if (null != fragments.get(tag) && fragments.get(tag).isAdded()) {
+            ft.show(fragments.get(tag));
+        } else {
+            Log.e(TAG, "setFragment: " + tag );
+            switch (tag) {
+                case 0: // 单词轨迹
+                    ProcessFragment processFragment = ProcessFragment.newInstance();
+                    fragments.put(tag, processFragment);
+                    ft.add(R.id.fl, fragments.get(tag));
+                    break;
+                case 1://单词报表
+                    WordReportFragment wordReportFragment = thinku.com.word.ui.report.WordReportFragment.newInstance();
+                    fragments.put(tag, wordReportFragment);
+                    ft.add(R.id.fl, fragments.get(tag));
+                    break;
+            }
+        }
+        oldPage = tag;
+        try {
+            ft.commit();
+        } catch (Exception e) {
+
         }
     }
 

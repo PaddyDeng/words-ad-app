@@ -14,10 +14,6 @@ import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
-import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.PermissionListener;
-import com.yanzhenjie.permission.Rationale;
-import com.yanzhenjie.permission.RationaleListener;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.List;
@@ -247,49 +243,12 @@ public class BaseActivity extends AutoLayoutActivity {
         this.mCallback=callback;
         this.tag=tag;
         this.hint=hint;
-        AndPermission.with(this).requestCode(code).permission(permission).rationale(new RationaleListener() {
-            @Override
-            public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
-                AndPermission.rationaleDialog(BaseActivity.this, rationale).show();
-            }
-        }).callback(callListener).start();
     }
-
-    private PermissionListener callListener = new PermissionListener() {
-        @Override
-        public void onSucceed(int requestCode, @NonNull List<String> grantPermissions) {
-            mCallback.onSuccessful();
-        }
-
-        @Override
-        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-            // 是否有不再提示并拒绝的权限。
-            if(tag==1) {
-                if (AndPermission.hasAlwaysDeniedPermission(BaseActivity.this, deniedPermissions)) {
-                    AndPermission.defaultSettingDialog(BaseActivity.this, requestCode)
-                            .setTitle("权限申请失败")
-                            .setMessage(hint)
-                            .setPositiveButton("去设置")
-                            .show();
-                }
-                mCallback.onFailure();
-            }
-        }
-    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==code){
-            if(AndPermission.hasPermission(BaseActivity.this,permission)) {
-                mCallback.onSuccessful();
-            } else {
-                AndPermission.defaultSettingDialog(BaseActivity.this, requestCode)
-                        .setTitle("权限申请失败")
-                        .setMessage(hint)
-                        .setPositiveButton("去设置")
-                        .show();
-            }
         }
     }
 

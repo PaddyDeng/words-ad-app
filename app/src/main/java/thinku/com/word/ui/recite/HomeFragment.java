@@ -2,8 +2,6 @@ package thinku.com.word.ui.recite;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +9,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.alibaba.fastjson.JSON;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
 
 import java.text.SimpleDateFormat;
 
@@ -26,27 +16,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import thinku.com.word.MyApplication;
 import thinku.com.word.R;
-import thinku.com.word.base.BaseActivity;
 import thinku.com.word.base.BaseFragment;
-import thinku.com.word.bean.BackCode;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.ReviewDialogBeen;
 import thinku.com.word.bean.UserIndex;
 import thinku.com.word.http.HttpUtil;
-import thinku.com.word.http.NetworkChildren;
-import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.personalCenter.SignActivity;
 import thinku.com.word.ui.personalCenter.TypeSettingActivity;
+import thinku.com.word.ui.personalCenter.dialog.load.WaitDialog;
 import thinku.com.word.utils.C;
-import thinku.com.word.utils.GlideUtils;
-import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
+import thinku.com.word.utils.WaitUtils;
 import thinku.com.word.view.AutoZoomTextView;
 import thinku.com.word.view.LoadingCustomView;
 import thinku.com.word.view.ReviewDialog;
@@ -101,6 +85,7 @@ public class HomeFragment extends BaseFragment {
 
     private String name_text;
     private SimpleDateFormat simpleDateFormat;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -129,31 +114,37 @@ public class HomeFragment extends BaseFragment {
 
     public void initData() {
         addToCompositeDis(HttpUtil.reciteIndex()
-        .doOnSubscribe(new Consumer<Disposable>() {
-            @Override
-            public void accept(@NonNull Disposable disposable) throws Exception {
-            }
-        }).subscribe(new Consumer<UserIndex>() {
-                            @Override
-                            public void accept(@NonNull UserIndex userIndex) throws Exception {
-                                dismissLoadDialog();
-                                    days.setText("已坚持" + userIndex.getInsistDay() + "天");
-                                    surplusDay.setText(userIndex.getSurplusDay());
-                                    needNum.setText(userIndex.getUserPackage().getPlanWords());
-                                    alreadyNum.setText(userIndex.getUserAllWords());
-                                    num.setText(userIndex.getUserPackageWords());
-                                    allNum.setText("/" + userIndex.getAllWords());
-                                    name.setText(userIndex.getPackageName());
-                                    name_text = userIndex.getPackageName();
-                                    progress.setProgress((Float.parseFloat(userIndex.getUserPackageWords()) * 100) / Float.parseFloat(userIndex.getAllWords()));
-                                    todayNum.setText(userIndex.getToDayWords());
-                                    reviewNum.setText(userIndex.getUserReviewWords() + "/" + userIndex.getUserNeedReviewWords());
-                                }
-                        }, new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                            }
-                        })
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        WaitUtils.show(_mActivity,"word");
+                    }
+                }).subscribe(new Consumer<UserIndex>() {
+                    @Override
+                    public void accept(@NonNull UserIndex userIndex) throws Exception {
+                        if(WaitUtils.isRunning("word")){
+                            WaitUtils.dismiss("word");
+                        }
+                        days.setText("已坚持" + userIndex.getInsistDay() + "天");
+                        surplusDay.setText(userIndex.getSurplusDay());
+                        needNum.setText(userIndex.getUserPackage().getPlanWords());
+                        alreadyNum.setText(userIndex.getUserAllWords());
+                        num.setText(userIndex.getUserPackageWords());
+                        allNum.setText("/" + userIndex.getAllWords());
+                        name.setText(userIndex.getPackageName());
+                        name_text = userIndex.getPackageName();
+                        progress.setProgress((Float.parseFloat(userIndex.getUserPackageWords()) * 100) / Float.parseFloat(userIndex.getAllWords()));
+                        todayNum.setText(userIndex.getToDayWords());
+                        reviewNum.setText(userIndex.getUserReviewWords() + "/" + userIndex.getUserNeedReviewWords());
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        if(WaitUtils.isRunning("word")){
+                            WaitUtils.dismiss("word");
+                        }
+                    }
+                })
         );
     }
 
@@ -212,12 +203,12 @@ public class HomeFragment extends BaseFragment {
 
     public void reviewCase() {
         addToCompositeDis(HttpUtil.reviewCaseObservable()
-        .subscribe(new Consumer<ReviewDialogBeen>() {
-            @Override
-            public void accept(@NonNull ReviewDialogBeen reviewDialogBeen) throws Exception {
+                .subscribe(new Consumer<ReviewDialogBeen>() {
+                    @Override
+                    public void accept(@NonNull ReviewDialogBeen reviewDialogBeen) throws Exception {
 //                showReviewDialog(reviewDialogBeen);
-            }
-        }));
+                    }
+                }));
     }
 
     public void showReviewDialog(ReviewDialogBeen data) {
@@ -282,11 +273,11 @@ public class HomeFragment extends BaseFragment {
         SharedPreferencesUtils.setWindow(_mActivity, simpleDateFormat.format(new java.util.Date()));
 
         addToCompositeDis(HttpUtil.updataIsReviewObservable()
-        .subscribe(new Consumer<ResultBeen<Void>>() {
-            @Override
-            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                    toTast(_mActivity ,voidResultBeen.getMessage());
-            }
-        }));
+                .subscribe(new Consumer<ResultBeen<Void>>() {
+                    @Override
+                    public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                        toTast(_mActivity, voidResultBeen.getMessage());
+                    }
+                }));
     }
 }

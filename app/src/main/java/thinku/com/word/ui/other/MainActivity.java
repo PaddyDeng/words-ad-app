@@ -25,29 +25,29 @@ import thinku.com.word.callback.ICallBack;
 import thinku.com.word.thrlib.OCRProxy;
 import thinku.com.word.ui.fparent.PKParentFragment;
 import thinku.com.word.ui.fparent.PeripheryParentFragment;
-import thinku.com.word.ui.fparent.ReportParentFragment;
 import thinku.com.word.ui.fparent.WordParentFragment;
+import thinku.com.word.ui.report.ReportFragment;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 public class MainActivity extends BaseFragmentActivitiy implements View.OnClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    public static final int FIRST = 0;
+    public static final int SECOND = 1;
+    public static final int THIRD = 2;
+    public static final int FOURTH = 3;
     private LinearLayout recite_ll, report_ll, pk_ll, periphery_ll;
     private FrameLayout fl;
     private ImageView recite_iv, report_iv, pk_iv, periphery_iv;
     private TextView recite_tv, report_tv, pk_tv, periphery_tv;
-    private int oldPage = 0;
+    private int oldPage = -1;
     private boolean isSelectOther = false;
     private List<ImageView> ivs;
     private List<TextView> tvs;
     private List<LinearLayout> lls;
-    private List<SupportFragment> fragments;
-    private WordParentFragment reciteFragment;
-    private ReportParentFragment reportFragment;
-    private PKParentFragment pkFragment;
-    private PeripheryParentFragment peripheryFragment;
-
+    private SupportFragment[] fragments = new SupportFragment[4];
+    private WordParentFragment reciteFragment ;
     public static void toMain(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
         context.startActivity(intent);
@@ -60,7 +60,6 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
         findView();
         setClick();
         initView();
-        login();
         OCRProxy.initToken(mContext);
     }
 
@@ -69,12 +68,6 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
         super.onResume();
     }
 
-    /**
-     * 提醒登录
-     */
-    public void exitLoginHint() {
-        LoginHelper.needLogin(this, getResources().getString(R.string.str_need_login));
-    }
 
     /**
      * session 失效重新登录
@@ -104,6 +97,28 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
     }
 
     private void initView() {
+        initBootom();
+        reciteFragment = findFragment(WordParentFragment.class);
+        if (reciteFragment == null) {
+            fragments[FIRST] = WordParentFragment.newInstance();
+            fragments[SECOND] = ReportFragment.newInstance();
+            fragments[THIRD] = PKParentFragment.newInstance();
+            fragments[FOURTH] = PeripheryParentFragment.newInstance();
+            loadMultipleRootFragment(R.id.fl, 1,
+                    fragments[FIRST],
+                    fragments[SECOND],
+                    fragments[THIRD],
+                    fragments[FOURTH]);
+        } else {
+            fragments[FIRST] = findFragment(WordParentFragment.class);
+            fragments[SECOND]  = findFragment(ReportFragment.class);
+            fragments[THIRD]  = findFragment(PeripheryParentFragment.class);
+            fragments[FOURTH]  = findFragment(PKParentFragment.class);
+        }
+        setSelect(0);
+    }
+
+    private void initBootom() {
         ivs = new ArrayList<>();
         ivs.add(recite_iv);
         ivs.add(report_iv);
@@ -119,29 +134,6 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
         lls.add(report_ll);
         lls.add(pk_ll);
         lls.add(periphery_ll);
-        fragments = new ArrayList<>();
-        reciteFragment = findFragment(WordParentFragment.class);
-        if (reciteFragment == null) {
-            reciteFragment = WordParentFragment.newInstance();
-            reportFragment = ReportParentFragment.newInstance();
-            pkFragment = PKParentFragment.newInstance();
-            peripheryFragment = PeripheryParentFragment.newInstance();
-            loadMultipleRootFragment(R.id.fl, 1,
-                    reciteFragment,
-                    reportFragment,
-                    pkFragment,
-                    peripheryFragment);
-        } else {
-            reciteFragment = findFragment(WordParentFragment.class);
-            reportFragment = findFragment(ReportParentFragment.class);
-            peripheryFragment = findFragment(PeripheryParentFragment.class);
-            pkFragment = findFragment(PKParentFragment.class);
-        }
-        fragments.add(reciteFragment);
-        fragments.add(reportFragment);
-        fragments.add(pkFragment);
-        fragments.add(peripheryFragment);
-        setSelect(0);
     }
 
     private void findView() {
@@ -179,6 +171,18 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
     }
 
     private void setSelect(int i) {
+        if (i == -1) {
+            return ;
+        }else{
+            if (oldPage == -1){
+                isSelectOther = true;
+                ivs.get(i).setSelected(true);
+                lls.get(i).setSelected(true);
+                tvs.get(i).setTextColor(getResources().getColor(R.color.white));
+                chooseFragment(i );
+                oldPage = i;
+            }
+        }
         if (oldPage != i || !isSelectOther) {//不是点当前选择，或者未选择过
             isSelectOther = true;
             ivs.get(oldPage).setSelected(false);
@@ -187,13 +191,17 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
             ivs.get(i).setSelected(true);
             lls.get(i).setSelected(true);
             tvs.get(i).setTextColor(getResources().getColor(R.color.white));
-            chooseFragment(i);
+            chooseFragment(i );
             oldPage = i;
         }
     }
 
-    private void chooseFragment(int i) {
-        showHideFragment(fragments.get(i));
+    private void chooseFragment(int i ) {
+        if (oldPage != -1) {
+            showHideFragment(fragments[i], fragments[oldPage]);
+        }else{
+            showHideFragment(fragments[i]);
+        }
     }
 
     @Override
@@ -210,4 +218,5 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
 }

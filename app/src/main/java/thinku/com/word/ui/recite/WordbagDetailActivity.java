@@ -7,19 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.alibaba.fastjson.JSON;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,22 +19,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.adapter.WordAdapter;
 import thinku.com.word.base.BaseActivity;
-import thinku.com.word.bean.BackCode;
 import thinku.com.word.bean.PackageDetails;
-import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.http.HttpUtil;
-import thinku.com.word.http.NetworkChildren;
-import thinku.com.word.ui.other.MainActivity;
-import thinku.com.word.ui.personalCenter.TypeSettingActivity;
-import thinku.com.word.utils.LoginHelper;
-import thinku.com.word.utils.SharedPreferencesUtils;
-
-import static thinku.com.word.http.NetworkTitle.WORD;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -71,20 +52,20 @@ public class WordbagDetailActivity extends BaseActivity {
     SwipeRefreshLayout refresh;
     private String catId;
     private int page = 1;
-    private String total ;
+    private String total;
     private String userwords;
-    private WordAdapter wordAdapter ;
-    private String name ;
-    private int getIs ;
+    private WordAdapter wordAdapter;
+    private String name;
+    private int getIs;
     private List<PackageDetails.Word> words = new ArrayList<>();
 
-    public static void start(Context context, String catId,String total ,String userwords , String name , int getIs) {
+    public static void start(Context context, String catId, String total, String userwords, String name, int getIs) {
         Intent intent = new Intent(context, WordbagDetailActivity.class);
         intent.putExtra("catId", catId);
-        intent.putExtra("total" ,total);
-        intent.putExtra("userwords" ,userwords);
-        intent.putExtra("name" ,name);
-        intent.putExtra("getIs" ,getIs);
+        intent.putExtra("total", total);
+        intent.putExtra("userwords", userwords);
+        intent.putExtra("name", name);
+        intent.putExtra("getIs", getIs);
         context.startActivity(intent);
     }
 
@@ -98,7 +79,7 @@ public class WordbagDetailActivity extends BaseActivity {
             total = intent.getStringExtra("total");
             userwords = intent.getStringExtra("userwords");
             name = intent.getStringExtra("name");
-            getIs = intent.getIntExtra("getIs" ,0);
+            getIs = intent.getIntExtra("getIs", 0);
         }
         setContentView(R.layout.activity_wordbag_detail);
         ButterKnife.bind(this);
@@ -108,46 +89,46 @@ public class WordbagDetailActivity extends BaseActivity {
         titleT.setText(name);
     }
 
-    public void init(){
+    public void init() {
         havaNum.setText(userwords);
         totalNum.setText(total);
         wordList.setLayoutManager(new LinearLayoutManager(this));
 
     }
-    public void initRefer(){
+
+    public void initRefer() {
         refresh.setProgressBackgroundColorSchemeResource(android.R.color.white);
         // 设置下拉进度的主题颜色
         refresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                page++ ;
+                page++;
                 initData();
             }
         });
     }
 
     public void initData() {
-        addToCompositeDis(HttpUtil.packageDetailsObservable(catId+"" ,page+"")
-        .subscribe(new Consumer<PackageDetails>() {
-            @Override
-            public void accept(@NonNull PackageDetails packageDetails) throws Exception {
-                refresh.setRefreshing(false);
-                words.addAll(packageDetails.getPackageDetails());
-                wordAdapter = new WordAdapter(WordbagDetailActivity.this ,words);
-                wordList.setAdapter(wordAdapter);
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(@NonNull Throwable throwable) throws Exception {
-                refresh.setRefreshing(false);
-            }
-        }));
+        addToCompositeDis(HttpUtil.packageDetailsObservable(catId + "", page + "")
+                .subscribe(new Consumer<PackageDetails>() {
+                    @Override
+                    public void accept(@NonNull PackageDetails packageDetails) throws Exception {
+                        refresh.setRefreshing(false);
+                        words.addAll(packageDetails.getPackageDetails());
+                        wordAdapter = new WordAdapter(WordbagDetailActivity.this, words);
+                        wordList.setAdapter(wordAdapter);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        refresh.setRefreshing(false);
+                    }
+                }));
     }
 
 
-
-    @OnClick({R.id.back ,R.id.to_recite})
+    @OnClick({R.id.back, R.id.to_recite})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back:
@@ -162,11 +143,11 @@ public class WordbagDetailActivity extends BaseActivity {
     /**
      * 开始背单词
      */
-    public void recite_word(){
-        if (getIs == 1){
+    public void recite_word() {
+        if (getIs == 1) {
             toTast("已添加该词包");
-        }else{
-            AddMyPlanActivity.start(this ,catId ,total);
+        } else {
+            AddMyPlanActivity.start(this, catId, total);
         }
     }
 

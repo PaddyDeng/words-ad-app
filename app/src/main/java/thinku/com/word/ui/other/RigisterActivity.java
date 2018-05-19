@@ -12,8 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONException;
+import com.google.gson.Gson;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
@@ -324,14 +323,15 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
                                     dismissLoadDialog();
                                     if (response.isSucceed()) {
                                         try {
-                                            BackCode backCode = JSON.parseObject(response.get(), BackCode.class);
+                                            Gson gson = new Gson();
+                                            BackCode backCode = gson.fromJson(response.get(), BackCode.class);
                                             if (backCode.getCode() == 1) {
                                                 Toast.makeText(RigisterActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
                                                 timerClick();
                                             } else {
                                                 Toast.makeText(RigisterActivity.this, backCode.getMessage(), Toast.LENGTH_SHORT).show();
                                             }
-                                        } catch (JSONException e) {
+                                        } catch (Exception e) {
 
                                         }
 

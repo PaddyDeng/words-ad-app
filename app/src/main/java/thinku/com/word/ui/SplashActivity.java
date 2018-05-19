@@ -2,15 +2,19 @@ package thinku.com.word.ui;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
-import thinku.com.word.thrlib.OCRProxy;
+import thinku.com.word.bean.UserInfo;
+import thinku.com.word.callback.ICallBack;
 import thinku.com.word.ui.other.MainActivity;
+import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 public class SplashActivity extends BaseActivity {
@@ -22,9 +26,32 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        checkPermission();
+        checkMyPermission();
     }
 
+    public void checkMyPermission(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            for (int i = 0 ; i < permissions.length ; i++){
+            if (ContextCompat.checkSelfPermission(this ,permissions[i])!= PackageManager.PERMISSION_GRANTED ){
+                ActivityCompat.requestPermissions(this ,permissions,1);
+            }
+            }
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @android.support.annotation.NonNull String[] permissions, @android.support.annotation.NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                login();
+            }
+        }else{
+            finish();
+            toTast(this ,"获取权限失败");
+        }
+    }
 
     public void init(){
         if (SharedPreferencesUtils.getFirstOpen(this)) {
@@ -33,29 +60,37 @@ public class SplashActivity extends BaseActivity {
             forword(GuideActivity.class);
             this.finishWithAnim();
         } else {
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-            startActivity(intent);
+            toMain();
             this.finishWithAnim();
         }
     }
 
+    private void toMain() {
+        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
 
-    public void checkPermission() {
-        mRxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(@NonNull Boolean aBoolean) throws Exception {
-                        if (aBoolean) {
-                            init();
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        toTast("获取权限失败");
-                        finish();
-                    }
-                });
+
+    /**
+     * session 失效重新登录
+     */
+    public void login() {
+        UserInfo userInfo = SharedPreferencesUtils.getUserInfo(SplashActivity.this);
+        if (userInfo != null & !TextUtils.isEmpty(userInfo.getPhone()) & !"".equals(userInfo.getPhone())) {
+            LoginHelper.setSession(SplashActivity.this, userInfo, new ICallBack() {
+                @Override
+                public void onSuccess(Object o) {
+                    init();
+                }
+
+                @Override
+                public void onFail() {
+                    init();
+                }
+            });
+        }else{
+            init();
+        }
     }
 
 

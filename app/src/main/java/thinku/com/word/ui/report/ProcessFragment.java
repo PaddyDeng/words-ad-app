@@ -22,6 +22,7 @@ import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.adapter.GMATBagAdapter;
@@ -36,6 +37,7 @@ import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharePref;
 import thinku.com.word.utils.SharedPreferencesUtils;
+import thinku.com.word.utils.WaitUtils;
 import thinku.com.word.view.CirView;
 
 import static thinku.com.word.http.NetworkTitle.WORDRESOURE;
@@ -109,13 +111,21 @@ public class ProcessFragment extends BaseFragment {
 
     }
 
-
     // 请求网络刷新UI
     public void referNetUi(){
         addToCompositeDis(HttpUtil.trackObservable()
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        WaitUtils.show(_mActivity ,TAG);
+                    }
+                })
         .subscribe(new Consumer<TrackBeen>() {
             @Override
             public void accept(TrackBeen trackBeen) throws Exception {
+                if(WaitUtils.isRunning(TAG)){
+                    WaitUtils.dismiss(TAG);
+                }
                 if (trackBeen != null){
                     totalDay.setText(trackBeen.getInsistDay() + "");
                     totalNum.setText(trackBeen.getUserAllWords());
@@ -139,7 +149,9 @@ public class ProcessFragment extends BaseFragment {
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-                Log.e(TAG, "accept: " + throwable.toString() );
+                if(WaitUtils.isRunning(TAG)){
+                    WaitUtils.dismiss(TAG);
+                }
             }
         }));
     }
@@ -164,8 +176,4 @@ public class ProcessFragment extends BaseFragment {
         RxBus.get().unregister(C.RXBUS_HEAD_IMAGE ,observable);
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-    }
 }

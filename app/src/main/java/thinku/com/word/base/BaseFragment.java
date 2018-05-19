@@ -102,30 +102,11 @@ public abstract class BaseFragment extends SupportFragment  {
     /**
      *调起加载dialog
      */
-    public void showLoadDialog() {
-        WaitUtils.show(mContext,getClass().getSimpleName());
-    }
-    public void showLoadDialog(String tag){
+    public void showLoadDialog(Context context , String tag) {
         WaitUtils.show(mContext,tag);
     }
 
-    public void showLoadDialog(String hint ,String tag){
-        WaitUtils.show(mContext ,tag);
-        WaitUtils.setHint(tag ,hint);
-    }
 
-
-    /**
-     * 关闭加载dialog
-     */
-    public void dismissLoadDialog() {
-//        if (isShow()) {
-//            WaitDialog01.getInstance(mContext).dismissWaitDialog();
-//        }
-        if(WaitUtils.isRunning(getClass().getSimpleName())){
-            WaitUtils.dismiss(getClass().getSimpleName());
-        }
-    }
 
     public void dismissLoadDialog(String tag){
         if(WaitUtils.isRunning(tag)){

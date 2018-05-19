@@ -1,18 +1,19 @@
 package thinku.com.word.bean;
 
-import com.alibaba.fastjson.annotation.JSONField;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Administrator on 2018/3/30.
  */
 
 public class WordReviewTodayBeen {
-        private String  code ;
-        private String  message ;
-        private String  all ;   // 全部
-        @JSONField(name = "do")
-        private String  now ;   //  现在
-        private String  wordsId ;
+    private String code;
+    private String message;
+    private String all;   // 全部
+    @SerializedName("do")
+    private String now;   //  现在
+    private String wordsId;
 
     public String getCode() {
         return code;

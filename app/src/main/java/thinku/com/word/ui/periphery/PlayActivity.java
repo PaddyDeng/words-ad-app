@@ -51,6 +51,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
+import thinku.com.word.base.BaseActivity;
 import thinku.com.word.base.BaseNoImmActivity;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.periphery.view.VideoErrorView;
@@ -61,7 +62,7 @@ import thinku.com.word.utils.MeasureUtils;
 import thinku.com.word.utils.RxHelper;
 
 
-public class PlayActivity extends BaseNoImmActivity implements VodSite.OnVodListener, VODPlayer.OnVodPlayListener
+public class PlayActivity extends BaseActivity implements VodSite.OnVodListener, VODPlayer.OnVodPlayListener
         , GestureDetector.OnGestureListener, SeekBar.OnSeekBarChangeListener {
     @BindView(R.id.gsDocViewGx)
     GSDocViewGx gsDocViewGx;

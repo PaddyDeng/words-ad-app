@@ -1,8 +1,5 @@
 package thinku.com.word.JsonFormat;
 
-import android.util.Log;
-
-import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

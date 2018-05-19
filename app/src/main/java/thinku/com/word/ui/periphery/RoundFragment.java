@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ import thinku.com.word.ui.periphery.adapter.LiveAdapter;
 import thinku.com.word.ui.periphery.adapter.RecentClassAdapter;
 import thinku.com.word.ui.periphery.bean.RoundBean;
 import thinku.com.word.utils.DateUtil;
+import thinku.com.word.utils.WaitUtils;
 
 import static thinku.com.word.http.C.LG_COURSE_GMAT;
 import static thinku.com.word.http.C.LG_COURSE_GRE;
@@ -48,7 +50,7 @@ import static thinku.com.word.http.C.LG_COURSE_TOEFL;
  */
 
 public class RoundFragment extends BaseFragment {
-
+    private static final String TAG = RoundFragment.class.getSimpleName();
     @BindView(R.id.title)
     ImageView title;
     @BindView(R.id.gmat)
@@ -197,10 +199,14 @@ public class RoundFragment extends BaseFragment {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
+                        WaitUtils.show(_mActivity ,TAG);
                     }
                 }).subscribe(new Consumer<RoundBean>() {
                     @Override
                     public void accept(@NonNull RoundBean roundBean) throws Exception {
+                        if (WaitUtils.isRunning(TAG)){
+                            WaitUtils.dismiss(TAG);
+                        }
                         if (roundBean != null) {
                             referUi(roundBean);
                         }
@@ -208,6 +214,10 @@ public class RoundFragment extends BaseFragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
+                        if (WaitUtils.isRunning(TAG)){
+                            WaitUtils.dismiss(TAG);
+                        }
+                        toTast(_mActivity ,"网络出错");
                     }
                 }));
     }
@@ -275,20 +285,6 @@ public class RoundFragment extends BaseFragment {
                     dataBeanList.add(dataBean);
                 }
             }
-//            int i = 0;
-//            if (DateUtil.compare(DateUtil.dateToString(), livePreviewBean.getDate())) {
-//
-//                for (int j = 0; j < livePreviewBean.getData().size(); j++) {
-//                    RoundBean.LivePreviewBean.DataBean dataBean = livePreviewBean.getData().get(j);
-//                    i++;
-//                    if (i == 1) {
-//                        dataBean.setIsTitle(livePreviewBean.getDate());
-//                    }
-//                    if (DateUtil.compare(System.currentTimeMillis(), dataBean.getCnName())) {
-//                        dataBeanList.add(dataBean);
-//                    }
-//                }
-//            }
 
     }
         if(dataBeanList.isEmpty()) {

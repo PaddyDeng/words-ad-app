@@ -23,6 +23,7 @@ import thinku.com.word.base.BaseFragment;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.pk.adapter.PkWordAdapter;
 import thinku.com.word.ui.pk.been.PkWordData;
+import thinku.com.word.utils.WaitUtils;
 
 /**
  * PK单词团
@@ -77,11 +78,15 @@ public class PkWordFragment extends BaseFragment {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
+                        WaitUtils.show(_mActivity ,TAG);
                     }
                 })
         .subscribe(new Consumer<PkWordData>() {
             @Override
             public void accept(@NonNull PkWordData pkWordData) throws Exception {
+                if (WaitUtils.isRunning(TAG)){
+                    WaitUtils.dismiss(TAG);
+                }
                 if (getHttpResSuc(pkWordData.getCode())) {
                     if (pkWordData.getData() != null && pkWordData.getData().size() > 0) {
                         referUi(pkWordData.getData());
@@ -91,6 +96,9 @@ public class PkWordFragment extends BaseFragment {
         }, new Consumer<Throwable>() {
             @Override
             public void accept(@NonNull Throwable throwable) throws Exception {
+                if (WaitUtils.isRunning(TAG)){
+                    WaitUtils.dismiss(TAG);
+                }
             }
         }));
     }
@@ -101,15 +109,6 @@ public class PkWordFragment extends BaseFragment {
         pkWordAdapter.notifyDataSetChanged();
         page++;
     }
-
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-        }
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

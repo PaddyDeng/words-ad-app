@@ -4,16 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.alibaba.fastjson.JSON;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,20 +14,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.Dictation;
 import thinku.com.word.http.HttpUtil;
-import thinku.com.word.http.NetworkChildren;
-import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.utils.C;
-import thinku.com.word.utils.HttpUtils;
 
 /**
  * Created by Administrator on 2018/2/23.
@@ -79,7 +66,7 @@ public class ReviewExerciseActivity extends BaseActivity {
         titleT.setText("听写练习");
     }
 
-    public void initData(){
+    public void initData() {
 
         addToCompositeDis(HttpUtil.dictationObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
@@ -87,25 +74,25 @@ public class ReviewExerciseActivity extends BaseActivity {
                     public void accept(@NonNull Disposable disposable) throws Exception {
                     }
                 })
-        .subscribe(new Consumer<Dictation>() {
-            @Override
-            public void accept(@NonNull Dictation dictation) throws Exception {
-                if (dictation != null){
-                    referUi(dictation);
-                }
-            }
-        }));
+                .subscribe(new Consumer<Dictation>() {
+                    @Override
+                    public void accept(@NonNull Dictation dictation) throws Exception {
+                        if (dictation != null) {
+                            referUi(dictation);
+                        }
+                    }
+                }));
     }
 
-    public void  referUi(Dictation dictation){
-        textAll.setText("共（" +dictation.getDim()+"）词");
-        textAllNotKnow.setText("共（" +dictation.getIncognizant()+"）词");
-        textAllAll.setText("共（" +dictation.getAll()+"）词");
+    public void referUi(Dictation dictation) {
+        textAll.setText("共（" + dictation.getDim() + "）词");
+        textAllNotKnow.setText("共（" + dictation.getIncognizant() + "）词");
+        textAllAll.setText("共（" + dictation.getAll() + "）词");
     }
 
-    @OnClick({R.id.back ,R.id.all_rl ,R.id.not_know_rl ,R.id.blurry_rl})
-    public void click(View view){
-        switch (view.getId()){
+    @OnClick({R.id.back, R.id.all_rl, R.id.not_know_rl, R.id.blurry_rl})
+    public void click(View view) {
+        switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
@@ -121,19 +108,19 @@ public class ReviewExerciseActivity extends BaseActivity {
         }
     }
 
-    public void getWordId(int status){
-        addToCompositeDis(HttpUtil.dictationWordsObservable(status+"")
-        .doOnSubscribe(new Consumer<Disposable>() {
-            @Override
-            public void accept(@NonNull Disposable disposable) throws Exception {
-                showLoadDialog();
-            }
-        }).subscribe(new Consumer<List<String>>() {
+    public void getWordId(int status) {
+        addToCompositeDis(HttpUtil.dictationWordsObservable(status + "")
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        showLoadDialog();
+                    }
+                }).subscribe(new Consumer<List<String>>() {
                     @Override
                     public void accept(@NonNull List<String> strings) throws Exception {
                         dismissLoadDialog();
-                        if (strings.size() > 0){
-                            DictionDetailActivity.start(ReviewExerciseActivity.this , (ArrayList<String>) strings);
+                        if (strings.size() > 0) {
+                            DictionDetailActivity.start(ReviewExerciseActivity.this, (ArrayList<String>) strings);
                         }
                     }
                 }, new Consumer<Throwable>() {
