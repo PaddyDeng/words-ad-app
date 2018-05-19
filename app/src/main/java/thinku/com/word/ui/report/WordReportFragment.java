@@ -2,14 +2,13 @@ package thinku.com.word.ui.report;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,11 +51,13 @@ public class WordReportFragment extends BaseFragment {
     @BindView(R.id.week)
     PieView week;
     List<WeekData> weekDataList = new ArrayList<>();
-    private int poisition = 0  ;
+    @BindView(R.id.swipeRefer)
+    SwipeRefreshLayout swipeRefer;
+    private int poisition = 0;
     //  日报图
     private List<String> xValue = new ArrayList<>();
     private List<Integer> yValue = new ArrayList<>();
-    private Map<String , List<Integer>> Value = new HashMap<>();
+    private Map<String, List<Integer>> Value = new HashMap<>();
     @BindView(R.id.date_report)
     ChartView dateReport;
 
@@ -70,6 +71,13 @@ public class WordReportFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_word_report, container, false);
         unbinder = ButterKnife.bind(this, view);
+        swipeRefer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefer.setRefreshing(false);
+                addNet();
+            }
+        });
         return view;
     }
 
@@ -84,13 +92,13 @@ public class WordReportFragment extends BaseFragment {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
-                        WaitUtils.show(_mActivity ,TAG);
+                        WaitUtils.show(_mActivity, TAG);
                     }
                 })
                 .subscribe(new Consumer<WordReportBeen>() {
                     @Override
                     public void accept(WordReportBeen wordReportBeen) throws Exception {
-                        if(WaitUtils.isRunning(TAG)){
+                        if (WaitUtils.isRunning(TAG)) {
                             WaitUtils.dismiss(TAG);
                         }
                         if (getHttpResSuc(wordReportBeen.getCode())) {
@@ -100,7 +108,7 @@ public class WordReportFragment extends BaseFragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        if(WaitUtils.isRunning(TAG)){
+                        if (WaitUtils.isRunning(TAG)) {
                             WaitUtils.dismiss(TAG);
                         }
                     }
@@ -130,10 +138,10 @@ public class WordReportFragment extends BaseFragment {
         setyValue(wordReportBeen.getData());
     }
 
-    public void getXValue(WordReportBeen.DataBeanX dataBeanX){
+    public void getXValue(WordReportBeen.DataBeanX dataBeanX) {
         xValue.clear();
         if (dataBeanX.getRe() != null && dataBeanX.getRe().size() > 0) {
-            poisition = dataBeanX.getRe().size() - 1 ;
+            poisition = dataBeanX.getRe().size() - 1;
             XValueString(dataBeanX.getRe());
         }
         if (dataBeanX.getRe1() != null && dataBeanX.getRe1().size() > 0) {
@@ -144,10 +152,11 @@ public class WordReportFragment extends BaseFragment {
 
     /**
      * 设Y的值
+     *
      * @param dataBeanX
      */
-    public void setyValue(WordReportBeen.DataBeanX dataBeanX){
-        if (Value.size() ==0) {
+    public void setyValue(WordReportBeen.DataBeanX dataBeanX) {
+        if (Value.size() == 0) {
             int max = 0;
             if (dataBeanX.getRe() != null && dataBeanX.getRe().size() > 0) {
                 for (WordReportBeen.DataBeanX.ReBean reBean : dataBeanX.getRe()) {
@@ -157,13 +166,13 @@ public class WordReportFragment extends BaseFragment {
                 }
             }
             if (dataBeanX.getRe1() != null && dataBeanX.getRe1().size() > 0) {
-            for (WordReportBeen.DataBeanX.Re1Bean  re1Bean: dataBeanX.getRe1()){
-                List<Integer> after   = new ArrayList<>();
-                int all = re1Bean.getData();
-                    if (all > max) max =all  ;
-                after.add(all);
-                Value.put(DateToInt(re1Bean.getDate()),after);
-            }
+                for (WordReportBeen.DataBeanX.Re1Bean re1Bean : dataBeanX.getRe1()) {
+                    List<Integer> after = new ArrayList<>();
+                    int all = re1Bean.getData();
+                    if (all > max) max = all;
+                    after.add(all);
+                    Value.put(DateToInt(re1Bean.getDate()), after);
+                }
             }
             dateReport.setMax(max);
             int percent = max / 7;
@@ -176,46 +185,47 @@ public class WordReportFragment extends BaseFragment {
         }
     }
 
-    public List<Integer> setXDateListValue(WordReportBeen.DataBeanX.ReBean.DataBean dataBean){
-        List<Integer> list  = new ArrayList<>();
+    public List<Integer> setXDateListValue(WordReportBeen.DataBeanX.ReBean.DataBean dataBean) {
+        List<Integer> list = new ArrayList<>();
         list.add(StringToInt(dataBean.getNotKnow()));
         list.add(StringToInt(dataBean.getForget()));
         list.add(StringToInt(dataBean.getDim()));
         list.add(StringToInt(dataBean.getKnow()));
         list.add(StringToInt(dataBean.getKnowWell()));
-        return list ;
+        return list;
     }
 
-    public int  setAll(WordReportBeen.DataBeanX.ReBean.DataBean dataBean){
-        int all = 0 ;
+    public int setAll(WordReportBeen.DataBeanX.ReBean.DataBean dataBean) {
+        int all = 0;
         all = StringToInt(dataBean.getAll()) + StringToInt(dataBean.getNotKnow()) + StringToInt(dataBean.getKnowWell())
-                    + StringToInt(dataBean.getForget()) + StringToInt(dataBean.getDim()) ;
-        return all ;
+                + StringToInt(dataBean.getForget()) + StringToInt(dataBean.getDim());
+        return all;
     }
 
-    public int  StringToInt(String num){
-        int value  = 0 ;
-        try{
-          value =  Integer.parseInt(num);
-        }catch (Exception e){
+    public int StringToInt(String num) {
+        int value = 0;
+        try {
+            value = Integer.parseInt(num);
+        } catch (Exception e) {
 
         }
-        return value ;
+        return value;
     }
 
     /**
      * 将日期转化为天数  ， 比如 一天前 ， 一天后
+     *
      * @param reBeanList
      */
-    public  void XValueString(List<WordReportBeen.DataBeanX.ReBean > reBeanList){
-        for (WordReportBeen.DataBeanX.ReBean reBean : reBeanList ){
+    public void XValueString(List<WordReportBeen.DataBeanX.ReBean> reBeanList) {
+        for (WordReportBeen.DataBeanX.ReBean reBean : reBeanList) {
             int instance = DateUtil.differentDays(reBean.getDate());
-            if (instance < 0){
-                xValue.add(Math.abs(instance) +"天后");
-            }else if (instance  == 0){
-                xValue.add(poisition ,"今天");
-            }else{
-                xValue.add(Math.abs(instance) +"天前");
+            if (instance < 0) {
+                xValue.add(Math.abs(instance) + "天后");
+            } else if (instance == 0) {
+                xValue.add(poisition, "今天");
+            } else {
+                xValue.add(Math.abs(instance) + "天前");
             }
         }
 
@@ -223,43 +233,43 @@ public class WordReportFragment extends BaseFragment {
 
     /**
      * 将日期转化为天数  ， 比如 一天前 ， 一天后
+     *
      * @param reBeanList
      */
-    public  void XValueString1(List<WordReportBeen.DataBeanX.Re1Bean > reBeanList){
-        for (WordReportBeen.DataBeanX.Re1Bean reBean : reBeanList ){
+    public void XValueString1(List<WordReportBeen.DataBeanX.Re1Bean> reBeanList) {
+        for (WordReportBeen.DataBeanX.Re1Bean reBean : reBeanList) {
             int instance = DateUtil.differentDays(reBean.getDate());
-            if (instance < 0){
-                xValue.add(Math.abs(instance) +"天后");
-            }else if (instance  == 0){
-                xValue.add(poisition ,"今天");
-            }else{
-                xValue.add(Math.abs(instance) +"天前");
+            if (instance < 0) {
+                xValue.add(Math.abs(instance) + "天后");
+            } else if (instance == 0) {
+                xValue.add(poisition, "今天");
+            } else {
+                xValue.add(Math.abs(instance) + "天前");
             }
         }
 
     }
 
     /**
-     *   从 2018-05-12  转为 一天前
+     * 从 2018-05-12  转为 一天前
      */
-    public String DateToInt(String time){
-        String times ="" ;
+    public String DateToInt(String time) {
+        String times = "";
         int instance = DateUtil.differentDays(time);
-        if (instance < 0){
-          times =   Math.abs(instance) +"天后" ;
-        }else if (instance > 0){
-            times =   Math.abs(instance) +"天前" ;
-        }else{
-           times = "今天";
+        if (instance < 0) {
+            times = Math.abs(instance) + "天后";
+        } else if (instance > 0) {
+            times = Math.abs(instance) + "天前";
+        } else {
+            times = "今天";
         }
-        return times ;
+        return times;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         addNet();
     }
-
 
 
     public void getPercent(String name, String value, String all) {
@@ -277,7 +287,6 @@ public class WordReportFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
-
 
 
 }

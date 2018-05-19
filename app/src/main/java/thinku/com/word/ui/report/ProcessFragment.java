@@ -2,16 +2,14 @@ package thinku.com.word.ui.report;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,19 +26,15 @@ import thinku.com.word.R;
 import thinku.com.word.adapter.GMATBagAdapter;
 import thinku.com.word.adapter.WordRankAdapter;
 import thinku.com.word.base.BaseFragment;
-import thinku.com.word.bean.Package;
 import thinku.com.word.bean.TrackBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.RxBus;
-import thinku.com.word.utils.SharePref;
 import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.utils.WaitUtils;
 import thinku.com.word.view.CirView;
-
-import static thinku.com.word.http.NetworkTitle.WORDRESOURE;
 
 /**
  * 背单词轨迹
@@ -72,13 +66,16 @@ public class ProcessFragment extends BaseFragment {
     RecyclerView rankingList;
     Unbinder unbinder;
 
-    CirView cirView ;
+    CirView cirView;
+    @BindView(R.id.swipeRefer)
+    SwipeRefreshLayout swipeRefer;
 
-    private List<TrackBeen.PackageBean> packageBeanList ;
-    private List<TrackBeen.RankBean> rankBeanList ;
+    private List<TrackBeen.PackageBean> packageBeanList;
+    private List<TrackBeen.RankBean> rankBeanList;
     private GMATBagAdapter gmatBagAdapter;
     private WordRankAdapter wordRankAdapter;
-    private Observable<String> observable ;
+    private Observable<String> observable;
+
     public static ProcessFragment newInstance() {
         ProcessFragment processFragment = new ProcessFragment();
         return processFragment;
@@ -92,19 +89,29 @@ public class ProcessFragment extends BaseFragment {
         cirView = (CirView) view.findViewById(R.id.cirView);
         //  去出焦点， 解决刷新回到recyclerView
         bagList.setFocusableInTouchMode(false);
-        bagList.requestFocus() ;
+        bagList.requestFocus();
+        rankingList.setFocusableInTouchMode(false);
+        rankingList.requestFocus();
         initAdapter();
         referNetUi();
-        observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE ,String.class);
+        observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE, String.class);
         observable.subscribe(new Consumer<String>() {
             @Override
             public void accept(@NonNull String s) throws Exception {
-                new GlideUtils().loadCircle(_mActivity , NetworkTitle.WORDRESOURE  + s ,portrait);
+                new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + s, portrait);
             }
         });
-        new GlideUtils().loadCircle(_mActivity , NetworkTitle.WORDRESOURE  + SharedPreferencesUtils.getImage(_mActivity) ,portrait);
+        new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(_mActivity), portrait);
+        swipeRefer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefer.setRefreshing(false);
+                referNetUi();
+            }
+        });
         return view;
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -112,59 +119,60 @@ public class ProcessFragment extends BaseFragment {
     }
 
     // 请求网络刷新UI
-    public void referNetUi(){
+    public void referNetUi() {
         addToCompositeDis(HttpUtil.trackObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
-                        WaitUtils.show(_mActivity ,TAG);
+                        WaitUtils.show(_mActivity, TAG);
                     }
                 })
-        .subscribe(new Consumer<TrackBeen>() {
-            @Override
-            public void accept(TrackBeen trackBeen) throws Exception {
-                if(WaitUtils.isRunning(TAG)){
-                    WaitUtils.dismiss(TAG);
-                }
-                if (trackBeen != null){
-                    totalDay.setText(trackBeen.getInsistDay() + "");
-                    totalNum.setText(trackBeen.getUserAllWords());
-                    knowNum.setText(trackBeen.getKnow());
-                    unknowNum.setText(trackBeen.getNotKnow());
-                    name.setText(SharedPreferencesUtils.getString("nickname" ,_mActivity));
-                    totalWordNum.setText(trackBeen.getData().getNum()+"");
-                    ranking.setText(trackBeen.getData().getRank()+"");
-                    packageBeanList.clear();
-                    packageBeanList.addAll(trackBeen.getPackageX());
-                    gmatBagAdapter.notifyDataSetChanged();
-                    rankBeanList.clear();
-                    rankBeanList.addAll(trackBeen.getRank());
-                    wordRankAdapter.notifyDataSetChanged();
-                    cirView.setData(trackBeen.getNewX() ,trackBeen.getReview());
-                    SharedPreferencesUtils.setEvaluationNum(_mActivity ,trackBeen.getData().getNum());
-                    SharedPreferencesUtils.setRankScore(_mActivity ,trackBeen.getData().getRank()+"");
-                    SharedPreferencesUtils.setRankNum(_mActivity ,trackBeen.getData().getNum()+"");
-                }
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Exception {
-                if(WaitUtils.isRunning(TAG)){
-                    WaitUtils.dismiss(TAG);
-                }
-            }
-        }));
+                .subscribe(new Consumer<TrackBeen>() {
+                    @Override
+                    public void accept(TrackBeen trackBeen) throws Exception {
+                        if (WaitUtils.isRunning(TAG)) {
+                            WaitUtils.dismiss(TAG);
+                        }
+                        if (trackBeen != null) {
+                            totalDay.setText(trackBeen.getInsistDay() + "");
+                            totalNum.setText(trackBeen.getUserAllWords());
+                            knowNum.setText(trackBeen.getKnow());
+                            unknowNum.setText(trackBeen.getNotKnow());
+                            name.setText(SharedPreferencesUtils.getString("nickname", _mActivity));
+                            totalWordNum.setText(trackBeen.getData().getNum() + "");
+                            ranking.setText(trackBeen.getData().getRank() + "");
+                            packageBeanList.clear();
+                            packageBeanList.addAll(trackBeen.getPackageX());
+                            gmatBagAdapter.notifyDataSetChanged();
+                            rankBeanList.clear();
+                            rankBeanList.addAll(trackBeen.getRank());
+                            wordRankAdapter.notifyDataSetChanged();
+                            cirView.setData(trackBeen.getNewX(), trackBeen.getReview());
+                            SharedPreferencesUtils.setEvaluationNum(_mActivity, trackBeen.getData().getNum());
+                            SharedPreferencesUtils.setRankScore(_mActivity, trackBeen.getData().getRank() + "");
+                            SharedPreferencesUtils.setRankNum(_mActivity, trackBeen.getData().getNum() + "");
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        if (WaitUtils.isRunning(TAG)) {
+                            WaitUtils.dismiss(TAG);
+                        }
+                    }
+                }));
     }
+
     /**
      * 初始化adapter
      */
     public void initAdapter() {
         packageBeanList = new ArrayList<>();
         rankBeanList = new ArrayList<>();
-        gmatBagAdapter = new GMATBagAdapter(_mActivity ,packageBeanList);
+        gmatBagAdapter = new GMATBagAdapter(_mActivity, packageBeanList);
         bagList.setLayoutManager(new LinearLayoutManager(_mActivity));
         bagList.setAdapter(gmatBagAdapter);
-        wordRankAdapter = new WordRankAdapter(_mActivity ,rankBeanList);
+        wordRankAdapter = new WordRankAdapter(_mActivity, rankBeanList);
         rankingList.setLayoutManager(new LinearLayoutManager(_mActivity));
         rankingList.setAdapter(wordRankAdapter);
     }
@@ -173,7 +181,7 @@ public class ProcessFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        RxBus.get().unregister(C.RXBUS_HEAD_IMAGE ,observable);
+        RxBus.get().unregister(C.RXBUS_HEAD_IMAGE, observable);
     }
 
 }

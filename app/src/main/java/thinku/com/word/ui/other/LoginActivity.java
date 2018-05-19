@@ -47,6 +47,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         setContentView(R.layout.activity_login);
         findView();
         setClick();
+       observable =  RxBus.get().register(C.RXBUS_LOGIN_BACKMAIN ,Boolean.class);
     }
 
     private void setClick() {
@@ -104,6 +105,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             RxBus.get().post(C.RXBUS_LOGIN ,true);
                             SharedPreferencesUtils.setPassword(LoginActivity.this, TextUtils.isEmpty(userInfo.getPhone()) ? userInfo.getEmail() : userInfo.getPhone(), userInfo.getPassword());
                             SharedPreferencesUtils.setLogin(LoginActivity.this, userInfo);
+                            MainActivity.toMain(LoginActivity.this);
                             LoginActivity.this.finish();
                         }else{
                             toTast(userInfo.getMessage());
@@ -125,6 +127,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxBus.get().unregister(C.RXBUS_LOGIN_BACKMAIN  , observable);
     }
 
     @Override

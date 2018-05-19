@@ -28,8 +28,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -203,9 +201,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     public void clearUi(){
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(SettingActivity.this);
-        alertDialog.setMessage("确认是否清楚账号");
+        alertDialog.setMessage("是否退出账号");
         alertDialog.setCancelable(true);
-        alertDialog.setPositiveButton("是的", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("是", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -219,6 +217,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         email.setText("");
                         SharePref.saveCookie(mContext, "");
                         MainActivity.toMain(SettingActivity.this);
+                        SharedPreferencesUtils.saveMemoryMode(mContext ,"");
+                        SharedPreferencesUtils.setImage(mContext , "");
+                        RxBus.get().post(C.RXBUS_LOGIN ,true);
                     }
                 });
         alertDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {

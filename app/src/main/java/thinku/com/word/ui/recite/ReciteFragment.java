@@ -51,6 +51,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     private int oldPage = -1;
     private Observable<String> observable;
     private Observable<Boolean> booleanObservable ;
+    private Observable<Boolean> exitLoginObservable ;
     public static ReciteFragment newInstance() {
         ReciteFragment reciteFragment = new ReciteFragment();
         return reciteFragment;
@@ -80,6 +81,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
         booleanObservable.subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(@NonNull Boolean aBoolean) throws Exception {
+                new GlideUtils().loadCircle(_mActivity ,NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(_mActivity) ,portrait);
                 initView();
             }
         });

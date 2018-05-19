@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -29,6 +30,7 @@ import thinku.com.word.ui.personalCenter.SignActivity;
 import thinku.com.word.ui.personalCenter.TypeSettingActivity;
 import thinku.com.word.ui.personalCenter.dialog.load.WaitDialog;
 import thinku.com.word.utils.C;
+import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.utils.WaitUtils;
 import thinku.com.word.view.AutoZoomTextView;
@@ -86,6 +88,7 @@ public class HomeFragment extends BaseFragment {
     private String name_text;
     private SimpleDateFormat simpleDateFormat;
 
+    private Observable<Boolean> observable ;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -93,6 +96,13 @@ public class HomeFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, view);
         init();
         initData();
+        observable = RxBus.get().register(C.RXBUS_LOGIN_BACKMAIN ,Boolean.class);
+        observable.subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean aBoolean) throws Exception {
+                initData();
+            }
+        });
         return view;
     }
 
@@ -174,6 +184,7 @@ public class HomeFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        RxBus.get().unregister(C.RXBUS_LOGIN_BACKMAIN ,observable);
     }
 
 

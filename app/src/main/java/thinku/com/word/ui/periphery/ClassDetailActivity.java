@@ -24,6 +24,7 @@ import thinku.com.word.ui.pk.OnlineActivity;
 import thinku.com.word.utils.DateUtil;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.HtmlUtil;
+import thinku.com.word.utils.LoginHelper;
 
 public class ClassDetailActivity extends BaseActivity {
 
@@ -142,6 +143,7 @@ public class ClassDetailActivity extends BaseActivity {
         content.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
         listen.setVisibility(View.GONE);
     }
+
 
     @OnClick({R.id.back, R.id.online, R.id.listen})
     public void click(View view) {

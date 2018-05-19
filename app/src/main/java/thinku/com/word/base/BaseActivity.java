@@ -46,7 +46,7 @@ public class BaseActivity extends AutoLayoutActivity {
     protected RxPermissions mRxPermissions;
 
     protected ConcurrentMap<String, CompositeDisposable> mConcurrentMap = new ConcurrentHashMap<>();
-
+    private int firstTime ;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,10 +108,6 @@ public class BaseActivity extends AutoLayoutActivity {
         WaitUtils.setHint(tag ,hint);
     }
 
-//    public boolean isShow(){
-//        if(WaitUtils.isRunning(getClass().getSimpleName()))return true;
-//        else return false;
-//    }
 
     /**
      * 关闭加载dialog
@@ -170,6 +166,7 @@ public class BaseActivity extends AutoLayoutActivity {
         overridePendingTransition(0, R.anim.ac_scale_shrink_center);
     }
 
+
     public enum AnimType {
         ANIM_TYPE_DOWN_IN,
         ANIM_TYPE_RIGHT_IN, // 右侧滑动进入
@@ -206,6 +203,7 @@ public class BaseActivity extends AutoLayoutActivity {
                 finishWithAnim();
             }
         }
+
         return super.onKeyDown(keyCode, event);
     }
 

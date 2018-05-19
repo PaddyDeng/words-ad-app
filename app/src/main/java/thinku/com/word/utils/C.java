@@ -78,5 +78,7 @@ public class C {
      */
     public static final int RXBUS_HEAD_IMAGE  = 1 ;
     public static final int RXBUS_LOGIN = 2 ;
+    public static final int RXBUS_LOGIN_BACKMAIN = 3 ;
+    public static final int RXBUS_EXLOING = 4 ;
 
 }

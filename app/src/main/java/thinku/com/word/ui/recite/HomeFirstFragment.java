@@ -15,9 +15,14 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
 import thinku.com.word.ui.personalCenter.TypeSettingActivity;
+import thinku.com.word.utils.C;
+import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
@@ -28,10 +33,17 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
 
     private TextView now_type,word_depot;
     private LinearLayout change_type;
-
+    private Observable<Boolean> observable ;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        observable  = RxBus.get().register(C.RXBUS_EXLOING ,Boolean.class);
+        observable.subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean aBoolean) throws Exception {
+                init();
+            }
+        });
         return inflater.inflate(R.layout.fragment_home_first,container,false);
     }
 
@@ -72,5 +84,11 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
                 WordPackageActivity.start(getActivity());
                 break;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RxBus.get().unregister(C.RXBUS_EXLOING ,observable);
     }
 }

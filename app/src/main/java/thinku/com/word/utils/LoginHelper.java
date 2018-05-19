@@ -169,7 +169,7 @@ public class LoginHelper {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
-//                        setJpushAlians(context, mUserInfo.getUid());
+                        setJpushAlians(context, mUserInfo.getUid());
                         mICallBack.onSuccess(o);
                     }
                 }, new Consumer<Throwable>() {

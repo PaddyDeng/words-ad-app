@@ -20,6 +20,7 @@ import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.SupportFragmentDelegate;
 import thinku.com.word.MyApplication;
 import thinku.com.word.utils.HttpUtils;
+import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.WaitUtils;
 
 
@@ -141,6 +142,10 @@ public abstract class BaseFragment extends SupportFragment  {
     public void onDestroy() {
         super.onDestroy();
         initVariable();
+    }
+
+    public void toLogin(){
+        LoginHelper.needLogin(_mActivity, "您还未登陆，请先登陆");
     }
 
     public void initVariable() {

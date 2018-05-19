@@ -1,6 +1,5 @@
 package thinku.com.word.ui.other.dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import thinku.com.word.R;
+import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.other.dialog.callback.DialogClickListener;
 import thinku.com.word.utils.LoginHelper;
 
@@ -56,21 +56,14 @@ public class NeedLoginDialog extends Dialog  {
             @Override
             public void onClick(View view) {
                 dismiss();
-                if (dialogClickListener != null){
-                    dialogClickListener.clickFalse();
-                }
+                MainActivity.toMain(context);
             }
         });
         y.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dismiss();
-                if (dialogClickListener != null){
-                    dialogClickListener.clickTrue();
-                }else{
                     LoginHelper.toLogin(context);
-
-                }
             }
         });
     }
