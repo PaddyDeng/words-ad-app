@@ -151,13 +151,13 @@ public class BarChartView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         mPaint.setStrokeWidth(dip2px(1));
-        if (occupyingText != null) {
-            drawText(occupyingText, canvasWidth / 2, canvasHeight / 2
-                    + dip2px(15), canvas, Align.CENTER, 20, colorCoordinates);
-        } else {
+//        if (occupyingText != null) {
+//            drawText(occupyingText, canvasWidth / 2, canvasHeight / 2
+//                    + dip2px(15), canvas, Align.CENTER, 20, colorCoordinates);
+//        } else {
             drawBar(canvas);
             drawTagging(canvas);
-        }
+//        }
         drawAllXLine(canvas);
     }
 
@@ -185,17 +185,17 @@ public class BarChartView extends View {
                         coordinateRect.bottom, mPaint);
                 canvas.drawLine(startX, coordinateRect.top + cutoffHeight * i,
                         stopX, coordinateRect.top + cutoffHeight * i, mPaint);
-                canvas.drawCircle(startX, coordinateRect.top, dip2px(2), mPaint);
-                canvas.drawCircle(startX, coordinateRect.bottom, dip2px(2),
-                        mPaint);
-                canvas.drawCircle(startX,
-                        coordinateRect.top + cutoffHeight * i, dip2px(2),
-                        mPaint);
-                canvas.drawCircle(stopX, coordinateRect.top + cutoffHeight * i,
-                        dip2px(2), mPaint);
+//                canvas.drawCircle(startX, coordinateRect.top, dip2px(2), mPaint);
+//                canvas.drawCircle(startX, coordinateRect.bottom, dip2px(2),
+//                        mPaint);
+//                canvas.drawCircle(startX,
+//                        coordinateRect.top + cutoffHeight * i, dip2px(2),
+//                        mPaint);
+//                canvas.drawCircle(stopX, coordinateRect.top + cutoffHeight * i,
+//                        dip2px(2), mPaint);
             } else {
-                drawText(getTwoStepAndInt((maxValue - averageValue * i)
-                                / priceWeight)
+                drawText((maxValue - averageValue * i)
+                                / priceWeight
                                 + "", startX - dip2px(5), coordinateRect.top
                                 + cutoffHeight * i + dip2px(2), canvas, Align.RIGHT, 8,
                         colorCoordinates);
@@ -621,7 +621,7 @@ public class BarChartView extends View {
     protected void drawText(String text, float x, float y, Canvas canvas,
                             Align align, float textSize, @ColorInt int color) {
         Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
-        p.setTextSize(sp2px(textSize));
+        p.setTextSize(sp2px(12));
         p.setColor(color);
         p.setTextAlign(align);
         canvas.drawText(text, x, y, p);
