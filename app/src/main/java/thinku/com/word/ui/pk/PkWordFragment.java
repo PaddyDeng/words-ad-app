@@ -23,6 +23,7 @@ import thinku.com.word.base.BaseFragment;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.pk.adapter.PkWordAdapter;
 import thinku.com.word.ui.pk.been.PkWordData;
+import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.WaitUtils;
 
 /**
@@ -91,6 +92,8 @@ public class PkWordFragment extends BaseFragment {
                     if (pkWordData.getData() != null && pkWordData.getData().size() > 0) {
                         referUi(pkWordData.getData());
                     }
+                }else if (pkWordData.getCode() == 99){
+                    LoginHelper.needLogin(_mActivity ,"您还未登陆， 请先登陆");
                 }
             }
         }, new Consumer<Throwable>() {

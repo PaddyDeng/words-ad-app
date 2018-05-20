@@ -90,7 +90,7 @@ public class PieView extends View {
             Paint PaintArc = new Paint();
             PaintArc.setAntiAlias(true);
             float Percentage = 0.0f;
-            float CurrPer = 0.0f;
+            float CurrPer = -90f;
             int i = 0;
             //  逆时针旋转90度，让图形最上面开始
             if (weekDataList.size() > 0) {

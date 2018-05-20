@@ -29,6 +29,7 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.WaitUtils;
 import thinku.com.word.view.ProgressView;
@@ -58,11 +59,35 @@ public class PKPageFragment extends BaseFragment {
 
     private Observable<String> observable;
 
+    private Observable<Boolean> exitLoginObservable ;
+    private Observable<Boolean> loginObservable ;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pk_page, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        exitLoginObservable = RxBus.get().register(C.RXBUS_EXLOING ,Boolean.class);
+        exitLoginObservable.subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean aBoolean) throws Exception {
+                addNet();
+            }
+        });
+        loginObservable = RxBus.get().register(C.RXBUS_LOGIN ,Boolean.class);
+        loginObservable.subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean aBoolean) throws Exception {
+                addNet();
+            }
+        });
+        observable= RxBus.get().register(C.RXBUS_HEAD_IMAGE ,String.class);
+        observable.subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String aBoolean) throws Exception {
+                addNet();
+            }
+        });
         return view;
     }
 
@@ -120,6 +145,9 @@ public class PKPageFragment extends BaseFragment {
                     public void accept(PkIndexBeen pkIndexBeen) throws Exception {
                         if (WaitUtils.isRunning(TAG)) {
                             WaitUtils.dismiss(TAG);
+                        }
+                        if (pkIndexBeen.getCode() == 99){
+                            LoginHelper.needLogin(_mActivity , "您还未登陆， 请先登陆");
                         }
                         if (pkIndexBeen != null) {
                             referUi(pkIndexBeen);
@@ -183,5 +211,8 @@ public class PKPageFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        RxBus.get().unregister(C.RXBUS_EXLOING, exitLoginObservable);
+        RxBus.get().unregister(C.RXBUS_LOGIN, loginObservable);
+        RxBus.get().unregister(C.RXBUS_HEAD_IMAGE, observable);
     }
 }

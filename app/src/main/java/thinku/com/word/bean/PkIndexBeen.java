@@ -12,9 +12,26 @@ public class PkIndexBeen {
      * user : {"uid":"29456","username":"lgw29456","email":"","phone":"18782084792","createTime":"1522029771","nickname":"nickw","password":"nickw0312","image":null,"studyModel":"1","startTime":null,"nowPackage":"6","lastSign":"2018-04-12","continuousNum":"0","isReview":"2018-04-13","isNum":"5","pk":"0","pkTime":null,"pkSure":"0","win":"25","lose":"20","words":"119"}
      * rankingList : [{"nickname":"obelisk","image":null,"uid":"17053","percent":"1.0000","win":"1","lose":"0","userWords":"26"},{"nickname":"nickw","image":null,"uid":"29456","percent":"0.5435","win":"25","lose":"20","userWords":"119"},{"nickname":"以梦为马","image":null,"uid":"28244","percent":"0.5000","win":"1","lose":"1","userWords":"41"},{"nickname":"Test222","image":"/files/upload/image5abc50f205dd8.jpg","uid":"26967","percent":"0.4255","win":"20","lose":"26","userWords":"92"}]
      */
-
+    private String message ;
+    private int code ;
     private UserBean user;
     private List<RankingListBean> rankingList;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
 
     public UserBean getUser() {
         return user;

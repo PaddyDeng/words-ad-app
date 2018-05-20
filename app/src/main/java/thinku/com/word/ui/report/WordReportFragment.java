@@ -16,6 +16,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
@@ -23,9 +25,12 @@ import thinku.com.word.base.BaseFragment;
 import thinku.com.word.bean.WeekData;
 import thinku.com.word.bean.WordReportBeen;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.utils.C;
 import thinku.com.word.utils.DateUtil;
+import thinku.com.word.utils.LoginHelper;
+import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.WaitUtils;
-import thinku.com.word.view.ChartView;
+import thinku.com.word.view.BarChartView;
 import thinku.com.word.view.PieView;
 
 /**
@@ -59,7 +64,10 @@ public class WordReportFragment extends BaseFragment {
     private List<Integer> yValue = new ArrayList<>();
     private Map<String, List<Integer>> Value = new HashMap<>();
     @BindView(R.id.date_report)
-    ChartView dateReport;
+//    ChartView dateReport;
+            BarChartView dateReport;
+    private Observable<Boolean> exitLoginObservable;
+    private Observable<Boolean> loginObservable;
 
     public static WordReportFragment newInstance() {
         WordReportFragment wordReportFragment = new WordReportFragment();
@@ -75,6 +83,21 @@ public class WordReportFragment extends BaseFragment {
             @Override
             public void onRefresh() {
                 swipeRefer.setRefreshing(false);
+                addNet();
+            }
+        });
+
+        exitLoginObservable = RxBus.get().register(C.RXBUS_EXLOING, Boolean.class);
+        exitLoginObservable.subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean aBoolean) throws Exception {
+                addNet();
+            }
+        });
+        loginObservable = RxBus.get().register(C.RXBUS_LOGIN, Boolean.class);
+        loginObservable.subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean aBoolean) throws Exception {
                 addNet();
             }
         });
@@ -103,6 +126,8 @@ public class WordReportFragment extends BaseFragment {
                         }
                         if (getHttpResSuc(wordReportBeen.getCode())) {
                             referUi(wordReportBeen);
+                        } else if (wordReportBeen.getCode() == 99) {
+                            LoginHelper.needLogin(_mActivity, "您还未登陆，请先登陆");
                         }
                     }
                 }, new Consumer<Throwable>() {
@@ -174,14 +199,17 @@ public class WordReportFragment extends BaseFragment {
                     Value.put(DateToInt(re1Bean.getDate()), after);
                 }
             }
-            dateReport.setMax(max);
+            dateReport.setMaxValue(max);
             int percent = max / 7;
             yValue.clear();
             for (int i = 0; i < 7; i++) {
                 yValue.add(percent * i);
             }
 
-            dateReport.setValue(Value, xValue, yValue);
+
+//            dateReport.setValue(Value, xValue, yValue);
+
+            dateReport.setData(xValue, Value);
         }
     }
 
@@ -286,6 +314,8 @@ public class WordReportFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        RxBus.get().unregister(C.RXBUS_EXLOING, exitLoginObservable);
+        RxBus.get().unregister(C.RXBUS_LOGIN, loginObservable);
     }
 
 

@@ -75,7 +75,8 @@ public class ProcessFragment extends BaseFragment {
     private GMATBagAdapter gmatBagAdapter;
     private WordRankAdapter wordRankAdapter;
     private Observable<String> observable;
-
+    private Observable<Boolean> exitLoginObservable;
+    private Observable<Boolean> loginObservable ;
     public static ProcessFragment newInstance() {
         ProcessFragment processFragment = new ProcessFragment();
         return processFragment;
@@ -106,6 +107,20 @@ public class ProcessFragment extends BaseFragment {
             @Override
             public void onRefresh() {
                 swipeRefer.setRefreshing(false);
+                referNetUi();
+            }
+        });
+        exitLoginObservable = RxBus.get().register(C.RXBUS_EXLOING ,Boolean.class);
+        exitLoginObservable.subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean aBoolean) throws Exception {
+                referNetUi();
+            }
+        });
+        loginObservable = RxBus.get().register(C.RXBUS_LOGIN ,Boolean.class);
+        loginObservable.subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean aBoolean) throws Exception {
                 referNetUi();
             }
         });
@@ -182,6 +197,8 @@ public class ProcessFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
         RxBus.get().unregister(C.RXBUS_HEAD_IMAGE, observable);
+        RxBus.get().unregister(C.RXBUS_EXLOING, exitLoginObservable);
+        RxBus.get().unregister(C.RXBUS_LOGIN, loginObservable);
     }
 
 }

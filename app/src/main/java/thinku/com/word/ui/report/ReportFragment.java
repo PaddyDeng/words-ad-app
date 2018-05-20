@@ -16,12 +16,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import me.yokeyword.fragmentation.SupportFragment;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
+import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.recite.HomeFirstFragment;
 import thinku.com.word.ui.recite.HomeFragment;
 import thinku.com.word.ui.recite.ReciteFragment;
+import thinku.com.word.utils.C;
+import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.RxBus;
+import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
  * 单词报告（主）
