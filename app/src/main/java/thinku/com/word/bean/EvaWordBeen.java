@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by Administrator on 2018/4/13.
  */
 
-public class EvaWordBeen implements Parcelable{
+public class EvaWordBeen implements Parcelable {
 
 
     /**

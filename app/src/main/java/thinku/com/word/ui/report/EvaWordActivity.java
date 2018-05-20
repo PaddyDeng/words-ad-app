@@ -168,7 +168,6 @@ public class EvaWordActivity extends BaseActivity {
                 }).subscribe(new Consumer<EvaWordBeen>() {
                     @Override
                     public void accept(EvaWordBeen evaWordBeen) throws Exception {
-                        Log.e(TAG, "accept: " + evaWordBeen.getWords().getSelect() );
                         dismissLoadDialog();
                         startDuration = System.currentTimeMillis() ;
                         if (getHttpResSuc(evaWordBeen.getCode())) {

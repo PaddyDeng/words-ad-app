@@ -71,6 +71,7 @@
             style="@style/course_item"
             android:layout_below="@id/name"
             android:layout_marginTop="7dp"
+            android:layout_alignStart="@id/name"
             android:src="@mipmap/people" />
 
         <TextView
@@ -90,6 +91,7 @@
             android:layout_below="@id/people"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/course_img"
+            android:layout_alignStart="@id/name"
             android:text="评分"
             android:textColor="@color/white" />
 
@@ -97,7 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/score"
-            android:layout_marginLeft="20px"
+            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/score"
             android:orientation="horizontal">
 
@@ -138,6 +140,7 @@
             android:layout_alignLeft="@id/people_img"
             android:layout_below="@id/score"
             android:layout_marginBottom="10dp"
+            android:layout_alignStart="@id/name"
             android:layout_marginTop="5dp"
             android:background="@drawable/main_10round_tv"
             android:gravity="center"

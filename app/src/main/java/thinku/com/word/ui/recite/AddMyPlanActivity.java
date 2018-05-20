@@ -50,40 +50,47 @@ public class AddMyPlanActivity extends BaseActivity {
     @BindView(R.id.wheelView_r2)
     RelativeLayout wheelViewR2;
 
-    Unbinder unbinder ;
-    private WheelView wheel_day ,wheel_num;
+    Unbinder unbinder;
+    @BindView(R.id.name)
+    TextView name;
+    private WheelView wheel_day, wheel_num;
     private int day = 1;
     private int word = 1;
-    private static int isFirst = 0 ;
+    private static int isFirst = 0;
     private List<String> dayList, wordList;
     private String words;
     private String days;
-    private String packId ;
-    private int total ;
-    public static void start(Context context  , String packId , String total){
-        Intent intent = new Intent(context ,AddMyPlanActivity.class);
-        intent.putExtra("packId" ,packId);
-        intent.putExtra("total" , total);
+    private String packId;
+    private int total;
+    private String nameTxt;
+
+    public static void start(Context context, String packId, String total, String name) {
+        Intent intent = new Intent(context, AddMyPlanActivity.class);
+        intent.putExtra("packId", packId);
+        intent.putExtra("total", total);
+        intent.putExtra("name", name);
         context.startActivity(intent);
 
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_my_plan);
         unbinder = ButterKnife.bind(this);
-        init();
         Intent intent = getIntent();
-        if (intent != null){
+        if (intent != null) {
             packId = intent.getStringExtra("packId");
             total = Integer.parseInt(intent.getStringExtra("total"));
+            nameTxt = intent.getStringExtra("name");
             referUi();
+            init();
         }
 
     }
 
-    public void referUi(){
-        setWheel(total ,1 ,1 );
+    public void referUi() {
+        setWheel(total, 1, 1);
     }
 
     @Override
@@ -93,18 +100,20 @@ public class AddMyPlanActivity extends BaseActivity {
 
     }
 
-    public  void init(){
+    public void init() {
         titleT.setText("我的计划");
         titleIv.setText("确定");
         setTextFlag(daytext);
         setTextFlag(numtext);
+        name.setText(nameTxt);
     }
 
     /**
      * 设置下划线
+     *
      * @param textView
      */
-    public void setTextFlag(TextView textView){
+    public void setTextFlag(TextView textView) {
         textView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         textView.getPaint().setAntiAlias(true);
     }
@@ -120,32 +129,32 @@ public class AddMyPlanActivity extends BaseActivity {
         style.textColor = Color.DKGRAY;
         style.selectedTextColor = getResources().getColor(R.color.mainColor);
         style.backgroundColor = getResources().getColor(R.color.gray);
-        wheel_day = new WheelView(this ,style);
+        wheel_day = new WheelView(this, style);
         wheel_day.setWheelAdapter(new MyWheelAdapter(this));
         wheel_day.setWheelSize(7);
         wheel_day.setSkin(WheelView.Skin.Common);
         wheel_day.setWheelData(dayList);
-        wheel_day.setSelection(dayInt -1);
+        wheel_day.setSelection(dayInt - 1);
         wheel_day.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
             @Override
             public void onItemSelected(int position, Object o) {
-                isFirst ++ ;
-                if (isFirst ==1) {
+                isFirst++;
+                if (isFirst == 1) {
                     day2num(position);
-                }else{
-                    isFirst = 0 ;
+                } else {
+                    isFirst = 0;
                 }
                 days = numOfDay.getText().toString().trim();
                 words = numOfWord.getText().toString().trim();
-                daytext.setText(days.substring(0 ,days.length() - 1));
-                numtext.setText(words.substring(0 ,words.length() - 1));
+                daytext.setText(days.substring(0, days.length() - 1));
+                numtext.setText(words.substring(0, words.length() - 1));
 
             }
         });
         wheelViewRl.addView(wheel_day);
         numOfDay.setText(dayList.get(dayInt - 1));
 
-        wheel_num = new WheelView(this ,style);
+        wheel_num = new WheelView(this, style);
         wheel_num.setWheelAdapter(new MyWheelAdapter(this));
         wheel_num.setWheelSize(7);
         wheel_num.setSkin(WheelView.Skin.Common);
@@ -154,16 +163,16 @@ public class AddMyPlanActivity extends BaseActivity {
         wheel_num.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
             @Override
             public void onItemSelected(int position, Object o) {
-                isFirst ++ ;
-                if (isFirst ==1) {
+                isFirst++;
+                if (isFirst == 1) {
                     num2day(position);
-                }else{
-                    isFirst = 0 ;
+                } else {
+                    isFirst = 0;
                 }
                 words = numOfWord.getText().toString().trim();
                 days = numOfDay.getText().toString().trim();
-                daytext.setText(days.substring(0 ,days.length() - 1));
-                numtext.setText(words.substring(0 ,words.length() - 1));
+                daytext.setText(days.substring(0, days.length() - 1));
+                numtext.setText(words.substring(0, words.length() - 1));
             }
         });
         wheelViewR2.addView(wheel_num);
@@ -182,31 +191,31 @@ public class AddMyPlanActivity extends BaseActivity {
 
     private void num2day(int i) {
         int n = (int) Math.ceil(Double.valueOf(total) / (total - i));
-        wheel_day.setSelection(n -1 );
+        wheel_day.setSelection(n - 1);
         numOfDay.setText(dayList.get(n - 1));
         numOfWord.setText(wordList.get(i));
     }
 
-    @OnClick({R.id.back ,R.id.title_iv})
-    public void click(View view){
-        switch (view.getId()){
+    @OnClick({R.id.back, R.id.title_iv})
+    public void click(View view) {
+        switch (view.getId()) {
             case R.id.back:
                 finishWithAnim();
                 break;
             case R.id.title_iv:
-                addPack(packId ,daytext.getText().toString().trim() ,numtext.getText().toString().trim());
+                addPack(packId, daytext.getText().toString().trim(), numtext.getText().toString().trim());
                 break;
         }
     }
 
-    public void addPack(String id ,String day , String word){
-        addToCompositeDis(HttpUtil.addPackageObservableOther(id ,day , word)
-        .doOnSubscribe(new Consumer<Disposable>() {
-            @Override
-            public void accept(@NonNull Disposable disposable) throws Exception {
-                showLoadDialog();
-            }
-        }).subscribe(new Consumer<ResultBeen<Void>>() {
+    public void addPack(String id, String day, String word) {
+        addToCompositeDis(HttpUtil.addPackageObservableOther(id, day, word)
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        showLoadDialog();
+                    }
+                }).subscribe(new Consumer<ResultBeen<Void>>() {
                     @Override
                     public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
                         dismissLoadDialog();
@@ -219,7 +228,7 @@ public class AddMyPlanActivity extends BaseActivity {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         dismissLoadDialog();
-                        toTast(AddMyPlanActivity.this ,"添加词包失败");
+                        toTast(AddMyPlanActivity.this, "添加词包失败");
                     }
                 }));
     }

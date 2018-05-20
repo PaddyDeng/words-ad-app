@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp">
+    android:paddingTop="10dp"
+    android:background="@color/white"
+    android:paddingLeft="20dp">
     
     <ImageView
         android:paddingLeft="20dp"
@@ -17,9 +19,11 @@
         android:layout_height="20dp"
         android:gravity="center_vertical"
         android:layout_toRightOf="@id/img"
+        android:lineSpacingExtra="20dp"
+        android:lineSpacingMultiplier="0.5"
         android:text="adminsta"
         android:id="@+id/us"
-        android:textSize="15sp"
+        android:textSize="13sp"
         />
 
     <TextView
@@ -31,7 +35,7 @@
         android:id="@+id/chinese"
         android:layout_below="@id/us"
         android:text="v.管理支配"
-        android:textSize="15sp"
+        android:textSize="13sp"
         />
 
 </RelativeLayout>

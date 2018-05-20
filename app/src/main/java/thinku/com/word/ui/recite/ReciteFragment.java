@@ -85,6 +85,13 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                 initView();
             }
         });
+        exitLoginObservable = RxBus.get().register(C.RXBUS_EXLOING ,Boolean.class);
+        exitLoginObservable.subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean aBoolean) throws Exception {
+                initView();
+            }
+        });
     }
 
 
@@ -98,6 +105,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
         super.onDestroy();
         RxBus.get().unregister(C.RXBUS_HEAD_IMAGE ,observable);
         RxBus.get().unregister(C.RXBUS_LOGIN ,booleanObservable);
+        RxBus.get().unregister(C.RXBUS_EXLOING ,exitLoginObservable);
     }
 
     private void initView() {
@@ -121,15 +129,16 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                                 new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + userData.getImage(), portrait);
                                 SharedPreferencesUtils.setImage(_mActivity, userData.getImage());
                                 if (TextUtils.isEmpty(userData.getPlanWords())) {
-                                    toTast(_mActivity ,"请先选择背单词计划");
-                                    setFragment(0);
-                                } else {
+//                                    toTast(_mActivity ,"请先选择背单词计划");
+//                                    setFragment(0);
+//                                } else {
                                     setFragment(1);
                                 }
-                            }else if (been.getCode() == 99){
-                                LoginHelper.needLogin(_mActivity ,"您还未登陆，请先登陆");
                             }
-                        } else {
+                        }else if (been.getCode() == 99){
+                            LoginHelper.needLogin(_mActivity ,"您还未登陆，请先登陆");
+                        }
+                        else {
                             setFragment(0);
                         }
                     }
@@ -215,10 +224,5 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-    }
 
 }

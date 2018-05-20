@@ -68,6 +68,7 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
             @Override
             public void accept(@NonNull String s) throws Exception {
                 new GlideUtils().loadCircle(EvaluateRankingActivity.this , NetworkTitle.WORDRESOURE + s ,portrait);
+                addNet();
             }
         });
     }
@@ -118,6 +119,7 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
         name.setText(SharedPreferencesUtils.getString("nickname", EvaluateRankingActivity.this));
         num.setText(userRankBeen.getData().getNum());
         ranking_num.setText(userRankBeen.getData().getRank() +"");
+        new GlideUtils().loadCircle(EvaluateRankingActivity.this , NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(this) ,portrait);
     }
 
     private void findView() {

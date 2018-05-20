@@ -73,7 +73,7 @@
         <activity
             android:name=".ui.GuideActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme" />
+            android:theme="@style/FullScreen" />
         <activity
             android:name=".ui.other.LoginActivity"
             android:configChanges="keyboardHidden|screenSize"
@@ -167,7 +167,8 @@
         <activity
             android:name=".ui.report.EvaluateResultActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme" />
+            android:theme="@style/NoTitleTheme" >
+            </activity>
         <!-- 评估排名 -->
         <activity
             android:name=".ui.report.EvaluateRankingActivity"

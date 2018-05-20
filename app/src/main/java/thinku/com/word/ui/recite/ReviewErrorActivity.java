@@ -137,10 +137,23 @@ public class ReviewErrorActivity extends BaseActivity {
     public void wrongIndex() {
 
         addToCompositeDis(HttpUtil.wrongIndexObservable()
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        showLoadDialog();
+                    }
+                })
         .subscribe(new Consumer<List<WrongIndexBeen>>() {
             @Override
             public void accept(@NonNull List<WrongIndexBeen> wrongIndexBeens) throws Exception {
-                if (wrongIndexBeens!= null && wrongIndexBeens.size() > 0) initView(wrongIndexBeens);
+                dismissLoadDialog();
+                if (wrongIndexBeens != null && wrongIndexBeens.size() > 0)
+                    initView(wrongIndexBeens);
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(@NonNull Throwable throwable) throws Exception {
+                dismissLoadDialog();
             }
         }));
     }

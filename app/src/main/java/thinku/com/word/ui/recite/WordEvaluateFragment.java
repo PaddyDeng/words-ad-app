@@ -59,7 +59,7 @@ public class WordEvaluateFragment extends BaseFragment {
     public static WordEvaluateFragment newInstance(RecitWordBeen recitWordBeen) {
         WordEvaluateFragment fragment = new WordEvaluateFragment();
         Bundle args = new Bundle();
-        args.putParcelable("data", recitWordBeen);
+//        args.putParcelable("data", recitWordBeen);
         fragment.setArguments(args);
         return fragment;
     }
@@ -92,13 +92,8 @@ public class WordEvaluateFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (C.NORMAL.equals(recitWordBeen.getTag())){
-            blurry.setText("模糊");
-        }else if(C.TAGS.equals(recitWordBeen.getTag())){
-            blurry.setText("忘记");
-        }
         mnemonic.setText(recitWordBeen.getWords().getTranslate());
-        initRecyclerView();
+//        initRecyclerView();
     }
 
     @Override
@@ -106,16 +101,10 @@ public class WordEvaluateFragment extends BaseFragment {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             mnemonic.setText(recitWordBeen.getWords().getMnemonic());
-            initRecyclerView();
+//            initRecyclerView();
         }
     }
 
-    public void initRecyclerView() {
-        List<ReciteWordParent> reciteWordParents = reciteWordParents();
-        dataList.setLayoutManager(new LinearLayoutManager(_mActivity));
-        reciteWordParentAdapter = new ReciteWordParentAdapter(_mActivity, reciteWordParents);
-        dataList.setAdapter(reciteWordParentAdapter);
-    }
 
     /**
      * 得到数据
@@ -129,7 +118,7 @@ public class WordEvaluateFragment extends BaseFragment {
             reciteWordParent.setName("助句");
             RecitWordBeen.LowSentenceBean sentent = new RecitWordBeen.LowSentenceBean();
             sentent.setChinese(recitWordBeen.getWords().getMnemonic());
-            sentent.setId("助句");
+//            sentent.setId("助句");
             List<RecitWordBeen.LowSentenceBean> arrs = new ArrayList<>();
             reciteWordParent.setSentenceList(arrs);
         }
@@ -165,13 +154,13 @@ public class WordEvaluateFragment extends BaseFragment {
     public void updateStatus(View view){
         switch (view.getId()){
             case R.id.unknow:
-                EventBusActivityScope.getDefault(_mActivity).post(new WordEvaluateEvent(recitWordBeen.getWords().getId() , C.LGWordStatusIncoginzance+"",recitWordBeen.getTag()));
+//                EventBusActivityScope.getDefault(_mActivity).post(new WordEvaluateEvent(recitWordBeen.getWords().getId() , C.LGWordStatusIncoginzance+"",recitWordBeen.getTag()));
                 break;
             case R.id.know:
-                EventBusActivityScope.getDefault(_mActivity).post(new WordEvaluateEvent(recitWordBeen.getWords().getId() , C.LGWordStatusKnow+"" ,recitWordBeen.getTag()));
+//                EventBusActivityScope.getDefault(_mActivity).post(new WordEvaluateEvent(recitWordBeen.getWords().getId() , C.LGWordStatusKnow+"" ,recitWordBeen.getTag()));
                 break;
             case R.id.blurry:
-                EventBusActivityScope.getDefault(_mActivity).post(new WordEvaluateEvent(recitWordBeen.getWords().getId() , C.LGWordStatusVague+"" ,recitWordBeen.getTag()));
+//                EventBusActivityScope.getDefault(_mActivity).post(new WordEvaluateEvent(recitWordBeen.getWords().getId() , C.LGWordStatusVague+"" ,recitWordBeen.getTag()));
                 break;
         }
     }

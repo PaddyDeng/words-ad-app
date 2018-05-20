@@ -60,11 +60,11 @@ public class DictionDetailWordActivity extends BaseActivity {
     private  ReciteWordParentAdapter reciteWordParentAdapter ;
 
     public static void start(Context context, RecitWordBeen recitWordBeen) {
-        Intent intent = new Intent(context, DictionDetailWordActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("word" ,recitWordBeen);
-        intent.putExtra("data",bundle);
-        context.startActivity(intent);
+//        Intent intent = new Intent(context, DictionDetailWordActivity.class);
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable("word" ,recitWordBeen);
+//        intent.putExtra("data",bundle);
+//        context.startActivity(intent);
     }
 
     @Override
@@ -83,11 +83,11 @@ public class DictionDetailWordActivity extends BaseActivity {
 
     public void initView() {
         familiar.setVisibility(View.GONE);
-        titleT.setText((Integer.parseInt(recitWord.getDoX())) + "/" + recitWord.getPlanWords());
+//        titleT.setText((Integer.parseInt(recitWord.getDoX())) + "/" + recitWord.getPlanWords());
         titleT.setVisibility(View.VISIBLE);
         word.setText(recitWord.getWords().getWord());
         phonogram.setText(recitWord.getWords().getPhonetic_us());
-        recitWord.setTag(C.NORMAL);
+//        recitWord.setTag(C.NORMAL);
         mnemonic.setText(recitWord.getWords().getTranslate());
         initRecyclerView();
         IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
@@ -127,7 +127,7 @@ public class DictionDetailWordActivity extends BaseActivity {
             reciteWordParent.setName("助句");
             RecitWordBeen.LowSentenceBean sentent = new RecitWordBeen.LowSentenceBean();
             sentent.setChinese(recitWord.getWords().getMnemonic());
-            sentent.setId("助句");
+//            sentent.setId("助句");
             List<RecitWordBeen.LowSentenceBean> arrs = new ArrayList<>();
             reciteWordParent.setSentenceList(arrs);
         }

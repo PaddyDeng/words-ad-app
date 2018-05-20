@@ -25,16 +25,17 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/portrait"
-                    android:layout_width="100px"
-                    android:layout_height="100px"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="80px" />
+                    android:layout_marginLeft="30dp"
+                    android:src="@mipmap/a1"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="40px"
+                    android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/portrait"
                     android:orientation="vertical">
 
@@ -50,12 +51,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
-                            android:layout_marginTop="5px"
                             android:text="词汇量："
                             android:textSize="40px"
                             android:textColor="@color/black"/>
@@ -96,13 +97,14 @@
 
                     <TextView
                         android:id="@+id/tv"
-                        android:layout_width="wrap_content"
+                        android:layout_width="60dp"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/ranking_num"
-                        android:layout_marginTop="5dp"
+                        android:layout_below="@id/ranking_bg"
                         android:text="你的排名"
+                        android:gravity="center_horizontal"
                         android:textColor="@color/mainColor"
-                        android:textSize="30px"
+                        android:textSize="13sp"
+
                         android:visibility="visible" />
                 </RelativeLayout>
             </RelativeLayout>

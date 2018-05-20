@@ -4,7 +4,7 @@ package thinku.com.word.bean;
  * Created by Administrator on 2018/4/4.
  */
 
-public class Dictation {
+public class Dictation extends BackCode {
     private String all ;
     private String dim ;
     private String incognizant ;

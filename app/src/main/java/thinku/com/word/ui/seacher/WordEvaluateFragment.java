@@ -46,16 +46,12 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
     LinearLayout familiar;
     @BindView(R.id.errors)
     LinearLayout errors;
-    @BindView(R.id.title_t)
-    TextView titleT;
     @BindView(R.id.word)
     TextView word;
     @BindView(R.id.play)
     ImageView play;
     @BindView(R.id.phonogram)
     TextView phonogram;
-    @BindView(R.id.word_evaluate_frame)
-    FrameLayout wordEvaluateFrame;
 
     private WordListBean recitWord;
     private int status;   //  单词状态
@@ -103,8 +99,6 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
                     public void accept(@NonNull WordListBean recitWordBeen) throws Exception {
                         dismissLoadDialog();
                         wordId = wordsId;
-                        titleT.setText((Integer.parseInt(now) + 1) + "/" + Integer.parseInt(all));
-                        titleT.setVisibility(View.VISIBLE);
                         recitWord = recitWordBeen;
                         word.setText(recitWord.getWords().getWord());
                         phonogram.setText(recitWord.getWords().getPhonetic_us());
@@ -115,7 +109,6 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
 //                        Toast.makeText(context, "播放结束", Toast.LENGTH_SHORT).show();
                             }
                         });
-                        loadRootFragment(R.id.word_evaluate_frame, RectiFirstFragment.newInstance(recitWord));
                     }
                 }, new Consumer<Throwable>() {
                     @Override

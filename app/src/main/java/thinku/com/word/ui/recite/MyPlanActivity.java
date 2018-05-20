@@ -91,17 +91,24 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
      */
     public void initpackage() {
         addToCompositeDis(HttpUtil.changePackage()
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        showLoadDialog();
+                    }
+                })
                         .subscribe(new Consumer<Package>() {
                             @Override
                             public void accept(@NonNull Package aPackages) throws Exception {
+                                dismissLoadDialog();
                                 int nowPackId = aPackages.getNowPackage();
                                 packdatas = aPackages.getPackDatas();
                                 words = new String[packdatas.size()];
                                 days = new String[packdatas.size()];
                                 Ids = new String[packdatas.size()];
                                 for (Package.PackData packData : packdatas) {
-                                    int packId = Integer.parseInt(packData.getCatId());
-                                    if (nowPackId == Integer.parseInt(packData.getCatId())) {
+                                    int packId = Integer.parseInt(packData.getId());
+                                    if (nowPackId == Integer.parseInt(packData.getId())) {
                                         nowPackage = packdatas.indexOf(packData);
                                     }
                                 }
@@ -112,6 +119,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
                         }, new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
+                                dismissLoadDialog();
                                 Log.e(TAG, "accept: " + throwable.toString());
                             }
                         })
@@ -325,6 +333,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
             toTast("请为所有词包选择计划");
         } else {
             String JsonString = createJSONObject().toJSONString();
+            Log.e(TAG, "updataPlan: " + JsonString );
             showLoadDialog();
             addToCompositeDis(HttpUtil.updataPackage(JsonString)
                     .doOnSubscribe(new Consumer<Disposable>() {

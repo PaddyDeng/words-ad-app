@@ -219,7 +219,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         MainActivity.toMain(SettingActivity.this);
                         SharedPreferencesUtils.saveMemoryMode(mContext ,"");
                         SharedPreferencesUtils.setImage(mContext , "");
-                        RxBus.get().post(C.RXBUS_LOGIN ,true);
+                        RxBus.get().post(C.RXBUS_EXLOING ,true);
                     }
                 });
         alertDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {

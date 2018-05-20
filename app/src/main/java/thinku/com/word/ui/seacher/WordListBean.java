@@ -43,9 +43,9 @@ public class WordListBean implements Parcelable {
         percent = in.readInt();
         question = in.readByte() != 0;
         sentence = new ArrayList<>();
-        in.readTypedList(sentence, RecitWordBeen.LowSentenceBean.CREATOR);
-        lowSentence = new ArrayList<>();
-        in.readTypedList(lowSentence , RecitWordBeen.LowSentenceBean.CREATOR);
+//        in.readTypedList(sentence, RecitWordBeen.LowSentenceBean.CREATOR);
+//        lowSentence = new ArrayList<>();
+//        in.readTypedList(lowSentence , RecitWordBeen.LowSentenceBean.CREATOR);
     }
 
     public static final Creator<WordListBean> CREATOR = new Creator<WordListBean>() {

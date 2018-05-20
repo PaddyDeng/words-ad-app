@@ -147,7 +147,7 @@ public class WordbagDetailActivity extends BaseActivity {
         if (getIs == 1) {
             toTast("已添加该词包");
         } else {
-            AddMyPlanActivity.start(this, catId, total);
+            AddMyPlanActivity.start(this, catId, total , name);
         }
     }
 

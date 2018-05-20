@@ -34,11 +34,21 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
     private TextView now_type,word_depot;
     private LinearLayout change_type;
     private Observable<Boolean> observable ;
+    private Observable<Boolean> loginObservable ;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         observable  = RxBus.get().register(C.RXBUS_EXLOING ,Boolean.class);
         observable.subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean aBoolean) throws Exception {
+                if (!aBoolean ) {
+                    now_type.setText("你还未选择记忆模式");
+                }
+            }
+        });
+        loginObservable = RxBus.get().register(C.RXBUS_LOGIN ,Boolean.class);
+        loginObservable.subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(@NonNull Boolean aBoolean) throws Exception {
                 init();
@@ -90,5 +100,6 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
     public void onDestroy() {
         super.onDestroy();
         RxBus.get().unregister(C.RXBUS_EXLOING ,observable);
+        RxBus.get().unregister(C.RXBUS_LOGIN ,loginObservable);
     }
 }

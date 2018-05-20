@@ -8,6 +8,7 @@ public class WrongIndexBeen {
     private String name ;
     private int start ;
     private int end ;
+    private int type ;
 
     public String getName() {
         return name;

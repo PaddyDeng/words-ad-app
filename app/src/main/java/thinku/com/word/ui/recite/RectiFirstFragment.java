@@ -27,9 +27,9 @@ public class RectiFirstFragment extends BaseFragment {
     private RecitWordBeen recitWordBeen ;
     public static RectiFirstFragment newInstance(RecitWordBeen recitWordBeen){
         RectiFirstFragment rectiFirstFragment = new RectiFirstFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("data" ,recitWordBeen);
-        rectiFirstFragment.setArguments(bundle);
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable("data" ,recitWordBeen);
+//        rectiFirstFragment.setArguments(bundle);
         return rectiFirstFragment ;
     }
 

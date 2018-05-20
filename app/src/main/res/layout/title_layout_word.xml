@@ -18,6 +18,28 @@
             android:layout_centerVertical="true"
             android:layout_width="70px"
             android:layout_height="70px" />
+
+        <LinearLayout
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/back"
+            android:background="#29AB6A"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/newWord"
+                android:text="新学0 | 需复习0"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                />
+        </LinearLayout>
+
         <LinearLayout
             android:layout_marginRight="50px"
             android:layout_centerVertical="true"
@@ -41,6 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/errors"
                 android:layout_marginLeft="20px"
@@ -60,15 +83,6 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
-        <TextView
-            android:id="@+id/title_t"
-            android:visibility="gone"
-            android:textColor="@color/white"
-            android:textSize="@dimen/title_text_size"
-            android:text="加载中..."
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />w
     </RelativeLayout>
 </LinearLayout>
 

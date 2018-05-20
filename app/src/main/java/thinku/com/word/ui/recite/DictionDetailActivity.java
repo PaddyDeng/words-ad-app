@@ -147,8 +147,8 @@ public class DictionDetailActivity extends BaseActivity {
                         titleT.setText((Integer.parseInt(now) + 1) + "/" + Integer.parseInt(all));
                         titleT.setVisibility(View.VISIBLE);
                         recitWord = strings;
-                        recitWord.setPlanWords(all);
-                        recitWord.setDoX(Integer.parseInt(now) + 1 + "");
+//                        recitWord.setPlanWords(all);
+//                        recitWord.setDoX(Integer.parseInt(now) + 1 + "");
                         phonogram.setText(recitWord.getWords().getPhonetic_us());
                         IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
                             @Override

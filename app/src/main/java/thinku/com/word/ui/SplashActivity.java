@@ -58,10 +58,10 @@ public class SplashActivity extends BaseActivity {
             isFirst = true;
             SharedPreferencesUtils.setFirstOpen(this);
             forword(GuideActivity.class);
-            this.finishWithAnim();
+            this.finish();
         } else {
             toMain();
-            this.finishWithAnim();
+            this.finish();
         }
     }
 

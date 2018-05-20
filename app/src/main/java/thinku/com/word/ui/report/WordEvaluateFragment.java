@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -17,6 +20,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,13 +31,15 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import thinku.com.word.R;
+import thinku.com.word.adapter.ReciteWordAdapter;
+import thinku.com.word.adapter.ReciteWordParentAdapter;
 import thinku.com.word.base.BaseFragmentActivitiy;
 import thinku.com.word.bean.RecitWordBeen;
+import thinku.com.word.bean.ReciteWordParent;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.WordEvaluateEvent;
 import thinku.com.word.bean.WordReviewTodayBeen;
 import thinku.com.word.http.HttpUtil;
-import thinku.com.word.ui.recite.RectiFirstFragment;
 import thinku.com.word.ui.recite.WordErrorActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.C;
@@ -44,6 +51,46 @@ import thinku.com.word.view.SuccessDialog;
 
 public class WordEvaluateFragment extends BaseFragmentActivitiy {
     private static final String TAG = WordEvaluateFragment.class.getSimpleName();
+    @BindView(R.id.newWord)
+    TextView newWord;
+    @BindView(R.id.click)
+    ImageView click;
+    @BindView(R.id.rl_click)
+    RelativeLayout rlClick;
+    @BindView(R.id.content_hide)
+    LinearLayout contentHide;
+    @BindView(R.id.top)
+    ImageView top;
+    @BindView(R.id.content_show)
+    ScrollView contentShow;
+    @BindView(R.id.know)
+    Button know;
+    @BindView(R.id.unknow)
+    Button unknow;
+    @BindView(R.id.blurry)
+    Button blurry;
+    @BindView(R.id.bottom_click)
+    LinearLayout bottomClick;
+    @BindView(R.id.prencente)
+    TextView prencente;
+    @BindView(R.id.name)
+    TextView name;
+    @BindView(R.id.help_memory_list)
+    RecyclerView helpMemoryList;
+    @BindView(R.id.help_memory)
+    RelativeLayout helpMemory;
+    @BindView(R.id.shor_sense_list)
+    RecyclerView shorSenseList;
+    @BindView(R.id.short_senese)
+    RelativeLayout shortSenese;
+    @BindView(R.id.sentences_list)
+    RecyclerView sentencesList;
+    @BindView(R.id.sentences)
+    RelativeLayout sentences;
+    @BindView(R.id.question_list)
+    RecyclerView questionList;
+    @BindView(R.id.question)
+    RelativeLayout question;
     private String planWords;
     @BindView(R.id.back)
     ImageView back;
@@ -51,16 +98,12 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
     LinearLayout familiar;
     @BindView(R.id.errors)
     LinearLayout errors;
-    @BindView(R.id.title_t)
-    TextView titleT;
     @BindView(R.id.word)
     TextView word;
     @BindView(R.id.play)
     ImageView play;
     @BindView(R.id.phonogram)
     TextView phonogram;
-    @BindView(R.id.word_evaluate_frame)
-    FrameLayout wordEvaluateFrame;
 
     private RecitWordBeen recitWord;
     private int status;   //  单词状态
@@ -71,8 +114,15 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
     private ArrayList<String> words;
     private int i = 0;  //  遍历word的位置
 
+    private List<ReciteWordParent> reciteWordParents;
+    private ReciteWordParentAdapter reciteWordParentAdapter;
+
+
+    private List<RecitWordBeen.LowSentenceBean>  lowSentenceBeen ;
+    private List<RecitWordBeen.LowSentenceBean>   sentenceBeen ;
+
+    private ReciteWordAdapter reciteWordAdapter ;
     /**
-     *
      * @param context
      * @param planWords
      * @param tag
@@ -90,9 +140,9 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
         context.startActivity(intent);
     }
 
-    public static void start(Context context ,String wordId){
-        Intent intent = new Intent(context ,WordEvaluateFragment.class);
-        intent.putExtra("wordId" ,wordId);
+    public static void start(Context context, String wordId) {
+        Intent intent = new Intent(context, WordEvaluateFragment.class);
+        intent.putExtra("wordId", wordId);
         context.startActivity(intent);
     }
 
@@ -101,9 +151,9 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_evaluate);
         ButterKnife.bind(this);
-        Intent intent = null ;
+        Intent intent = null;
         intent = getIntent();
-        if (intent != null){
+        if (intent != null) {
             planWords = getIntent().getStringExtra("planWords");
             tag = getIntent().getIntExtra("tag", 100);
             words = getIntent().getStringArrayListExtra("words");
@@ -112,13 +162,13 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
                 reciteWords();
             }
             if (words != null && words.size() > 0) {
-                    reciteWords(words);
-                }
-            if (!TextUtils.isEmpty(wordId)){
-                fromWordsIdGetWordDetails(wordId ,1+"" ,1+"" ,C.NORMAL_RECITE+"");
+                reciteWords(words);
+            }
+            if (!TextUtils.isEmpty(wordId)) {
+                fromWordsIdGetWordDetails(wordId, 1 + "", 1 + "", C.NORMAL_RECITE + "");
             }
         }
-        EventBusActivityScope.getDefault(WordEvaluateFragment.this).register(this);
+        setFocusable();
     }
 
     /**
@@ -127,55 +177,142 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
     public void normalReciteWords() {
 
         addToCompositeDis(HttpUtil.reciteWordsObservable()
-        .doOnSubscribe(new Consumer<Disposable>() {
-            @Override
-            public void accept(@NonNull Disposable disposable) throws Exception {
-               showLoadDialog();
-            }
-        })
-        .subscribe(new Consumer<RecitWordBeen>() {
-            @Override
-            public void accept(@NonNull RecitWordBeen recitWordBeen) throws Exception {
-                dismissLoadDialog();
-                if (getHttpResSuc(recitWordBeen.getCode())){
-                    recitWord = recitWordBeen ;
-                    wordId = recitWord.getWords().getId();
-                    titleT.setText((Integer.parseInt(recitWord.getDoX()) + 1) + "/" + recitWord.getPlanWords());
-                    titleT.setVisibility(View.VISIBLE);
-                    word.setText(recitWord.getWords().getWord());
-                    phonogram.setText(recitWord.getWords().getPhonetic_us());
-                    recitWord.setTag(C.NORMAL);
-                    IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mediaPlayer) {
-//                        Toast.makeText(context, "播放结束", Toast.LENGTH_SHORT).show();
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        showLoadDialog();
+                    }
+                })
+                .subscribe(new Consumer<RecitWordBeen>() {
+                    @Override
+                    public void accept(@NonNull RecitWordBeen recitWordBeen) throws Exception {
+                        dismissLoadDialog();
+                        if (getHttpResSuc(recitWordBeen.getCode())) {
+                            referUi1(recitWordBeen);
+                        } else if (recitWordBeen.getCode() == 98) {
+                            isReview();
                         }
-                    });
-                    loadRootFragment(R.id.word_evaluate_frame, RectiFirstFragment.newInstance(recitWord));
-                }else if (recitWordBeen.getCode() == 98){
-                    isReview();
-                }
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(@NonNull Throwable throwable) throws Exception {
-                dismissLoadDialog();
-            }
-        }));
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        dismissLoadDialog();
+                    }
+                }));
     }
+
+    public void referUi1(final RecitWordBeen recitWord) {
+        this.recitWord = recitWord;
+        initRecycler();
+        //  首页显示的内容
+        newWord.setText("新学" + recitWord.getNeedReviewWords() + " |需复习" + recitWord.getUserNeedReviewWords());
+        prencente.setText("认知率" + recitWord.getPercent() + "%");
+        phonogram.setText(recitWord.getWords().getPhonetic_us());
+        name.setText(recitWord.getWords().getTranslate());
+        if (C.NORMAL.equals(recitWord.getTag())) {
+            blurry.setText("模糊");
+        } else if (C.TAGS.equals(recitWord.getTag())) {
+            blurry.setText("忘记");
+        }
+        IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+
+                IMAudioManager.instance().playSound(recitWord.getWords().getUk_audio(), new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+
+                    }
+                });
+            }
+
+        });
+        word.setText(recitWord.getWords().getWord());
+        contentShow.setVisibility(View.GONE);
+        contentHide.setVisibility(View.VISIBLE);
+
+        getData(recitWord);
+        rlClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //  显示更多内容
+                contentShow.scrollTo(0 ,0);
+                contentShow.setVisibility(View.VISIBLE);
+                contentHide.setVisibility(View.GONE);
+
+            }
+        });
+    }
+
+    /**
+     * 获取RecyclerView  数据
+     */
+    public void getData(RecitWordBeen recitWord){
+        lowSentenceBeen = new ArrayList<>();
+        sentenceBeen = new ArrayList<>();
+            try{
+                if (recitWord.getLowSentence() == null || recitWord.getLowSentence().size() == 0){
+                    shortSenese.setVisibility(View.GONE);
+                }else {
+                    if (recitWord.getLowSentence().size() > 4) {
+                        for (int i = 0; i < 4; i++) {
+                            lowSentenceBeen.add((RecitWordBeen.LowSentenceBean) recitWord.getLowSentence().get(i));
+                        }
+                    } else {
+                        lowSentenceBeen.addAll(recitWord.getLowSentence());
+                    }
+                    ReciteWordAdapter low = new ReciteWordAdapter(this, lowSentenceBeen);
+                    shorSenseList.setAdapter(low);
+                    shortSenese.setVisibility(View.VISIBLE);
+                }
+            }catch (Exception e){
+                shortSenese.setVisibility(View.GONE);
+            }
+
+        try{
+            if (recitWord.getSentence() == null || recitWord.getSentence().size() == 0) {
+                    sentences.setVisibility(View.GONE);
+            }else{
+                sentenceBeen.addAll(recitWord.getSentence());
+                ReciteWordAdapter sentence = new ReciteWordAdapter(this, sentenceBeen);
+                sentencesList.setAdapter(sentence);
+                sentences.setVisibility(View.VISIBLE);
+            }
+        }catch (Exception e){
+            sentences.setVisibility(View.GONE);
+        }
+    }
+
+    public void setFocusable(){
+        helpMemoryList.setFocusableInTouchMode(false);
+        helpMemoryList.requestFocus();
+        shorSenseList.setFocusableInTouchMode(false);
+        shorSenseList.requestFocus();
+        sentencesList.setFocusableInTouchMode(false);
+        sentencesList.requestFocus();
+    }
+    public void initRecycler() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this);
+        helpMemoryList.setLayoutManager(linearLayoutManager);
+        shorSenseList.setLayoutManager(linearLayoutManager1);
+        sentencesList.setLayoutManager(linearLayoutManager2);
+    }
+
 
     /**
      * 从tag 获取wordsId
      */
     public void fromTagGetWrodsId(int tag) {
 
-        addToCompositeDis(HttpUtil.wordReviewTodayBeenObservable(tag+"")
-        .doOnSubscribe(new Consumer<Disposable>() {
-            @Override
-            public void accept(@NonNull Disposable disposable) throws Exception {
-                showLoadDialog();
-            }
-        }).subscribe(new Consumer<WordReviewTodayBeen>() {
+        addToCompositeDis(HttpUtil.wordReviewTodayBeenObservable(tag + "")
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        showLoadDialog();
+                    }
+                }).subscribe(new Consumer<WordReviewTodayBeen>() {
                     @Override
                     public void accept(@NonNull WordReviewTodayBeen wordReviewTodayBeen) throws Exception {
                         dismissLoadDialog();
@@ -213,40 +350,27 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
      * 从wordsId 获取word 详情
      */
     public void fromWordsIdGetWordDetails(final String wordsId, final String all, final String now, final String tag) {
-       addToCompositeDis(HttpUtil.wordDetailsObservable(wordsId)
-       .doOnSubscribe(new Consumer<Disposable>() {
-           @Override
-           public void accept(@NonNull Disposable disposable) throws Exception {
-               showLoadDialog();
-           }
-       })
-       .subscribe(new Consumer<RecitWordBeen>() {
-           @Override
-           public void accept(@NonNull RecitWordBeen recitWordBeen) throws Exception {
-               dismissLoadDialog();
-               wordId = wordsId;
-               titleT.setText((Integer.parseInt(now) + 1) + "/" + Integer.parseInt(all));
-               titleT.setVisibility(View.VISIBLE);
-               recitWord = recitWordBeen;
-               word.setText(recitWord.getWords().getWord());
-               phonogram.setText(recitWord.getWords().getPhonetic_us());
-               recitWord.setTag(tag);
-               recitWord.setDoX(now);
-               recitWord.setPlanWords(all);
-               IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
-                   @Override
-                   public void onCompletion(MediaPlayer mediaPlayer) {
-//                        Toast.makeText(context, "播放结束", Toast.LENGTH_SHORT).show();
-                   }
-               });
-               loadRootFragment(R.id.word_evaluate_frame, RectiFirstFragment.newInstance(recitWord));
-           }
-       }, new Consumer<Throwable>() {
-           @Override
-           public void accept(@NonNull Throwable throwable) throws Exception {
-                dismissLoadDialog();
-           }
-       }));
+        addToCompositeDis(HttpUtil.wordDetailsObservable(wordsId)
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        showLoadDialog();
+                    }
+                })
+                .subscribe(new Consumer<RecitWordBeen>() {
+                    @Override
+                    public void accept(@NonNull RecitWordBeen recitWordBeen) throws Exception {
+                        dismissLoadDialog();
+                        recitWordBeen.setTag(tag);
+                        referUi1(recitWordBeen);
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        dismissLoadDialog();
+                    }
+                }));
     }
 
     /**
@@ -255,26 +379,26 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
     public void isReview() {
 
         addToCompositeDis(HttpUtil.isReviewObservable()
-        .doOnSubscribe(new Consumer<Disposable>() {
-            @Override
-            public void accept(@NonNull Disposable disposable) throws Exception {
-                showLoadDialog();
-            }
-        })
-        .subscribe(new Consumer<ResultBeen<Void>>() {
-            @Override
-            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                dismissLoadDialog();
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(@NonNull Throwable throwable) throws Exception {
-                dismissLoadDialog();
-            }
-        }));
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        showLoadDialog();
+                    }
+                })
+                .subscribe(new Consumer<ResultBeen<Void>>() {
+                    @Override
+                    public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                        dismissLoadDialog();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        dismissLoadDialog();
+                    }
+                }));
     }
 
-    @OnClick({R.id.back, R.id.familiar , R.id.errors})
+    @OnClick({R.id.back, R.id.familiar, R.id.errors, R.id.unknow, R.id.know, R.id.blurry})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -284,12 +408,33 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
                 status = C.LGWordStatusFamiliar;
                 WordEvaluateEvent wordEvaluateEvent = new WordEvaluateEvent();
                 wordEvaluateEvent.setStatus(status + "");
-                wordEvaluateEvent.setWordId(wordId);
-                wordEvaluateEvent.setTag(recitWord.getTag());
+                wordEvaluateEvent.setWordId(this.recitWord.getWords().getId());
+                wordEvaluateEvent.setTag(recitWord.getTag() + "");
                 updataStatus(wordEvaluateEvent);
                 break;
             case R.id.errors:
-                WordErrorActivity.start(WordEvaluateFragment.this ,wordId);
+                WordErrorActivity.start(WordEvaluateFragment.this, wordId);
+                break;
+            case R.id.unknow:
+                WordEvaluateEvent wordEvaluateEvent1 = new WordEvaluateEvent();
+                wordEvaluateEvent1.setStatus(C.LGWordStatusIncoginzance + "");
+                wordEvaluateEvent1.setWordId(this.recitWord.getWords().getId());
+                wordEvaluateEvent1.setTag(recitWord.getTag() + "");
+                updataStatus(wordEvaluateEvent1);
+                break;
+            case R.id.know:
+                WordEvaluateEvent wordEvaluateEvent2 = new WordEvaluateEvent();
+                wordEvaluateEvent2.setStatus(C.LGWordStatusKnow + "");
+                wordEvaluateEvent2.setWordId(this.recitWord.getWords().getId());
+                wordEvaluateEvent2.setTag(recitWord.getTag() + "");
+                updataStatus(wordEvaluateEvent2);
+                break;
+            case R.id.blurry:
+                WordEvaluateEvent wordEvaluateEvent3 = new WordEvaluateEvent();
+                wordEvaluateEvent3.setStatus(C.LGWordStatusVague + "");
+                wordEvaluateEvent3.setWordId(this.recitWord.getWords().getId());
+                wordEvaluateEvent3.setTag(recitWord.getTag() + "");
+                updataStatus(wordEvaluateEvent3);
                 break;
         }
     }
@@ -305,49 +450,42 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updataStatus(final WordEvaluateEvent wordEvaluateEvent) {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-            pop();
-        }
         if (!TextUtils.isEmpty(wordEvaluateEvent.getTag())) {
             if (C.LISTWORD.equals(wordEvaluateEvent.getTag())) {
-
-                addToCompositeDis(HttpUtil.reviewUpdataObservable( wordEvaluateEvent.getWordId() ,wordEvaluateEvent.getStatus())
-                .subscribe(new Consumer<ResultBeen<Void>>() {
-                    @Override
-                    public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                        if (getHttpResSuc(voidResultBeen.getCode())){
-                            if (i >= (words.size() - 1)) {
-                                showCompelete();
-                            } else {
-                                i++;
-                                fromWordsIdGetWordDetails(words.get(i), words.size() + "", i + "", C.LISTWORD);
-                            }
-                        } else {
-                            toTast(WordEvaluateFragment.this, voidResultBeen.getMessage());
-                        }
-                    }
-                }));
-            } else {
-                addToCompositeDis(HttpUtil.updataStatus( wordEvaluateEvent.getWordId() ,wordEvaluateEvent.getStatus())
+                addToCompositeDis(HttpUtil.reviewUpdataObservable(wordEvaluateEvent.getWordId(), wordEvaluateEvent.getStatus())
                         .subscribe(new Consumer<ResultBeen<Void>>() {
                             @Override
                             public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                                if (getHttpResSuc(voidResultBeen.getCode())){
+                                if (getHttpResSuc(voidResultBeen.getCode())) {
+                                    if (i >= (words.size() - 1)) {
+                                        showCompelete();
+                                    } else {
+                                        i++;
+                                        fromWordsIdGetWordDetails(words.get(i), words.size() + "", i + "", C.LISTWORD);
+                                    }
+                                } else {
+                                    toTast(WordEvaluateFragment.this, voidResultBeen.getMessage());
+                                }
+                            }
+                        }));
+            } else {
+                addToCompositeDis(HttpUtil.updataStatus(wordEvaluateEvent.getWordId(), wordEvaluateEvent.getStatus())
+                        .subscribe(new Consumer<ResultBeen<Void>>() {
+                            @Override
+                            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                                if (getHttpResSuc(voidResultBeen.getCode())) {
                                     if (C.NORMAL.equals(wordEvaluateEvent.getTag())) {
-                                        if (Integer.parseInt(recitWord.getDoX()) + 1 == Integer.parseInt(recitWord.getPlanWords())) {
+                                        if (false) {
                                             showCompelete();
                                         } else {
                                             reciteWords();
                                         }
                                     } else if (C.TAGS.equals(wordEvaluateEvent.getTag())) {
-                                        if (Integer.parseInt(recitWord.getDoX()) + 1 == Integer.parseInt(recitWord.getPlanWords())) {
+                                        if (false) {
                                             showCompelete();
                                         } else {
                                             fromTagGetWrodsId(tag);
                                         }
-                                    }
-                                    if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                                        pop();
                                     }
                                 } else {
                                     toTast(WordEvaluateFragment.this, voidResultBeen.getMessage());

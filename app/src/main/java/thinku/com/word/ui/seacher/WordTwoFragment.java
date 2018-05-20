@@ -114,7 +114,7 @@ public class WordTwoFragment extends BaseFragment {
             reciteWordParent.setName("助句");
             RecitWordBeen.LowSentenceBean sentent = new RecitWordBeen.LowSentenceBean();
             sentent.setChinese(wordBean.getWords().getMnemonic());
-            sentent.setId("助句");
+//            sentent.setId("助句");
             List<RecitWordBeen.LowSentenceBean> arrs = new ArrayList<>();
             reciteWordParent.setSentenceList(arrs);
         }

@@ -126,7 +126,7 @@ public class WordReportFragment extends BaseFragment {
         totalNum.setText("总量：" + weekBean.getAll());
         if (!"0".equals(weekBean.getAll())) {
             getPercent("forget", weekBean.getForget(), weekBean.getAll());
-            getPercent("notKnow", weekBean.getKnow(), weekBean.getAll());
+            getPercent("notKnow", weekBean.getNotKnow(), weekBean.getAll());
             getPercent("knowWell", weekBean.getKnowWell(), weekBean.getAll());
             getPercent("know", weekBean.getKnow(), weekBean.getAll());
             getPercent("dim", weekBean.getDim(), weekBean.getAll());

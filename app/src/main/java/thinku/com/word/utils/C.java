@@ -12,7 +12,6 @@ public class C {
     public static final int LGWordStatusVague = 4 ; // 模糊
     public static final int LGWordStatusForget = 5  ; // 忘记
 
-
     public static final int NORMAL_RECITE = 100 ;   //  正常背单词
 
     public static final String NORMAL = "normal";

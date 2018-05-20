@@ -8,6 +8,7 @@ import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import java.util.HashMap;
@@ -95,6 +96,7 @@ public class PieView extends View {
             if (weekDataList.size() > 0) {
                 for (i = 0; i < weekDataList.size(); i++) {
                     //将百分比转换为饼图显示角度
+                    Log.e(TAG, "onDraw: " + weekDataList.get(i).getValue() );
                     Percentage = 360 * (weekDataList.get(i).getValue());
                     Percentage = (float) (Math.round(Percentage * 100)) / 100;
                     PaintArc.setColor(context.getResources().getColor(colors.get(weekDataList.get(i).getName())));
@@ -102,6 +104,7 @@ public class PieView extends View {
                     canvas.drawArc(arcRF0, CurrPer, Percentage, true, PaintArc);
                     //下次的起始角度
                     CurrPer += Percentage;
+                    Log.e(TAG, "onDraw: " + Percentage );
                 }
             }else{
                 PaintArc.setColor(Color.GRAY);
@@ -109,21 +112,21 @@ public class PieView extends View {
             }
 
 
-        //画圆心
-        PaintArc.setColor(Color.WHITE);
-        canvas.drawCircle(cirX, cirY, radius / 1.5f, PaintArc);
-        TextPaint paint = new TextPaint();
-        paint.setColor(context.getResources().getColor(R.color.gray_text));
-        paint.setTextSize(MeasureUtils.sp2px(context ,16));
-        String text = "总量";
-        int baseX = (int) (cirX - paint.measureText(text) / 2);
-        int baseY = (int) (cirY - radius / 1.5f / 5f);
-        canvas.drawText(text, baseX, baseY, paint);
-
-        Paint.FontMetrics fontMetrics = paint.getFontMetrics();
-        int baseX1 = (int) (cirX - paint.measureText("" + value) / 2);
-        int baseY1 = (int) (cirY + fontMetrics.descent - fontMetrics.ascent);
-        canvas.drawText("" + value, baseX1, baseY1, paint);
+//        //画圆心
+//        PaintArc.setColor(Color.WHITE);
+//        canvas.drawCircle(cirX, cirY, radius / 1.5f, PaintArc);
+//        TextPaint paint = new TextPaint();
+//        paint.setColor(context.getResources().getColor(R.color.gray_text));
+//        paint.setTextSize(MeasureUtils.sp2px(context ,16));
+//        String text = "总量";
+//        int baseX = (int) (cirX - paint.measureText(text) / 2);
+//        int baseY = (int) (cirY - radius / 1.5f / 5f);
+//        canvas.drawText(text, baseX, baseY, paint);
+//
+//        Paint.FontMetrics fontMetrics = paint.getFontMetrics();
+//        int baseX1 = (int) (cirX - paint.measureText("" + value) / 2);
+//        int baseY1 = (int) (cirY + fontMetrics.descent - fontMetrics.ascent);
+//        canvas.drawText("" + value, baseX1, baseY1, paint);
     }
 
 }

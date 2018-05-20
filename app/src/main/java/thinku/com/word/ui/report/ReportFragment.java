@@ -99,7 +99,6 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
         if (null != fragments.get(tag) && fragments.get(tag).isAdded()) {
             ft.show(fragments.get(tag));
         } else {
-            Log.e(TAG, "setFragment: " + tag );
             switch (tag) {
                 case 0: // 单词轨迹
                     ProcessFragment processFragment = ProcessFragment.newInstance();

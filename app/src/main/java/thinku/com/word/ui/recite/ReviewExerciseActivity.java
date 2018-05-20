@@ -100,7 +100,7 @@ public class ReviewExerciseActivity extends BaseActivity {
                 getWordId(C.LGWordStatusNone);
                 break;
             case R.id.not_know_rl:
-                getWordId(C.LGWordStatusKnow);
+                getWordId(C.LGWordStatusIncoginzance);
                 break;
             case R.id.blurry_rl:   //  模糊
                 getWordId(C.LGWordStatusVague);

@@ -68,7 +68,7 @@
         android:layout_height="wrap_content" />
 
     <ImageView
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/win_num"
         android:src="@mipmap/pk_lose"
         android:id="@+id/pk_lose"
