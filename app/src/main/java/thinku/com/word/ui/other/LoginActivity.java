@@ -105,6 +105,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             RxBus.get().post(C.RXBUS_LOGIN ,true);
                             SharedPreferencesUtils.setPassword(LoginActivity.this, TextUtils.isEmpty(userInfo.getPhone()) ? userInfo.getEmail() : userInfo.getPhone(), userInfo.getPassword());
                             SharedPreferencesUtils.setLogin(LoginActivity.this, userInfo);
+//                            SharedPreferencesUtils.saveMemoryMode(LoginActivity.this ,userInfo.get);
                             MainActivity.toMain(LoginActivity.this);
                             LoginActivity.this.finish();
                         }else{

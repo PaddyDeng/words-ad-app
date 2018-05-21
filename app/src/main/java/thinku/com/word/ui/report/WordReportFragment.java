@@ -64,8 +64,8 @@ public class WordReportFragment extends BaseFragment {
     private List<Integer> yValue = new ArrayList<>();
     private Map<String, List<Integer>> Value = new HashMap<>();
     @BindView(R.id.date_report)
-//    ChartView dateReport;
-            BarChartView dateReport;
+//    BarChartView dateReport;
+    BarChartView dateReport;
     private Observable<Boolean> exitLoginObservable;
     private Observable<Boolean> loginObservable;
 

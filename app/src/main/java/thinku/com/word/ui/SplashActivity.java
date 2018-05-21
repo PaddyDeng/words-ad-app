@@ -30,13 +30,16 @@ public class SplashActivity extends BaseActivity {
     }
 
     public void checkMyPermission(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            for (int i = 0 ; i < permissions.length ; i++){
-            if (ContextCompat.checkSelfPermission(this ,permissions[i])!= PackageManager.PERMISSION_GRANTED ){
-                ActivityCompat.requestPermissions(this ,permissions,1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (ContextCompat.checkSelfPermission(this, permissions[i]) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, permissions, 1);
+                }
             }
-            }
+        }else{
+            login();
         }
+
     }
 
 

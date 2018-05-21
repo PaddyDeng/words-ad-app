@@ -2,10 +2,8 @@ package thinku.com.word.ui.periphery;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +12,6 @@ import android.widget.TextView;
 
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
-import com.jude.rollviewpager.hintview.IconHintView;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -122,6 +119,8 @@ public class RoundFragment extends BaseFragment {
     AutoRelativeLayout class7;
     @BindView(R.id.triangle_1)
     ImageView triangle1;
+    @BindView(R.id.live_more)
+    TextView liveMore;
 
     private RecentClassAdapter recentClassAdapter;
     private List<RoundBean.RecentClassBean> recentClassBeanList;
@@ -188,7 +187,7 @@ public class RoundFragment extends BaseFragment {
         contents[4] = content5;
         contents[5] = content6;
         contents[6] = content7;
-        rollPager.setHintView(new ColorPointHintView(_mActivity,getResources().getColor(R.color.gray_text),getResources().getColor(R.color.mainColor)));
+        rollPager.setHintView(new ColorPointHintView(_mActivity, getResources().getColor(R.color.gray_text), getResources().getColor(R.color.mainColor)));
     }
 
     /**
@@ -199,12 +198,12 @@ public class RoundFragment extends BaseFragment {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
-                        WaitUtils.show(_mActivity ,TAG);
+                        WaitUtils.show(_mActivity, TAG);
                     }
                 }).subscribe(new Consumer<RoundBean>() {
                     @Override
                     public void accept(@NonNull RoundBean roundBean) throws Exception {
-                        if (WaitUtils.isRunning(TAG)){
+                        if (WaitUtils.isRunning(TAG)) {
                             WaitUtils.dismiss(TAG);
                         }
                         if (roundBean != null) {
@@ -214,10 +213,10 @@ public class RoundFragment extends BaseFragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        if (WaitUtils.isRunning(TAG)){
+                        if (WaitUtils.isRunning(TAG)) {
                             WaitUtils.dismiss(TAG);
                         }
-                        toTast(_mActivity ,"网络出错");
+                        toTast(_mActivity, "网络出错");
                     }
                 }));
     }
@@ -274,32 +273,34 @@ public class RoundFragment extends BaseFragment {
     }
 
     /**
-     *  等于当前日期的直播才显示在屏幕上
+     * 等于当前日期的直播才显示在屏幕上
+     *
      * @param livePreviewBeanList
      */
     public void choseLiveList(List<RoundBean.LivePreviewBean> livePreviewBeanList) {
         for (RoundBean.LivePreviewBean livePreviewBean : livePreviewBeanList) {
-            for ( RoundBean.LivePreviewBean.DataBean dataBean : livePreviewBean.getData()) {
-                if (DateUtil.compare(System.currentTimeMillis(), dataBean.getCnName())) {
+            for (RoundBean.LivePreviewBean.DataBean dataBean : livePreviewBean.getData()) {
+                if (DateUtil.compare(dataBean.getCnName())) {
                     dataBean.setIsTitle(livePreviewBean.getDate());
                     dataBeanList.add(dataBean);
                 }
             }
 
-    }
-        if(dataBeanList.isEmpty()) {
-        openClass.setVisibility(View.GONE);
-        oepnClassTitle.setVisibility(View.GONE);
-    } else {
-        openClass.setVisibility(View.VISIBLE);
-        oepnClassTitle.setVisibility(View.VISIBLE);
-        liveAdapter.notifyDataSetChanged();
-    }
+        }
+        if (dataBeanList.isEmpty()) {
+            openClass.setVisibility(View.GONE);
+            oepnClassTitle.setVisibility(View.GONE);
+        } else {
+            openClass.setVisibility(View.VISIBLE);
+            oepnClassTitle.setVisibility(View.VISIBLE);
+            liveAdapter.notifyDataSetChanged();
+        }
 
-}
+    }
 
     @OnClick({R.id.case_more, R.id.gmat, R.id.gre, R.id.toefl, R.id.IELTS, R.id.abroad,
-            R.id.class1, R.id.class3, R.id.class4, R.id.class5, R.id.class6, R.id.class7, R.id.calss2})
+            R.id.class1, R.id.class3, R.id.class4, R.id.class5, R.id.class6, R.id.class7, R.id.calss2
+    ,R.id.live_more})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.case_more:
@@ -341,11 +342,17 @@ public class RoundFragment extends BaseFragment {
             case R.id.calss2:
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(1));
                 break;
+            case R.id.live_more:
+                PeripheryFragment.start(_mActivity);
+
             default:
                 break;
         }
     }
 
+    public void addLiveNet(){
+
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

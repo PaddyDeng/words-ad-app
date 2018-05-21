@@ -129,9 +129,9 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                                 new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + userData.getImage(), portrait);
                                 SharedPreferencesUtils.setImage(_mActivity, userData.getImage());
                                 if (TextUtils.isEmpty(userData.getPlanWords())) {
-//                                    toTast(_mActivity ,"请先选择背单词计划");
-//                                    setFragment(0);
-//                                } else {
+                                    toTast(_mActivity ,"请先选择背单词计划");
+                                    setFragment(0);
+                                } else {
                                     setFragment(1);
                                 }
                             }

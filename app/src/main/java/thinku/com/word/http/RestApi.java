@@ -332,4 +332,9 @@ public interface RestApi {
     @FormUrlEncoded
     @POST(NetworkChildren.DELETE_PACKAGE)
     Observable<ResultBeen<Void>> deletePackage(@Field("id") String id);
+
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.PUBLIC_LIST)
+    Observable<List<RoundBean.LivePreviewBean.DataBean>> liveList(@Field("page") String page , @Field("pageSize") String pageSize);
 }

@@ -407,4 +407,8 @@ public class HttpUtil {
         return getRestApi(HostType.WORDS_URL_HOST).updataNowPackage(catId).compose(new SchedulerTransformer<ResultBeen<Void>>());
     }
 
+    //  直播预告
+    public static Observable<List<RoundBean.LivePreviewBean.DataBean>> liveListen(String page , String pageSize){
+        return getRestApi(HostType.WORDS_URL_HOST).liveList(page ,pageSize).compose(new SchedulerTransformer<List<RoundBean.LivePreviewBean.DataBean>>());
+    }
 }

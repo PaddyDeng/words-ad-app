@@ -3,6 +3,7 @@ package thinku.com.word.ui.pk;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.EventPkData;
@@ -31,6 +33,7 @@ import thinku.com.word.bean.JPushData;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.ui.recite.MyPlanActivity;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.RxHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
@@ -116,13 +119,23 @@ public class PKHomeActivity extends BaseActivity {
     private EventPkData.UserBean mathUser;
     private String uid;
     private static boolean isInit = true;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pkhome);
         unbinder = ButterKnife.bind(this);
         init();
+        if (MyApplication.mediaPlayer == null){
+            MyApplication.mediaPlayer = MediaPlayer.create(this , R.raw.pk_bg);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+            if (!MyApplication.mediaPlayer.isPlaying()) {
+                MyApplication.mediaPlayer.start();
+            }
     }
 
     public void init() {
@@ -131,6 +144,7 @@ public class PKHomeActivity extends BaseActivity {
         uid = SharedPreferencesUtils.getString("uid", PKHomeActivity.this);
         addNet();
     }
+
 
     private void addNet() {
         addToCompositeDis(HttpUtil.pkMatchObservable()
@@ -149,6 +163,9 @@ public class PKHomeActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.back:
                 this.finishWithAnim();
+                if (MyApplication.mediaPlayer != null && MyApplication.mediaPlayer.isPlaying()){
+                    MyApplication.mediaPlayer.stop();
+                }
                 break;
             case R.id.review_match:
                 pkChose(PK_CANCEL);
@@ -311,6 +328,7 @@ public class PKHomeActivity extends BaseActivity {
             disposable.dispose();
             disposable = null ;
         }
+
     }
 
 

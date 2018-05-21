@@ -183,7 +183,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/triangle"
-                android:text="最近公开课"
+                android:text="直播预告"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -192,8 +192,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="25dp"
+                android:layout_marginRight="15dp"
+                android:padding="10dp"
                 android:text="more>"
+                android:id="@+id/live_more"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
         </com.zhy.autolayout.AutoRelativeLayout>

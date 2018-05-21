@@ -21,6 +21,15 @@ public class CourseBean {
     private String image;
     private String url;
     private String view ;
+    private boolean isListening ;
+
+    public boolean isListening() {
+        return isListening;
+    }
+
+    public void setListening(boolean listening) {
+        isListening = listening;
+    }
 
     public String getView() {
         return view;

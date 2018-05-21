@@ -41,6 +41,7 @@ public class IMAudioManager {
         return imAudioManager;
     }
 
+
     public void init(Context mContext){
         this.mContext = mContext;
     }

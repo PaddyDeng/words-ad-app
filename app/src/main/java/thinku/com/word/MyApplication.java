@@ -3,6 +3,7 @@ package thinku.com.word;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.util.Log;
 
 import com.iflytek.cloud.SpeechConstant;
@@ -36,7 +37,7 @@ public class MyApplication extends Application {
     public static String session = "";
     private Stack<Activity> activityStack;
     private static MyApplication myApplication;
-
+    public static MediaPlayer mediaPlayer ;
     public static Context getInstance() {
         return mContext;
     }

@@ -87,6 +87,7 @@ public class NetworkChildren {
     public static final String RIM = "app-api/rim" ;  //  周边首页
     public static final String COURSE_LIST = "app-api/course-list" ;  // 课程列表
     public static final String CASE_LIST = "app-api/case-list" ;  // 案列列表
+    public static final String PUBLIC_LIST = "app-api/public-list" ;  //  直播预告
 
     //  搜索单词
     public static final String SEARCH_WORDS = "app-api/search-words" ;  // 搜索单词

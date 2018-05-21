@@ -111,6 +111,7 @@ public class PkActivity extends BaseActivity {
     private String mySelfUid;
     private String matchUid;
     private ValueAnimator valueAnimator ;
+    private MediaPlayer pkbg ;
     private int[] waitAnimator = new int[]{
             R.mipmap.pk_wait_0 , R.mipmap.pk_wait_1 , R.mipmap.pk_wait_2 , R.mipmap.pk_wait_3} ;
     public static void start(Context context,  EventPkListData eventPkListData) {
@@ -137,8 +138,21 @@ public class PkActivity extends BaseActivity {
             Log.i(TAG, e.getMessage());
         }
         init();
+        initPkAudioManager();
     }
 
+
+    public void initPkAudioManager(){
+        pkbg = MediaPlayer.create(this ,R.raw.pk_bg);
+        pkbg.setLooping(true);
+        pkbg.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+
+            }
+        });
+        pkbg.start();
+    }
 
     public void init() {
         EventBus.getDefault().register(PkActivity.this);
@@ -183,6 +197,12 @@ public class PkActivity extends BaseActivity {
      * pk中下一个单词
      */
     public void pkNext() {
+        addToCompositeDis(HttpUtil.pkAnswerObservable(totalId + "", wordsId, "", PK_TYPE_ERROR + "", duration + "")
+                .subscribe(new Consumer<ResultBeen<Void>>() {
+                    @Override
+                    public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                    }
+                }));
         wordIndex++;
         if (wordIndex <=(wordsBeanList.size()-1)) {
             referUI(wordsBeanList.get(wordIndex));
@@ -333,7 +353,7 @@ public class PkActivity extends BaseActivity {
         timePosable = RxHelper.countDown(10).subscribe(new Consumer<Integer>() {
             @Override
             public void accept(@NonNull Integer integer) throws Exception {
-                if (integer >= 0) {
+                if (integer > 0) {
                     duration = 10 - integer;
                     timer.setText(integer + "s");
                 } else {
@@ -382,6 +402,10 @@ public class PkActivity extends BaseActivity {
         if (valueAnimator != null){
             valueAnimator.cancel();
         }
+        if (pkbg.isPlaying()){
+            pkbg.stop();
+        }
+        pkbg.release();
     }
 
 

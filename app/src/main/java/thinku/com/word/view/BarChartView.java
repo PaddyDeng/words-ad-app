@@ -9,6 +9,7 @@ import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,18 +20,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import thinku.com.word.R;
+
 /**
  * 柱状�?
  */
 public class BarChartView extends View {
+    private static final String TAG = BarChartView.class.getSimpleName();
     /**
      * 公共部分
      */
     protected float canvasHeight;
     protected float canvasWidth;
     private Paint mPaint;
-    private float maxValue = 0;// Y轴最大值
-    private float minValue;
+    private int  maxValue = 0;// Y轴最大值
+    private int  minValue;
     // private float titleHeight = 0.0f;
     private float taggingHeight; // 标注的高度
     private float marginTop; // 与顶部留的空隙
@@ -38,7 +42,7 @@ public class BarChartView extends View {
     private float marginLeft; // 与顶部留的空隙
     private float marginRight = 0; // 与底部留的空隙
 
-    private int horizontalNum = 5;// 横坐标数量
+    private int horizontalNum = 7;// 横坐标数量
 
     private RectF coordinateRect = new RectF(); // 画图区域
 
@@ -67,25 +71,24 @@ public class BarChartView extends View {
     private List<String> tagging = new ArrayList<>(); // 标注
     private List<TaggingCoordinate> taggingCoordinates = new ArrayList<>(); // 标注的坐标
 
-    private int offsetWidth = 0;
+    private int offsetWidth = 0;    //  整个坐标系的宽度
     private int offsetWidthMax = 0;
     private GestureDetector mGestureDetector;
-    private boolean isInteger = false;// 是否是整数坐标
+    private boolean isInteger = true;// 是否是整数坐标
     private float cutoffwidth = 0;
-
+    private Paint hintPaint ;
     public BarChartView(Context context, List<String> tagging,
                         List<String> xRawData, List<Float>... yRawData) {
         super(context);
-        initView();
-//		setData(tagging, xRawData, yRawData);
+        initView(context);
     }
 
     public BarChartView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initView();
+        initView(context);
     }
 
-    private void initView() {
+    private void initView(Context context) {
         setWillNotDraw(false);
         this.mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         marginBottom = dip2px(25);
@@ -95,6 +98,10 @@ public class BarChartView extends View {
         taggingHeight = 0;
         mGestureDetector = new GestureDetector(getContext(),
                 new GestureListener());
+        hintPaint = new Paint();
+        hintPaint.setStrokeWidth(1);
+        hintPaint.setStyle(Style.STROKE);
+        hintPaint.setColor(getResources().getColor(R.color.gray_white));
     }
 
     private float mDownPosX = 0;
@@ -137,7 +144,6 @@ public class BarChartView extends View {
         coordinateRect = new RectF(marginLeft, marginTop + taggingHeight,
                 canvasWidth - marginRight, canvasHeight - marginBottom);
         horizontalNum = (int) (coordinateRect.width() / dip2px(60));
-        updateTagging();
         updateCutoffwidth();
     }
 
@@ -151,13 +157,7 @@ public class BarChartView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         mPaint.setStrokeWidth(dip2px(1));
-//        if (occupyingText != null) {
-//            drawText(occupyingText, canvasWidth / 2, canvasHeight / 2
-//                    + dip2px(15), canvas, Align.CENTER, 20, colorCoordinates);
-//        } else {
             drawBar(canvas);
-            drawTagging(canvas);
-//        }
         drawAllXLine(canvas);
     }
 
@@ -166,15 +166,10 @@ public class BarChartView extends View {
      */
     private void drawAllXLine(Canvas canvas) {
         float cutoffHeight = coordinateRect.height() / 5;
-        float averageValue = (maxValue - minValue) / 5;
+        int averageValue = (maxValue - minValue -1) / 5 + 1;
         // float deviation = cutoffHeight / 5;
         float startX = coordinateRect.left + offsetWidth;
         float stopX = coordinateRect.right + offsetWidth;
-        if (companyNews != null) {
-            drawText(companyNews, startX + dip2px(2), coordinateRect.top
-                    - dip2px(2), canvas, Align.LEFT, 9, colorCoordinates);
-        }
-
         for (int i = 0; i < 6; i++) {
             if (yIndex == i) {
                 drawText("0", startX - dip2px(5), coordinateRect.top
@@ -185,21 +180,15 @@ public class BarChartView extends View {
                         coordinateRect.bottom, mPaint);
                 canvas.drawLine(startX, coordinateRect.top + cutoffHeight * i,
                         stopX, coordinateRect.top + cutoffHeight * i, mPaint);
-//                canvas.drawCircle(startX, coordinateRect.top, dip2px(2), mPaint);
-//                canvas.drawCircle(startX, coordinateRect.bottom, dip2px(2),
-//                        mPaint);
-//                canvas.drawCircle(startX,
-//                        coordinateRect.top + cutoffHeight * i, dip2px(2),
-//                        mPaint);
-//                canvas.drawCircle(stopX, coordinateRect.top + cutoffHeight * i,
-//                        dip2px(2), mPaint);
             } else {
                 drawText((maxValue - averageValue * i)
-                                / priceWeight
-                                + "", startX - dip2px(5), coordinateRect.top
-                                + cutoffHeight * i + dip2px(2), canvas, Align.RIGHT, 8,
-                        colorCoordinates);
-            }
+                            / priceWeight
+                            + "", startX - dip2px(5), coordinateRect.top
+                            + cutoffHeight * i + dip2px(2), canvas, Align.RIGHT, 8,
+                    colorCoordinates);
+                Log.e(TAG, "startX: " + startX + "  width" + coordinateRect.width() );
+                canvas.drawLine(startX ,coordinateRect.top +cutoffHeight *i +dip2px(2) ,coordinateRect.width() , coordinateRect.top +cutoffHeight *i +dip2px(2) ,hintPaint);
+        }
         }
     }
 
@@ -210,7 +199,6 @@ public class BarChartView extends View {
         mPaint.setStyle(Style.FILL);
         float originY = coordinateRect.top + coordinateRect.height() * yIndex
                 / 5;
-
         for (int i = 0; i < xRawDatas.size(); i++) {
             List<Integer> data = yRawData.get(xRawDatas.get(i));
             for (int j = 0; j < data.size(); j++) {
@@ -235,15 +223,19 @@ public class BarChartView extends View {
                     stopX = offsetWidth + coordinateRect.right;
                 } else {
                     if (stopY < originY) {
-                        drawText(getTwoStepAndInt(data.get(j) / priceWeight),
-                                (startX + stopX) / 2, stopY - dip2px(2),
-                                canvas, Align.CENTER, 8, colors[j
-                                        % colors.length]);
+                        if (data.get(j) >0) {
+                            drawText(getTwoStepAndInt(data.get(j) / priceWeight),
+                                    (startX + stopX) / 2, stopY - dip2px(2),
+                                    canvas, Align.CENTER, 8, colors[j
+                                            % colors.length]);
+                        }
                     } else {
-                        drawText(getTwoStepAndInt(data.get(j) / priceWeight),
-                                (startX + stopX) / 2, stopY + dip2px(10),
-                                canvas, Align.CENTER, 8, colors[j
-                                        % colors.length]);
+                        if (data.get(j) > 0) {
+                            drawText(getTwoStepAndInt(data.get(j) / priceWeight),
+                                    (startX + stopX) / 2, stopY + dip2px(10),
+                                    canvas, Align.CENTER, 8, colors[j
+                                            % colors.length]);
+                        }
                     }
                 }
                 if (stopY < originY) {
@@ -283,136 +275,55 @@ public class BarChartView extends View {
         }
     }
 
-    private String occupyingText;
 
-    /**
-     * 设置占位文字
-     *
-     * @param occupyingText
-     */
-    public void setOccupyingText(String occupyingText) {
-        this.occupyingText = occupyingText;
-        invalidate();
-    }
 
-//	/**
-//	 * 设置值 tagging：标注 xRawData：x轴坐标 yRawData：为柱形图的内容
-//	 */
-//	public void setData(List<String> tagging, List<String> xRawData,
-//			List<Float>... yRawData) {
-//		occupyingText = null;
-//		this.xRawDatas.clear();
-//		this.yRawData.clear();
-//		this.xRawDatas.addAll(xRawData);
-//		this.tagging = tagging;
-//		Collections.addAll(this.yRawData, yRawData);
-//		updateTagging();
-//		updateCutoffwidth();
-//		scroll();
-//		invalidate();
-//	}
 
     /**
      * 设置值 tagging：标注 xRawData：x轴坐标 yRawData：为柱形图的内容
      */
     public void setData(List<String> xRawData,
                         Map<String, List<Integer>> yRawData) {
-        occupyingText = null;
         this.xRawDatas.clear();
         this.yRawData.clear();
         this.xRawDatas.addAll(xRawData);
-        this.tagging = tagging;
-//		Collections.addAll(this.yRawData, yRawData);
         this.yRawData = yRawData;
-        updateTagging();
         updateCutoffwidth();
         scroll();
         invalidate();
     }
 
-    /**
-     * 设置标注的坐标
-     */
-    private void updateTagging() {
-        if (tagging != null) {
-            taggingCoordinates.clear();
-            mPaint.setTextSize(sp2px(10));
-            float taggingCoordinateW = marginLeft;// 坐标
-            float taggingCoordinateH = dip2px(15);
-            int lineNum = 1;
-            for (int i = 0; i < tagging.size(); i++) {
-                float taggingWidth = mPaint.measureText(tagging.get(i))
-                        + dip2px(20);
-                if (coordinateRect.right - taggingCoordinateW < taggingWidth) {
-                    lineNum++;
-                    for (int j = i - 1; j >= 0; j--) {
-                        TaggingCoordinate mTaggingCoordinate = taggingCoordinates
-                                .get(j);
-                        if (mTaggingCoordinate.height() == taggingCoordinateH) {
-                            mTaggingCoordinate.setWidth(mTaggingCoordinate
-                                    .width()
-                                    + coordinateRect.right
-                                    - taggingCoordinateW);
-                        } else {
-                            break;
-                        }
-                    }
-                    taggingCoordinateW = marginLeft;
-                    taggingHeight = +dip2px(20);
-                }
-                TaggingCoordinate mTaggingCoordinate = new TaggingCoordinate();
-                mTaggingCoordinate.setHeight(taggingCoordinateH);
-                mTaggingCoordinate.setWidth(taggingCoordinateW);
-                taggingCoordinates.add(mTaggingCoordinate);
-
-                taggingCoordinateW += taggingWidth;
-            }
-            for (int i = tagging.size() - 1; i >= 0; i--) {
-                TaggingCoordinate mTaggingCoordinateNews = taggingCoordinates
-                        .get(i);
-                if (mTaggingCoordinateNews.height() == taggingCoordinateH) {
-                    mTaggingCoordinateNews.setWidth(mTaggingCoordinateNews
-                            .width()
-                            + coordinateRect.right
-                            - taggingCoordinateW);
-                } else {
-                    break;
-                }
-            }
-            taggingHeight = lineNum * dip2px(20) + dip2px(5);
-
-        } else {
-            taggingHeight = dip2px(5);
-        }
-    }
 
     private void updateCutoffwidth() {
-        if (xRawDatas.size() > horizontalNum) {
-            offsetWidthMax = (int) (((this.yRawData.size() + 1)
-                    * xRawDatas.size() + 1)
-                    * coordinateRect.width()
-                    / ((this.yRawData.size() + 1) * horizontalNum + 1) - coordinateRect
-                    .width());
-            offsetWidth = offsetWidthMax;
-            cutoffwidth = coordinateRect.width()
-                    / (horizontalNum * (this.yRawData.size() + 1) + 1);
-            int start = (int) (offsetWidth / ((this.yRawData.size() + 1) * cutoffwidth));
-            int stop = (int) ((offsetWidth + coordinateRect.width() + cutoffwidth
-                    * this.yRawData.size()) / ((this.yRawData.size() + 1) * cutoffwidth));
-            initMaxAndMin(start, stop);
-        } else {
-            cutoffwidth = coordinateRect.width()
-                    / (xRawDatas.size() * (this.yRawData.size() + 1) + 1);
-            if (cutoffwidth > coordinateRect.width() / 8) {
-                cutoffwidth = coordinateRect.width() / 8;
+        if (xRawDatas != null) {
+            if (xRawDatas.size() > horizontalNum) {
+                offsetWidthMax = (int) (((this.yRawData.size() + 1)
+                        * xRawDatas.size() + 1)
+                        * coordinateRect.width()
+                        / ((this.yRawData.size() + 1) * horizontalNum + 1) - coordinateRect
+                        .width());
+                offsetWidth = offsetWidthMax;
+                cutoffwidth = coordinateRect.width()
+                        / (horizontalNum * (this.yRawData.size() + 1) + 1);
+                int start = (int) (offsetWidth / ((this.yRawData.size() + 1) * cutoffwidth));
+                int stop = (int) ((offsetWidth + coordinateRect.width() + cutoffwidth
+                        * this.yRawData.size()) / ((this.yRawData.size() + 1) * cutoffwidth));
+                initMaxAndMin(start, stop);
+            } else {
+                cutoffwidth = coordinateRect.width()
+                        / (xRawDatas.size() * (this.yRawData.size() + 1) + 1);
+                if (cutoffwidth > coordinateRect.width() / 8) {
+                    cutoffwidth = coordinateRect.width() / 8;
+                }
+                initMaxAndMin(0, this.xRawDatas.size());
+                offsetWidth = 0;
+                offsetWidthMax = 0;
             }
-            initMaxAndMin(0, this.xRawDatas.size());
-            offsetWidth = 0;
-            offsetWidthMax = 0;
+            scroll();
         }
-        scroll();
     }
 
+
+    //  确定矩形大小以及Y轴数据
     private boolean initMaxAndMin(int start, int stop) {
         if (stop <= 0) {
             return true;
@@ -421,14 +332,11 @@ public class BarChartView extends View {
             stop = this.xRawDatas.size();
         }
         Map<String, List<Integer>> yRawDataNews = new HashMap<>();
-        for (int i = 0; i < this.yRawData.size(); i++) {
-//			yRawDataNews.addAll(yRawData.get(i).subList(start, stop));
-
-//			yRawDataNews.addAll();
-            yRawDataNews = this.yRawData;
+        for (int i = start ; i < stop; i++) {
+            yRawDataNews.put(xRawDatas.get(i),yRawData.get(xRawDatas.get(i)));
         }
-        float maxValueNews = max;
-        float minValueNews = 0;
+        int maxValueNews = max;
+        int minValueNews = 0;
         if (isInteger) {
             if (maxValueNews >= 0 && minValueNews >= 0) {
                 minValueNews = 0;
@@ -513,7 +421,7 @@ public class BarChartView extends View {
         if (minValue < 0) {
             marginBottom = dip2px(30);
         }
-        coordinateRect = new RectF(marginLeft, marginTop + taggingHeight,
+        coordinateRect = new RectF(marginLeft, marginTop ,
                 canvasWidth - marginRight, canvasHeight - marginBottom);
         return false;
     }

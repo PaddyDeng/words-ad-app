@@ -118,6 +118,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                             toTast(SignActivity.this, voidResultBeen.getMessage());
                             list.add(DateUtil.getToday());
                             calendar.setSign(list);
+                            initData();
                         }
                     }
                 }, new Consumer<Throwable>() {

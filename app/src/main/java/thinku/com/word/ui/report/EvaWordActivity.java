@@ -3,6 +3,7 @@ package thinku.com.word.ui.report;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,7 @@ import thinku.com.word.bean.EVAnswerBeen;
 import thinku.com.word.bean.EvaWordBeen;
 import thinku.com.word.callback.SelectRlClickListener;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.recite.WordErrorActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.StringUtils;
@@ -64,6 +66,8 @@ public class EvaWordActivity extends BaseActivity {
     private long startDuration ;  //  开始时间
     private long endDuration ;   // 做完时间
     private MyApplication myApplication ;
+    private MediaPlayer rightPlayer ;
+    private MediaPlayer errorPlayer ;
     public static void start(Context context) {
         Intent intent = new Intent(context, EvaWordActivity.class);
         context.startActivity(intent);
@@ -79,7 +83,11 @@ public class EvaWordActivity extends BaseActivity {
         myApplication = (MyApplication) MyApplication.getInstance();
         myApplication.addActivity(this);
         addNet();
+        errorPlayer = MediaPlayer.create(this ,R.raw.eva_error_and_not_know);
+        rightPlayer = MediaPlayer.create(this ,R.raw.eva_right_and_know);
     }
+
+
 
     public void initView(){
         familiar.setVisibility(View.GONE);
@@ -99,14 +107,23 @@ public class EvaWordActivity extends BaseActivity {
                         evaHolder.error.setVisibility(View.GONE);
                         evaHolder.rl.setBackgroundResource(R.drawable.main_20round_tv);
                         type = 1 ;
+                        if (!rightPlayer.isPlaying()){
+                            rightPlayer.start();
+                        }
                     } else {
                         evaHolder.error.setVisibility(View.VISIBLE);
                         type = 0 ;
+                        if (!errorPlayer.isPlaying()){
+                            errorPlayer.start();
+                        }
                     }
                 }else {
                     evaHolder.rl.setBackgroundResource(R.drawable.yellow_red_20round);
                     isKnow = 1 ;
                     userAnswer = "不认识";
+                    if (!errorPlayer.isPlaying()){
+                        errorPlayer.start();
+                    }
                 }
                 referWord();
             }
@@ -215,5 +232,13 @@ public class EvaWordActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        if (rightPlayer .isPlaying()){
+            rightPlayer.stop();
+        }
+        if (errorPlayer.isPlaying()){
+            errorPlayer.stop();
+        }
+        rightPlayer.release();
+        errorPlayer.release();
     }
 }

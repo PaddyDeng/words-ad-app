@@ -95,9 +95,6 @@ public class AlarmActivity extends BaseActivity {
                 AlarmManagerUtil.setAlarm(this, 0, Integer.parseInt(times[0]), Integer.parseInt
                         (times[1]), Integer.parseInt(id), 1, "该复习单词了", 2);
                 clock.setC_id(id);
-//            } if(cycle == -1){//是只响一次的闹钟
-//                AlarmManagerUtil.setAlarm(this, 1, Integer.parseInt(times[0]), Integer.parseInt
-//                        (times[1]), 0, 0, "该复习单词了", 2);
             } else {//多选，周几的闹钟
                 String[] weeks = cycle.split("\\t");
                 String id = "";

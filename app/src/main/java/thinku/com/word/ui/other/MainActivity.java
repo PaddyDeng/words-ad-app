@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.yokeyword.fragmentation.SupportFragment;
+import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragmentActivitiy;
 import thinku.com.word.bean.UserInfo;
@@ -217,6 +218,10 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if (MyApplication.mediaPlayer != null){
+            if (MyApplication.mediaPlayer.isPlaying()) MyApplication.mediaPlayer.stop();
+            MyApplication.mediaPlayer.release();
+        }
     }
 
 }

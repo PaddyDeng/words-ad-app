@@ -49,7 +49,7 @@
                         android:textSize="50px"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
-                        android:background="@drawable/main_10round_tv"
+                        android:background="@drawable/select_sign"
                         android:layout_width="250px"
                         android:layout_height="80px" />
                 </RelativeLayout>

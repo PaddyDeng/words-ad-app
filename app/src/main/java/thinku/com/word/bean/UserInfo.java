@@ -13,6 +13,24 @@ public class UserInfo {
     private String email;
     private String phone;
     private String nickname;
+    private String nowPackage ;
+    private String studyModel ;
+
+    public String getNowPackage() {
+        return nowPackage;
+    }
+
+    public void setNowPackage(String nowPackage) {
+        this.nowPackage = nowPackage;
+    }
+
+    public String getStudyModel() {
+        return studyModel;
+    }
+
+    public void setStudyModel(String studyModel) {
+        this.studyModel = studyModel;
+    }
 
     public int getCode() {
         return code;

@@ -238,7 +238,8 @@
         <thinku.com.word.view.BarChartView
             android:layout_width="match_parent"
             android:layout_height="600px"
-            android:id="@+id/date_report"/>
+            android:id="@+id/date_report"
+            android:visibility="visible"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="20dp"

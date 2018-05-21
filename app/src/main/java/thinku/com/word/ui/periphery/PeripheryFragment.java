@@ -28,6 +28,7 @@ import thinku.com.word.callback.SelectListener;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.periphery.adapter.CourseAdapter;
 import thinku.com.word.ui.periphery.bean.CourseBean;
+import thinku.com.word.ui.periphery.bean.RoundBean;
 import thinku.com.word.utils.HttpUtils;
 
 /**
@@ -51,23 +52,33 @@ public class PeripheryFragment extends BaseActivity implements BGARefreshLayout.
     private List<CourseBean> courseBeanList;
     private CourseAdapter courseAdapter;
 
-    private int type ;
+    private int type = 0  ;
+
+    private int page  =1 ;
+    private int pageSize = 20 ;
+
+    private List<RoundBean.LivePreviewBean.DataBean> dataBeanList ;
+
+    private CourseAdapter  liveAdatper ;
     public static void start(Context context , int type){
         Intent intent = new Intent(context ,PeripheryFragment.class);
         intent.putExtra("type" , type);
         context.startActivity(intent);
     }
 
+    public static void start(Context context ){
+        Intent intent = new Intent(context ,PeripheryFragment.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_periphery);
         unbinder = ButterKnife.bind(this);
-        try{
-            type = getIntent().getIntExtra("type" , 1);
-        }catch (Exception e){
-
+        Intent intent = getIntent() ;
+        if (intent != null) {
+            type = getIntent().getIntExtra("type", 0);
         }
         init();
         initRefreshLayout();
@@ -76,28 +87,51 @@ public class PeripheryFragment extends BaseActivity implements BGARefreshLayout.
 
 
     public void initData(){
-        addToCompositeDis(HttpUtil.courseBeanObservable(type)
-        .doOnSubscribe(new Consumer<Disposable>() {
-            @Override
-            public void accept(@NonNull Disposable disposable) throws Exception {
-                showLoadDialog();
-            }
-        }).subscribe(new Consumer<List<CourseBean>>() {
-                    @Override
-                    public void accept(@NonNull List<CourseBean> courseBeans) throws Exception {
-                        dismissLoadDialog();
-                        if (courseBeans != null && courseBeans.size() > 0){
-                            courseBeanList.addAll(courseBeans);
-                            courseAdapter.notifyDataSetChanged();
+        if (type  != 0) {
+            addToCompositeDis(HttpUtil.courseBeanObservable(type)
+                    .doOnSubscribe(new Consumer<Disposable>() {
+                        @Override
+                        public void accept(@NonNull Disposable disposable) throws Exception {
+                            showLoadDialog();
                         }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        dismissLoadDialog();
-                        toTast(PeripheryFragment.this ,throwable.toString());
-                    }
-                }));
+                    }).subscribe(new Consumer<List<CourseBean>>() {
+                        @Override
+                        public void accept(@NonNull List<CourseBean> courseBeans) throws Exception {
+                            dismissLoadDialog();
+                            if (courseBeans != null && courseBeans.size() > 0) {
+                                courseBeanList.addAll(courseBeans);
+                                courseAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@NonNull Throwable throwable) throws Exception {
+                            dismissLoadDialog();
+                            toTast(PeripheryFragment.this, throwable.toString());
+                        }
+                    }));
+        }else{
+            addToCompositeDis(HttpUtil.liveListen(page +"" ,pageSize +"")
+            .doOnSubscribe(new Consumer<Disposable>() {
+                @Override
+                public void accept(@NonNull Disposable disposable) throws Exception {
+                    showLoadDialog();
+                }
+            }).subscribe(new Consumer<List<RoundBean.LivePreviewBean.DataBean> >() {
+                        @Override
+                        public void accept(@NonNull List<RoundBean.LivePreviewBean.DataBean> dataBeanLists) throws Exception {
+                            dismissLoadDialog();
+                            dataBeanList.addAll(dataBeanLists);
+                            liveAdatper.notifyDataSetChanged();
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@NonNull Throwable throwable) throws Exception {
+                            dismissLoadDialog();
+                            toTast(PeripheryFragment.this ,throwable.toString());
+                        }
+                    }));
+        }
     }
 
 
@@ -135,20 +169,41 @@ public class PeripheryFragment extends BaseActivity implements BGARefreshLayout.
     }
 
     public void init() {
-        titleT.setText("课程列表");
-        courseBeanList = new ArrayList<>();
-        courseAdapter = new CourseAdapter(this, courseBeanList);
-        courseAdapter.setSelectListener(new SelectListener() {
-            @Override
-            public void setListener(int position) {
-                CourseBean courseBean = courseBeanList.get(position);
-                if (courseBean!= null ) {
-                    PlayActivity.start(PeripheryFragment.this,courseBean.getContent(),courseBean.getName() ,courseBean.getUrl() );
+        if (type != 0) {
+            titleT.setText("课程列表");
+        }else{
+            titleT.setText("直播列表");
+        }
+        if (type != 0) {
+            courseBeanList = new ArrayList<>();
+            courseAdapter = new CourseAdapter(this, courseBeanList);
+            courseAdapter.setSelectListener(new SelectListener() {
+                @Override
+                public void setListener(int position) {
+                    CourseBean courseBean = courseBeanList.get(position);
+                    if (courseBean != null) {
+                        PlayActivity.start(PeripheryFragment.this, courseBean.getContent(), courseBean.getName(), courseBean.getUrl());
+                    }
                 }
-            }
-        });
-        courseList.setLayoutManager(new LinearLayoutManager(this));
-        courseList.setAdapter(courseAdapter);
+            });
+            courseList.setLayoutManager(new LinearLayoutManager(this));
+            courseList.setAdapter(courseAdapter);
+        }else{
+            dataBeanList = new ArrayList<>();
+            liveAdatper = new CourseAdapter(this);
+            liveAdatper.setData(dataBeanList);
+            courseList.setLayoutManager(new LinearLayoutManager(this));
+            courseList.setAdapter(liveAdatper);
+            liveAdatper.setSelectListener(new SelectListener() {
+                @Override
+                public void setListener(int position) {
+                    RoundBean.LivePreviewBean.DataBean dataBean = dataBeanList.get(position);
+                    if (dataBean != null) {
+                       ClassDetailActivity.start(PeripheryFragment.this ,dataBean);
+                    }
+                }
+            });
+        }
     }
 
     @Override

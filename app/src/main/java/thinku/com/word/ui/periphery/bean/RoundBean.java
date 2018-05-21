@@ -257,6 +257,15 @@ public class RoundBean {
             private String catName ;
             private String isTitle ;
             private String viewCount ;
+            private boolean isListen ;
+
+            public boolean getIsListen() {
+                return isListen;
+            }
+
+            public void setIsListen(boolean isListen) {
+                this.isListen = isListen;
+            }
 
             protected DataBean(Parcel in) {
                 name = in.readString();
@@ -270,6 +279,7 @@ public class RoundBean {
                 catName = in.readString();
                 isTitle = in.readString();
                 viewCount = in.readString();
+                isListen = in.readByte() != 0 ;
             }
 
             public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
@@ -390,6 +400,7 @@ public class RoundBean {
                 dest.writeString(catName);
                 dest.writeString(isTitle);
                 dest.writeString(viewCount);
+                dest.writeByte((byte) (isListen ? 1:0));
             }
         }
     }

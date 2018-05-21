@@ -1,5 +1,6 @@
 package thinku.com.word.ui.recite;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -89,6 +90,7 @@ public class HomeFragment extends BaseFragment {
     private SimpleDateFormat simpleDateFormat;
 
     private Observable<Boolean> observable ;
+    private MediaPlayer recitePlayer ;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -103,6 +105,7 @@ public class HomeFragment extends BaseFragment {
                 initData();
             }
         });
+        recitePlayer = MediaPlayer.create(_mActivity ,R.raw.start_recite);
         return view;
     }
 
@@ -185,6 +188,10 @@ public class HomeFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
         RxBus.get().unregister(C.RXBUS_LOGIN_BACKMAIN ,observable);
+        if (recitePlayer != null){
+            if (recitePlayer.isPlaying()) recitePlayer.stop();
+            recitePlayer.release();
+        }
     }
 
 
@@ -192,6 +199,7 @@ public class HomeFragment extends BaseFragment {
      * 背单词
      */
     public void reciteWord() {
+        if (recitePlayer != null && !recitePlayer.isPlaying()) recitePlayer.start();
         String nowTime = simpleDateFormat.format(new java.util.Date());
         String windowTime = SharedPreferencesUtils.getWindow(_mActivity);
         if (nowTime.equals(windowTime)) {

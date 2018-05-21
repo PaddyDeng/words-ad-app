@@ -40,13 +40,7 @@
 
 
 
-    <TextView
-        style="@style/white_text_50px"
-        android:textColor="@color/white"
-        android:id="@+id/timer"
-        android:layout_alignBottom="@id/userImage"
-        android:layout_centerHorizontal="true"
-        />
+
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_marginTop="60px"
@@ -96,6 +90,14 @@
         app:progressBarBankgroundStyle="1"
         app:progressBankgroundColor="@color/color_red"/>
 
+    <TextView
+        style="@style/white_text_50px"
+        android:textColor="@color/white"
+        android:id="@+id/timer"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/pk_progress"
+        android:layout_centerHorizontal="true"
+        />
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -163,7 +165,8 @@
         android:id="@+id/music_rl"
         android:orientation="horizontal"
         android:layout_below="@id/word"
-        android:layout_marginTop="20px">
+        android:layout_marginTop="20px"
+        android:visibility="gone">
         <ImageView
             android:layout_width="50px"
             android:layout_height="50px"

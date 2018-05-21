@@ -92,6 +92,7 @@ public class SharedPreferencesUtils {
         edit.putString("email", login.getEmail());
         edit.putString("phone", login.getPhone());
         edit.putString("nickname", login.getNickname());
+        edit.putString("studyMode" , login.getStudyModel());
         edit.commit();
     }
 
@@ -117,6 +118,7 @@ public class SharedPreferencesUtils {
         editor.putString(PERFS_PK_IMAGE,"");
         editor.putString(PERFS_PK_NAME , "");
         editor.putString(PERFS_PK_UID ,"");
+        editor.putString("studyMode" , "");
         editor.commit();
     }
 
@@ -133,6 +135,10 @@ public class SharedPreferencesUtils {
         return login;
     }
 
+
+    public static String getStudyMode(Context context){
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString("studyMode" ,"");
+    }
     public static String getNickName(Context context){
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString("nickname" ,"");
     }

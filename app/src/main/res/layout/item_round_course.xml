@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="152dp"
     android:background="@color/white"
+    android:id="@+id/rl"
     >
     <View
         android:layout_width="match_parent"

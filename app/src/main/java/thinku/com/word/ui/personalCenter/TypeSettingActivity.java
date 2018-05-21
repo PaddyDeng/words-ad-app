@@ -32,9 +32,9 @@ import thinku.com.word.utils.SharedPreferencesUtils;
 public class TypeSettingActivity extends BaseActivity  implements DialogClickListener{
     private static final String TAG = TypeSettingActivity.class.getSimpleName();
     private static final int REQUEST_CODE = 10 ;
-    private static final int LGStudyEbbinghaus = 1;  // 艾宾浩斯记忆法
-    private static final int LGStudyReview = 2;    //  复习记忆法
-    private static final int LGStudyOnlyNew = 3;   // 只背新单词
+    public static final int LGStudyEbbinghaus = 1;  // 艾宾浩斯记忆法
+    public static final int LGStudyReview = 2;    //  复习记忆法
+    public static final int LGStudyOnlyNew = 3;   // 只背新单词
     @BindView(R.id.back)
     ImageView back;
     @BindView(R.id.title_right)
@@ -75,6 +75,33 @@ public class TypeSettingActivity extends BaseActivity  implements DialogClickLis
             title1.setVisibility(View.VISIBLE);
             title.setVisibility(View.VISIBLE);
             title1.setBackgroundColor(getResources().getColor(R.color.mainColor));
+        }
+        initMode();
+    }
+
+    public void initMode(){
+        String mode = SharedPreferencesUtils.getChoseMode(this);
+        try{
+            int userMode = Integer.parseInt(mode);
+            switch (userMode){
+                case LGStudyEbbinghaus:
+                    ebbinghaus.setSelected(true);
+                    review.setSelected(false);
+                    onlyNew.setSelected(false);
+                    break;
+                case LGStudyReview:
+                    ebbinghaus.setSelected(false);
+                    review.setSelected(true);
+                    onlyNew.setSelected(false);
+                    break;
+                case LGStudyOnlyNew:
+                    ebbinghaus.setSelected(false);
+                    review.setSelected(false);
+                    onlyNew.setSelected(true);
+                    break;
+            }
+        }catch (Exception e){
+
         }
     }
 

@@ -260,18 +260,26 @@ public class DateUtil {
 
     /**
      * 比较两日期的大小
-     * @param currentTime
      * @param liveTime
      * @return
      */
-    public static boolean compare(long currentTime ,String liveTime){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
+    public static boolean compare(String liveTime){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try{
             Date liveDate = simpleDateFormat.parse(liveTime);
-            if (currentTime > liveDate.getTime()){
-                return false ;
-            }else{
+            Date Date2 = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(liveDate);
+            int year1 = calendar.get(Calendar.YEAR);
+            int day1 = calendar.get(Calendar.DAY_OF_YEAR);
+
+            calendar.setTime(Date2);
+            int year2 = calendar.get(Calendar.YEAR);
+            int day2 = calendar.get(Calendar.DAY_OF_YEAR);
+            if ((year1 == year2) && (day1 == day2)){
                 return true ;
+            }else{
+                return false ;
             }
         }catch (ParseException e){
             Log.i("date" ,e.getMessage());

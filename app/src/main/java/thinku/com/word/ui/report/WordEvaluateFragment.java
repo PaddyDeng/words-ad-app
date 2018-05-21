@@ -122,6 +122,12 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
     private List<RecitWordBeen.LowSentenceBean>   sentenceBeen ;
 
     private ReciteWordAdapter reciteWordAdapter ;
+
+
+    private MediaPlayer dimPlayer ;
+    private MediaPlayer notKnowPlayer ;
+    private MediaPlayer knowPlayer ;
+    private MediaPlayer knowWellPlayer ;
     /**
      * @param context
      * @param planWords
@@ -169,6 +175,15 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
             }
         }
         setFocusable();
+        initAudioManager();
+    }
+
+
+    public void initAudioManager(){
+        dimPlayer = MediaPlayer.create(this ,R.raw.dim);
+        knowPlayer = MediaPlayer.create(this ,R.raw.eva_right_and_know);
+        notKnowPlayer = MediaPlayer.create(this ,R.raw.eva_error_and_not_know);
+        knowWellPlayer = MediaPlayer.create(this ,R.raw.know_well);
     }
 
     /**
@@ -405,6 +420,7 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
                 this.finish();
                 break;
             case R.id.familiar:
+                if (knowWellPlayer != null && !knowWellPlayer.isPlaying()) knowWellPlayer.start();
                 status = C.LGWordStatusFamiliar;
                 WordEvaluateEvent wordEvaluateEvent = new WordEvaluateEvent();
                 wordEvaluateEvent.setStatus(status + "");
@@ -416,6 +432,7 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
                 WordErrorActivity.start(WordEvaluateFragment.this, wordId);
                 break;
             case R.id.unknow:
+                if (notKnowPlayer != null && !notKnowPlayer.isPlaying()) notKnowPlayer.start();
                 WordEvaluateEvent wordEvaluateEvent1 = new WordEvaluateEvent();
                 wordEvaluateEvent1.setStatus(C.LGWordStatusIncoginzance + "");
                 wordEvaluateEvent1.setWordId(this.recitWord.getWords().getId());
@@ -423,6 +440,7 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
                 updataStatus(wordEvaluateEvent1);
                 break;
             case R.id.know:
+                if (knowPlayer != null && !knowPlayer.isPlaying()) knowPlayer.start();
                 WordEvaluateEvent wordEvaluateEvent2 = new WordEvaluateEvent();
                 wordEvaluateEvent2.setStatus(C.LGWordStatusKnow + "");
                 wordEvaluateEvent2.setWordId(this.recitWord.getWords().getId());
@@ -430,6 +448,7 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
                 updataStatus(wordEvaluateEvent2);
                 break;
             case R.id.blurry:
+                if (dimPlayer != null && !dimPlayer.isPlaying()) dimPlayer.start();
                 WordEvaluateEvent wordEvaluateEvent3 = new WordEvaluateEvent();
                 wordEvaluateEvent3.setStatus(C.LGWordStatusVague + "");
                 wordEvaluateEvent3.setWordId(this.recitWord.getWords().getId());
@@ -443,6 +462,22 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().register(this);
+        if (dimPlayer != null){
+            if (dimPlayer.isPlaying()) dimPlayer.stop();
+            dimPlayer.release();
+        }
+        if (knowWellPlayer != null){
+            if (knowWellPlayer.isPlaying()) knowWellPlayer.stop();
+            knowWellPlayer.release();
+        }
+        if (notKnowPlayer != null){
+            if (notKnowPlayer.isPlaying()) notKnowPlayer.stop();
+            notKnowPlayer.release();
+        }
+        if (knowPlayer != null){
+            if (knowPlayer.isPlaying()) knowPlayer.stop();
+            knowPlayer.release();
+        }
     }
 
     /**
