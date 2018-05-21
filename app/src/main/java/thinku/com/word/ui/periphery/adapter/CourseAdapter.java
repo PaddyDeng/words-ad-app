@@ -61,6 +61,7 @@ public class CourseAdapter extends RecyclerView.Adapter {
             CourseBean courseBean = courseBeanList.get(position);
             courseHolder.name.setText(courseBean.getName());
             courseHolder.people.setText(courseBean.getView() + "人已加入");
+            courseHolder.listen.setVisibility(View.VISIBLE);
             new GlideUtils().load(context, courseBean.getImage(), courseHolder.course_img);
             courseHolder.listen.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -72,6 +73,7 @@ public class CourseAdapter extends RecyclerView.Adapter {
             RoundBean.LivePreviewBean.DataBean dataBean = liveList.get(position);
             courseHolder.name.setText(dataBean.getName());
             courseHolder.people.setText(dataBean.getViewCount() + "人已加入");
+            courseHolder.listen.setVisibility(View.GONE);
             new GlideUtils().load(context , NetworkTitle.DomainGossipNormal + dataBean.getImage()   , courseHolder.course_img);
             courseHolder.rl.setOnClickListener(new View.OnClickListener() {
                 @Override

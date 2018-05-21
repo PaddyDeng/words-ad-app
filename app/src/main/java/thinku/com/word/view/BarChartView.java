@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
@@ -30,6 +31,7 @@ public class BarChartView extends View {
     /**
      * 公共部分
      */
+    private String xString = "1天前";
     protected float canvasHeight;
     protected float canvasWidth;
     private Paint mPaint;
@@ -54,10 +56,9 @@ public class BarChartView extends View {
 
     private int priceWeight = 1; // 倍数
 
-    public int max = 0;
 
     public void setMaxValue(int Max) {
-        this.max = Max;
+        this.maxValue = Max;
     }
 
     /**
@@ -77,6 +78,8 @@ public class BarChartView extends View {
     private boolean isInteger = true;// 是否是整数坐标
     private float cutoffwidth = 0;
     private Paint hintPaint ;
+    private  Rect rectF ;
+    private Paint paint ;
     public BarChartView(Context context, List<String> tagging,
                         List<String> xRawData, List<Float>... yRawData) {
         super(context);
@@ -91,8 +94,8 @@ public class BarChartView extends View {
     private void initView(Context context) {
         setWillNotDraw(false);
         this.mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        marginBottom = dip2px(25);
-        marginLeft = dip2px(45);
+        marginBottom = dip2px(10);
+        marginLeft = dip2px(30);
         marginRight = dip2px(10);
         marginTop = dip2px(10);
         taggingHeight = 0;
@@ -102,6 +105,8 @@ public class BarChartView extends View {
         hintPaint.setStrokeWidth(1);
         hintPaint.setStyle(Style.STROKE);
         hintPaint.setColor(getResources().getColor(R.color.gray_white));
+        paint = new Paint();
+        paint.setTextSize(sp2px(10));
     }
 
     private float mDownPosX = 0;
@@ -141,8 +146,10 @@ public class BarChartView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         this.canvasHeight = h;
         this.canvasWidth = w;
+        rectF = new Rect();
+        paint.getTextBounds(xString ,0 ,xString.length() ,rectF);
         coordinateRect = new RectF(marginLeft, marginTop + taggingHeight,
-                canvasWidth - marginRight, canvasHeight - marginBottom);
+                canvasWidth - marginRight , canvasHeight - marginBottom - rectF.height() * 3   );
         horizontalNum = (int) (coordinateRect.width() / dip2px(60));
         updateCutoffwidth();
     }
@@ -165,29 +172,28 @@ public class BarChartView extends View {
      * 画所有横向表格，包括X轴
      */
     private void drawAllXLine(Canvas canvas) {
-        float cutoffHeight = coordinateRect.height() / 5;
+        float cutoffHeight = (coordinateRect.height() - rectF.height() *3 ) / 5;
         int averageValue = (maxValue - minValue -1) / 5 + 1;
-        // float deviation = cutoffHeight / 5;
+
         float startX = coordinateRect.left + offsetWidth;
         float stopX = coordinateRect.right + offsetWidth;
         for (int i = 0; i < 6; i++) {
             if (yIndex == i) {
-                drawText("0", startX - dip2px(5), coordinateRect.top
-                                + cutoffHeight * i + dip2px(2), canvas, Align.RIGHT, 8,
+                drawText("0", startX - dip2px(5),
+                        coordinateRect.height()- dip2px(10) - rectF.height() / 2, canvas, Align.RIGHT, 8,
                         colorCoordinates);
                 mPaint.setColor(colorCoordinates);
                 canvas.drawLine(startX, coordinateRect.top, startX,
-                        coordinateRect.bottom, mPaint);
-                canvas.drawLine(startX, coordinateRect.top + cutoffHeight * i,
-                        stopX, coordinateRect.top + cutoffHeight * i, mPaint);
+                        coordinateRect.height()- dip2px(10) - rectF.height() /2, mPaint);
+                canvas.drawLine(startX, coordinateRect.height()- dip2px(10) - rectF.height() / 2,
+                        stopX, coordinateRect.height()- dip2px(10) - rectF.height() /2 , mPaint);  // x 轴
             } else {
                 drawText((maxValue - averageValue * i)
                             / priceWeight
                             + "", startX - dip2px(5), coordinateRect.top
                             + cutoffHeight * i + dip2px(2), canvas, Align.RIGHT, 8,
                     colorCoordinates);
-                Log.e(TAG, "startX: " + startX + "  width" + coordinateRect.width() );
-                canvas.drawLine(startX ,coordinateRect.top +cutoffHeight *i +dip2px(2) ,coordinateRect.width() , coordinateRect.top +cutoffHeight *i +dip2px(2) ,hintPaint);
+                canvas.drawLine(startX ,coordinateRect.top +cutoffHeight *i +dip2px(2) , startX + coordinateRect.width() ,  coordinateRect.top +cutoffHeight *i +dip2px(2) ,hintPaint);
         }
         }
     }
@@ -223,7 +229,7 @@ public class BarChartView extends View {
                     stopX = offsetWidth + coordinateRect.right;
                 } else {
                     if (stopY < originY) {
-                        if (data.get(j) >0) {
+                        if (data.get(j) > 0) {
                             drawText(getTwoStepAndInt(data.get(j) / priceWeight),
                                     (startX + stopX) / 2, stopY - dip2px(2),
                                     canvas, Align.CENTER, 8, colors[j
@@ -246,37 +252,43 @@ public class BarChartView extends View {
             }
             if (coordinateRect.left + cutoffwidth * i * (yRawData.size() + 1)
                     + cutoffwidth > offsetWidth + coordinateRect.left) {
-                drawText(xRawDatas.get(i), coordinateRect.left + cutoffwidth
-                                * i * (yRawData.size() + 1) + cutoffwidth + cutoffwidth
-                                * yRawData.size() / 2, canvasHeight - dip2px(5),
-                        canvas, Align.CENTER, 10, Color.BLACK); // X轴上的坐标
+                String s = xRawDatas.get(i);
+                if (s.length() >= 3) {
+                    for (int k = 0; k < 3; k++) {
+                        String text;
+                        if (s.length() == 3) {
+                            text = s.substring(k, k + 1);
+                            drawText(text, coordinateRect.left + cutoffwidth
+                                            * i * (yRawData.size() + 1) + cutoffwidth + cutoffwidth
+                                    * yRawData.size() / 2, coordinateRect.height()  - dip2px(5) + rectF.height() * k,
+                                    canvas, Align.CENTER, 10, Color.BLACK); // X轴上的坐标
+                        } else {
+                            if (k == 0) {
+                                text = s.substring(k, k + 2);
+                            } else {
+                                text = s.substring(k + 1, k + 2);
+                            }
+
+                            drawText(text, coordinateRect.left + cutoffwidth
+                                            * i * (yRawData.size() + 1) + cutoffwidth + cutoffwidth
+                                            * yRawData.size() / 2, coordinateRect.height() - dip2px(5) + rectF.height() * k,
+                                    canvas, Align.CENTER, 10, Color.BLACK); // X轴上的坐标
+                        }
+
+                    }
+                } else {
+                    String text;
+                    for (int m = 0; m < 2; m++) {
+                        text = s.substring(m , m+1);
+                        drawText(text, coordinateRect.left + cutoffwidth
+                                        * i * (yRawData.size() + 1) + cutoffwidth + cutoffwidth
+                                        * yRawData.size() / 2, coordinateRect.height()  - dip2px(5) + rectF.height() * m,
+                                canvas, Align.CENTER, 10, Color.BLACK); // X轴上的坐标
+                    }
+                }
             }
         }
     }
-
-    /**
-     * 设置标注
-     */
-    private void drawTagging(Canvas canvas) {
-        if (tagging == null) {
-            return;
-        }
-        mPaint.setStyle(Style.FILL);
-        for (int i = 0; i < tagging.size(); i++) {
-            TaggingCoordinate mTaggingCoordinate = taggingCoordinates.get(i);
-            float y = mTaggingCoordinate.height();
-            float startX = mTaggingCoordinate.width() + offsetWidth;
-            mPaint.setColor(colors[i % colors.length]);
-            canvas.drawRect(startX, y - dip2px(5), startX + dip2px(10), y
-                    + dip2px(5), mPaint);
-            startX += dip2px(12);
-            drawText(tagging.get(i), startX, y + dip2px(4), canvas, Align.LEFT,
-                    10, colors[i % colors.length]);
-        }
-    }
-
-
-
 
     /**
      * 设置值 tagging：标注 xRawData：x轴坐标 yRawData：为柱形图的内容
@@ -335,7 +347,7 @@ public class BarChartView extends View {
         for (int i = start ; i < stop; i++) {
             yRawDataNews.put(xRawDatas.get(i),yRawData.get(xRawDatas.get(i)));
         }
-        int maxValueNews = max;
+        int maxValueNews = maxValue;
         int minValueNews = 0;
         if (isInteger) {
             if (maxValueNews >= 0 && minValueNews >= 0) {
@@ -430,29 +442,15 @@ public class BarChartView extends View {
      * 根据数据大小返回Y坐标
      */
     private float getCutoffKLY(float price) {
-        float priceY = coordinateRect.bottom - coordinateRect.height()
+        float priceY =  coordinateRect.height()- dip2px(10) - rectF.height() / 2   - coordinateRect.height()
                 * (price - minValue) / (maxValue - minValue);
         if (priceY < coordinateRect.top)
             priceY = coordinateRect.top;
-        if (priceY > coordinateRect.bottom)
-            priceY = coordinateRect.bottom;
+        if (priceY > coordinateRect.height()- dip2px(10) - rectF.height() / 2)
+            priceY = coordinateRect.height()- dip2px(10) - rectF.height() / 2;
         return priceY;
     }
 
-    public String getCompany() {
-        return company;
-    }
-
-    /**
-     * 设置单位，是否需要替换单位
-     *
-     * @param company
-     * @param isCompanyUpdate
-     */
-    public void setCompany(String company, boolean isCompanyUpdate) {
-        this.isCompanyUpdate = isCompanyUpdate;
-        this.company = company;
-    }
 
     /**
      * 设置是否内容为整型
@@ -463,14 +461,6 @@ public class BarChartView extends View {
         isInteger = integer;
     }
 
-    /**
-     * 设置颜色
-     *
-     * @param colors
-     */
-    public void setColors(int[] colors) {
-        this.colors = colors;
-    }
 
     private static class TaggingCoordinate {
         private float height;
@@ -493,43 +483,11 @@ public class BarChartView extends View {
         }
     }
 
-    /**
-     * 返回最大值
-     **/
-    protected float getMaxArray(List<Float> array) {
-        if (array.size() == 0)
-            return 0;
-        float max = array.get(0) == Float.MAX_VALUE ? 0 : array.get(0);
-        for (float i : array) {
-            if (i == Float.MAX_VALUE) {
-                continue;
-            }
-            max = max > i ? max : i;
-        }
-
-        return max;
-    }
-
-    /**
-     * 返回坐标最小值
-     **/
-    protected float getMinArray(List<Float> array) {
-        if (array.size() == 0)
-            return 0;
-        float min = array.get(0) == Float.MAX_VALUE ? 0 : array.get(0);
-        for (float i : array) {
-            if (i == Float.MAX_VALUE) {
-                continue;
-            }
-            min = min < i ? min : i;
-        }
-        return min;
-    }
 
     protected void drawText(String text, float x, float y, Canvas canvas,
                             Align align, float textSize, @ColorInt int color) {
         Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
-        p.setTextSize(sp2px(12));
+        p.setTextSize(sp2px(10));
         p.setColor(color);
         p.setTextAlign(align);
         canvas.drawText(text, x, y, p);

@@ -135,8 +135,6 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                                     setFragment(1);
                                 }
                             }
-                        }else if (been.getCode() == 99){
-                            LoginHelper.needLogin(_mActivity ,"您还未登陆，请先登陆");
                         }
                         else {
                             setFragment(0);

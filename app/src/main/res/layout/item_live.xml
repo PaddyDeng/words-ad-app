@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="200dp">
+    android:layout_height="150dp">
 
     <TextView
         android:layout_width="30dp"
@@ -72,13 +72,14 @@
             android:id="@+id/name"
             android:textSize="15sp"
             android:layout_below="@id/time"
-            android:layout_marginTop="10px"
+            android:layout_marginTop="5dp"
             />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingRight="20dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/gray_white"
+            android:textColor="@color/gray_text"
             android:text="40分钟洞悉自己！不正经留学申请治疗中心！2期"
             android:maxLines="1"
             android:maxEms="40"
@@ -86,7 +87,7 @@
             android:id="@+id/introduction"
             android:textSize="13sp"
             android:layout_below="@id/name"
-            android:layout_marginTop="10px"
+            android:layout_marginTop="5dp"
             />
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -100,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:textSize="15sp"
-            android:textColor="@color/gray_white"
+            android:textColor="@color/gray_text"
             android:text="tina老师"
             android:id="@+id/teacher_name"
             android:gravity="center"
@@ -111,14 +112,14 @@
         <TextView
             android:layout_width="75dp"
             android:layout_height="30dp"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:text="预约"
             android:gravity="center"
             android:textColor="@color/white"
             android:background="@drawable/yellow_10round"
-            android:layout_marginBottom="50px"
             android:id="@+id/reserve"
+            android:layout_below="@id/introduction"
+            android:layout_marginTop="15dp"
             />
     </com.zhy.autolayout.AutoRelativeLayout>
 
