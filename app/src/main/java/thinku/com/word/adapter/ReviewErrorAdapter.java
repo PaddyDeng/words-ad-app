@@ -2,11 +2,13 @@ package thinku.com.word.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhy.autolayout.utils.AutoUtils;
@@ -44,9 +46,9 @@ public class ReviewErrorAdapter extends RecyclerView.Adapter<ReviewErrorAdapter.
     public void onBindViewHolder(ReviewErrorAdapter.ViewHolder holder, final int position) {
         WrongIndexBeen wrongIndexBeen = datas.get(position);
         holder.tv.setText(wrongIndexBeen.getName());
-        if (wrongIndexBeen.getStatus() == 1){
+        if (wrongIndexBeen.getType() == 1){
             setStatus(holder.status ,R.mipmap.error_unstart ,"未开始");
-        }else if (wrongIndexBeen.getStatus() == 2){
+        }else if (wrongIndexBeen.getType() == 2){
             setStatus(holder.status ,R.mipmap.error_complete ,"完成");
         }else{
             setStatus(holder.status ,R.mipmap.error_interrupt ,"中断");
@@ -67,13 +69,13 @@ public class ReviewErrorAdapter extends RecyclerView.Adapter<ReviewErrorAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        private final LinearLayout ll;
+        private final RelativeLayout ll;
         private final AutoZoomTextView tv;
         private TextView status ;
         public ViewHolder(View v) {
             super(v);
             AutoUtils.autoSize(v);
-            ll = (LinearLayout) v.findViewById(R.id.ll);
+            ll = (RelativeLayout) v.findViewById(R.id.ll);
             tv = (AutoZoomTextView) v.findViewById(R.id.tv);
             status = (TextView) v.findViewById(R.id.status);
         }

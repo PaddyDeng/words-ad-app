@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="152dp"
     android:background="@color/white"
@@ -70,13 +70,13 @@
         android:id="@+id/score"
         />
 
-    <com.zhy.autolayout.AutoLinearLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/score"
         android:orientation="horizontal"
         android:layout_alignTop="@id/score"
-        android:layout_marginLeft="20px"
+        android:layout_marginLeft="10dp"
         >
 
         <ImageView
@@ -103,9 +103,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:src="@mipmap/yellow_star"/>
-    </com.zhy.autolayout.AutoLinearLayout>
+    </LinearLayout>
     
-    <com.zhy.autolayout.AutoLinearLayout
+    <LinearLayout
         android:layout_width="90dp"
         android:layout_height="25dp"
         android:background="@drawable/main_10round_tv"
@@ -131,6 +131,6 @@
             android:text="试听"
             android:layout_marginLeft="10dp"
           />
-    </com.zhy.autolayout.AutoLinearLayout>
+    </LinearLayout>
 
-</com.zhy.autolayout.AutoRelativeLayout>
+</RelativeLayout>

@@ -46,6 +46,7 @@ public class DictionDetailAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final DictionDetailHolder dictionDetailHolder = (DictionDetailHolder) holder;
         String word = words.get(position);
+        dictionDetailHolder.textView.setSelected(false);
         if (!TextUtils.isEmpty(word)) {
             dictionDetailHolder.textView.setText(word);
             dictionDetailHolder.textView.setOnClickListener(new View.OnClickListener() {

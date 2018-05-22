@@ -9,7 +9,6 @@ public class WrongIndexBeen {
     private int start ;
     private int end ;
     private int type ;
-    private int status ;
 
     public int getType() {
         return type;
@@ -17,14 +16,6 @@ public class WrongIndexBeen {
 
     public void setType(int type) {
         this.type = type;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public String getName() {

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,6 +101,7 @@ public class DictionDetailActivity extends BaseActivity {
 
         }
         initView();
+        initRecycler();
     }
 
     /**
@@ -157,7 +159,13 @@ public class DictionDetailActivity extends BaseActivity {
                             }
                         });
                         translate.setText(StringUtils.spilt(recitWord.getWords().getTranslate()));
-                        words = StringUtils.splitString(recitWord.getWords().getWord());
+                        if (words != null) {
+                            words.clear();
+                            if (StringUtils.splitString(recitWord.getWords().getWord()) != null) {
+                                words.addAll(StringUtils.splitString(recitWord.getWords().getWord()));
+                                dictionDetailAdapter.notifyDataSetChanged();
+                            }
+                        }
                         addUpWordView();
                     }
                 }, new Consumer<Throwable>() {
@@ -174,8 +182,7 @@ public class DictionDetailActivity extends BaseActivity {
 
 
     public void initTimeText() {
-        choseTxt.setText("16");
-//        choseTxt.setTextSize(MeasureUtils.sp2px(this ,16));
+        choseTxt.setText("15");
         countTime = RxHelper.countDown(time)
                 .subscribe(new Consumer<Integer>() {
                     @Override
@@ -204,12 +211,13 @@ public class DictionDetailActivity extends BaseActivity {
             texts.add(textView);
             word.addView(textView);
         }
-        initRecycler();
+        initTimeText();
     }
 
     //  初始化RecyclerView 数据
     public void initRecycler() {
         wordSpilt.setLayoutManager(new GridLayoutManager(this, 3));
+        words = new ArrayList<>();
         dictionDetailAdapter = new DictionDetailAdapter(words, DictionDetailActivity.this);
         dictionDetailAdapter.setSelectListener(new SelectClickListener() {
             @Override
@@ -229,7 +237,6 @@ public class DictionDetailActivity extends BaseActivity {
             }
         });
         wordSpilt.setAdapter(dictionDetailAdapter);
-        initTimeText();
     }
 
 
@@ -265,7 +272,9 @@ public class DictionDetailActivity extends BaseActivity {
                     fromWordsIdGetWordDetails(wordList.get(wordIdIndex), wordList.size() + "", wordIdIndex + "");
                 }
             } else {
-                showCompelete();
+                if (i == (texts.size())) {
+                    showCompelete();
+                }
             }
         } else {
             i++;

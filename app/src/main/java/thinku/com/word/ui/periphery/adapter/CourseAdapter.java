@@ -102,7 +102,6 @@ public class CourseAdapter extends RecyclerView.Adapter {
          private AutoRelativeLayout rl ;
          public CourseHolder(View itemView) {
              super(itemView);
-             AutoUtils.autoSize(itemView);
              name = (TextView) itemView.findViewById(R.id.name);
              people = (TextView) itemView.findViewById(R.id.people);
              listen = (LinearLayout) itemView.findViewById(R.id.listen);

@@ -2,36 +2,28 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/gray_round_ll"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="15dp"
+    android:id="@+id/ll">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/ll"
-        android:layout_width="300px"
-        android:layout_height="150px"
-        android:layout_marginLeft="10px"
-        android:layout_marginTop="20px"
-        android:background="@drawable/gray_round_ll">
 
         <thinku.com.word.view.AutoZoomTextView
             android:id="@+id/tv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20px"
-            android:layout_marginRight="30px"
             android:gravity="center"
             android:text="0-20" />
-    </LinearLayout>
 
     <TextView
-        android:layout_width="60dp"
-        android:layout_height="25dp"
-        android:text="未完成"
-        android:layout_marginTop="20px"
-        android:textSize="13sp"
-        android:textColor="@color/white"
-        android:gravity="center"
         android:id="@+id/status"
+        android:layout_width="50dp"
+        android:layout_height="15dp"
         android:background="@mipmap/error_complete"
-        />
+        android:gravity="center"
+        android:text="未完成"
+        android:textColor="@color/white"
+        android:textSize="11sp" />
 </RelativeLayout>

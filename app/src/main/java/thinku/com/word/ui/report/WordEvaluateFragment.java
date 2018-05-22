@@ -37,6 +37,7 @@ import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.recite.WordErrorActivity;
+import thinku.com.word.ui.report.bean.ReviewBean;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.C;
 import thinku.com.word.view.SuccessDialog;
@@ -130,7 +131,7 @@ public class WordEvaluateFragment extends BaseActivity {
         context.startActivity(intent);
     }
 
-    public static void start(Context context, ArrayList<String> words) {
+    public static void start(Context context, ArrayList<String> words  ) {
         Intent intent = new Intent(context, WordEvaluateFragment.class);
         intent.putStringArrayListExtra("words", words);
         context.startActivity(intent);
@@ -150,12 +151,13 @@ public class WordEvaluateFragment extends BaseActivity {
         Intent intent = null;
         intent = getIntent();
         if (intent != null) {
-            tag = getIntent().getIntExtra("tag", 100);
+            tag = getIntent().getIntExtra("tag", 0);
             words = getIntent().getStringArrayListExtra("words");
             wordId = getIntent().getStringExtra("wordId");
              if (tag ==C.NORMAL){
                 reciteWords();
             }
+            //  传过来一个数组 必定是复习状态
             if (words != null && words.size() > 0) {
                 tag = C.REVIEW ;
                 reciteWords(words);
@@ -230,18 +232,18 @@ public class WordEvaluateFragment extends BaseActivity {
                         showLoadDialog();
                     }
                 })
-        .subscribe(new Consumer<ResultBeen<List<String>>>() {
+        .subscribe(new Consumer<ReviewBean>() {
             @Override
-            public void accept(@NonNull ResultBeen<List<String>> voidResultBeen) throws Exception {
+            public void accept(@NonNull ReviewBean voidResultBeen) throws Exception {
                 dismissLoadDialog();
                 if (voidResultBeen.getCode() ==0 ){
                     nowFinsh();
                 }else {
                     if (words != null ){
                         words.clear();
-                        words.addAll(voidResultBeen.getData());
+                        words.addAll(voidResultBeen.getWords());
                     }else{
-                        words = (ArrayList<String>) voidResultBeen.getData();
+                        words = (ArrayList<String>) voidResultBeen.getWords();
                     }
                     reciteWords(words);
                 }
@@ -309,7 +311,7 @@ public class WordEvaluateFragment extends BaseActivity {
      *  日历分享
      */
     public void share(){
-
+        toTast(this ,"分享");
     }
 
     /**
@@ -608,7 +610,7 @@ public class WordEvaluateFragment extends BaseActivity {
                                 posiiton ++ ;
                                 if (posiiton == words.size()){
                                     share();
-                                }else {
+                                }else if (posiiton < words.size()){
                                     fromWordsIdGetWordDetails(words.get(posiiton));
                                 }
                             }
@@ -635,7 +637,11 @@ public class WordEvaluateFragment extends BaseActivity {
                             dismissLoadDialog();
                             posiiton ++ ;
                             if (words != null){
-                                fromWordsIdGetWordDetails(words.get(posiiton));
+                                if (posiiton < words.size()) {
+                                    fromWordsIdGetWordDetails(words.get(posiiton));
+                                }else{
+                                    MainActivity.toMain(WordEvaluateFragment.this);
+                                }
                             }
 
                         }

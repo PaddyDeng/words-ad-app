@@ -55,7 +55,7 @@ public class RecitWordBeen<T> implements Serializable {
     private int userNeedReviewWords;
     @SerializedName("do")
     private int doX;
-    private int percent;
+    private String percent;
     private WordsBean words;
     private T question;
     private List<LowSentenceBean> sentence;
@@ -85,11 +85,11 @@ public class RecitWordBeen<T> implements Serializable {
         this.doX = doX;
     }
 
-    public int getPercent() {
+    public String getPercent() {
         return percent;
     }
 
-    public void setPercent(int percent) {
+    public void setPercent(String percent) {
         this.percent = percent;
     }
 
