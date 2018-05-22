@@ -42,9 +42,7 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
         observable.subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(@NonNull Boolean aBoolean) throws Exception {
-                if (!aBoolean ) {
-                    now_type.setText("你还未选择记忆模式");
-                }
+                init();
             }
         });
         loginObservable = RxBus.get().register(C.RXBUS_LOGIN ,Boolean.class);

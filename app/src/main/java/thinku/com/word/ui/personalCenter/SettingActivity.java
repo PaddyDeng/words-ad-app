@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +50,7 @@ import thinku.com.word.callback.ICallBack;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.photo.ClipImageActivity;
+import thinku.com.word.ui.other.LoginActivity;
 import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.personalCenter.bean.ImageBean;
 import thinku.com.word.ui.personalCenter.dialog.ModifyPhoneOrEmailDialog;
@@ -108,6 +110,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     TextView font;
     @BindView(R.id.font_rl)
     RelativeLayout fontRl;
+    @BindView(R.id.exit_login)
+    TextView exitLogin;
     private LinearLayout personal_detail;
 
     private UserInfo userInfo;
@@ -125,6 +129,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     //  更新
     private SimpleUpdateApk mSimpleUpdateApk;
+    private boolean isLogin = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -153,17 +158,29 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         email.setText(userInfo.getEmail());
         pass.setText(userInfo.getPhone());
         version.setText(VersionInfo.versionName(SettingActivity.this));
+        if (TextUtils.isEmpty(userInfo.getUid())) {
+            isLogin = false;
+        } else {
+            isLogin = true;
+        }
+        initLoginName();
     }
 
+    public void initLoginName() {
+        if (isLogin) {
+            exitLogin.setText("退出当前账户");
+        }else{
+            exitLogin.setText("请登录");
+        }
+    }
 
     private void findView() {
         titleT.setText("账号设置");
     }
 
 
-
-    @OnClick({R.id.back ,R.id.portrait_rl , R.id.name_rl ,R.id.nick_rl ,R.id.phone_rl , R.id.email_rl ,
-    R.id.pass_rl ,R.id.version_rl ,R.id.font_rl ,R.id.exit_login})
+    @OnClick({R.id.back, R.id.portrait_rl, R.id.name_rl, R.id.nick_rl, R.id.phone_rl, R.id.email_rl,
+            R.id.pass_rl, R.id.version_rl, R.id.font_rl, R.id.exit_login})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back:
@@ -194,34 +211,39 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 FontSizeSettingActivity.start(SettingActivity.this);
                 break;
             case R.id.exit_login:
-                clearUi();
+                if (isLogin) {
+                    clearUi();
+                }else{
+                    Intent intent = new Intent(SettingActivity.this ,LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
         }
     }
 
-    public void clearUi(){
+    public void clearUi() {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(SettingActivity.this);
         alertDialog.setMessage("是否退出账号");
         alertDialog.setCancelable(true);
         alertDialog.setPositiveButton("是", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        SharedPreferencesUtils.clearLogin(SettingActivity.this);
-                        SharedPreferencesUtils.clearMatch(SettingActivity.this);
-                        name.setText("");
-                        nick.setText("");
-                        portrait.setImageBitmap(null);
-                        phone.setText("");
-                        pass.setText("");
-                        email.setText("");
-                        SharePref.saveCookie(mContext, "");
-                        MainActivity.toMain(SettingActivity.this);
-                        SharedPreferencesUtils.saveMemoryMode(mContext ,"");
-                        SharedPreferencesUtils.setImage(mContext , "");
-                        RxBus.get().post(C.RXBUS_EXLOING ,true);
-                    }
-                });
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                SharedPreferencesUtils.clearLogin(SettingActivity.this);
+                SharedPreferencesUtils.clearMatch(SettingActivity.this);
+                name.setText("");
+                nick.setText("");
+                portrait.setImageBitmap(null);
+                phone.setText("");
+                pass.setText("");
+                email.setText("");
+                SharePref.saveCookie(mContext, "");
+                MainActivity.toMain(SettingActivity.this);
+                SharedPreferencesUtils.saveMemoryMode(mContext, "");
+                SharedPreferencesUtils.setImage(mContext, "");
+                RxBus.get().post(C.RXBUS_EXLOING, true);
+            }
+        });
         alertDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -438,7 +460,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         toTast(SettingActivity.this, imageBeanResultBeen.getMessage());
                         if (getHttpResSuc(imageBeanResultBeen.getCode())) {
                             savePhoto(imageBeanResultBeen.getImage());
-                            RxBus.get().post(C.RXBUS_HEAD_IMAGE ,imageBeanResultBeen.getImage());
+                            RxBus.get().post(C.RXBUS_HEAD_IMAGE, imageBeanResultBeen.getImage());
                         }
                     }
 

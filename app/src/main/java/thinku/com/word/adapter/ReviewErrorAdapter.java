@@ -44,6 +44,13 @@ public class ReviewErrorAdapter extends RecyclerView.Adapter<ReviewErrorAdapter.
     public void onBindViewHolder(ReviewErrorAdapter.ViewHolder holder, final int position) {
         WrongIndexBeen wrongIndexBeen = datas.get(position);
         holder.tv.setText(wrongIndexBeen.getName());
+        if (wrongIndexBeen.getStatus() == 1){
+            setStatus(holder.status ,R.mipmap.error_unstart ,"未开始");
+        }else if (wrongIndexBeen.getStatus() == 2){
+            setStatus(holder.status ,R.mipmap.error_complete ,"完成");
+        }else{
+            setStatus(holder.status ,R.mipmap.error_interrupt ,"中断");
+        }
         holder.ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,6 +58,7 @@ public class ReviewErrorAdapter extends RecyclerView.Adapter<ReviewErrorAdapter.
             }
         });
     }
+
 
     @Override
     public int getItemCount() {
@@ -60,15 +68,19 @@ public class ReviewErrorAdapter extends RecyclerView.Adapter<ReviewErrorAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         private final LinearLayout ll;
-        private final ImageView iv;
         private final AutoZoomTextView tv;
-
+        private TextView status ;
         public ViewHolder(View v) {
             super(v);
             AutoUtils.autoSize(v);
             ll = (LinearLayout) v.findViewById(R.id.ll);
-            iv = (ImageView) v.findViewById(R.id.iv);
             tv = (AutoZoomTextView) v.findViewById(R.id.tv);
+            status = (TextView) v.findViewById(R.id.status);
         }
+    }
+
+    public void setStatus(TextView text , int imageResoure , String status){
+        text.setText(status);
+        text.setBackground(context.getResources().getDrawable(imageResoure));
     }
 }

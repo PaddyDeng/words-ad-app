@@ -222,6 +222,7 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
             if (MyApplication.mediaPlayer.isPlaying()) MyApplication.mediaPlayer.stop();
             MyApplication.mediaPlayer.release();
         }
+        OCRProxy.orcRelease();
     }
 
 }

@@ -21,7 +21,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,17 +28,14 @@ import butterknife.OnClick;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
+import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.adapter.ReciteWordAdapter;
-import thinku.com.word.adapter.ReciteWordParentAdapter;
-import thinku.com.word.base.BaseFragmentActivitiy;
+import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.RecitWordBeen;
-import thinku.com.word.bean.ReciteWordParent;
 import thinku.com.word.bean.ResultBeen;
-import thinku.com.word.bean.WordEvaluateEvent;
-import thinku.com.word.bean.WordReviewTodayBeen;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.recite.WordErrorActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.C;
@@ -49,7 +45,8 @@ import thinku.com.word.view.SuccessDialog;
  * Created by Administrator on 2018/2/22.
  */
 
-public class WordEvaluateFragment extends BaseFragmentActivitiy {
+public class WordEvaluateFragment extends BaseActivity {
+
     private static final String TAG = WordEvaluateFragment.class.getSimpleName();
     @BindView(R.id.newWord)
     TextView newWord;
@@ -108,20 +105,15 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
     private RecitWordBeen recitWord;
     private int status;   //  单词状态
     private String wordId;   //  单词ID
-    private int tag;
-
+    private int tag;  //  tag ==  100    背单词   ，
+    private boolean isNewAiBinHaoSi = false ;  //  是否进入新艾宾浩斯
     //   根据List<wordsId>获取数据
     private ArrayList<String> words;
-    private int i = 0;  //  遍历word的位置
 
-    private List<ReciteWordParent> reciteWordParents;
-    private ReciteWordParentAdapter reciteWordParentAdapter;
-
-
+    private int posiiton = 0  ;
     private List<RecitWordBeen.LowSentenceBean>  lowSentenceBeen ;
     private List<RecitWordBeen.LowSentenceBean>   sentenceBeen ;
 
-    private ReciteWordAdapter reciteWordAdapter ;
 
 
     private MediaPlayer dimPlayer ;
@@ -130,12 +122,10 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
     private MediaPlayer knowWellPlayer ;
     /**
      * @param context
-     * @param planWords
-     * @param tag
+     * @param tag     tag 表明是背单词进入 还是其他情况进入
      */
-    public static void start(Context context, String planWords, int tag) {
+    public static void start(Context context, int tag) {
         Intent intent = new Intent(context, WordEvaluateFragment.class);
-        intent.putExtra("planWords", planWords);
         intent.putExtra("tag", tag);
         context.startActivity(intent);
     }
@@ -160,18 +150,18 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
         Intent intent = null;
         intent = getIntent();
         if (intent != null) {
-            planWords = getIntent().getStringExtra("planWords");
             tag = getIntent().getIntExtra("tag", 100);
             words = getIntent().getStringArrayListExtra("words");
             wordId = getIntent().getStringExtra("wordId");
-            if (!TextUtils.isEmpty(planWords)) {
+             if (tag ==C.NORMAL){
                 reciteWords();
             }
             if (words != null && words.size() > 0) {
+                tag = C.REVIEW ;
                 reciteWords(words);
             }
             if (!TextUtils.isEmpty(wordId)) {
-                fromWordsIdGetWordDetails(wordId, 1 + "", 1 + "", C.NORMAL_RECITE + "");
+                fromWordsIdGetWordDetails(wordId);
             }
         }
         setFocusable();
@@ -187,7 +177,12 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
     }
 
     /**
-     * 正常获取word ，直接获取word 详情
+     *   正常背单词情况
+     *   根据code不同  处理情况不同
+     *   code  ==2    已经背完单词  返回首页
+     *   code == 98  调新艾宾浩斯接口
+     *   code  == 96  分享
+     *   code == 95  调老艾宾浩斯接口
      */
     public void normalReciteWords() {
 
@@ -205,7 +200,13 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
                         if (getHttpResSuc(recitWordBeen.getCode())) {
                             referUi1(recitWordBeen);
                         } else if (recitWordBeen.getCode() == 98) {
-                            isReview();
+                            newAiBinHaoSi();
+                        }else if(recitWordBeen.getCode() ==2){
+                            MainActivity.toMain(WordEvaluateFragment.this);
+                        }else if (recitWordBeen.getCode() == 96){
+                            share();
+                        }else if (recitWordBeen.getCode() == 95){
+                            oldAiBinHaoSi();
                         }
                     }
                 }, new Consumer<Throwable>() {
@@ -216,17 +217,115 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
                 }));
     }
 
+    /**    is-review
+     *   新艾宾浩斯接口
+     *   code  == 0  等于0  调用nowFinsh
+     *   code 不等于0 ， 返回wordId数组 ,  用id 获得word ，若未熟识或者认识，将该id从此数组中去除，直到此数组为0  调用nowFinsh
+     */
+    public  void newAiBinHaoSi(){
+        addToCompositeDis(HttpUtil.isReviewObservable()
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        showLoadDialog();
+                    }
+                })
+        .subscribe(new Consumer<ResultBeen<List<String>>>() {
+            @Override
+            public void accept(@NonNull ResultBeen<List<String>> voidResultBeen) throws Exception {
+                dismissLoadDialog();
+                if (voidResultBeen.getCode() ==0 ){
+                    nowFinsh();
+                }else {
+                    if (words != null ){
+                        words.clear();
+                        words.addAll(voidResultBeen.getData());
+                    }else{
+                        words = (ArrayList<String>) voidResultBeen.getData();
+                    }
+                    reciteWords(words);
+                }
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(@NonNull Throwable throwable) throws Exception {
+                dismissLoadDialog();
+            }
+        }));
+    }
+
+    /**
+     *  if  成功  又调用正常背单词接口
+     */
+    public void nowFinsh(){
+        addToCompositeDis(HttpUtil.nowFinshObservable()
+        .subscribe(new Consumer<ResultBeen<Void>>() {
+            @Override
+            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                if (getHttpResSuc(voidResultBeen.getCode())){
+                    normalReciteWords();
+                }
+            }
+        }));
+    }
+
+    /**   review_casewords
+     *   老艾宾浩斯接口
+     *   code = 2  分享
+     *   否则 返回wordId 数组 ，用id 获得word ，若未熟识或者认识，将该id从此数组中去除，直到此数组为0   弹分享
+     */
+    public void oldAiBinHaoSi(){
+        addToCompositeDis(HttpUtil.reviewCaseObservable()
+        .doOnSubscribe(new Consumer<Disposable>() {
+            @Override
+            public void accept(@NonNull Disposable disposable) throws Exception {
+                showLoadDialog();
+            }
+        }).subscribe(new Consumer<ResultBeen<List<String>>>() {
+                    @Override
+                    public void accept(@NonNull ResultBeen<List<String>> reviewCaseBean) throws Exception {
+                        dismissLoadDialog();
+                        if (reviewCaseBean.getCode() == 2 ){
+                            share();
+                        }else {
+                            if (words != null){
+                                words.clear();
+                                words.addAll(reviewCaseBean.getData());
+                            }else{
+                                words = (ArrayList<String>) reviewCaseBean.getData();
+                            }
+                        }
+                        reciteWords(words);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        dismissLoadDialog();
+                    }
+                }));
+    }
+
+    /**
+     *  日历分享
+     */
+    public void share(){
+
+    }
+
+    /**
+     * @param recitWord
+     */
     public void referUi1(final RecitWordBeen recitWord) {
         this.recitWord = recitWord;
         initRecycler();
         //  首页显示的内容
-        newWord.setText("新学" + recitWord.getNeedReviewWords() + " |需复习" + recitWord.getUserNeedReviewWords());
+        setStudyAndReviewNum(recitWord);
         prencente.setText("认知率" + recitWord.getPercent() + "%");
         phonogram.setText(recitWord.getWords().getPhonetic_us());
         name.setText(recitWord.getWords().getTranslate());
-        if (C.NORMAL.equals(recitWord.getTag())) {
+        if (tag == 100) {
             blurry.setText("模糊");
-        } else if (C.TAGS.equals(recitWord.getTag())) {
+        } else {
             blurry.setText("忘记");
         }
         IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
@@ -257,6 +356,30 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
 
             }
         });
+    }
+
+    /**
+     *  task == 3  老艾宾浩斯  新艾宾浩斯是背单词中
+     * 新学 需复习 中
+     * 新学数据为 do
+     * 需复习  正常背单词 userNeedRevies    进入新艾宾浩斯 needReviews   + 剩余数组   , 复习模式下  数组数量
+     **/
+    public void setStudyAndReviewNum(RecitWordBeen   recitWord){
+        if (MyApplication.task != 3){
+            if (tag == C.NORMAL) {
+                newWord.setText("新学" + recitWord.getDoX() + " |需复习" + recitWord.getUserNeedReviewWords());
+            }else{
+                if (words != null ) newWord.setText("新学" + recitWord.getDoX() + " |需复习" + words.size());
+            }
+        }else{
+            if (isNewAiBinHaoSi){
+                newWord.setText("新学" + recitWord.getDoX() + " |需复习" + (recitWord.getNeedReviewWords() + words.size())
+                );
+            }else {
+                newWord.setText("新学" + recitWord.getDoX() + " |需复习" + recitWord.getNeedReviewWords());
+            }
+
+        }
     }
 
     /**
@@ -316,55 +439,62 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
     }
 
 
-    /**
-     * 从tag 获取wordsId
-     */
-    public void fromTagGetWrodsId(int tag) {
 
-        addToCompositeDis(HttpUtil.wordReviewTodayBeenObservable(tag + "")
+    /**
+     *   tag  == 100    背单词  ，   正常背单词 和艾宾浩斯背单词
+     *
+     *   tag == 200 ,  复习单词
+     */
+    public void reciteWords() {
+         //
+        if (tag == C.NORMAL) {
+            if (MyApplication.task == 3){
+                addToCompositeDis(HttpUtil.reviewCaseObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
                         showLoadDialog();
                     }
-                }).subscribe(new Consumer<WordReviewTodayBeen>() {
-                    @Override
-                    public void accept(@NonNull WordReviewTodayBeen wordReviewTodayBeen) throws Exception {
-                        dismissLoadDialog();
-                        fromWordsIdGetWordDetails(wordReviewTodayBeen.getWordsId(), wordReviewTodayBeen.getAll(), wordReviewTodayBeen.getNow(), C.TAGS);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        dismissLoadDialog();
-                    }
-                }));
-    }
-
-
-    //   请求复习单词
-    public void reciteWords() {
-        if (tag == 100) {
-            normalReciteWords();
-        } else {
-            //   获取wordsId
-            fromTagGetWrodsId(tag);
+                }).subscribe(new Consumer<ResultBeen<List<String>>>() {
+                            @Override
+                            public void accept(@NonNull ResultBeen<List<String>> listResultBeen) throws Exception {
+                                dismissLoadDialog();
+                                if (words != null){
+                                    words.clear();
+                                    words.addAll(listResultBeen.getData());
+                                }else{
+                                    posiiton  = 0 ;
+                                    words = (ArrayList<String>) listResultBeen.getData();
+                                    fromWordsIdGetWordDetails(words.get(posiiton));
+                                }
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                dismissLoadDialog();
+                            }
+                        }));
+            }else {
+                normalReciteWords();
+            }
+        }else {
+             //  复习单词
         }
     }
 
     /**
      * 通过wordsId  数组获取word 详情
-     *
      * @param wordIds
      */
     public void reciteWords(ArrayList<String> wordIds) {
-        fromWordsIdGetWordDetails(wordIds.get(0), wordIds.size() + "", 0 + "", C.LISTWORD);
+        posiiton = 0 ;
+        fromWordsIdGetWordDetails(wordIds.get(posiiton));
     }
 
     /**
      * 从wordsId 获取word 详情
      */
-    public void fromWordsIdGetWordDetails(final String wordsId, final String all, final String now, final String tag) {
+    public void fromWordsIdGetWordDetails(final String wordsId) {
         addToCompositeDis(HttpUtil.wordDetailsObservable(wordsId)
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -376,7 +506,6 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
                     @Override
                     public void accept(@NonNull RecitWordBeen recitWordBeen) throws Exception {
                         dismissLoadDialog();
-                        recitWordBeen.setTag(tag);
                         referUi1(recitWordBeen);
 
                     }
@@ -388,30 +517,6 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
                 }));
     }
 
-    /**
-     * 是否为review 状态
-     */
-    public void isReview() {
-
-        addToCompositeDis(HttpUtil.isReviewObservable()
-                .doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(@NonNull Disposable disposable) throws Exception {
-                        showLoadDialog();
-                    }
-                })
-                .subscribe(new Consumer<ResultBeen<Void>>() {
-                    @Override
-                    public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                        dismissLoadDialog();
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        dismissLoadDialog();
-                    }
-                }));
-    }
 
     @OnClick({R.id.back, R.id.familiar, R.id.errors, R.id.unknow, R.id.know, R.id.blurry})
     public void click(View view) {
@@ -421,42 +526,41 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
                 break;
             case R.id.familiar:
                 if (knowWellPlayer != null && !knowWellPlayer.isPlaying()) knowWellPlayer.start();
-                status = C.LGWordStatusFamiliar;
-                WordEvaluateEvent wordEvaluateEvent = new WordEvaluateEvent();
-                wordEvaluateEvent.setStatus(status + "");
-                wordEvaluateEvent.setWordId(this.recitWord.getWords().getId());
-                wordEvaluateEvent.setTag(recitWord.getTag() + "");
-                updataStatus(wordEvaluateEvent);
+                updataStatus(C.LGWordStatusFamiliar);
                 break;
             case R.id.errors:
                 WordErrorActivity.start(WordEvaluateFragment.this, wordId);
                 break;
             case R.id.unknow:
                 if (notKnowPlayer != null && !notKnowPlayer.isPlaying()) notKnowPlayer.start();
-                WordEvaluateEvent wordEvaluateEvent1 = new WordEvaluateEvent();
-                wordEvaluateEvent1.setStatus(C.LGWordStatusIncoginzance + "");
-                wordEvaluateEvent1.setWordId(this.recitWord.getWords().getId());
-                wordEvaluateEvent1.setTag(recitWord.getTag() + "");
-                updataStatus(wordEvaluateEvent1);
+                if (tag == C.NORMAL) {
+                    addWords(recitWord);
+                }
+                updataStatus(C.LGWordStatusIncoginzance);
                 break;
             case R.id.know:
                 if (knowPlayer != null && !knowPlayer.isPlaying()) knowPlayer.start();
-                WordEvaluateEvent wordEvaluateEvent2 = new WordEvaluateEvent();
-                wordEvaluateEvent2.setStatus(C.LGWordStatusKnow + "");
-                wordEvaluateEvent2.setWordId(this.recitWord.getWords().getId());
-                wordEvaluateEvent2.setTag(recitWord.getTag() + "");
-                updataStatus(wordEvaluateEvent2);
-                break;
+                updataStatus(C.LGWordStatusKnow);
+                 break;
             case R.id.blurry:
                 if (dimPlayer != null && !dimPlayer.isPlaying()) dimPlayer.start();
-                WordEvaluateEvent wordEvaluateEvent3 = new WordEvaluateEvent();
-                wordEvaluateEvent3.setStatus(C.LGWordStatusVague + "");
-                wordEvaluateEvent3.setWordId(this.recitWord.getWords().getId());
-                wordEvaluateEvent3.setTag(recitWord.getTag() + "");
-                updataStatus(wordEvaluateEvent3);
+                if (tag == C.NORMAL) {
+                    addWords(recitWord);
+                }
+                if ("忘记".equals(blurry.getText().toString().trim())) {
+                    updataStatus(C.LGWordStatusForget);
+                }else{
+                    updataStatus(C.LGWordStatusVague);
+                }
                 break;
         }
     }
+
+   public void addWords(RecitWordBeen recitWord){
+       if (words != null){
+           words.add(recitWord.getWords().getId());
+       }
+   }
 
     @Override
     protected void onDestroy() {
@@ -481,53 +585,68 @@ public class WordEvaluateFragment extends BaseFragmentActivitiy {
     }
 
     /**
-     * 上传状态
+     *  背单词中 正常背单词 上传状态   又调用背单词接口
+     *   words  中 用worIds 获取数据
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void updataStatus(final WordEvaluateEvent wordEvaluateEvent) {
-        if (!TextUtils.isEmpty(wordEvaluateEvent.getTag())) {
-            if (C.LISTWORD.equals(wordEvaluateEvent.getTag())) {
-                addToCompositeDis(HttpUtil.reviewUpdataObservable(wordEvaluateEvent.getWordId(), wordEvaluateEvent.getStatus())
-                        .subscribe(new Consumer<ResultBeen<Void>>() {
-                            @Override
-                            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                                if (getHttpResSuc(voidResultBeen.getCode())) {
-                                    if (i >= (words.size() - 1)) {
-                                        showCompelete();
-                                    } else {
-                                        i++;
-                                        fromWordsIdGetWordDetails(words.get(i), words.size() + "", i + "", C.LISTWORD);
-                                    }
-                                } else {
-                                    toTast(WordEvaluateFragment.this, voidResultBeen.getMessage());
+    public void updataStatus(int status) {
+        if (tag == C.NORMAL){
+            //  背单词状态上传
+            addToCompositeDis(HttpUtil.updataStatus(recitWord.getWords().getId() ,status +"")
+            .doOnSubscribe(new Consumer<Disposable>() {
+                @Override
+                public void accept(@NonNull Disposable disposable) throws Exception {
+                    showLoadDialog();
+                }
+            }).subscribe(new Consumer<ResultBeen<Void>>() {
+                        @Override
+                        public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                            dismissLoadDialog();
+                            if (words == null || words.size() <= 0 ){
+                                reciteWords();
+                            }else{
+                                posiiton ++ ;
+                                if (posiiton == words.size()){
+                                    share();
+                                }else {
+                                    fromWordsIdGetWordDetails(words.get(posiiton));
                                 }
                             }
-                        }));
-            } else {
-                addToCompositeDis(HttpUtil.updataStatus(wordEvaluateEvent.getWordId(), wordEvaluateEvent.getStatus())
-                        .subscribe(new Consumer<ResultBeen<Void>>() {
-                            @Override
-                            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                                if (getHttpResSuc(voidResultBeen.getCode())) {
-                                    if (C.NORMAL.equals(wordEvaluateEvent.getTag())) {
-                                        if (false) {
-                                            showCompelete();
-                                        } else {
-                                            reciteWords();
-                                        }
-                                    } else if (C.TAGS.equals(wordEvaluateEvent.getTag())) {
-                                        if (false) {
-                                            showCompelete();
-                                        } else {
-                                            fromTagGetWrodsId(tag);
-                                        }
-                                    }
-                                } else {
-                                    toTast(WordEvaluateFragment.this, voidResultBeen.getMessage());
-                                }
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@NonNull Throwable throwable) throws Exception {
+                            dismissLoadDialog();
+                            toTast(WordEvaluateFragment.this ,throwable.getMessage());
+                        }
+                    }));
+
+        }else if (tag == C.REVIEW){
+            // 复习模式下上传
+            addToCompositeDis(HttpUtil.reviewUpdataObservable(recitWord.getWords().getId() ,status +"")
+            .doOnSubscribe(new Consumer<Disposable>() {
+                @Override
+                public void accept(@NonNull Disposable disposable) throws Exception {
+                    showLoadDialog();
+                }
+            }).subscribe(new Consumer<ResultBeen<Void>>() {
+                        @Override
+                        public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                            dismissLoadDialog();
+                            posiiton ++ ;
+                            if (words != null){
+                                fromWordsIdGetWordDetails(words.get(posiiton));
                             }
-                        }));
-            }
+
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@NonNull Throwable throwable) throws Exception {
+                            dismissLoadDialog();
+                            toTast(WordEvaluateFragment.this ,throwable.toString());
+                        }
+                    }));
+
         }
     }
 

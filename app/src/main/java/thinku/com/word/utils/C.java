@@ -14,9 +14,8 @@ public class C {
 
     public static final int NORMAL_RECITE = 100 ;   //  正常背单词
 
-    public static final String NORMAL = "normal";
-    public static final String TAGS = "tags" ;
-    public static final String LISTWORD = "list_word" ;  //  已知list数组 获取word详情
+    public static final int NORMAL = 100;  //  背单词功能
+    public static final int REVIEW = 200 ; //  其他背单词进入
 
 
     public static final int PK_MATCH_SUCCESS = 1 ;   //  匹配成功

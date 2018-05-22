@@ -11,6 +11,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import thinku.com.word.R;
@@ -29,6 +30,8 @@ public class GlideUtils {
                 .placeholder(R.mipmap.short_defult)//占位图
                 .error(R.mipmap.short_defult)//加载错误占位图
                 .crossFade(300)//过渡动画
+                .skipMemoryCache(false)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(iv);
     }
     public void loadGuide(Context context,int id,ImageView iv){
@@ -43,6 +46,8 @@ public class GlideUtils {
 //                .placeholder(R.mipmap.short_defult)//占位图
 //                .error(R.mipmap.short_defult)//加载错误占位图
                 .crossFade(300)//过渡动画
+                .skipMemoryCache(false)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(iv);
     }
 
@@ -53,6 +58,8 @@ public class GlideUtils {
                 .error(R.mipmap.short_defult)//加载错误占位图
                 .crossFade(300)//过渡动画
                 .transform(new GlideRoundTransform(context,10))
+                .skipMemoryCache(false)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(iv);
     }
     //加载圆形图片
@@ -62,6 +69,8 @@ public class GlideUtils {
                 .asBitmap()
                 .placeholder(R.mipmap.short_defult)//占位图
                 .error(R.mipmap.short_defult)//加载错误占位图
+                .skipMemoryCache(false)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(new BitmapImageViewTarget(iv){
             @Override
             protected void setResource(Bitmap resource) {

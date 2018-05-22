@@ -38,6 +38,7 @@ public class MyApplication extends Application {
     private Stack<Activity> activityStack;
     private static MyApplication myApplication;
     public static MediaPlayer mediaPlayer ;
+    public static int task ;
     public static Context getInstance() {
         return mContext;
     }
@@ -84,6 +85,7 @@ public class MyApplication extends Application {
 //        refWatcher = LeakCanary.install(this);
         MobSDK.init(this);   //  分享设置
         SpeechUtility.createUtility(this, SpeechConstant.APPID +"=5af9002c");  //  讯飞语音
+
 //        Stetho.initializeWithDefaults(this);
     }
 

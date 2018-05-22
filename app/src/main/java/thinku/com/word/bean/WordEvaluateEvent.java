@@ -7,15 +7,6 @@ package thinku.com.word.bean;
 public class WordEvaluateEvent {
     private String wordId ;
     private String status ;
-    private String tag ;
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
 
     public WordEvaluateEvent(){}
     public String getWordId() {
@@ -34,9 +25,8 @@ public class WordEvaluateEvent {
         this.status = status;
     }
 
-    public WordEvaluateEvent(String wordId ,String status ,String tag){
+    public WordEvaluateEvent(String wordId ,String status ){
         this.setStatus(status);
         this.setWordId(wordId);
-        this.setTag(tag);
     }
 }

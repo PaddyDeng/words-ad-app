@@ -155,8 +155,8 @@ public class HttpUtil {
     }
 
     // 背单词弹窗
-    public static Observable<ReviewDialogBeen> reviewCaseObservable(){
-        return getRestApi(HostType.WORDS_URL_HOST).reviewCase().compose(new SchedulerTransformer<ReviewDialogBeen>());
+    public static Observable<ResultBeen<List<String>>> reviewCaseObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).reviewCase().compose(new SchedulerTransformer<ResultBeen<List<String>>>());
     }
 
     // 复习单词
@@ -185,8 +185,8 @@ public class HttpUtil {
     }
 
     //根据复习模式后台返回改复习情况
-    public static Observable<ResultBeen<Void>> isReviewObservable(){
-        return getRestApi(HostType.WORDS_URL_HOST).isReview().compose(new SchedulerTransformer<ResultBeen<Void>>());
+    public static Observable<ResultBeen<List<String>>> isReviewObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).isReview().compose(new SchedulerTransformer<ResultBeen<List<String>>>());
     }
 
     //背单词上传对单词认识状态
@@ -410,5 +410,15 @@ public class HttpUtil {
     //  直播预告
     public static Observable<List<RoundBean.LivePreviewBean.DataBean>> liveListen(String page , String pageSize){
         return getRestApi(HostType.WORDS_URL_HOST).liveList(page ,pageSize).compose(new SchedulerTransformer<List<RoundBean.LivePreviewBean.DataBean>>());
+    }
+
+    //  背单词接口
+    public static Observable<ResultBeen<Void>> isReciteWordsObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).isReciteWords().compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
+    //  背单词接口
+    public static Observable<ResultBeen<Void>> nowFinshObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).nowFinsh().compose(new SchedulerTransformer<ResultBeen<Void>>());
     }
 }

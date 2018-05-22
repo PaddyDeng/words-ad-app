@@ -151,6 +151,8 @@ public class PKPageFragment extends BaseFragment {
                         }
                         if (pkIndexBeen != null) {
                             referUi(pkIndexBeen);
+                        }else{
+                            initReferUi();
                         }
                     }
                 }, new Consumer<Throwable>() {
@@ -163,6 +165,13 @@ public class PKPageFragment extends BaseFragment {
                 }));
     }
 
+    public void initReferUi(){
+        new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + "", portrait);
+        name.setText("");
+        win_num.setText("win：" + 0);
+        lose_num.setText("loss：" +0);
+        vocabulary.setText(0+"");
+    }
     public void referUi(PkIndexBeen pkIndexBeen) {
         PkIndexBeen.UserBean userBean = pkIndexBeen.getUser();
         if (userBean != null) {

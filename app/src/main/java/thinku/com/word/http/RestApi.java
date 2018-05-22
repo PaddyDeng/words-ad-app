@@ -119,7 +119,7 @@ public interface RestApi {
     Observable<ResultBeen<Void>> reciteWord();
 
     @POST(NetworkChildren.REVIEW_CASE)
-    Observable<ReviewDialogBeen> reviewCase() ;
+    Observable<ResultBeen<List<String>>> reviewCase() ;
 
     @POST(NetworkChildren.UPDATA_IS_REVIEW)
     Observable<ResultBeen<Void>> updataIsReview();
@@ -141,7 +141,7 @@ public interface RestApi {
     Observable<WordListBean> wordDetails2(@Field("wordsId") String wordId);
 
     @POST(NetworkChildren.IS_REVIEW)
-    Observable<ResultBeen<Void>> isReview();
+    Observable<ResultBeen<List<String>>> isReview();
 
     @FormUrlEncoded
     @POST(NetworkChildren.REVIEWE_UPDATA)
@@ -337,4 +337,12 @@ public interface RestApi {
     @FormUrlEncoded
     @POST(NetworkChildren.PUBLIC_LIST)
     Observable<List<RoundBean.LivePreviewBean.DataBean>> liveList(@Field("page") String page , @Field("pageSize") String pageSize);
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.IS_RECITE_WORDS)
+    Observable<ResultBeen<Void>> isReciteWords ();
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.NOW_FINSH)
+    Observable<ResultBeen<Void>> nowFinsh ();
 }

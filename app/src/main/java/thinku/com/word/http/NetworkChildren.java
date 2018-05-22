@@ -27,6 +27,8 @@ public class NetworkChildren {
     public static final String UPDATA_IS_REVIEW = "app-api/update-is-review" ; // 是否复习
     public static final String REVIEW_CASE_WORDS = "app-api/review-case-words"; // 复习单词
     public static final String WORD_DETAILS = "app-api/get-words-details" ;   //  根据id 获取word详情
+    public static final String IS_RECITE_WORDS = "app-api/is-recite-word"  ;  //  继续背单词
+    public static final String NOW_FINSH = "app-api/now-finish"  ;  // 背单词完成
 
     /**
      *  复习部分接口

@@ -21,20 +21,24 @@ import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.ReviewDialogBeen;
 import thinku.com.word.bean.UserIndex;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.ui.other.dialog.callback.DialogClickListener;
 import thinku.com.word.ui.personalCenter.SignActivity;
 import thinku.com.word.ui.personalCenter.TypeSettingActivity;
 import thinku.com.word.ui.personalCenter.dialog.load.WaitDialog;
+import thinku.com.word.ui.report.*;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.utils.WaitUtils;
 import thinku.com.word.view.AutoZoomTextView;
+import thinku.com.word.view.CompleteDialog;
 import thinku.com.word.view.LoadingCustomView;
 import thinku.com.word.view.ReviewDialog;
 
@@ -149,6 +153,7 @@ public class HomeFragment extends BaseFragment {
                         progress.setProgress((Float.parseFloat(userIndex.getUserPackageWords()) * 100) / Float.parseFloat(userIndex.getAllWords()));
                         todayNum.setText(userIndex.getToDayWords());
                         reviewNum.setText(userIndex.getUserReviewWords() + "/" + userIndex.getUserNeedReviewWords());
+                        MyApplication.task = Integer.parseInt(userIndex.getTask());
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -196,107 +201,47 @@ public class HomeFragment extends BaseFragment {
 
 
     /**
-     * 背单词
+     *  背单词
+     *  依据task 进行判断 if  task  =1   弹窗  是否继续  先调用接口
+     *  task  =2  正常进入
+     *  task  = 3  老艾宾浩斯调用   review -casewords  code == 2  老艾宾浩斯  弹分享
+     *  task  = 4 提示  词包已经背完
      */
     public void reciteWord() {
         if (recitePlayer != null && !recitePlayer.isPlaying()) recitePlayer.start();
-        String nowTime = simpleDateFormat.format(new java.util.Date());
-        String windowTime = SharedPreferencesUtils.getWindow(_mActivity);
-        if (nowTime.equals(windowTime)) {
-            thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity, needNum.getText().toString().trim(), C.NORMAL_RECITE);
-        } else {
-            thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity, needNum.getText().toString().trim(), C.NORMAL_RECITE);
-//            addToCompositeDis(HttpUtil.reciteWordObservable()
-//            .subscribe(new Consumer<ResultBeen<Void>>() {
-//                @Override
-//                public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-//                        if (voidResultBeen.getCode() ==97){
-//                            reviewCase();
-//                        } else{
-//
-//                        }
-//                }
-//            }));
+        if (MyApplication.task == 1){
+            showCompeleteDialog();
+        }else if (MyApplication.task ==2 ){
+            //  背单词进入
+            thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity,C.NORMAL);
+        }else if (MyApplication.task ==3 ){
+              // 背单词进入
+            thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity,C.NORMAL);
+        }else {
+            toTast(_mActivity,"该词包已背完，请选择另一个词包");
         }
     }
 
-    public void reviewCase() {
-        addToCompositeDis(HttpUtil.reviewCaseObservable()
-                .subscribe(new Consumer<ReviewDialogBeen>() {
-                    @Override
-                    public void accept(@NonNull ReviewDialogBeen reviewDialogBeen) throws Exception {
-//                showReviewDialog(reviewDialogBeen);
-                    }
-                }));
-    }
 
-    public void showReviewDialog(ReviewDialogBeen data) {
-        if (null != data) {
-            final ReviewDialog reDialog = new ReviewDialog(_mActivity);
-            reDialog.getWindow().setBackgroundDrawableResource(R.color.color_translate_black);
-            reDialog.setName_txt("你需要复习" + name_text);
-            reDialog.setAll_txt(data.getAll());
-            reDialog.setKnow_txt("(" + data.getKnow() + "词）");
-            reDialog.setIncognizan_txt("(" + data.getIncognizant() + "词）");
-            reDialog.setDim_txt("(" + data.getDim() + "词）");
-            reDialog.setAll_2_txt("共(" + data.getAll() + "词）");
-            reDialog.setOnReviewClickListener(new ReviewDialog.OnReviewClickListener() {
-                @Override
-                public void onReviewClick() {
-                    toTast(_mActivity, "复习");
-                    dialogReview();
-                    reDialog.dismiss();
-                }
-            });
-            reDialog.setOnNotReviewClickListener(new ReviewDialog.OnNotReviewClickListener() {
-                @Override
-                public void onNotReviewClick() {
-                    toTast(_mActivity, "取消");
-                    dialogReview();
-                    reDialog.dismiss();
-                }
-            });
-            reDialog.show();
-        } else {
-            final ReviewDialog reDialog = new ReviewDialog(_mActivity);
-            reDialog.getWindow().setBackgroundDrawableResource(R.color.color_translate_black);
-            reDialog.setName_txt("你需要复习" + name_text);
-            reDialog.setAll_txt(data.getAll());
-            reDialog.setKnow_txt("(" + data.getKnow() + "词）");
-            reDialog.setIncognizan_txt("(" + data.getIncognizant() + "词）");
-            reDialog.setDim_txt("(" + data.getDim() + "词）");
-            reDialog.setAll_2_txt("共(" + data.getAll() + "词）");
-            reDialog.setOnReviewClickListener(new ReviewDialog.OnReviewClickListener() {
-                @Override
-                public void onReviewClick() {
-                    dialogReview();
-                    reDialog.dismiss();
-                    thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity, needNum.getText().toString().trim(), reDialog.status);
-                }
-            });
-            reDialog.setOnNotReviewClickListener(new ReviewDialog.OnNotReviewClickListener() {
-                @Override
-                public void onNotReviewClick() {
-                    dialogReview();
-                    reDialog.dismiss();
-                }
-            });
-            reDialog.show();
-        }
-    }
-
-    /**
-     * dialog 界面点击
-     */
-    public void dialogReview() {
-        SharedPreferencesUtils.setWindow(_mActivity, simpleDateFormat.format(new java.util.Date()));
-
-        addToCompositeDis(HttpUtil.updataIsReviewObservable()
+    public void showCompeleteDialog(){
+        CompleteDialog completeDialog = new CompleteDialog(_mActivity);
+        completeDialog.setDialogClickListener(new DialogClickListener() {
+            @Override
+            public void clickTrue() {
+                // 背单词进入
+                addToCompositeDis(HttpUtil.isReciteWordsObservable()
                 .subscribe(new Consumer<ResultBeen<Void>>() {
                     @Override
                     public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                        toTast(_mActivity, voidResultBeen.getMessage());
+                        thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity,C.NORMAL);
                     }
                 }));
+            }
+
+            @Override
+            public void clickFalse() {
+
+            }
+        });
     }
 }

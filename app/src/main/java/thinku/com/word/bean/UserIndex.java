@@ -15,6 +15,15 @@ public class UserIndex {
     private String userReviewWords ;  // 已复习单词
     private String userNeedReviewWords ;  // 需要复习单词
     private UserPackage userPackage ;
+    private String task ;
+
+    public String getTask() {
+        return task;
+    }
+
+    public void setTask(String task) {
+        this.task = task;
+    }
 
     public String getPackageName() {
         return packageName;

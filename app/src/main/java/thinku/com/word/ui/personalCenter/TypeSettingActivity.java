@@ -80,7 +80,7 @@ public class TypeSettingActivity extends BaseActivity  implements DialogClickLis
     }
 
     public void initMode(){
-        String mode = SharedPreferencesUtils.getChoseMode(this);
+        String mode = SharedPreferencesUtils.getStudyMode(this);
         try{
             int userMode = Integer.parseInt(mode);
             switch (userMode){

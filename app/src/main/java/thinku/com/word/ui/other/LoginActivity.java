@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import me.yokeyword.fragmentation.SupportActivity;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
@@ -23,6 +25,7 @@ import thinku.com.word.utils.C;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.PhoneAndEmailUtils;
 import thinku.com.word.utils.RxBus;
+import thinku.com.word.utils.RxHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
@@ -105,8 +108,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             RxBus.get().post(C.RXBUS_LOGIN ,true);
                             SharedPreferencesUtils.setPassword(LoginActivity.this, TextUtils.isEmpty(userInfo.getPhone()) ? userInfo.getEmail() : userInfo.getPhone(), userInfo.getPassword());
                             SharedPreferencesUtils.setLogin(LoginActivity.this, userInfo);
-//                            SharedPreferencesUtils.saveMemoryMode(LoginActivity.this ,userInfo.get);
-                            MainActivity.toMain(LoginActivity.this);
+                            RxHelper.delay(500)
+                                    .subscribe(new Consumer<Integer>() {
+                                        @Override
+                                        public void accept(@NonNull Integer integer) throws Exception {
+                                            MainActivity.toMain(LoginActivity.this);
+                                        }
+                                    });
                             LoginActivity.this.finish();
                         }else{
                             toTast(userInfo.getMessage());
