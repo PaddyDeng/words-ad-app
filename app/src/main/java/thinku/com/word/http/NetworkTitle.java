@@ -16,6 +16,7 @@ public class NetworkTitle {
     public static final String GOSSIPURL = "http://bbs.viplgw.cn/";
     public static final String OPEN="http://open.viplgw.cn/";
     public static final String WORD="http://words.viplgw.cn/cn/";
+    public static final String WORD1="http://words.viplgw.cn/";
     /**
      *   word  资源路径
      */

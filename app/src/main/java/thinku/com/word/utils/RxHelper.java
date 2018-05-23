@@ -1,5 +1,6 @@
 package thinku.com.word.utils;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import java.io.InterruptedIOException;
@@ -60,6 +61,7 @@ public class RxHelper {
                 .delay(time, TimeUnit.MILLISECONDS)
                 .compose(new SchedulerTransformer<Integer>());
     }
+
 
 
 }

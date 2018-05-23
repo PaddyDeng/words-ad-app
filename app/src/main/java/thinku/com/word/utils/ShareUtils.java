@@ -1,8 +1,16 @@
 package thinku.com.word.utils;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
+
+import java.io.File;
 
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import thinku.com.word.R;
+import thinku.com.word.http.NetworkTitle;
 
 /**
  * 分享功能
@@ -37,5 +45,20 @@ public class ShareUtils {
             // 启动分享GUI
             oks.show(context);
         }
+    }
+
+    public static void shareContent(Context context ,String content ){
+        String sdCardPath = Environment.getExternalStorageDirectory().getPath();
+        String filePath = sdCardPath + File.separator  + "logo.png";
+        OnekeyShare oks = new OnekeyShare();
+        //关闭sso授权
+        oks.disableSSOWhenAuthorize();
+        // title标题，微信、QQ和QQ空间等平台使用
+        oks.setTitle("雷哥单词");
+        oks.setTitleUrl(NetworkTitle.WORD1+ File.separator +"wap/share/index?uid=" + SharedPreferencesUtils.getUid(context)+"&type=2");
+        oks.setText(content);
+        oks.setImagePath(filePath);
+        oks.show(context);
+
     }
 }

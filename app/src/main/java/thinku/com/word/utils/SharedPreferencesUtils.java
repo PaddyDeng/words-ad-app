@@ -34,7 +34,7 @@ public class SharedPreferencesUtils {
     private final static String PERFS_PK_NAME = "prefs_pk_match_name" ;   // 对手名字
     private final static String PERFS_PK_UID = "prefs_pk_match_uid" ;
 
-
+    private final static String LOGO = "prefs_logo" ;  //  logo 图片
 
     /**
      * 存储PK对手信息
@@ -76,6 +76,16 @@ public class SharedPreferencesUtils {
     public static String getPKMatchUid(Context context ){
         return context.getSharedPreferences(PREFS_PK_NAME ,Context.MODE_PRIVATE).getString(PERFS_PK_UID,"");
     }
+
+    public  static void setLogo(Context context ,Boolean value){
+        setBoolean(LOGO ,context ,value);
+    }
+
+    public static Boolean getLogo(Context context){
+        return getBoolean(LOGO ,context);
+    }
+
+
 
 
     /**
@@ -393,6 +403,16 @@ public class SharedPreferencesUtils {
         SharedPreferences.Editor editor = c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit();
         editor.putInt(key, value);
         editor.commit();
+    }
+
+    public  static  void setBoolean(String key, Context c, boolean value) {
+        SharedPreferences.Editor editor = c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit();
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
+
+    public static Boolean getBoolean(String key ,Context context){
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getBoolean(key, false);
     }
 
 

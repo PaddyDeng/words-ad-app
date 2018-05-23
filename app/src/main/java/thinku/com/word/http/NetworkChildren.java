@@ -46,6 +46,7 @@ public class NetworkChildren {
 
     public static final String UPDATA_NOW_PACKAGE = "app-api/update-now-package" ;  //  学习中Id
     public static final String DELETE_PACKAGE = "app-api/delete-package";   //  删除词包
+    public static final String DICTATION_GROUP = "app-api/dictation-group" ;  //  练习分组
 
     /**
      * 单词报告接口

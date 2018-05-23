@@ -172,7 +172,7 @@ public interface RestApi {
 
     @FormUrlEncoded
     @POST(NetworkChildren.DICTATION_WORDS)
-    Observable<List<String>> dictationWords(@Field("status") String status );
+    Observable<List<String>> dictationWords(@Field("status") String status ,@Field("start") String start );
 
     @FormUrlEncoded
     @POST(NetworkChildren.ERROR_RECOVERY)
@@ -343,7 +343,11 @@ public interface RestApi {
     @POST(NetworkChildren.IS_RECITE_WORDS)
     Observable<ResultBeen<Void>> isReciteWords ();
 
-    @FormUrlEncoded
+
     @POST(NetworkChildren.NOW_FINSH)
     Observable<ResultBeen<Void>> nowFinsh ();
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.DICTATION_GROUP)
+    Observable<List<WrongIndexBeen>> dictionGroup (@Field("status") String status);
 }

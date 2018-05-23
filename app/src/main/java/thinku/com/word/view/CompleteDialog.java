@@ -64,8 +64,4 @@ public class CompleteDialog extends AlertDialog {
             }
         });
     }
-
-
-
-
 }

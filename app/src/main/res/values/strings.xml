@@ -47,6 +47,8 @@
 雷哥单词APP为互联网服务提供商，为单词学习用户提供在线考试学习服务及沟通交流平台，根据《侵权责任法》以及《信息网络传播权保护条例》规定，对于用户个人的侵权及违法行为，雷哥网不承担民事责任。
 </string>
 
+    <string name="share_content">我已在雷哥单词坚持%1$s天,今日已背单词%2$s词,累计已背%3$s词</string>
+
     <!--JPush-->
     <string name="hello">Hello World, JPush!</string>
     <string name="tag_hint">Tag can be number, alphabet, underscore, Chinese. Use , to split many tags.</string>

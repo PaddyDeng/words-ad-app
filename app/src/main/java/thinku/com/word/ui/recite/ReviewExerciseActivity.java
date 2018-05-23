@@ -47,6 +47,7 @@ public class ReviewExerciseActivity extends BaseActivity {
     @BindView(R.id.all_rl)
     RelativeLayout allRl;
 
+    private Dictation dictation ;
     public static void start(Context context) {
         Intent intent = new Intent(context, ReviewExerciseActivity.class);
         context.startActivity(intent);
@@ -72,6 +73,7 @@ public class ReviewExerciseActivity extends BaseActivity {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
+
                     }
                 })
                 .subscribe(new Consumer<Dictation>() {
@@ -85,6 +87,7 @@ public class ReviewExerciseActivity extends BaseActivity {
     }
 
     public void referUi(Dictation dictation) {
+        this .dictation = dictation ;
         textAll.setText("共（" + dictation.getDim() + "）词");
         textAllNotKnow.setText("共（" + dictation.getIncognizant() + "）词");
         textAllAll.setText("共（" + dictation.getAll() + "）词");
@@ -97,38 +100,19 @@ public class ReviewExerciseActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.all_rl:
-                getWordId(C.LGWordStatusNone);
+                getWordId(C.LGWordStatusNone , "全部词组" ,"共（" + dictation.getAll() + "）词");
                 break;
             case R.id.not_know_rl:
-                getWordId(C.LGWordStatusIncoginzance);
+                getWordId(C.LGWordStatusIncoginzance ,"不认识词组" ,"共（" + dictation.getIncognizant() + "）词");
                 break;
             case R.id.blurry_rl:   //  模糊
-                getWordId(C.LGWordStatusVague);
+                getWordId(C.LGWordStatusVague , "模糊词组"  ,"共（" + dictation.getDim() + "）词");
                 break;
         }
     }
 
-    public void getWordId(int status) {
-        addToCompositeDis(HttpUtil.dictationWordsObservable(status + "")
-                .doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(@NonNull Disposable disposable) throws Exception {
-                        showLoadDialog();
-                    }
-                }).subscribe(new Consumer<List<String>>() {
-                    @Override
-                    public void accept(@NonNull List<String> strings) throws Exception {
-                        dismissLoadDialog();
-                        if (strings.size() > 0) {
-                            DictionDetailActivity.start(ReviewExerciseActivity.this, (ArrayList<String>) strings);
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        dismissLoadDialog();
-                    }
-                }));
+    public void getWordId(final int status ,final String name , String count) {
+        ReviewExerciseTypeActivity.start(ReviewExerciseActivity.this  ,status ,name , count );
     }
 
 }

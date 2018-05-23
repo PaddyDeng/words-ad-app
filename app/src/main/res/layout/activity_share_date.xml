@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.share.ShareDateActivity"
+    android:background="@mipmap/share_date_bg">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@mipmap/share_date_title"
+        android:id="@+id/title"/>
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@mipmap/cancel_share"
+        android:layout_marginTop="15dp"
+        android:id="@+id/cancel"
+        android:layout_below="@id/title"
+        android:layout_marginLeft="15dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="385dp"
+        android:layout_below="@id/cancel"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <thinku.com.word.view.SignDate
+            android:id="@+id/calendar"
+            android:layout_width="match_parent"
+            android:layout_height="280dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="10dp">
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="@color/mainColor"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/middle"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="已坚持天数"
+                    android:layout_marginRight="40dp"
+                    android:layout_toStartOf="@id/middle"
+                    android:id="@+id/day"/>
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginTop="10dp"
+                android:text="3"
+                android:textColor="@color/mainColor"
+                android:layout_below="@id/day"
+                android:layout_alignParentBottom="true"
+                android:gravity="center_horizontal"
+                android:id="@+id/day_num"
+                android:layout_marginRight="40dp"
+                android:layout_toStartOf="@id/middle"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="今日背单词"
+                android:layout_marginLeft="40dp"
+                android:layout_toEndOf="@id/middle"
+                android:id="@+id/word"/>
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="20"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/mainColor"
+                android:layout_below="@id/word"
+                android:layout_alignStart="@id/word"
+                android:layout_alignParentBottom="true"
+                android:gravity="center_horizontal"
+                android:id="@+id/word_num"
+                android:layout_marginRight="40dp"
+                />
+            </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

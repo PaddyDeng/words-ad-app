@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -38,6 +39,7 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.recite.WordErrorActivity;
 import thinku.com.word.ui.report.bean.ReviewBean;
+import thinku.com.word.ui.share.ShareDateActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.C;
 import thinku.com.word.view.SuccessDialog;
@@ -73,8 +75,8 @@ public class WordEvaluateFragment extends BaseActivity {
     TextView prencente;
     @BindView(R.id.name)
     TextView name;
-    @BindView(R.id.help_memory_list)
-    RecyclerView helpMemoryList;
+    @BindView(R.id.help_content)
+    TextView helpContent;
     @BindView(R.id.help_memory)
     RelativeLayout helpMemory;
     @BindView(R.id.shor_sense_list)
@@ -89,6 +91,22 @@ public class WordEvaluateFragment extends BaseActivity {
     RecyclerView questionList;
     @BindView(R.id.question)
     RelativeLayout question;
+    @BindView(R.id.image1)
+    ImageView image1;
+    @BindView(R.id.image2)
+    ImageView image2;
+    @BindView(R.id.image3)
+    ImageView image3;
+    @BindView(R.id.image4)
+    ImageView image4;
+    @BindView(R.id.youdao)
+    LinearLayout youdao;
+    @BindView(R.id.jinshan)
+    LinearLayout jinshan;
+    @BindView(R.id.biying)
+    LinearLayout biying;
+    @BindView(R.id.niujing)
+    LinearLayout niujing;
     private String planWords;
     @BindView(R.id.back)
     ImageView back;
@@ -107,20 +125,20 @@ public class WordEvaluateFragment extends BaseActivity {
     private int status;   //  单词状态
     private String wordId;   //  单词ID
     private int tag;  //  tag ==  100    背单词   ，
-    private boolean isNewAiBinHaoSi = false ;  //  是否进入新艾宾浩斯
+    private boolean isNewAiBinHaoSi = false;  //  是否进入新艾宾浩斯
     //   根据List<wordsId>获取数据
     private ArrayList<String> words;
 
-    private int posiiton = 0  ;
-    private List<RecitWordBeen.LowSentenceBean>  lowSentenceBeen ;
-    private List<RecitWordBeen.LowSentenceBean>   sentenceBeen ;
+    private int posiiton = 0;
+    private List<RecitWordBeen.LowSentenceBean> lowSentenceBeen;
+    private List<RecitWordBeen.LowSentenceBean> sentenceBeen;
 
 
+    private MediaPlayer dimPlayer;
+    private MediaPlayer notKnowPlayer;
+    private MediaPlayer knowPlayer;
+    private MediaPlayer knowWellPlayer;
 
-    private MediaPlayer dimPlayer ;
-    private MediaPlayer notKnowPlayer ;
-    private MediaPlayer knowPlayer ;
-    private MediaPlayer knowWellPlayer ;
     /**
      * @param context
      * @param tag     tag 表明是背单词进入 还是其他情况进入
@@ -131,7 +149,7 @@ public class WordEvaluateFragment extends BaseActivity {
         context.startActivity(intent);
     }
 
-    public static void start(Context context, ArrayList<String> words  ) {
+    public static void start(Context context, ArrayList<String> words) {
         Intent intent = new Intent(context, WordEvaluateFragment.class);
         intent.putStringArrayListExtra("words", words);
         context.startActivity(intent);
@@ -154,12 +172,12 @@ public class WordEvaluateFragment extends BaseActivity {
             tag = getIntent().getIntExtra("tag", 0);
             words = getIntent().getStringArrayListExtra("words");
             wordId = getIntent().getStringExtra("wordId");
-             if (tag ==C.NORMAL){
+            if (tag == C.NORMAL) {
                 reciteWords();
             }
             //  传过来一个数组 必定是复习状态
             if (words != null && words.size() > 0) {
-                tag = C.REVIEW ;
+                tag = C.REVIEW;
                 reciteWords(words);
             }
             if (!TextUtils.isEmpty(wordId)) {
@@ -171,20 +189,20 @@ public class WordEvaluateFragment extends BaseActivity {
     }
 
 
-    public void initAudioManager(){
-        dimPlayer = MediaPlayer.create(this ,R.raw.dim);
-        knowPlayer = MediaPlayer.create(this ,R.raw.eva_right_and_know);
-        notKnowPlayer = MediaPlayer.create(this ,R.raw.eva_error_and_not_know);
-        knowWellPlayer = MediaPlayer.create(this ,R.raw.know_well);
+    public void initAudioManager() {
+        dimPlayer = MediaPlayer.create(this, R.raw.dim);
+        knowPlayer = MediaPlayer.create(this, R.raw.eva_right_and_know);
+        notKnowPlayer = MediaPlayer.create(this, R.raw.eva_error_and_not_know);
+        knowWellPlayer = MediaPlayer.create(this, R.raw.know_well);
     }
 
     /**
-     *   正常背单词情况
-     *   根据code不同  处理情况不同
-     *   code  ==2    已经背完单词  返回首页
-     *   code == 98  调新艾宾浩斯接口
-     *   code  == 96  分享
-     *   code == 95  调老艾宾浩斯接口
+     * 正常背单词情况
+     * 根据code不同  处理情况不同
+     * code  ==2    已经背完单词  返回首页
+     * code == 98  调新艾宾浩斯接口
+     * code  == 96  分享
+     * code == 95  调老艾宾浩斯接口
      */
     public void normalReciteWords() {
 
@@ -203,12 +221,51 @@ public class WordEvaluateFragment extends BaseActivity {
                             referUi1(recitWordBeen);
                         } else if (recitWordBeen.getCode() == 98) {
                             newAiBinHaoSi();
-                        }else if(recitWordBeen.getCode() ==2){
+                        } else if (recitWordBeen.getCode() == 2) {
                             MainActivity.toMain(WordEvaluateFragment.this);
-                        }else if (recitWordBeen.getCode() == 96){
+                        } else if (recitWordBeen.getCode() == 96) {
                             share();
-                        }else if (recitWordBeen.getCode() == 95){
+                        } else if (recitWordBeen.getCode() == 95) {
                             oldAiBinHaoSi();
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+
+                        dismissLoadDialog();
+                    }
+                }));
+    }
+
+    /**
+     * is-review
+     * 新艾宾浩斯接口
+     * code  == 0  等于0  调用nowFinsh
+     * code 不等于0 ， 返回wordId数组 ,  用id 获得word ，若未熟识或者认识，将该id从此数组中去除，直到此数组为0  调用nowFinsh
+     */
+    public void newAiBinHaoSi() {
+        addToCompositeDis(HttpUtil.isReviewObservable()
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        showLoadDialog();
+                    }
+                })
+                .subscribe(new Consumer<ReviewBean>() {
+                    @Override
+                    public void accept(@NonNull ReviewBean voidResultBeen) throws Exception {
+                        dismissLoadDialog();
+                        if (voidResultBeen.getCode() == 0) {
+                            nowFinsh();
+                        } else {
+                            if (words != null) {
+                                words.clear();
+                                words.addAll(voidResultBeen.getWords());
+                            } else {
+                                words = (ArrayList<String>) voidResultBeen.getWords();
+                            }
+                            reciteWords(words);
                         }
                     }
                 }, new Consumer<Throwable>() {
@@ -219,81 +276,50 @@ public class WordEvaluateFragment extends BaseActivity {
                 }));
     }
 
-    /**    is-review
-     *   新艾宾浩斯接口
-     *   code  == 0  等于0  调用nowFinsh
-     *   code 不等于0 ， 返回wordId数组 ,  用id 获得word ，若未熟识或者认识，将该id从此数组中去除，直到此数组为0  调用nowFinsh
+    /**
+     * if  成功  又调用正常背单词接口
      */
-    public  void newAiBinHaoSi(){
-        addToCompositeDis(HttpUtil.isReviewObservable()
+    public void nowFinsh() {
+        addToCompositeDis(HttpUtil.nowFinshObservable()
+                .subscribe(new Consumer<ResultBeen<Void>>() {
+                    @Override
+                    public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                        if (getHttpResSuc(voidResultBeen.getCode())) {
+                            normalReciteWords();
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        Log.e(TAG, "accept: " + throwable.toString());
+                    }
+                }));
+    }
+
+    /**
+     * review_casewords
+     * 老艾宾浩斯接口
+     * code = 2  分享
+     * 否则 返回wordId 数组 ，用id 获得word ，若未熟识或者认识，将该id从此数组中去除，直到此数组为0   弹分享
+     */
+    public void oldAiBinHaoSi() {
+        addToCompositeDis(HttpUtil.reviewCaseObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
                         showLoadDialog();
                     }
-                })
-        .subscribe(new Consumer<ReviewBean>() {
-            @Override
-            public void accept(@NonNull ReviewBean voidResultBeen) throws Exception {
-                dismissLoadDialog();
-                if (voidResultBeen.getCode() ==0 ){
-                    nowFinsh();
-                }else {
-                    if (words != null ){
-                        words.clear();
-                        words.addAll(voidResultBeen.getWords());
-                    }else{
-                        words = (ArrayList<String>) voidResultBeen.getWords();
-                    }
-                    reciteWords(words);
-                }
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(@NonNull Throwable throwable) throws Exception {
-                dismissLoadDialog();
-            }
-        }));
-    }
-
-    /**
-     *  if  成功  又调用正常背单词接口
-     */
-    public void nowFinsh(){
-        addToCompositeDis(HttpUtil.nowFinshObservable()
-        .subscribe(new Consumer<ResultBeen<Void>>() {
-            @Override
-            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                if (getHttpResSuc(voidResultBeen.getCode())){
-                    normalReciteWords();
-                }
-            }
-        }));
-    }
-
-    /**   review_casewords
-     *   老艾宾浩斯接口
-     *   code = 2  分享
-     *   否则 返回wordId 数组 ，用id 获得word ，若未熟识或者认识，将该id从此数组中去除，直到此数组为0   弹分享
-     */
-    public void oldAiBinHaoSi(){
-        addToCompositeDis(HttpUtil.reviewCaseObservable()
-        .doOnSubscribe(new Consumer<Disposable>() {
-            @Override
-            public void accept(@NonNull Disposable disposable) throws Exception {
-                showLoadDialog();
-            }
-        }).subscribe(new Consumer<ResultBeen<List<String>>>() {
+                }).subscribe(new Consumer<ResultBeen<List<String>>>() {
                     @Override
                     public void accept(@NonNull ResultBeen<List<String>> reviewCaseBean) throws Exception {
                         dismissLoadDialog();
-                        if (reviewCaseBean.getCode() == 2 ){
+                        if (reviewCaseBean.getCode() == 2) {
                             share();
-                        }else {
-                            if (words != null){
+                        } else {
+                            if (words != null) {
                                 words.clear();
                                 words.addAll(reviewCaseBean.getData());
-                            }else{
+                            } else {
                                 words = (ArrayList<String>) reviewCaseBean.getData();
                             }
                         }
@@ -308,10 +334,10 @@ public class WordEvaluateFragment extends BaseActivity {
     }
 
     /**
-     *  日历分享
+     * 日历分享
      */
-    public void share(){
-        toTast(this ,"分享");
+    public void share() {
+        ShareDateActivity.start(this);
     }
 
     /**
@@ -330,29 +356,34 @@ public class WordEvaluateFragment extends BaseActivity {
         } else {
             blurry.setText("忘记");
         }
-        IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
 
+        if (!TextUtils.isEmpty(recitWord.getWords().getUs_audio())) {
+            IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+
+                }
+            });
+        } else {
+            if (!TextUtils.isEmpty(recitWord.getWords().getUk_audio()))
                 IMAudioManager.instance().playSound(recitWord.getWords().getUk_audio(), new MediaPlayer.OnCompletionListener() {
                     @Override
-                    public void onCompletion(MediaPlayer mediaPlayer) {
+                    public void onCompletion(MediaPlayer mp) {
 
                     }
                 });
-            }
-
-        });
+        }
         word.setText(recitWord.getWords().getWord());
         contentShow.setVisibility(View.GONE);
         contentHide.setVisibility(View.VISIBLE);
-
+        if (!TextUtils.isEmpty(recitWord.getWords().getMnemonic()))
+            helpContent.setText(recitWord.getWords().getMnemonic());
         getData(recitWord);
         rlClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //  显示更多内容
-                contentShow.scrollTo(0 ,0);
+                contentShow.scrollTo(0, 0);
                 contentShow.setVisibility(View.VISIBLE);
                 contentHide.setVisibility(View.GONE);
 
@@ -361,111 +392,103 @@ public class WordEvaluateFragment extends BaseActivity {
     }
 
     /**
-     *  task == 3  老艾宾浩斯  新艾宾浩斯是背单词中
+     * task == 3  老艾宾浩斯  新艾宾浩斯是背单词中
      * 新学 需复习 中
      * 新学数据为 do
      * 需复习  正常背单词 userNeedRevies    进入新艾宾浩斯 needReviews   + 剩余数组   , 复习模式下  数组数量
      **/
-    public void setStudyAndReviewNum(RecitWordBeen   recitWord){
-        if (MyApplication.task != 3){
+    public void setStudyAndReviewNum(RecitWordBeen recitWord) {
+        if (MyApplication.task != 3) {
             if (tag == C.NORMAL) {
-                newWord.setText("新学" + recitWord.getDoX() + " |需复习" + recitWord.getUserNeedReviewWords());
-            }else{
-                if (words != null ) newWord.setText("新学" + recitWord.getDoX() + " |需复习" + words.size());
+                if (isNewAiBinHaoSi) {
+                    newWord.setText("新学" + recitWord.getDoX() + " |需复习" + (recitWord.getNeedReviewWords() + (words.size() - posiiton)));
+                } else {
+                    newWord.setText("新学" + recitWord.getDoX() + " |需复习" + recitWord.getUserNeedReviewWords());
+                }
+            } else {
+                if (words != null) newWord.setText("需复习" + (words.size() - posiiton));
             }
-        }else{
-            if (isNewAiBinHaoSi){
-                newWord.setText("新学" + recitWord.getDoX() + " |需复习" + (recitWord.getNeedReviewWords() + words.size())
-                );
-            }else {
-                newWord.setText("新学" + recitWord.getDoX() + " |需复习" + recitWord.getNeedReviewWords());
-            }
-
         }
     }
 
     /**
      * 获取RecyclerView  数据
      */
-    public void getData(RecitWordBeen recitWord){
+    public void getData(RecitWordBeen recitWord) {
         lowSentenceBeen = new ArrayList<>();
         sentenceBeen = new ArrayList<>();
-            try{
-                if (recitWord.getLowSentence() == null || recitWord.getLowSentence().size() == 0){
-                    shortSenese.setVisibility(View.GONE);
-                }else {
-                    if (recitWord.getLowSentence().size() > 4) {
-                        for (int i = 0; i < 4; i++) {
-                            lowSentenceBeen.add((RecitWordBeen.LowSentenceBean) recitWord.getLowSentence().get(i));
-                        }
-                    } else {
-                        lowSentenceBeen.addAll(recitWord.getLowSentence());
-                    }
-                    ReciteWordAdapter low = new ReciteWordAdapter(this, lowSentenceBeen);
-                    shorSenseList.setAdapter(low);
-                    shortSenese.setVisibility(View.VISIBLE);
-                }
-            }catch (Exception e){
+        try {
+            if (recitWord.getLowSentence() == null || recitWord.getLowSentence().size() == 0) {
                 shortSenese.setVisibility(View.GONE);
+            } else {
+                if (recitWord.getLowSentence().size() > 4) {
+                    for (int i = 0; i < 4; i++) {
+                        lowSentenceBeen.add((RecitWordBeen.LowSentenceBean) recitWord.getLowSentence().get(i));
+                    }
+                } else {
+                    lowSentenceBeen.addAll(recitWord.getLowSentence());
+                }
+                ReciteWordAdapter low = new ReciteWordAdapter(this, lowSentenceBeen);
+                shorSenseList.setAdapter(low);
+                shortSenese.setVisibility(View.VISIBLE);
             }
+        } catch (Exception e) {
+            shortSenese.setVisibility(View.GONE);
+        }
 
-        try{
+        try {
             if (recitWord.getSentence() == null || recitWord.getSentence().size() == 0) {
-                    sentences.setVisibility(View.GONE);
-            }else{
+                sentences.setVisibility(View.GONE);
+            } else {
                 sentenceBeen.addAll(recitWord.getSentence());
                 ReciteWordAdapter sentence = new ReciteWordAdapter(this, sentenceBeen);
                 sentencesList.setAdapter(sentence);
                 sentences.setVisibility(View.VISIBLE);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             sentences.setVisibility(View.GONE);
         }
     }
 
-    public void setFocusable(){
-        helpMemoryList.setFocusableInTouchMode(false);
-        helpMemoryList.requestFocus();
+    public void setFocusable() {
         shorSenseList.setFocusableInTouchMode(false);
         shorSenseList.requestFocus();
         sentencesList.setFocusableInTouchMode(false);
         sentencesList.requestFocus();
     }
+
     public void initRecycler() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this);
-        helpMemoryList.setLayoutManager(linearLayoutManager);
         shorSenseList.setLayoutManager(linearLayoutManager1);
         sentencesList.setLayoutManager(linearLayoutManager2);
     }
 
 
-
     /**
-     *   tag  == 100    背单词  ，   正常背单词 和艾宾浩斯背单词
-     *
-     *   tag == 200 ,  复习单词
+     * tag  == 100    背单词  ，   正常背单词 和艾宾浩斯背单词
+     * <p>
+     * tag == 200 ,  复习单词
      */
     public void reciteWords() {
-         //
+        //
         if (tag == C.NORMAL) {
-            if (MyApplication.task == 3){
+            if (MyApplication.task == 3) {
                 addToCompositeDis(HttpUtil.reviewCaseObservable()
-                .doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(@NonNull Disposable disposable) throws Exception {
-                        showLoadDialog();
-                    }
-                }).subscribe(new Consumer<ResultBeen<List<String>>>() {
+                        .doOnSubscribe(new Consumer<Disposable>() {
+                            @Override
+                            public void accept(@NonNull Disposable disposable) throws Exception {
+                                showLoadDialog();
+                            }
+                        }).subscribe(new Consumer<ResultBeen<List<String>>>() {
                             @Override
                             public void accept(@NonNull ResultBeen<List<String>> listResultBeen) throws Exception {
                                 dismissLoadDialog();
-                                if (words != null){
+                                if (words != null) {
                                     words.clear();
                                     words.addAll(listResultBeen.getData());
-                                }else{
-                                    posiiton  = 0 ;
+                                } else {
+                                    posiiton = 0;
                                     words = (ArrayList<String>) listResultBeen.getData();
                                     fromWordsIdGetWordDetails(words.get(posiiton));
                                 }
@@ -476,20 +499,21 @@ public class WordEvaluateFragment extends BaseActivity {
                                 dismissLoadDialog();
                             }
                         }));
-            }else {
+            } else {
                 normalReciteWords();
             }
-        }else {
-             //  复习单词
+        } else {
+            //  复习单词
         }
     }
 
     /**
      * 通过wordsId  数组获取word 详情
+     *
      * @param wordIds
      */
     public void reciteWords(ArrayList<String> wordIds) {
-        posiiton = 0 ;
+        posiiton = 0;
         fromWordsIdGetWordDetails(wordIds.get(posiiton));
     }
 
@@ -534,7 +558,11 @@ public class WordEvaluateFragment extends BaseActivity {
                 WordErrorActivity.start(WordEvaluateFragment.this, wordId);
                 break;
             case R.id.unknow:
-                if (notKnowPlayer != null && !notKnowPlayer.isPlaying()) notKnowPlayer.start();
+                if (notKnowPlayer != null) {
+                    if (!notKnowPlayer.isPlaying()) {
+                        notKnowPlayer.start();
+                    }
+                }
                 if (tag == C.NORMAL) {
                     addWords(recitWord);
                 }
@@ -543,7 +571,7 @@ public class WordEvaluateFragment extends BaseActivity {
             case R.id.know:
                 if (knowPlayer != null && !knowPlayer.isPlaying()) knowPlayer.start();
                 updataStatus(C.LGWordStatusKnow);
-                 break;
+                break;
             case R.id.blurry:
                 if (dimPlayer != null && !dimPlayer.isPlaying()) dimPlayer.start();
                 if (tag == C.NORMAL) {
@@ -551,66 +579,66 @@ public class WordEvaluateFragment extends BaseActivity {
                 }
                 if ("忘记".equals(blurry.getText().toString().trim())) {
                     updataStatus(C.LGWordStatusForget);
-                }else{
+                } else {
                     updataStatus(C.LGWordStatusVague);
                 }
                 break;
         }
     }
 
-   public void addWords(RecitWordBeen recitWord){
-       if (words != null){
-           words.add(recitWord.getWords().getId());
-       }
-   }
+    public void addWords(RecitWordBeen recitWord) {
+        if (words != null) {
+            words.add(recitWord.getWords().getId());
+        }
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().register(this);
-        if (dimPlayer != null){
+        if (dimPlayer != null) {
             if (dimPlayer.isPlaying()) dimPlayer.stop();
             dimPlayer.release();
         }
-        if (knowWellPlayer != null){
+        if (knowWellPlayer != null) {
             if (knowWellPlayer.isPlaying()) knowWellPlayer.stop();
             knowWellPlayer.release();
         }
-        if (notKnowPlayer != null){
+        if (notKnowPlayer != null) {
             if (notKnowPlayer.isPlaying()) notKnowPlayer.stop();
             notKnowPlayer.release();
         }
-        if (knowPlayer != null){
+        if (knowPlayer != null) {
             if (knowPlayer.isPlaying()) knowPlayer.stop();
             knowPlayer.release();
         }
     }
 
     /**
-     *  背单词中 正常背单词 上传状态   又调用背单词接口
-     *   words  中 用worIds 获取数据
+     * 背单词中 正常背单词 上传状态   又调用背单词接口
+     * words  中 用worIds 获取数据
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updataStatus(int status) {
-        if (tag == C.NORMAL){
+        if (tag == C.NORMAL) {
             //  背单词状态上传
-            addToCompositeDis(HttpUtil.updataStatus(recitWord.getWords().getId() ,status +"")
-            .doOnSubscribe(new Consumer<Disposable>() {
-                @Override
-                public void accept(@NonNull Disposable disposable) throws Exception {
-                    showLoadDialog();
-                }
-            }).subscribe(new Consumer<ResultBeen<Void>>() {
+            addToCompositeDis(HttpUtil.updataStatus(recitWord.getWords().getId(), status + "")
+                    .doOnSubscribe(new Consumer<Disposable>() {
+                        @Override
+                        public void accept(@NonNull Disposable disposable) throws Exception {
+                            showLoadDialog();
+                        }
+                    }).subscribe(new Consumer<ResultBeen<Void>>() {
                         @Override
                         public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
                             dismissLoadDialog();
-                            if (words == null || words.size() <= 0 ){
+                            if (words == null || words.size() <= 0) {
                                 reciteWords();
-                            }else{
-                                posiiton ++ ;
-                                if (posiiton == words.size()){
+                            } else {
+                                posiiton++;
+                                if (posiiton == words.size()) {
                                     share();
-                                }else if (posiiton < words.size()){
+                                } else if (posiiton < words.size()) {
                                     fromWordsIdGetWordDetails(words.get(posiiton));
                                 }
                             }
@@ -619,27 +647,27 @@ public class WordEvaluateFragment extends BaseActivity {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
                             dismissLoadDialog();
-                            toTast(WordEvaluateFragment.this ,throwable.getMessage());
+                            toTast(WordEvaluateFragment.this, throwable.getMessage());
                         }
                     }));
 
-        }else if (tag == C.REVIEW){
+        } else if (tag == C.REVIEW) {
             // 复习模式下上传
-            addToCompositeDis(HttpUtil.reviewUpdataObservable(recitWord.getWords().getId() ,status +"")
-            .doOnSubscribe(new Consumer<Disposable>() {
-                @Override
-                public void accept(@NonNull Disposable disposable) throws Exception {
-                    showLoadDialog();
-                }
-            }).subscribe(new Consumer<ResultBeen<Void>>() {
+            addToCompositeDis(HttpUtil.reviewUpdataObservable(recitWord.getWords().getId(), status + "")
+                    .doOnSubscribe(new Consumer<Disposable>() {
+                        @Override
+                        public void accept(@NonNull Disposable disposable) throws Exception {
+                            showLoadDialog();
+                        }
+                    }).subscribe(new Consumer<ResultBeen<Void>>() {
                         @Override
                         public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
                             dismissLoadDialog();
-                            posiiton ++ ;
-                            if (words != null){
+                            posiiton++;
+                            if (words != null) {
                                 if (posiiton < words.size()) {
                                     fromWordsIdGetWordDetails(words.get(posiiton));
-                                }else{
+                                } else {
                                     MainActivity.toMain(WordEvaluateFragment.this);
                                 }
                             }
@@ -649,20 +677,31 @@ public class WordEvaluateFragment extends BaseActivity {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
                             dismissLoadDialog();
-                            toTast(WordEvaluateFragment.this ,throwable.toString());
+                            toTast(WordEvaluateFragment.this, throwable.toString());
                         }
                     }));
 
         }
     }
 
-    /**
-     * 显示完成
-     */
-    public void showCompelete() {
-        final SuccessDialog successDialog = new SuccessDialog(WordEvaluateFragment.this);
-        successDialog.getWindow().setBackgroundDrawableResource(R.color.color_translate_black);
-        successDialog.show();
+    @OnClick({R.id.youdao ,R.id.niujing , R.id.biying , R.id.jinshan})
+    public void click(View view){
+        String word = recitWord.getWords().getWord();
+        String url = "";
+        switch (view.getId()){
+            case R.id.youdao:
+                url="http://m.youdao.com/dict?le=eng&q=" + word.replace("+" ," ");
+                break;
+            case R.id.jinshan:
+                url =
+                 break;
+            case R.id.biying:
+                break;
+            case R.id.niujing:
+                break;
+        }
     }
+
+
 
 }

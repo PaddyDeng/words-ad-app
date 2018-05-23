@@ -1,9 +1,11 @@
 package thinku.com.word.ui.recite;
 
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -11,6 +13,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +33,7 @@ import thinku.com.word.R;
 import thinku.com.word.adapter.DictionDetailAdapter;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.RecitWordBeen;
+import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.callback.SelectClickListener;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
@@ -73,9 +78,10 @@ public class DictionDetailActivity extends BaseActivity {
     int i = 0;
     private RecitWordBeen recitWord;
 
-    private int wordIdIndex = 0;  //  数组中wordIn 下标位置
+    private int wordIdIndex;  //  数组中wordIn 下标位置
     private Disposable countTime;
-
+    private Animation mShakeAnimation;
+    private Vibrator mVibrator;   //  系统震动服务
     public static void start(Context context, ArrayList<String> wordList) {
         Intent intent = new Intent(context, DictionDetailActivity.class);
         intent.putStringArrayListExtra("words", wordList);
@@ -94,20 +100,21 @@ public class DictionDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diction_detail);
         ButterKnife.bind(this);
-        try {
-            wordList = getIntent().getStringArrayListExtra("words");
+        Intent intent = getIntent();
+        if (intent != null) {
+            wordList = intent.getStringArrayListExtra("words");
             reciteWords(wordList);
-        } catch (Exception e) {
-
         }
         initView();
         initRecycler();
+        initAnimation();
     }
 
     /**
      * 通过wordsId  数组获取word 详情
      */
     public void reciteWords(ArrayList<String> wordIds) {
+        wordIdIndex = 0 ;
         fromWordsIdGetWordDetails(wordIds.get(wordIdIndex), wordIds.size() + "", 0 + "");
     }
 
@@ -149,13 +156,10 @@ public class DictionDetailActivity extends BaseActivity {
                         titleT.setText((Integer.parseInt(now) + 1) + "/" + Integer.parseInt(all));
                         titleT.setVisibility(View.VISIBLE);
                         recitWord = strings;
-//                        recitWord.setPlanWords(all);
-//                        recitWord.setDoX(Integer.parseInt(now) + 1 + "");
                         phonogram.setText(recitWord.getWords().getPhonetic_us());
                         IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
                             @Override
                             public void onCompletion(MediaPlayer mediaPlayer) {
-//                        Toast.makeText(context, "播放结束", Toast.LENGTH_SHORT).show();
                             }
                         });
                         translate.setText(StringUtils.spilt(recitWord.getWords().getTranslate()));
@@ -178,6 +182,7 @@ public class DictionDetailActivity extends BaseActivity {
 
     public void initView() {
         titleIv.setBackgroundResource(R.mipmap.clock);
+        mVibrator = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
     }
 
 
@@ -268,8 +273,39 @@ public class DictionDetailActivity extends BaseActivity {
             i++;
             if (wordIdIndex < wordList.size() - 1) {
                 if (i == (texts.size())) {
-                    wordIdIndex++;
-                    fromWordsIdGetWordDetails(wordList.get(wordIdIndex), wordList.size() + "", wordIdIndex + "");
+                    StringBuilder wordBuilder  = new StringBuilder() ;
+                    for (int i =0 ; i < texts.size() ; i++){
+                        wordBuilder.append(texts.get(i).getText().toString().trim());
+                        if (recitWord.getWords().getWord().equals(wordBuilder.toString())){
+                            addToCompositeDis(HttpUtil.updataStatus(wordList.get(wordIdIndex) , 100 +"")
+                                    .doOnSubscribe(new Consumer<Disposable>() {
+                                        @Override
+                                        public void accept(@NonNull Disposable disposable) throws Exception {
+                                            showLoadDialog();
+                                        }
+                                    })
+                                    .subscribe(new Consumer<ResultBeen<Void>>() {
+                                        @Override
+                                        public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                                            dismissLoadDialog();
+                                            if (getHttpResSuc(voidResultBeen.getCode())) {
+                                                wordIdIndex++;
+                                                fromWordsIdGetWordDetails(wordList.get(wordIdIndex), wordList.size() + "", wordIdIndex + "");
+                                            }
+                                        }
+                                    }, new Consumer<Throwable>() {
+                                        @Override
+                                        public void accept(@NonNull Throwable throwable) throws Exception {
+                                            dismissLoadDialog();
+                                        }
+                                    }));
+                        }else{
+                            startShakeAnimation();
+                        }
+                    }
+
+
+
                 }
             } else {
                 if (i == (texts.size())) {
@@ -292,4 +328,14 @@ public class DictionDetailActivity extends BaseActivity {
         successDialog.show();
     }
 
+    public void initAnimation(){
+        mShakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake);
+    }
+
+    public void startShakeAnimation(){
+        for (TextView textView : texts){
+              textView.startAnimation(mShakeAnimation);
+        }
+        mVibrator.vibrate(new long[]{100 ,100 ,100 ,100 } ,-1);
+    }
 }

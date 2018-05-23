@@ -226,8 +226,8 @@ public class HttpUtil {
     }
 
     //听写练习单词详情
-    public static Observable<List<String>> dictationWordsObservable(String status){
-        return getRestApi(HostType.WORDS_URL_HOST).dictationWords( status).compose(new SchedulerTransformer<List<String>>());
+    public static Observable<List<String>> dictationWordsObservable(String status , String start){
+        return getRestApi(HostType.WORDS_URL_HOST).dictationWords( status ,start).compose(new SchedulerTransformer<List<String>>());
     }
 
     //报错提交
@@ -421,5 +421,10 @@ public class HttpUtil {
     //  背单词接口
     public static Observable<ResultBeen<Void>> nowFinshObservable(){
         return getRestApi(HostType.WORDS_URL_HOST).nowFinsh().compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
+
+    //  背单词接口
+    public static Observable<List<WrongIndexBeen>> dictionGroupObservable(String status){
+        return getRestApi(HostType.WORDS_URL_HOST).dictionGroup(status).compose(new SchedulerTransformer<List<WrongIndexBeen>>());
     }
 }
