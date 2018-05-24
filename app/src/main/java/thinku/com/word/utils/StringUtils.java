@@ -88,6 +88,14 @@ public class StringUtils {
         return m.group() ;
     }
 
+
+    public static String getStringNum(String s){
+        String regEx="[^0-9]";
+        Pattern pat = Pattern.compile(regEx);
+        Matcher mat = pat.matcher(s);
+        return mat.replaceAll("").trim() ;
+    }
+
     /**
      *   随机生成答案个数
      * @param s

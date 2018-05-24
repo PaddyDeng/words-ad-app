@@ -167,7 +167,7 @@
         <activity
             android:name=".ui.report.EvaluateResultActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme"></activity>
+            android:theme="@style/NoTitleTheme" />
         <!-- 评估排名 -->
         <activity
             android:name=".ui.report.EvaluateRankingActivity"
@@ -398,13 +398,18 @@
             android:name=".ui.recite.AddMyPlanActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
-        <activity android:name=".ui.share.ShareDateActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme"/>
-
-        <activity android:name=".ui.recite.ReviewExerciseTypeActivity"
+        <activity
+            android:name=".ui.share.ShareDateActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
+        <activity
+            android:name=".ui.recite.ReviewExerciseTypeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <activity android:name=".ui.webView.WebViewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme"
+            />
     </application>
 
 </manifest>

@@ -174,10 +174,10 @@ public class HomeFragment extends BaseFragment {
                 SignActivity.start(_mActivity);
                 break;
             case R.id.change_plan:
-                TypeSettingActivity.start(_mActivity);
+                MyPlanActivity.start(_mActivity);
                 break;
             case R.id.modify_word_package:
-                MyPlanActivity.start(_mActivity);
+                WordPackageActivity.start(_mActivity);
                 break;
             case R.id.start_recite:  // 背单词
                 reciteWord();
@@ -243,5 +243,11 @@ public class HomeFragment extends BaseFragment {
 
             }
         });
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) initData();
     }
 }

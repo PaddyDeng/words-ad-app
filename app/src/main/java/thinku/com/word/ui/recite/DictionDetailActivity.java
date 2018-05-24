@@ -277,7 +277,7 @@ public class DictionDetailActivity extends BaseActivity {
                     for (int i =0 ; i < texts.size() ; i++){
                         wordBuilder.append(texts.get(i).getText().toString().trim());
                         if (recitWord.getWords().getWord().equals(wordBuilder.toString())){
-                            addToCompositeDis(HttpUtil.updataStatus(wordList.get(wordIdIndex) , 100 +"")
+                            addToCompositeDis(HttpUtil.reviewUpdataObservable(wordList.get(wordIdIndex) , 100 +"")
                                     .doOnSubscribe(new Consumer<Disposable>() {
                                         @Override
                                         public void accept(@NonNull Disposable disposable) throws Exception {

@@ -68,7 +68,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="30px"
-                android:background="@drawable/gray_20round"></RelativeLayout>
+                android:background="@drawable/gray_20round">
+            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout

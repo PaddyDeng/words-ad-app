@@ -58,7 +58,6 @@ public class WordbagDetailActivity extends BaseActivity {
     private String name;
     private int getIs;
     private List<PackageDetails.Word> words = new ArrayList<>();
-
     public static void start(Context context, String catId, String total, String userwords, String name, int getIs) {
         Intent intent = new Intent(context, WordbagDetailActivity.class);
         intent.putExtra("catId", catId);

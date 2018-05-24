@@ -40,9 +40,9 @@ import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.recite.WordErrorActivity;
 import thinku.com.word.ui.report.bean.ReviewBean;
 import thinku.com.word.ui.share.ShareDateActivity;
+import thinku.com.word.ui.webView.WebViewActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.C;
-import thinku.com.word.view.SuccessDialog;
 
 /**
  * Created by Administrator on 2018/2/22.
@@ -172,7 +172,7 @@ public class WordEvaluateFragment extends BaseActivity {
             tag = getIntent().getIntExtra("tag", 0);
             words = getIntent().getStringArrayListExtra("words");
             wordId = getIntent().getStringExtra("wordId");
-            if (tag == C.NORMAL) {
+            if (tag == C.NORMAL){
                 reciteWords();
             }
             //  传过来一个数组 必定是复习状态
@@ -205,7 +205,7 @@ public class WordEvaluateFragment extends BaseActivity {
      * code == 95  调老艾宾浩斯接口
      */
     public void normalReciteWords() {
-
+        tag = C.NORMAL ;
         addToCompositeDis(HttpUtil.reciteWordsObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -222,6 +222,7 @@ public class WordEvaluateFragment extends BaseActivity {
                         } else if (recitWordBeen.getCode() == 98) {
                             newAiBinHaoSi();
                         } else if (recitWordBeen.getCode() == 2) {
+                            toTast(WordEvaluateFragment.this ,"你已经背完该词包");
                             MainActivity.toMain(WordEvaluateFragment.this);
                         } else if (recitWordBeen.getCode() == 96) {
                             share();
@@ -242,9 +243,11 @@ public class WordEvaluateFragment extends BaseActivity {
      * is-review
      * 新艾宾浩斯接口
      * code  == 0  等于0  调用nowFinsh
-     * code 不等于0 ， 返回wordId数组 ,  用id 获得word ，若未熟识或者认识，将该id从此数组中去除，直到此数组为0  调用nowFinsh
+     * code 不等于0 ， 返回wordId数组 ,  用id 获得word ，若熟识或者认识，将该id从此数组中去除，直到此数组为0  调用nowFinsh
      */
     public void newAiBinHaoSi() {
+        tag = C.REVIEW ;
+        isNewAiBinHaoSi = true ;
         addToCompositeDis(HttpUtil.isReviewObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -376,8 +379,10 @@ public class WordEvaluateFragment extends BaseActivity {
         word.setText(recitWord.getWords().getWord());
         contentShow.setVisibility(View.GONE);
         contentHide.setVisibility(View.VISIBLE);
-        if (!TextUtils.isEmpty(recitWord.getWords().getMnemonic()))
+        if (!TextUtils.isEmpty(recitWord.getWords().getMnemonic())) {
             helpContent.setText(recitWord.getWords().getMnemonic());
+            helpMemory.setVisibility(View.VISIBLE);
+        } else helpMemory.setVisibility(View.GONE);
         getData(recitWord);
         rlClick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -466,13 +471,17 @@ public class WordEvaluateFragment extends BaseActivity {
 
 
     /**
-     * tag  == 100    背单词  ，   正常背单词 和艾宾浩斯背单词
+     * tag  == 100    背单词  ，   正常背单词
      * <p>
-     * tag == 200 ,  复习单词
+     * tag == 200 ,  复习单词  和艾宾浩斯背单词
      */
     public void reciteWords() {
         //
+        isNewAiBinHaoSi = false ;
         if (tag == C.NORMAL) {
+            normalReciteWords();
+        } else {
+            //  复习单词
             if (MyApplication.task == 3) {
                 addToCompositeDis(HttpUtil.reviewCaseObservable()
                         .doOnSubscribe(new Consumer<Disposable>() {
@@ -499,11 +508,7 @@ public class WordEvaluateFragment extends BaseActivity {
                                 dismissLoadDialog();
                             }
                         }));
-            } else {
-                normalReciteWords();
             }
-        } else {
-            //  复习单词
         }
     }
 
@@ -668,7 +673,11 @@ public class WordEvaluateFragment extends BaseActivity {
                                 if (posiiton < words.size()) {
                                     fromWordsIdGetWordDetails(words.get(posiiton));
                                 } else {
-                                    MainActivity.toMain(WordEvaluateFragment.this);
+                                    if (isNewAiBinHaoSi){
+                                        nowFinsh();
+                                    }else {
+                                        MainActivity.toMain(WordEvaluateFragment.this);
+                                    }
                                 }
                             }
 
@@ -684,24 +693,27 @@ public class WordEvaluateFragment extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.youdao ,R.id.niujing , R.id.biying , R.id.jinshan})
-    public void click(View view){
+    @OnClick({R.id.youdao, R.id.niujing, R.id.biying, R.id.jinshan})
+    public void wordInterface(View view) {
         String word = recitWord.getWords().getWord();
         String url = "";
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.youdao:
-                url="http://m.youdao.com/dict?le=eng&q=" + word.replace("+" ," ");
+                url = "http://m.youdao.com/dict?le=eng&q=" + word.replace(" ", "+");
                 break;
             case R.id.jinshan:
-                url =
-                 break;
+                url = "http://www.iciba.com/" + word.replace(" ", "+");
+                break;
             case R.id.biying:
+                url = "https://cn.bing.com/dict/search?q=" + word.replace(" ", "+");
                 break;
             case R.id.niujing:
+                url = "https://www.oxfordlearnersdictionaries.com/definition/english/" + word.replace(" ", "-") + "?q=" + word.replace(" ", "+");
+//                  url = "https://www.oxfordlearnersdictionaries.com/definition/english/reflex-angle?q=reflex+angle";
                 break;
         }
+        WebViewActivity.start(this, url);
     }
-
 
 
 }

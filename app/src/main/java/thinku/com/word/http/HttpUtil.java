@@ -427,4 +427,9 @@ public class HttpUtil {
     public static Observable<List<WrongIndexBeen>> dictionGroupObservable(String status){
         return getRestApi(HostType.WORDS_URL_HOST).dictionGroup(status).compose(new SchedulerTransformer<List<WrongIndexBeen>>());
     }
+
+    //  背单词接口
+    public static Observable<ResultBeen<Void>> deletePackageObservable(String id){
+        return getRestApi(HostType.WORDS_URL_HOST).deletePackage(id).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    }
 }
