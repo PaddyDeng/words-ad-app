@@ -6,9 +6,12 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +22,8 @@ import android.widget.TextView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +40,19 @@ import thinku.com.word.adapter.ReciteWordAdapter;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.RecitWordBeen;
 import thinku.com.word.bean.ResultBeen;
+import thinku.com.word.callback.SelectRlClickListener;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.ui.adapter.QuestionAdapter;
 import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.recite.WordErrorActivity;
+import thinku.com.word.ui.report.bean.QuestionBean;
 import thinku.com.word.ui.report.bean.ReviewBean;
 import thinku.com.word.ui.share.ShareDateActivity;
 import thinku.com.word.ui.webView.WebViewActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.C;
+import thinku.com.word.utils.HtmlUtil;
 
 /**
  * Created by Administrator on 2018/2/22.
@@ -120,6 +130,10 @@ public class WordEvaluateFragment extends BaseActivity {
     ImageView play;
     @BindView(R.id.phonogram)
     TextView phonogram;
+    @BindView(R.id.article)
+    TextView article ;
+    @BindView(R.id.question_home)
+    TextView question_home ;
 
     private RecitWordBeen recitWord;
     private int status;   //  单词状态
@@ -132,13 +146,16 @@ public class WordEvaluateFragment extends BaseActivity {
     private int posiiton = 0;
     private List<RecitWordBeen.LowSentenceBean> lowSentenceBeen;
     private List<RecitWordBeen.LowSentenceBean> sentenceBeen;
-
+    private List<QuestionBean.QslctarrBean> questions ;
 
     private MediaPlayer dimPlayer;
     private MediaPlayer notKnowPlayer;
     private MediaPlayer knowPlayer;
     private MediaPlayer knowWellPlayer;
 
+    private ReciteWordAdapter low ;
+    private  ReciteWordAdapter sentence ;
+    private QuestionAdapter questionAdapter ;
     /**
      * @param context
      * @param tag     tag 表明是背单词进入 还是其他情况进入
@@ -186,6 +203,7 @@ public class WordEvaluateFragment extends BaseActivity {
         }
         setFocusable();
         initAudioManager();
+        initRecycler();
     }
 
 
@@ -206,6 +224,8 @@ public class WordEvaluateFragment extends BaseActivity {
      */
     public void normalReciteWords() {
         tag = C.NORMAL ;
+        posiiton = 0 ;
+        isNewAiBinHaoSi = false ;
         addToCompositeDis(HttpUtil.reciteWordsObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -218,6 +238,7 @@ public class WordEvaluateFragment extends BaseActivity {
                     public void accept(@NonNull RecitWordBeen recitWordBeen) throws Exception {
                         dismissLoadDialog();
                         if (getHttpResSuc(recitWordBeen.getCode())) {
+                            Log.e(TAG, "accept:  + normal"  );
                             referUi1(recitWordBeen);
                         } else if (recitWordBeen.getCode() == 98) {
                             newAiBinHaoSi();
@@ -233,7 +254,7 @@ public class WordEvaluateFragment extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-
+                        Log.e(TAG, "accept: " + throwable.toString() );
                         dismissLoadDialog();
                     }
                 }));
@@ -306,7 +327,7 @@ public class WordEvaluateFragment extends BaseActivity {
      * 否则 返回wordId 数组 ，用id 获得word ，若未熟识或者认识，将该id从此数组中去除，直到此数组为0   弹分享
      */
     public void oldAiBinHaoSi() {
-        addToCompositeDis(HttpUtil.reviewCaseObservable()
+        addToCompositeDis(HttpUtil.wordReviewTodayBeenObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
@@ -348,18 +369,17 @@ public class WordEvaluateFragment extends BaseActivity {
      */
     public void referUi1(final RecitWordBeen recitWord) {
         this.recitWord = recitWord;
-        initRecycler();
         //  首页显示的内容
         setStudyAndReviewNum(recitWord);
         prencente.setText("认知率" + recitWord.getPercent() + "%");
         phonogram.setText(recitWord.getWords().getPhonetic_us());
         name.setText(recitWord.getWords().getTranslate());
+
         if (tag == 100) {
             blurry.setText("模糊");
         } else {
             blurry.setText("忘记");
         }
-
         if (!TextUtils.isEmpty(recitWord.getWords().getUs_audio())) {
             IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
                 @Override
@@ -406,7 +426,9 @@ public class WordEvaluateFragment extends BaseActivity {
         if (MyApplication.task != 3) {
             if (tag == C.NORMAL) {
                 if (isNewAiBinHaoSi) {
-                    newWord.setText("新学" + recitWord.getDoX() + " |需复习" + (recitWord.getNeedReviewWords() + (words.size() - posiiton)));
+                    if (words != null) {
+                        newWord.setText("新学" + recitWord.getDoX() + " |需复习" + (recitWord.getNeedReviewWords() + (words.size() - posiiton)));
+                    }
                 } else {
                     newWord.setText("新学" + recitWord.getDoX() + " |需复习" + recitWord.getUserNeedReviewWords());
                 }
@@ -420,39 +442,119 @@ public class WordEvaluateFragment extends BaseActivity {
      * 获取RecyclerView  数据
      */
     public void getData(RecitWordBeen recitWord) {
-        lowSentenceBeen = new ArrayList<>();
-        sentenceBeen = new ArrayList<>();
         try {
-            if (recitWord.getLowSentence() == null || recitWord.getLowSentence().size() == 0) {
+            if (recitWord.getLowSentence() == null) {
                 shortSenese.setVisibility(View.GONE);
-            } else {
-                if (recitWord.getLowSentence().size() > 4) {
-                    for (int i = 0; i < 4; i++) {
-                        lowSentenceBeen.add((RecitWordBeen.LowSentenceBean) recitWord.getLowSentence().get(i));
+            }else{
+                if (recitWord.getLowSentence().size() == 0 )  shortSenese.setVisibility(View.GONE);
+                else {
+                    lowSentenceBeen.clear();
+                    if(recitWord.getLowSentence().size() > 3) {
+                        for (int i = 0; i < 3; i++) {
+                            lowSentenceBeen.add( recitWord.getLowSentence().get(i));
+                        }
+                    } else{
+                        lowSentenceBeen.addAll(recitWord.getLowSentence());
                     }
-                } else {
-                    lowSentenceBeen.addAll(recitWord.getLowSentence());
+                    low.notifyDataSetChanged();
+                    shortSenese.setVisibility(View.VISIBLE);
                 }
-                ReciteWordAdapter low = new ReciteWordAdapter(this, lowSentenceBeen);
-                shorSenseList.setAdapter(low);
-                shortSenese.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
             shortSenese.setVisibility(View.GONE);
         }
-
         try {
-            if (recitWord.getSentence() == null || recitWord.getSentence().size() == 0) {
-                sentences.setVisibility(View.GONE);
-            } else {
-                sentenceBeen.addAll(recitWord.getSentence());
-                ReciteWordAdapter sentence = new ReciteWordAdapter(this, sentenceBeen);
-                sentencesList.setAdapter(sentence);
+        if (recitWord.getSentence() == null)  sentences.setVisibility(View.GONE);
+        else{
+            if (recitWord.getSentence().size() == 0) sentences.setVisibility(View.GONE);
+            else {
+                sentenceBeen.clear();
+                if (recitWord.getSentence().size() > 3) {
+                    for (int i = 0; i < 3; i++) {
+                        sentenceBeen.add(recitWord.getSentence().get(i));
+                    }
+                } else {
+                    sentenceBeen.addAll(recitWord.getSentence());
+                }
+                sentence.notifyDataSetChanged();
                 sentences.setVisibility(View.VISIBLE);
             }
+        }
+
         } catch (Exception e) {
             sentences.setVisibility(View.GONE);
         }
+
+        if (recitWord.getQuestion() == null )  question.setVisibility(View.GONE);
+        else{
+            question.setVisibility(View.VISIBLE);
+            final QuestionBean questionBean =  recitWord.getQuestion();
+            if (!TextUtils.isEmpty(questionBean.getArticle())){
+                article.setVisibility(View.VISIBLE);
+                article.setText(Jsoup.clean(questionBean.getArticle() , Whitelist.basicWithImages()));
+            }else{
+                article.setVisibility(View.GONE);
+            }
+            if (!TextUtils.isEmpty(questionBean.getQuestion())){
+                question_home.setVisibility(View.VISIBLE);
+                Log.e(TAG, "getData: " + questionBean.getQuestion() );
+                question_home.setText(HtmlUtil.replaceSpace(questionBean.getQuestion() ));
+
+            }else{
+                question_home.setVisibility(View.GONE);
+            }
+
+            if (questionBean.getQslctarr() != null && questionBean.getQslctarr().size() > 0){
+                questions.clear();
+                questions.addAll(questionBean.getQslctarr());
+                questionList.setVisibility(View.VISIBLE);
+                questionAdapter.setSelectRlClickListener(new SelectRlClickListener() {
+                    @Override
+                    public void setClickListener(int position, RecyclerView.ViewHolder viewHolder, View view) {
+                        QuestionAdapter.QuestionHolder holder = (QuestionAdapter.QuestionHolder) viewHolder;
+                        QuestionBean.QslctarrBean  qslctarrBean = questionBean.getQslctarr().get(position);
+                        int currentP = getCurrentP(questionBean.getQuestionanswer());
+                        if (position == currentP){
+                            holder.question.setImageResource(R.mipmap.green_circle);
+                        }else{
+                            holder.question.setImageResource(R.mipmap.circle_red);
+                            questions.get(currentP).setAnswer(true);
+                        }
+                    }
+                });
+                questionAdapter.notifyDataSetChanged();
+            }else{
+                questionList.setVisibility(View.GONE);
+            }
+
+        }
+
+    }
+
+    public int getCurrentP(String answer){
+        int currentP  = 0 ;
+        switch (answer){
+            case "A":
+                currentP =0 ;
+                break;
+            case "B":
+                currentP = 1 ;
+                break;
+            case "C":
+                currentP =2 ;
+                break;
+            case "D":
+                currentP =3 ;
+                break;
+            case "E":
+                currentP = 4 ;
+                break;
+            case "F":
+                currentP = 5 ;
+                break;
+
+        }
+        return currentP ;
     }
 
     public void setFocusable() {
@@ -460,13 +562,26 @@ public class WordEvaluateFragment extends BaseActivity {
         shorSenseList.requestFocus();
         sentencesList.setFocusableInTouchMode(false);
         sentencesList.requestFocus();
+        questionList.setFocusableInTouchMode(false);
+        questionList.requestFocus();
     }
 
     public void initRecycler() {
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(this);
         shorSenseList.setLayoutManager(linearLayoutManager1);
         sentencesList.setLayoutManager(linearLayoutManager2);
+        questionList.setLayoutManager(linearLayoutManager3);
+        lowSentenceBeen = new ArrayList<>();
+        sentenceBeen = new ArrayList<>();
+        low = new ReciteWordAdapter(this, lowSentenceBeen);
+        shorSenseList.setAdapter(low);
+        sentence = new ReciteWordAdapter(this, sentenceBeen);
+        sentencesList.setAdapter(sentence);
+        questions = new ArrayList<>();
+        questionAdapter = new QuestionAdapter(this ,questions);
+        questionList.setAdapter(questionAdapter);
     }
 
 
@@ -637,10 +752,13 @@ public class WordEvaluateFragment extends BaseActivity {
                         @Override
                         public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
                             dismissLoadDialog();
+                            Log.e(TAG, "accept: " + (words == null));
+                            if(words != null) Log.e(TAG, "accept: " + words.size() + " " + posiiton );
+                            posiiton++;
                             if (words == null || words.size() <= 0) {
                                 reciteWords();
                             } else {
-                                posiiton++;
+
                                 if (posiiton == words.size()) {
                                     share();
                                 } else if (posiiton < words.size()) {

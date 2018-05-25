@@ -224,7 +224,7 @@ public class HomeFragment extends BaseFragment {
 
 
     public void showCompeleteDialog(){
-        CompleteDialog completeDialog = new CompleteDialog(_mActivity);
+        final CompleteDialog completeDialog = new CompleteDialog(_mActivity);
         completeDialog.setDialogClickListener(new DialogClickListener() {
             @Override
             public void clickTrue() {
@@ -236,13 +236,16 @@ public class HomeFragment extends BaseFragment {
                         thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity,C.NORMAL);
                     }
                 }));
+                completeDialog.dismiss();
             }
 
             @Override
             public void clickFalse() {
+                completeDialog.dismiss();
 
             }
         });
+        completeDialog.show();
     }
 
     @Override

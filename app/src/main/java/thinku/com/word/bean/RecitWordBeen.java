@@ -1,17 +1,14 @@
 package thinku.com.word.bean;
 
-import android.os.Parcelable;
-
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Administrator on 2018/3/29.
  */
 
-public class RecitWordBeen<T> implements Serializable {
+public class RecitWordBeen {
 
     /**
      * needReviewWords : 0
@@ -57,7 +54,7 @@ public class RecitWordBeen<T> implements Serializable {
     private int doX;
     private String percent;
     private WordsBean words;
-    private T question;
+    private thinku.com.word.ui.report.bean.QuestionBean question;
     private List<LowSentenceBean> sentence;
     private List<LowSentenceBean> lowSentence;
 
@@ -101,11 +98,11 @@ public class RecitWordBeen<T> implements Serializable {
         this.words = words;
     }
 
-    public T getQuestion() {
+    public thinku.com.word.ui.report.bean.QuestionBean getQuestion() {
         return question;
     }
 
-    public void setQuestion(T question) {
+    public void setQuestion(thinku.com.word.ui.report.bean.QuestionBean question) {
         this.question = question;
     }
 
@@ -235,33 +232,6 @@ public class RecitWordBeen<T> implements Serializable {
         }
     }
 
-    public static class QuestionBean {
-        /**
-         * questionid : 13314
-         * questiontype : 1
-         * question : <p><img src="/files/attach/images/content/20150508/1431074978223980.jpg" title="1431074978223980.jpg" alt="QQ截图20150508164829.jpg"/></p><p>The&nbsp;table&nbsp;gives&nbsp;three&nbsp;factors&nbsp;to&nbsp;be&nbsp;considered&nbsp;when&nbsp;choosing&nbsp;an&nbsp;Internet&nbsp;service&nbsp;provider&nbsp;and&nbsp;the&nbsp;percent&nbsp;of&nbsp;the&nbsp;1,200&nbsp;respondents&nbsp;to&nbsp;a&nbsp;survey&nbsp;who&nbsp;cited&nbsp;that&nbsp;factor&nbsp;as&nbsp;important.&nbsp;&nbsp;If&nbsp;30&nbsp;percent&nbsp;of&nbsp;the&nbsp;respondents&nbsp;cited&nbsp;both&nbsp;“user-friendly”&nbsp;and&nbsp;“fast&nbsp;response&nbsp;time,”&nbsp;what&nbsp;is&nbsp;the&nbsp;maximum&nbsp;possible&nbsp;number&nbsp;of&nbsp;respondents&nbsp;who&nbsp;cited&nbsp;“bargain&nbsp;prices,”&nbsp;but&nbsp;neither&nbsp;“user-friendly”&nbsp;nor&nbsp;“fast&nbsp;response&nbsp;time?”</p><p>&nbsp;</p><p><br/></p><p><br/></p>
-         * questiontitle :
-         */
-
-        private String question;
-        private String questiontitle;
-
-        public String getQuestion() {
-            return question;
-        }
-
-        public void setQuestion(String question) {
-            this.question = question;
-        }
-
-        public String getQuestiontitle() {
-            return questiontitle;
-        }
-
-        public void setQuestiontitle(String questiontitle) {
-            this.questiontitle = questiontitle;
-        }
-    }
 
     public static class LowSentenceBean {
         /**

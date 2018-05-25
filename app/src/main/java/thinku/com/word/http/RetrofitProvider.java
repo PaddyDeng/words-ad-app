@@ -1,8 +1,12 @@
 package thinku.com.word.http;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.SparseArray;
 
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,7 +19,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import thinku.com.word.BuildConfig;
 import thinku.com.word.MyApplication;
+import thinku.com.word.bean.RecitWordBeen;
 import thinku.com.word.bean.ResultBeen;
+import thinku.com.word.ui.report.bean.QuestionBean;
 import thinku.com.word.utils.LoginHelper;
 
 //链接
@@ -31,6 +37,7 @@ public class RetrofitProvider {
     public static String WORDS = "http://words.viplgw.cn/cn/";
     private static SparseArray<Retrofit> sparseArray = new SparseArray<>();
 
+    private static SparseArray<Retrofit> sparseArrayWord = new SparseArray<>();
     private Context context ;
     private RetrofitProvider() {
     }
@@ -45,6 +52,20 @@ public class RetrofitProvider {
                 }
             }
         }
+        return instance;
+    }
+
+    //  reciteword  不同类型的情况
+    public static Retrofit getInstance1(@HostType.HostTypeChecker int hostType ) {
+          Retrofit instance = sparseArrayWord.get(hostType) ;
+          if (instance == null) {
+              synchronized (RetrofitProvider.class) {
+                  if (instance == null) {
+                      instance = SingletonHolder.createWord(hostType);
+                      sparseArrayWord.put(hostType ,instance);
+                  }
+              }
+          }
         return instance;
     }
 
@@ -86,12 +107,63 @@ public class RetrofitProvider {
             }
             builder.networkInterceptors().add(new CookiesInterceptor(MyApplication.getInstance()));
 
+
             return new Retrofit.Builder()
                     .baseUrl(url)
                     .client(builder.build())
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
+
+
+        }
+
+        private static Retrofit createWord(@HostType.HostTypeChecker int type) {
+            OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
+            builder.readTimeout(20, TimeUnit.SECONDS);
+            builder.connectTimeout(20, TimeUnit.SECONDS);
+            if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+                interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+                builder.addInterceptor(interceptor);
+            }
+
+            String url = null;
+            switch (type) {
+                case HostType.LOGIN_REGIST_HOST:
+                    url = LOGINURL;
+                    break;
+                case HostType.BASE_URL_HOST:
+                    url = BASEURL;
+                    break;
+                case HostType.TOEFL_URL_HOST:
+                    url = TOEFLURL;
+                    break;
+                case HostType.GOSSIP_URL_HOST:
+                    url = GOSSIPURL;
+                    break;
+                case HostType.SMARTAPPLY_URL_HOST:
+                    url = SMARTAPPLYURL;
+                    break;
+                case HostType.VIPLGW_URL_HOST:
+                    url = VIPLGW;
+                    break;
+                case HostType.WORDS_URL_HOST:
+                    url = WORDS ;
+                    break;
+            }
+            builder.networkInterceptors().add(new CookiesInterceptor(MyApplication.getInstance()));
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(QuestionBean.class ,new ReciteWordJsonAdapter())
+                    .create();
+            return new Retrofit.Builder()
+                    .baseUrl(url)
+                    .client(builder.build())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+
+
         }
     }
 

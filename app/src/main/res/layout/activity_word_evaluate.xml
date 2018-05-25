@@ -55,9 +55,10 @@
                 android:id="@+id/phonogram"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="20dp"
                 android:text="['fdsfdsfds']"
                 android:textColor="@color/black"
+                android:layout_marginRight="20dp"
                 android:textSize="15sp" />
         </LinearLayout>
 
@@ -174,7 +175,7 @@
                                 android:lineSpacingExtra="20dp"
                                 android:lineSpacingMultiplier="0.5"
                                 android:textSize="13sp"
-                                android:paddingLeft="10dp"
+                                android:paddingLeft="20dp"
                                 />
 
                         </RelativeLayout>
@@ -218,7 +219,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/short_senese"
-                            android:background="@color/color_bg_gray">
+                            android:background="@color/color_bg_gray"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/image3"
@@ -240,21 +242,24 @@
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/sentences_list"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_below="@id/image3"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:layout_marginTop="5dp"
-                                android:background="@color/color_bg_gray" />
+                                android:paddingTop="5dp"
+                                android:visibility="visible"
+                                android:background="@color/white"
+                                 />
                         </RelativeLayout>
 
                         <RelativeLayout
                             android:id="@+id/question"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_below="@id/sentences"
-                            android:background="@color/color_bg_gray"
-                            android:visibility="gone">
+                            android:visibility="gone"
+                            android:background="@color/color_gray_bg"
+                            >
 
                             <ImageView
                                 android:id="@+id/image4"
@@ -272,16 +277,45 @@
                                 android:layout_toRightOf="@id/image4"
                                 android:text="例题入口"
                                 android:textColor="@color/mainColor" />
+                            <TextView
+                                android:layout_below="@id/image4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:id="@+id/article"
+                                android:text="fdsfafafafa"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:paddingLeft="20dp"
+                                android:paddingRight="20dp"
+                                android:lineSpacingMultiplier="0.5"
+                                android:textSize="13sp"
+                                android:layout_marginTop="10dp"/>
 
+
+                            <TextView
+                                android:layout_below="@id/article"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:id="@+id/question_home"
+                                android:text="fdsfafafafa"
+                                android:lineSpacingMultiplier="0.5"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:paddingLeft="20dp"
+                                android:paddingRight="20dp"
+                                android:textSize="13sp"
+                                android:paddingTop="10dp"/>
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/question_list"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_below="@id/image4"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:layout_marginTop="5dp"
-                                android:background="@color/color_bg_gray" />
+                                android:layout_below="@id/question_home"
+                                android:paddingTop="5dp"
+                                android:background="@color/white" />
                         </RelativeLayout>
 
                         <RelativeLayout

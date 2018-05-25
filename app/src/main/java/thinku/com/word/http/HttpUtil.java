@@ -48,6 +48,10 @@ public class HttpUtil {
         return RetrofitProvider.getInstance(hostType).create(RestApi.class);
     }
 
+    private static RestApi getRestApiReciteWord(@HostType.HostTypeChecker int hostType){
+        return  RetrofitProvider.getInstance1(hostType).create(RestApi.class);
+    }
+
 
     //重置session
     //================================================================
@@ -167,12 +171,12 @@ public class HttpUtil {
 
     // 复习单词详情
     public static Observable<RecitWordBeen> reciteWordsObservable(){
-        return getRestApi(HostType.WORDS_URL_HOST).reciteWords().compose(new SchedulerTransformer<RecitWordBeen>());
+        return getRestApiReciteWord(HostType.WORDS_URL_HOST).reciteWords().compose(new SchedulerTransformer<RecitWordBeen>());
     }
 
     //复习单词
-    public static Observable<WordReviewTodayBeen> wordReviewTodayBeenObservable(String status){
-        return getRestApi(HostType.WORDS_URL_HOST).reviewCaseWords(status).compose(new SchedulerTransformer<WordReviewTodayBeen>());
+    public static Observable<ResultBeen<List<String>>> wordReviewTodayBeenObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).reviewCaseWords().compose(new SchedulerTransformer<ResultBeen<List<String>>>());
     }
 
     //单词详情

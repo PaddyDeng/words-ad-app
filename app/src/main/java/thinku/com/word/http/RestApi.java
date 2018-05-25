@@ -129,9 +129,8 @@ public interface RestApi {
     Observable<RecitWordBeen> reciteWords();
 
 
-    @FormUrlEncoded
     @POST(NetworkChildren.REVIEW_CASE_WORDS)
-    Observable<WordReviewTodayBeen> reviewCaseWords(@Field("status") String status);
+    Observable<ResultBeen<List<String>>> reviewCaseWords();
 
     @FormUrlEncoded
     @POST(NetworkChildren.WORD_DETAILS)
@@ -339,7 +338,6 @@ public interface RestApi {
     @POST(NetworkChildren.PUBLIC_LIST)
     Observable<List<RoundBean.LivePreviewBean.DataBean>> liveList(@Field("page") String page , @Field("pageSize") String pageSize);
 
-    @FormUrlEncoded
     @POST(NetworkChildren.IS_RECITE_WORDS)
     Observable<ResultBeen<Void>> isReciteWords ();
 

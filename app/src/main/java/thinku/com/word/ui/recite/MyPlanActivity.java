@@ -9,22 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -38,9 +29,11 @@ import thinku.com.word.callback.DeleteListener;
 import thinku.com.word.callback.SelectListener;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.other.MainActivity;
-import thinku.com.word.ui.recite.bean.PackJsonBean;
 import thinku.com.word.utils.StringUtils;
 import thinku.com.word.view.wheelview.widget.WheelView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/2/8.
@@ -61,13 +54,13 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
     private RelativeLayout wheelView_rl, wheelView_r2;
     private boolean isDelete;
     private WordBagAdapter adapter;
-    private List<Package.PackData> packdatas ;
+    private List<Package.PackData> packdatas;
     private String[] words;
     private String[] days;
     private String[] Ids;
     private int nowPackage = 0;
-    private   int isFirst = 1;   //    0  代表手机滑动wheelView   1 代表没有滑动WheelView
-    private boolean isInit = false ;
+    private int isFirst = 0;   //    0  代表手机滑动wheelView   1 代表没有滑动WheelView
+    private boolean isInit = false;
     private LinearLayoutManager manager;
 
     public static void start(Context context) {
@@ -102,35 +95,35 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
                         showLoadDialog();
                     }
                 })
-                        .subscribe(new Consumer<Package>() {
-                            @Override
-                            public void accept(@NonNull Package aPackages) throws Exception {
-                                dismissLoadDialog();
-                                int nowPackId = aPackages.getNowPackage();
-                                packdatas.clear();
-                                packdatas.addAll(aPackages.getPackDatas());
-                                initWheelPackData(packdatas ,nowPackId);
-                            }
-                        }, new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                dismissLoadDialog();
-                            }
-                        })
+                .subscribe(new Consumer<Package>() {
+                    @Override
+                    public void accept(@NonNull Package aPackages) throws Exception {
+                        dismissLoadDialog();
+                        int nowPackId = aPackages.getNowPackage();
+                        packdatas.clear();
+                        packdatas.addAll(aPackages.getPackDatas());
+                        initWheelPackData(packdatas, nowPackId);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        dismissLoadDialog();
+                    }
+                })
         );
     }
 
-    public void initWheelPackData(List<Package.PackData> packDatas , int nowPackId){
-        isInit = true ;
+    public void initWheelPackData(List<Package.PackData> packDatas, int nowPackId) {
+        isInit = true;
         words = new String[packdatas.size()];
         days = new String[packdatas.size()];
         Ids = new String[packdatas.size()];
-        for (int i =0 ; i < packDatas.size() ; i++){
+        for (int i = 0; i < packDatas.size(); i++) {
             Package.PackData packData = packDatas.get(i);
             words[i] = packData.getPlanWords();
             days[i] = packData.getPlanDay();
             Ids[i] = packData.getCatId();
-            if (nowPackId == Integer.parseInt(packData.getCatId())){
+            if (nowPackId == Integer.parseInt(packData.getCatId())) {
                 nowPackage = packDatas.indexOf(packData);
             }
         }
@@ -151,6 +144,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
         }
         setWheel(total, day, word);
     }
+
     //  初始化adapter
     private void initView() {
         packdatas = new ArrayList<>();
@@ -168,7 +162,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
                         .subscribe(new Consumer<ResultBeen<Void>>() {
                             @Override
                             public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                                isInit = false ;
+                                isInit = false;
                                 dismissLoadDialog();
                                 if (getHttpResSuc(voidResultBeen.getCode())) {
                                     Ids[position] = packdatas.get(position).getCatId();
@@ -199,17 +193,6 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
         adapter.setDeleteListener(this);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                Log.e(TAG, "onTouchEvent: " + isInit  + " " + isFirst );
-                isInit = false ;
-                isFirst = 0 ;   //  初始化联动
-                break;
-        }
-        return super.onTouchEvent(event);
-    }
 
     public void setWheel(final int totals, final int dayInt, int wordInt) {
         wheelView_r2.removeAllViews();
@@ -219,10 +202,10 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
         wheel_num.setWheelAdapter(new MyWheelAdapter(this));
         wheel_day.setWheelAdapter(new MyWheelAdapter(this));
 
-        if (dayList!= null && dayList.size() > 0){
+        if (dayList != null && dayList.size() > 0) {
             dayList.clear();
         }
-        if (wordList != null && wordList.size() > 0){
+        if (wordList != null && wordList.size() > 0) {
             wordList.clear();
         }
         for (int i = 0; i < totals; i++) {
@@ -235,52 +218,52 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
         style.backgroundColor = getResources().getColor(R.color.gray);
         wheel_day.setStyle(style);
         wheel_num.setStyle(style);
-        wheel_day.setSelection(day);
-        wheel_num.setSelection(word);
+        wheel_day.setSelection(dayInt - 1);
+        wheel_num.setSelection(wordInt - 1);
         wheel_day.setSkin(WheelView.Skin.Common);
         wheel_num.setSkin(WheelView.Skin.Common);
         wheel_day.setWheelData(dayList);
         wheel_num.setWheelData(wordList);
         wheel_day.setWheelSize(7);
         wheel_num.setWheelSize(7);
-        wheel_day.setSelection(dayInt - 1);
-        Log.e(TAG, "setWheel: " + "  " + day + "  " + wordList.get(word));
-        num_of_day.setText(dayList.get(day -1));
-        num_of_word.setText(wordList.get(word -1));
+        num_of_day.setText(dayList.get(day - 1));
+        num_of_word.setText(wordList.get(word - 1));
         wheel_day.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
             @Override
             public void onItemSelected(int position, Object o) {
-                Log.e(TAG, "onItemSelected: " + isInit  + "  " + isFirst);
-               if (!isInit) {
-                   if (isFirst == 0) {
-                       day2num(position);
-                       isFirst ++ ;
-                   }
-               }
+                  //  为0 表示没有联动滑动 ， 所有联动滑动  ，如果为1 表明已经联动滑动了，禁止联动滑动
+                if (isFirst == 0) {
+                    day2num(position);
+                    isFirst++;
+                } else {
+                    isFirst = 0;
+                }
+                words[wordPosition] = num_of_word.getText().toString().trim();
+                days[wordPosition] = num_of_day.getText().toString().trim();
+
                 days[wordPosition] = dayList.get(position);
                 words[wordPosition] = wordList.get(position);
             }
         });
 
-        num_of_day.setText(dayList.get(dayInt - 1));
         wheel_num.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
             @Override
             public void onItemSelected(int position, Object o) {
-                if (!isInit) {
-                    if (isFirst == 0) {
-                        num2day(position);
-                        isFirst++ ;
-                    }
+                if (isFirst == 0) {
+                    num2day(position);
+                    isFirst++;
+                } else {
+                    isFirst = 0;
                 }
+
                 words[wordPosition] = num_of_word.getText().toString().trim();
                 days[wordPosition] = num_of_day.getText().toString().trim();
             }
         });
         wheelView_rl.addView(wheel_day);
         wheelView_r2.addView(wheel_num);
-        num_of_word.setText(wordList.get(totals - wordInt));
         days[wordPosition] = dayList.get(dayInt - 1);
-        words[wordPosition] = wordList.get(totals - wordInt);
+        words[wordPosition] = wordList.get(wordInt - 1);
     }
 
     private void findView() {
@@ -301,16 +284,16 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
 
     private void day2num(int i) {
         int n = (int) Math.ceil(Double.valueOf(total) / (i + 1));
-        wheel_num.setSelection(n);
-        num_of_day.setText(dayList.get(i));
-        num_of_word.setText(wordList.get(n));
+        wheel_num.setSelection(n );
+        num_of_day.setText(dayList.get(i ));
+        num_of_word.setText(wordList.get(n ));
     }
 
     private void num2day(int i) {
         int n = (int) Math.ceil(Double.valueOf(total) / (total - i));
         wheel_day.setSelection(n );
-        num_of_day.setText(dayList.get(n));
-        num_of_word.setText(wordList.get(i));
+        num_of_day.setText(dayList.get(n ));
+        num_of_word.setText(wordList.get(i ));
     }
 
     @Override
@@ -345,9 +328,9 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
             for (int i = 0; i < packdatas.size(); i++) {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("id", Ids[i]);
-                jsonObject.put("planDay",StringUtils.getStringNum(words[i]));
-                jsonObject.put("planWords",StringUtils.getStringNum(days[i]));
-                jsonArray.add( jsonObject);
+                jsonObject.put("planDay", StringUtils.getStringNum(words[i]));
+                jsonObject.put("planWords", StringUtils.getStringNum(days[i]));
+                jsonArray.add(jsonObject);
             }
             // 返回一个JSONArray对象
             return jsonArray;
@@ -365,7 +348,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
             toTast("请为所有词包选择计划");
         } else {
             String JsonString = createJSONObject().toJSONString();
-            Log.e(TAG, "updataPlan: " + JsonString );
+            Log.e(TAG, "updataPlan: " + JsonString);
             showLoadDialog();
             addToCompositeDis(HttpUtil.updataPackage(JsonString)
                     .doOnSubscribe(new Consumer<Disposable>() {
@@ -421,20 +404,20 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
     public void delete(final int poisition) {
         Package.PackData packData = packdatas.get(poisition);
         addToCompositeDis(HttpUtil.deletePackageObservable(packData.getId())
-        .doOnSubscribe(new Consumer<Disposable>() {
-            @Override
-            public void accept(@NonNull Disposable disposable) throws Exception {
-                showLoadDialog();
-            }
-        }).subscribe(new Consumer<ResultBeen<Void>>() {
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        showLoadDialog();
+                    }
+                }).subscribe(new Consumer<ResultBeen<Void>>() {
                     @Override
                     public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
                         dismissLoadDialog();
-                        if (getHttpResSuc(voidResultBeen.getCode())){
+                        if (getHttpResSuc(voidResultBeen.getCode())) {
                             if (poisition != adapter.getSelectP()) {
                                 packdatas.remove(packdatas.get(poisition));
                                 adapter.notifyItemRemoved(poisition);
-                            }else{
+                            } else {
                                 if (packdatas.size() > 0) {
                                     packdatas.remove(packdatas.get(poisition));
                                     adapter.notifyItemRemoved(poisition);
@@ -442,8 +425,8 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
                                     manager.scrollToPositionWithOffset(poisition, 0);
                                 }
                             }
-                        }else{
-                            toTast(MyPlanActivity.this ,voidResultBeen.getMessage());
+                        } else {
+                            toTast(MyPlanActivity.this, voidResultBeen.getMessage());
                         }
                     }
                 }, new Consumer<Throwable>() {
