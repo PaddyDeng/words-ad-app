@@ -3,15 +3,19 @@ package thinku.com.word.ui.share;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -25,7 +29,7 @@ import thinku.com.word.utils.ShareUtils;
 import thinku.com.word.utils.StringUtils;
 import thinku.com.word.view.SignDate;
 
-public class ShareDateActivity extends BaseActivity {
+public class ShareDateActivity extends BaseActivity  implements PlatformActionListener{
 
     @BindView(R.id.cancel)
     ImageView cancel;
@@ -99,7 +103,7 @@ public class ShareDateActivity extends BaseActivity {
                     dayNum.setText(userIndex.getInsistDay());
                     wordNum.setText(userIndex.getToDayWords());
                     String content = getResources().getString(R.string.share_content);
-                    ShareUtils.shareContent(ShareDateActivity.this , String.format(content ,userIndex.getInsistDay() ,userIndex.getToDayWords() ,userIndex.getUserAllWords()));
+                    ShareUtils.shareContent(ShareDateActivity.this , String.format(content ,userIndex.getInsistDay() ,userIndex.getToDayWords() ,userIndex.getUserAllWords() ) ,ShareDateActivity.this);
                 }
             }
         }));
@@ -112,4 +116,20 @@ public class ShareDateActivity extends BaseActivity {
         this.finishWithAnim();
     }
 
+    @Override
+    public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+        Log.e(TAG, "onComplete: " );
+        this.finishWithAnim();
+        MainActivity.toMain(this);
+    }
+
+    @Override
+    public void onError(Platform platform, int i, Throwable throwable) {
+        Log.e(TAG, "onError: " );
+    }
+
+    @Override
+    public void onCancel(Platform platform, int i) {
+        Log.e(TAG, "onCancel: " );
+    }
 }

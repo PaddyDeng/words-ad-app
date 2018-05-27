@@ -132,7 +132,7 @@ public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHold
                 public void onClick(View v) {
                     DialogDeleteWordBag dialog = new DialogDeleteWordBag(context);
                     dialog.show();
-                    dialog.setContent("你确定删除" + packData.getName() + "词包的" + packData.getTotal() + "个单词？", deleteListener, position);
+                    dialog.setContent("你确定删除" + packData.getName() + "词包的" + packData.getTotal() + "个单词？", deleteListener, position , holder);
                 }
             });
         }

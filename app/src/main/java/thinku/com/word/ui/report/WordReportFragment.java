@@ -205,10 +205,6 @@ public class WordReportFragment extends BaseFragment {
             for (int i = 0; i < 7; i++) {
                 yValue.add(percent * i);
             }
-
-
-//            dateReport.setValue(Value, xValue, yValue);
-
             dateReport.setData(xValue, Value);
         }
     }

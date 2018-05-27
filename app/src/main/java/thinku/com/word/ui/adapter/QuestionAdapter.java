@@ -45,10 +45,12 @@ public class QuestionAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         final QuestionHolder questionHolder = (QuestionHolder) holder;
         QuestionBean.QslctarrBean qslctarrBean = contents.get(position);
-        if (qslctarrBean.isAnswer()){
+        if (qslctarrBean.isAnswer() == 1){
             questionHolder.question.setImageResource(R.mipmap.green_circle);
+        }else if (qslctarrBean.isAnswer() == 0){
+            questionHolder.question.setImageResource(R.mipmap.gray_circle);
         }else{
-            questionHolder.question.setBackground(context.getResources().getDrawable(R.mipmap.gray_circle));
+            questionHolder.question.setImageResource(R.mipmap.circle_red);
         }
 
         questionHolder.textView.setText(qslctarrBean.getName() + "  " +Html.fromHtml(qslctarrBean.getSelect()));

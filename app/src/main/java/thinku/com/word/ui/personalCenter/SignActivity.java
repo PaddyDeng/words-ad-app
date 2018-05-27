@@ -75,9 +75,9 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         total_num.setText("累计打卡：" + singBeen.getNum()+"天");
         bean_num.setText(singBeen.getIntegral());
         if (singBeen.getType() == 0){
-            sign.setClickable(true);
+            sign.setEnabled(true);
         }else{
-            sign.setClickable(false);
+            sign.setEnabled(false);
         }
     }
     private void findView() {

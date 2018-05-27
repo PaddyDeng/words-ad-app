@@ -31,6 +31,7 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.utils.WaitUtils;
@@ -148,24 +149,29 @@ public class ProcessFragment extends BaseFragment {
                         if (WaitUtils.isRunning(TAG)) {
                             WaitUtils.dismiss(TAG);
                         }
-                        if (trackBeen != null) {
-                            totalDay.setText(trackBeen.getInsistDay() + "");
-                            totalNum.setText(trackBeen.getUserAllWords());
-                            knowNum.setText(trackBeen.getKnow());
-                            unknowNum.setText(trackBeen.getNotKnow());
-                            name.setText(SharedPreferencesUtils.getString("nickname", _mActivity));
-                            totalWordNum.setText(trackBeen.getData().getNum() + "");
-                            ranking.setText(trackBeen.getData().getRank() + "");
-                            packageBeanList.clear();
-                            packageBeanList.addAll(trackBeen.getPackageX());
-                            gmatBagAdapter.notifyDataSetChanged();
-                            rankBeanList.clear();
-                            rankBeanList.addAll(trackBeen.getRank());
-                            wordRankAdapter.notifyDataSetChanged();
-                            cirView.setData(trackBeen.getNewX(), trackBeen.getReview());
-                            SharedPreferencesUtils.setEvaluationNum(_mActivity, trackBeen.getData().getNum());
-                            SharedPreferencesUtils.setRankScore(_mActivity, trackBeen.getData().getRank() + "");
-                            SharedPreferencesUtils.setRankNum(_mActivity, trackBeen.getData().getNum() + "");
+                        if (trackBeen.getCode() == 99) {
+                            LoginHelper.needLogin(_mActivity, "您未登陆，请先登陆");
+                        } else {
+
+                            if (trackBeen != null) {
+                                totalDay.setText(trackBeen.getInsistDay() + "");
+                                totalNum.setText(trackBeen.getUserAllWords());
+                                knowNum.setText(trackBeen.getKnow());
+                                unknowNum.setText(trackBeen.getNotKnow());
+                                name.setText(SharedPreferencesUtils.getString("nickname", _mActivity));
+                                totalWordNum.setText(trackBeen.getData().getNum() + "");
+                                ranking.setText(trackBeen.getData().getRank() + "");
+                                packageBeanList.clear();
+                                packageBeanList.addAll(trackBeen.getPackageX());
+                                gmatBagAdapter.notifyDataSetChanged();
+                                rankBeanList.clear();
+                                rankBeanList.addAll(trackBeen.getRank());
+                                wordRankAdapter.notifyDataSetChanged();
+                                cirView.setData(trackBeen.getNewX(), trackBeen.getReview());
+                                SharedPreferencesUtils.setEvaluationNum(_mActivity, trackBeen.getData().getNum());
+                                SharedPreferencesUtils.setRankScore(_mActivity, trackBeen.getData().getRank() + "");
+                                SharedPreferencesUtils.setRankNum(_mActivity, trackBeen.getData().getNum() + "");
+                            }
                         }
                     }
                 }, new Consumer<Throwable>() {

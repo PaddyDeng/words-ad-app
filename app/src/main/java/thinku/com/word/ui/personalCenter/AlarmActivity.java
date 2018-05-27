@@ -94,17 +94,22 @@ public class AlarmActivity extends BaseActivity {
                 String id = times[0] + times[1] + 0;
                 AlarmManagerUtil.setAlarm(this, 0, Integer.parseInt(times[0]), Integer.parseInt
                         (times[1]), Integer.parseInt(id), 1, "该复习单词了", 2);
+                Log.e(TAG, "setClock: " + id );
                 clock.setC_id(id);
             } else {//多选，周几的闹钟
                 String[] weeks = cycle.split("\\t");
                 String id = "";
                 for (int i = 0; i < weeks.length; i++) {
                     int ring = parseRepeat(weeks[i]);
+                    if (ring == -1){
+                        ring = 0 ;
+                    }
                     String o_id = times[0] + times[1] + ring;
                     AlarmManagerUtil.setAlarm(this, 2, Integer.parseInt(times[0]), Integer
                             .parseInt(times[1]), Integer.parseInt(o_id), ring, "该复习单词了", 2);
                     id = o_id + ",";
                 }
+                Log.e(TAG, "setClock: " + id );
                 clock.setC_id(id);
             }
             Toast.makeText(this, "闹钟设置成功", Toast.LENGTH_LONG).show();
@@ -165,7 +170,7 @@ public class AlarmActivity extends BaseActivity {
             @Override
             public void LongClickListener(int position, RecyclerView.ViewHolder hodler, View view) {
                 Clock clock = clocks.get(position);
-                if (clock.isClock()) {
+                if (clock.isClock() && !TextUtils.isEmpty(clock.getC_id())) {
                     cancelClock(clock);
                 }
                 deleteClock(position);
@@ -201,6 +206,7 @@ public class AlarmActivity extends BaseActivity {
      */
     public void cancelClock(Clock clock) {
         String c_id = clock.getC_id();
+        Log.e(TAG, "cancelClock: " + c_id );
         String c_ids[] = c_id.split(",");
         if (c_ids.length > 0) {
             for (int i = 0; i < c_ids.length; i++) {
@@ -247,6 +253,7 @@ public class AlarmActivity extends BaseActivity {
             @Override
             public void onNext(List<Clock> clockList) {
                 clocks.clear();
+                Log.e(TAG, "onNext: " + clockList.size() );
                 clocks.addAll(clockList);
                 clockAdapter.notifyDataSetChanged();
                 if (clockList != null && clockList.size() > 0) {

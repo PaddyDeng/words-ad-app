@@ -5,9 +5,13 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
+import java.util.HashMap;
 
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 import thinku.com.word.R;
 import thinku.com.word.http.NetworkTitle;
@@ -17,7 +21,7 @@ import thinku.com.word.http.NetworkTitle;
  */
 
 public class ShareUtils {
-
+    private static final String TAG = ShareUtils.class.getSimpleName();
     /**
      * 只分享图片
      * @param context
@@ -47,7 +51,7 @@ public class ShareUtils {
         }
     }
 
-    public static void shareContent(Context context ,String content ){
+    public static void shareContent(Context context ,String content ,PlatformActionListener p ){
         String sdCardPath = Environment.getExternalStorageDirectory().getPath();
         String filePath = sdCardPath + File.separator  + "logo.png";
         OnekeyShare oks = new OnekeyShare();
@@ -56,9 +60,25 @@ public class ShareUtils {
         // title标题，微信、QQ和QQ空间等平台使用
         oks.setTitle("雷哥单词");
         oks.setTitleUrl(NetworkTitle.WORD1+ File.separator +"wap/share/index?uid=" + SharedPreferencesUtils.getUid(context)+"&type=2");
+        Log.e(TAG, "shareContent: " + content );
         oks.setText(content);
         oks.setImagePath(filePath);
         oks.show(context);
+        oks.setCallback(new PlatformActionListener() {
+            @Override
+            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+                Log.e(TAG, "onComplete: " );
+            }
 
+            @Override
+            public void onError(Platform platform, int i, Throwable throwable) {
+                Log.e(TAG, "onError: " + platform + "  " + i + "   " + throwable.toString() );
+            }
+
+            @Override
+            public void onCancel(Platform platform, int i) {
+                Log.e(TAG, "onCancel: " + platform + "  " + i + "   " + i );
+            }
+        });
     }
 }

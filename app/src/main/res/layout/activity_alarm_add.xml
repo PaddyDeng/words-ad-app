@@ -17,58 +17,22 @@
         android:layout_height="500px"
         android:layout_margin="50px">
 
-        <View
-            android:layout_width="350dp"
-            android:layout_height="100px"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/main_50round_tv" />
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerHorizontal="true">
-
-            <thinku.com.word.view.loopview.LoopView
+            android:orientation="horizontal">
+            <thinku.com.word.view.wheelview.widget.WheelView
                 android:id="@+id/hour"
-                android:layout_width="100px"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                app:awv_centerTextColor="@color/white"
-                app:awv_dividerTextColor="@color/white"
-                app:awv_itemsVisibleCount="7"
+                android:layout_weight="1"
                  />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dip"
-                android:layout_marginTop="10px"
-                android:gravity="center_vertical"
-                android:text="时"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
-
-            <thinku.com.word.view.loopview.LoopView
+            <thinku.com.word.view.wheelview.widget.WheelView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:id="@+id/minute"
-                android:layout_width="100px"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="300px"
-                app:awv_centerTextColor="@color/white"
-                app:awv_dividerTextColor="@color/white"
-                app:awv_itemsVisibleCount="7"
-                 />
+                android:layout_weight="1"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dip"
-                android:layout_marginTop="10px"
-                android:gravity="center_vertical"
-                android:text="分"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
         </LinearLayout>
     </RelativeLayout>
 

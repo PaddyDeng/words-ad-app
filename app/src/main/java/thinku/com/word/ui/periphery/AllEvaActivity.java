@@ -3,7 +3,6 @@ package thinku.com.word.ui.periphery;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
@@ -22,7 +21,7 @@ import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.callback.SelectListener;
 import thinku.com.word.http.HttpUtil;
-import thinku.com.word.ui.periphery.adapter.EvaAdapter;
+import thinku.com.word.ui.periphery.adapter.EvaAdapter1;
 import thinku.com.word.ui.periphery.bean.RoundBean;
 import thinku.com.word.utils.HttpUtils;
 
@@ -37,7 +36,7 @@ public class AllEvaActivity extends BaseActivity {
     @BindView(R.id.eva_all)
     RecyclerView evaAll;
 
-    private EvaAdapter evaAdapter ;
+    private EvaAdapter1 evaAdapter ;
     private List<RoundBean.CaseBean> caseBeanList ;
 
     public static void start(Context context){
@@ -91,7 +90,7 @@ public class AllEvaActivity extends BaseActivity {
 
     public void initAdapter(){
         caseBeanList = new ArrayList<>();
-        evaAdapter = new EvaAdapter(this ,caseBeanList);
+        evaAdapter = new EvaAdapter1(this ,caseBeanList);
         evaAdapter.setSelectListener(new SelectListener() {
             @Override
             public void setListener(int position) {

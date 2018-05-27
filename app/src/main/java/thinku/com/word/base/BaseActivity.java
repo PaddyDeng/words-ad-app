@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -23,9 +24,14 @@ import java.util.concurrent.ConcurrentMap;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import thinku.com.word.R;
+import thinku.com.word.bean.UserInfo;
+import thinku.com.word.callback.ICallBack;
 import thinku.com.word.callback.PermissionCallback;
 import thinku.com.word.permission.RxPermissions;
+import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.utils.HttpUtils;
+import thinku.com.word.utils.LoginHelper;
+import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.utils.WaitUtils;
 
 
@@ -271,5 +277,25 @@ public class BaseActivity extends AutoLayoutActivity {
 
     protected void forword(Class<?> c) {
         startActivity(new Intent(this, c));
+    }
+
+    /**
+     * session 失效重新登录
+     */
+    public void login() {
+        UserInfo userInfo = SharedPreferencesUtils.getUserInfo(this);
+        if (userInfo != null & !TextUtils.isEmpty(userInfo.getPhone()) & !"".equals(userInfo.getPhone())) {
+            LoginHelper.setSession(this, userInfo, new ICallBack() {
+                @Override
+                public void onSuccess(Object o) {
+
+                }
+
+                @Override
+                public void onFail() {
+
+                }
+            });
+        }
     }
 }

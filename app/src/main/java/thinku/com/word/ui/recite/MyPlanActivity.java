@@ -133,14 +133,15 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
         adapter.setSelectP(nowPackage);
         wordPosition = nowPackage;
         try {
-            day = Integer.parseInt(packdatas.get(nowPackage).getPlanDay());
+            day = Integer.parseInt(packdatas.get(nowPackage).getPlanDay()) -1;
         } catch (Exception e) {
-            day = 1;
+            Log.e(TAG, "initWheelPackData: " + e.getMessage());
+            day = 0;
         }
         try {
-            word = Integer.parseInt(packdatas.get(nowPackage).getPlanWords());
+            word = Integer.parseInt(packdatas.get(nowPackage).getPlanWords()) -1;
         } catch (Exception e) {
-            word = total;
+            word = total -1;
         }
         setWheel(total, day, word);
     }
@@ -169,15 +170,15 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
                                     wordPosition = position;
                                     total = Integer.parseInt(packdatas.get(position).getTotal());
                                     try {
-                                        day = Integer.parseInt(packdatas.get(position).getPlanDay());
+                                        day = Integer.parseInt(packdatas.get(position).getPlanDay()) -1;
                                     } catch (Exception e) {
-                                        day = 1;
+                                        day = 0;
                                     }
 
                                     try {
-                                        word = Integer.parseInt(packdatas.get(position).getPlanWords());
+                                        word = Integer.parseInt(packdatas.get(position).getPlanWords()) -1;
                                     } catch (Exception e) {
-                                        word = total;
+                                        word = total  -1;
                                     }
                                     setWheel(total, day, word);
                                 }
@@ -192,9 +193,9 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
         });
         adapter.setDeleteListener(this);
     }
-
-
     public void setWheel(final int totals, final int dayInt, int wordInt) {
+        Log.e(TAG, "setWheel: " + totals +"  " + dayInt + "  " + wordInt );
+        isFirst = 0 ;
         wheelView_r2.removeAllViews();
         wheelView_rl.removeAllViews();
         wheel_day = new WheelView(this);
@@ -210,7 +211,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
         }
         for (int i = 0; i < totals; i++) {
             dayList.add(i + 1 + "天");
-            wordList.add(i + "个");
+            wordList.add(i + 1+ "个");
         }
         WheelView.WheelViewStyle style = new WheelView.WheelViewStyle();
         style.textColor = Color.DKGRAY;
@@ -218,16 +219,16 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
         style.backgroundColor = getResources().getColor(R.color.gray);
         wheel_day.setStyle(style);
         wheel_num.setStyle(style);
-        wheel_day.setSelection(dayInt - 1);
-        wheel_num.setSelection(wordInt - 1);
         wheel_day.setSkin(WheelView.Skin.Common);
         wheel_num.setSkin(WheelView.Skin.Common);
         wheel_day.setWheelData(dayList);
         wheel_num.setWheelData(wordList);
         wheel_day.setWheelSize(7);
         wheel_num.setWheelSize(7);
-        num_of_day.setText(dayList.get(day - 1));
-        num_of_word.setText(wordList.get(word - 1));
+        wheel_day.setSelection(dayInt );
+//        wheel_num.setSelection(wordInt );
+        num_of_day.setText(dayList.get(dayInt));
+        num_of_word.setText(wordList.get(wordInt));
         wheel_day.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
             @Override
             public void onItemSelected(int position, Object o) {
@@ -250,7 +251,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void onItemSelected(int position, Object o) {
                 if (isFirst == 0) {
-                    num2day(position);
+//                    num2day(position);
                     isFirst++;
                 } else {
                     isFirst = 0;
@@ -284,16 +285,17 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
 
     private void day2num(int i) {
         int n = (int) Math.ceil(Double.valueOf(total) / (i + 1));
-        wheel_num.setSelection(n );
-        num_of_day.setText(dayList.get(i ));
-        num_of_word.setText(wordList.get(n ));
+        wheel_num.setSelection(n  - 1);
+//        num_of_day.setText(dayList.get(i));
+        num_of_word.setText(wordList.get(n  - 1));
+        Log.e(TAG, "day2num: " + n  + "  " + i );
     }
 
     private void num2day(int i) {
-        int n = (int) Math.ceil(Double.valueOf(total) / (total - i));
-        wheel_day.setSelection(n );
-        num_of_day.setText(dayList.get(n ));
-        num_of_word.setText(wordList.get(i ));
+        int n = (int) Math.ceil(Double.valueOf(total) / (i + 1));
+        wheel_day.setSelection(n -1  );
+        num_of_day.setText(dayList.get(n  -1 ));
+//        num_of_word.setText(wordList.get(i  ));
     }
 
     @Override
@@ -401,7 +403,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
-    public void delete(final int poisition) {
+    public void delete(final RecyclerView.ViewHolder viewHolder, final int poisition) {
         Package.PackData packData = packdatas.get(poisition);
         addToCompositeDis(HttpUtil.deletePackageObservable(packData.getId())
                 .doOnSubscribe(new Consumer<Disposable>() {
@@ -415,14 +417,14 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
                         dismissLoadDialog();
                         if (getHttpResSuc(voidResultBeen.getCode())) {
                             if (poisition != adapter.getSelectP()) {
-                                packdatas.remove(packdatas.get(poisition));
-                                adapter.notifyItemRemoved(poisition);
+                                packdatas.remove(viewHolder.getAdapterPosition());
+                                adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
                             } else {
                                 if (packdatas.size() > 0) {
-                                    packdatas.remove(packdatas.get(poisition));
-                                    adapter.notifyItemRemoved(poisition);
+                                    packdatas.remove(viewHolder.getAdapterPosition());
+                                    adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
                                     adapter.setSelectP(0);
-                                    manager.scrollToPositionWithOffset(poisition, 0);
+                                    manager.scrollToPositionWithOffset(viewHolder.getAdapterPosition(), 0);
                                 }
                             }
                         } else {

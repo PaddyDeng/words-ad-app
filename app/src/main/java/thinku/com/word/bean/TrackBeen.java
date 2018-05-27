@@ -21,7 +21,7 @@ public class TrackBeen {
      * data : {"num":0,"rank":0}
      * rank : [{"nickname":"Test222","image":"/files/upload/image5abc50f205dd8.jpg","uid":"26967","num":"3880"},{"nickname":"obelisk","image":null,"uid":"17053","num":"1840"},{"nickname":"以梦为马","image":null,"uid":"28244","num":"1680"}]
      */
-
+    private int code ;
     private String know;
     private String notKnow;
     private int insistDay;
@@ -33,6 +33,14 @@ public class TrackBeen {
     @SerializedName("package")
     private List<PackageBean> packageX;
     private List<RankBean> rank;
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
 
     public String getKnow() {
         return know;

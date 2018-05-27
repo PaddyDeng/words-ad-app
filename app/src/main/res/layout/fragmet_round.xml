@@ -165,7 +165,7 @@
         <com.zhy.autolayout.AutoRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="@dimen/border_space"
             android:orientation="horizontal"
             android:id="@+id/oepn_class_title"
             android:visibility="gone">
@@ -227,7 +227,7 @@
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
             android:layout_height="25dp"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="@dimen/border_space"
             android:orientation="horizontal">
 
             <ImageView
@@ -240,7 +240,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="@dimen/border_space"
                 android:text="经典课程"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
@@ -489,7 +489,7 @@
         <com.zhy.autolayout.AutoRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="@dimen/border_space"
             android:orientation="horizontal"
             android:id="@+id/case_more">
 
@@ -523,7 +523,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
             android:id="@+id/eva_list" />

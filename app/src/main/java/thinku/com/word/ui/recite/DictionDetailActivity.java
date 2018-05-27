@@ -274,8 +274,9 @@ public class DictionDetailActivity extends BaseActivity {
             if (wordIdIndex < wordList.size() - 1) {
                 if (i == (texts.size())) {
                     StringBuilder wordBuilder  = new StringBuilder() ;
-                    for (int i =0 ; i < texts.size() ; i++){
+                    for (int i =0 ; i < texts.size() ; i++) {
                         wordBuilder.append(texts.get(i).getText().toString().trim());
+                    }
                         if (recitWord.getWords().getWord().equals(wordBuilder.toString())){
                             addToCompositeDis(HttpUtil.reviewUpdataObservable(wordList.get(wordIdIndex) , 100 +"")
                                     .doOnSubscribe(new Consumer<Disposable>() {
@@ -303,10 +304,6 @@ public class DictionDetailActivity extends BaseActivity {
                             startShakeAnimation();
                         }
                     }
-
-
-
-                }
             } else {
                 if (i == (texts.size())) {
                     showCompelete();
@@ -318,6 +315,8 @@ public class DictionDetailActivity extends BaseActivity {
             else i = 0;
         }
     }
+
+
 
     /**
      * 显示完成

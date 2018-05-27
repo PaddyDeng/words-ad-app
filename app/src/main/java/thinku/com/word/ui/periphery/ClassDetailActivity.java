@@ -19,6 +19,7 @@ import butterknife.Unbinder;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.ui.periphery.bean.CourseBean;
 import thinku.com.word.ui.periphery.bean.RoundBean;
 import thinku.com.word.ui.pk.OnlineActivity;
 import thinku.com.word.utils.DateUtil;
@@ -60,10 +61,16 @@ public class ClassDetailActivity extends BaseActivity {
     private String url;
     private boolean hasAsyncFree = false;
     private String contentTxt;
-
+    private CourseBean courseBean ;
     public static void start(Context context, RoundBean.RecentClassBean recentClassBean) {
         Intent intent = new Intent(context, ClassDetailActivity.class);
         intent.putExtra("data", recentClassBean);
+        context.startActivity(intent);
+    }
+
+    public static void start(Context context , CourseBean courseBean){
+        Intent intent = new Intent(context, ClassDetailActivity.class);
+        intent.putExtra("data", courseBean);
         context.startActivity(intent);
     }
 
@@ -107,6 +114,14 @@ public class ClassDetailActivity extends BaseActivity {
         } catch (Exception e) {
 
         }
+
+        try{
+            courseBean = (CourseBean) getIntent().getSerializableExtra("data");
+            init(courseBean);
+            hasAsyncFree = true;
+        }catch (Exception e){
+
+        }
     }
 
     public void init(RoundBean.RecentClassBean recentClassBean) {
@@ -131,6 +146,19 @@ public class ClassDetailActivity extends BaseActivity {
         listen.setVisibility(View.VISIBLE);
         url = choicenessBean.getUrl();
         contentTxt = choicenessBean.getContent();
+    }
+
+    public void init(CourseBean courseBean){
+        titleT.setText("课程详情");
+        GlideUtils.load(this, courseBean.getImage(), courseImg);
+        name.setText(courseBean.getName());
+        people.setText(DateUtil.differentDays(Integer.parseInt(courseBean.getId())) + "人已加入");
+        String s = HtmlUtil.repairContent(courseBean.getContent(), NetworkTitle.DomainSmartApplyResourceNormal);
+        String html = HtmlUtil.getHtml(s, 0);
+        content.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
+        listen.setVisibility(View.VISIBLE);
+        url = courseBean.getUrl();
+        contentTxt = courseBean.getContent();
     }
 
     public void init(RoundBean.LivePreviewBean.DataBean dataBean) {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -19,8 +20,11 @@ import io.reactivex.disposables.Disposable;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.SupportFragmentDelegate;
 import thinku.com.word.MyApplication;
+import thinku.com.word.bean.UserInfo;
+import thinku.com.word.callback.ICallBack;
 import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.LoginHelper;
+import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.utils.WaitUtils;
 
 
@@ -208,6 +212,26 @@ public abstract class BaseFragment extends SupportFragment  {
             _mActivity.finish();
         }
         return true;
+    }
+
+    /**
+     * session 失效重新登录
+     */
+    public void login() {
+        UserInfo userInfo = SharedPreferencesUtils.getUserInfo(_mActivity);
+        if (userInfo != null & !TextUtils.isEmpty(userInfo.getPhone()) & !"".equals(userInfo.getPhone())) {
+            LoginHelper.setSession(_mActivity, userInfo, new ICallBack() {
+                @Override
+                public void onSuccess(Object o) {
+
+                }
+
+                @Override
+                public void onFail() {
+
+                }
+            });
+        }
     }
 
 }

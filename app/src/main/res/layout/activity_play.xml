@@ -13,8 +13,8 @@
 
         <thinku.com.word.ui.periphery.MoveGSVideoView
             android:id="@+id/gsVideoView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true" />
 
@@ -30,7 +30,7 @@
             android:layout_centerInParent="true"
             android:visibility="gone">
 
-       </thinku.com.word.ui.periphery.view.VideoSystemOverlay>
+        </thinku.com.word.ui.periphery.view.VideoSystemOverlay>
 
 
         <ImageView

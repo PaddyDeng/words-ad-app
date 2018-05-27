@@ -70,26 +70,6 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
     }
 
 
-    /**
-     * session 失效重新登录
-     */
-    public void login() {
-        UserInfo userInfo = SharedPreferencesUtils.getUserInfo(MainActivity.this);
-        if (userInfo != null & !TextUtils.isEmpty(userInfo.getPhone()) & !"".equals(userInfo.getPhone())) {
-            LoginHelper.setSession(MainActivity.this, userInfo, new ICallBack() {
-                @Override
-                public void onSuccess(Object o) {
-
-                }
-
-                @Override
-                public void onFail() {
-
-                }
-            });
-        }
-    }
-
     private void setClick() {
         recite_ll.setOnClickListener(this);
         report_ll.setOnClickListener(this);

@@ -62,7 +62,11 @@ public class ClockAdapter extends RecyclerView.Adapter {
         Clock clock = clocks.get(position);
         clockHolder.time.setText(clock.getTime());
         clockHolder.week.setText(clock.getWeek());
-        clockHolder.switchView.setOpened(clock.isClock());
+        if (clock.isClock()){
+            setSwitchChangeListener.toggleToOn(clockHolder.switchView, position);
+        }else{
+            setSwitchChangeListener.toggleToOff(clockHolder.switchView, position);
+        }
         clockHolder.switchView.setOnStateChangedListener(new SwitchView.OnStateChangedListener() {
             @Override
             public void toggleToOn(SwitchView view) {
@@ -74,6 +78,8 @@ public class ClockAdapter extends RecyclerView.Adapter {
                 setSwitchChangeListener.toggleToOff(view, position);
             }
         });
+        clockHolder.switchView.setOpened(clock.isClock());
+
         clockHolder.rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -11,13 +11,13 @@
     <TextView
         android:id="@+id/exit_login"
         android:layout_width="match_parent"
-        android:layout_height="150px"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:background="@color/mainColor"
         android:gravity="center"
         android:text="退出当前账户"
         android:textColor="@color/white"
-        android:textSize="50px" />
+        android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,65 +34,65 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="120px"
+                android:layout_height="50dp"
                 android:background="@color/gray_white"
                 android:gravity="center_vertical"
-                android:paddingLeft="40px"
+                android:paddingLeft="20dp"
                 android:text="个人信息"
-                android:textSize="45px" />
+                android:textSize="18sp" />
 
             <RelativeLayout
                 android:id="@+id/portrait_rl"
                 android:layout_width="match_parent"
-                android:layout_height="120px">
+                android:layout_height="60dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="40px"
+                    android:layout_marginLeft="20dp"
                     android:text="头像"
                     android:textColor="@color/black"
-                    android:textSize="45px" />
+                    android:textSize="18sp" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/portrait"
-                    android:layout_width="80px"
-                    android:layout_height="80px"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="40px"
+                    android:layout_marginRight="40dp"
                     />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2px"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="40px"
-                    android:layout_marginRight="40px"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:background="@color/gray_white" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/name_rl"
                 android:layout_width="match_parent"
-                android:layout_height="120px">
+                android:layout_height="60dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="40px"
+                    android:layout_marginLeft="20dp"
                     android:text="用户名"
                     android:textColor="@color/black"
-                    android:textSize="45px" />
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="40px"
+                    android:layout_marginRight="20dp"
                     android:background="@mipmap/right_arrow" />
 
                 <TextView
@@ -101,38 +101,38 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="150px"
-                    android:textSize="45px" />
+                    android:layout_marginRight="60dp"
+                    android:textSize="18sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2px"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="40px"
-                    android:layout_marginRight="40px"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:background="@color/gray_white" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/nick_rl"
                 android:layout_width="match_parent"
-                android:layout_height="120px">
+                android:layout_height="60dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="40px"
+                    android:layout_marginLeft="20dp"
                     android:text="昵称"
                     android:textColor="@color/black"
-                    android:textSize="45px" />
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="40px"
+                    android:layout_marginRight="20dp"
                     android:background="@mipmap/right_arrow" />
 
                 <TextView
@@ -141,15 +141,15 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="150px"
-                    android:textSize="45px" />
+                    android:layout_marginRight="60dp"
+                    android:textSize="18sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2px"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="40px"
-                    android:layout_marginRight="40px"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:background="@color/gray_white" />
             </RelativeLayout>
 
@@ -162,17 +162,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="40px"
+                    android:layout_marginLeft="20dp"
                     android:text="电话"
                     android:textColor="@color/black"
-                    android:textSize="45px" />
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="40px"
+                    android:layout_marginRight="20dp"
                     android:background="@mipmap/right_arrow" />
 
                 <TextView
@@ -181,38 +181,38 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="150px"
-                    android:textSize="45px" />
+                    android:layout_marginRight="60dp"
+                    android:textSize="18sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2px"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="40px"
-                    android:layout_marginRight="40px"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:background="@color/gray_white" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/email_rl"
                 android:layout_width="match_parent"
-                android:layout_height="120px">
+                android:layout_height="60dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="40px"
+                    android:layout_marginLeft="20dp"
                     android:text="邮箱"
                     android:textColor="@color/black"
-                    android:textSize="45px" />
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="40px"
+                    android:layout_marginRight="20dp"
                     android:background="@mipmap/right_arrow" />
 
                 <TextView
@@ -221,38 +221,38 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="150px"
+                    android:layout_marginRight="60dp"
                     android:textSize="45px" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2px"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="40px"
-                    android:layout_marginRight="40px"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:background="@color/gray_white" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/pass_rl"
                 android:layout_width="match_parent"
-                android:layout_height="120px">
+                android:layout_height="60dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="40px"
+                    android:layout_marginLeft="20dp"
                     android:text="密码"
                     android:textColor="@color/black"
-                    android:textSize="45px" />
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="40px"
+                    android:layout_marginRight="20dp"
                     android:background="@mipmap/right_arrow" />
 
                 <TextView
@@ -261,38 +261,38 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="150px"
+                    android:layout_marginRight="60dp"
                     android:inputType="textPassword"
-                    android:textSize="45px" />
+                    android:textSize="18sp" />
             </RelativeLayout>
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="40px"
+            android:layout_height="10dp"
             android:background="@color/gray_white" />
 
         <RelativeLayout
             android:id="@+id/version_rl"
             android:layout_width="match_parent"
-            android:layout_height="120px"
+            android:layout_height="60dp"
             android:background="@color/white">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="40px"
+                android:layout_marginLeft="20dp"
                 android:text="版本检测"
                 android:textColor="@color/black"
-                android:textSize="45px" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="40px"
+                android:layout_marginRight="20dp"
                 android:background="@mipmap/right_arrow" />
 
             <TextView
@@ -301,44 +301,44 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="150px"
+                android:layout_marginRight="60dp"
                 android:textSize="45px" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2px"
                 android:layout_alignParentBottom="true"
-                android:layout_marginLeft="40px"
-                android:layout_marginRight="40px"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:background="@color/gray_white" />
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="40px"
+            android:layout_height="10dp"
             android:background="@color/gray_white" />
 
         <RelativeLayout
             android:id="@+id/font_rl"
             android:layout_width="match_parent"
-            android:layout_height="120px"
+            android:layout_height="50dp"
             android:background="@color/white">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="40px"
+                android:layout_marginLeft="20dp"
                 android:text="字体大小"
                 android:textColor="@color/black"
-                android:textSize="45px" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="40px"
+                android:layout_marginRight="20dp"
                 android:background="@mipmap/right_arrow" />
 
             <TextView
@@ -347,16 +347,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="150px"
+                android:layout_marginRight="60dp"
                 android:textSize="45px" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="40px"
-                android:layout_marginRight="40px"
-                android:background="@color/gray_white" />
         </RelativeLayout>
 
     </LinearLayout>

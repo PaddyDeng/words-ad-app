@@ -429,13 +429,13 @@ public class QuestionBean {
 
             private String name;
             private String select;
-            private boolean isAnswer ;
+            private int isAnswer ;
 
-            public boolean isAnswer() {
+            public int isAnswer() {
                 return isAnswer;
             }
 
-            public void setAnswer(boolean answer) {
+            public void setAnswer(int answer) {
                 isAnswer = answer;
             }
 

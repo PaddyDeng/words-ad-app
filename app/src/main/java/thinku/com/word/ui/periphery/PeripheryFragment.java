@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +27,7 @@ import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.callback.SelectListener;
+import thinku.com.word.callback.SelectRlClickListener;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.periphery.adapter.CourseAdapter;
 import thinku.com.word.ui.periphery.bean.CourseBean;
@@ -35,7 +38,7 @@ import thinku.com.word.utils.HttpUtils;
  * 周边
  */
 
-public class PeripheryFragment extends BaseActivity implements BGARefreshLayout.BGARefreshLayoutDelegate {
+public class PeripheryFragment extends BaseActivity {
 
     @BindView(R.id.back)
     ImageView back;
@@ -46,8 +49,8 @@ public class PeripheryFragment extends BaseActivity implements BGARefreshLayout.
     @BindView(R.id.course_list)
     RecyclerView courseList;
     Unbinder unbinder;
-    @BindView(R.id.swipeRefer)
-    BGARefreshLayout swipeRefer;
+    @BindView(R.id.refresh)
+    SwipeRefreshLayout swipeRefer;
 
     private List<CourseBean> courseBeanList;
     private CourseAdapter courseAdapter;
@@ -81,8 +84,14 @@ public class PeripheryFragment extends BaseActivity implements BGARefreshLayout.
             type = getIntent().getIntExtra("type", 0);
         }
         init();
-        initRefreshLayout();
         initData();
+        swipeRefer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                initData();
+                swipeRefer.setRefreshing(false);
+            }
+        });
     }
 
 
@@ -96,11 +105,17 @@ public class PeripheryFragment extends BaseActivity implements BGARefreshLayout.
                         }
                     }).subscribe(new Consumer<List<CourseBean>>() {
                         @Override
-                        public void accept(@NonNull List<CourseBean> courseBeans) throws Exception {
+                        public void accept(@NonNull final List<CourseBean> courseBeans) throws Exception {
                             dismissLoadDialog();
                             if (courseBeans != null && courseBeans.size() > 0) {
                                 courseBeanList.addAll(courseBeans);
                                 courseAdapter.notifyDataSetChanged();
+                                courseAdapter.setSelectRlClickListener(new SelectRlClickListener() {
+                                    @Override
+                                    public void setClickListener(int position, RecyclerView.ViewHolder viewHolder, View view) {
+                                            ClassDetailActivity.start(PeripheryFragment.this ,courseBeans.get(position));
+                                    }
+                                });
                             }
                         }
                     }, new Consumer<Throwable>() {
@@ -132,35 +147,6 @@ public class PeripheryFragment extends BaseActivity implements BGARefreshLayout.
                         }
                     }));
         }
-    }
-
-
-
-    public void initRefreshLayout(){
-        // 为BGARefreshLayout 设置代理
-        swipeRefer.setDelegate(this);
-        // 设置下拉刷新和上拉加载更多的风格     参数1：应用程序上下文，参数2：是否具有上拉加载更多功能
-        BGARefreshViewHolder refreshViewHolder = new BGANormalRefreshViewHolder(this, true);
-        // 设置下拉刷新和上拉加载更多的风格
-        swipeRefer.setRefreshViewHolder(refreshViewHolder);
-//
-//
-//        // 为了增加下拉刷新头部和加载更多的通用性，提供了以下可选配置选项  -------------START
-//        // 设置正在加载更多时不显示加载更多控件
-//        // mRefreshLayout.setIsShowLoadingMoreView(false);
-//        // 设置正在加载更多时的文本
-//        refreshViewHolder.setLoadingMoreText(loadingMoreText);
-//        // 设置整个加载更多控件的背景颜色资源 id
-//        refreshViewHolder.setLoadMoreBackgroundColorRes(loadMoreBackgroundColorRes);
-//        // 设置整个加载更多控件的背景 drawable 资源 id
-//        refreshViewHolder.setLoadMoreBackgroundDrawableRes(loadMoreBackgroundDrawableRes);
-//        // 设置下拉刷新控件的背景颜色资源 id
-//        refreshViewHolder.setRefreshViewBackgroundColorRes(refreshViewBackgroundColorRes);
-//        // 设置下拉刷新控件的背景 drawable 资源 id
-//        refreshViewHolder.setRefreshViewBackgroundDrawableRes(refreshViewBackgroundDrawableRes);
-//        // 设置自定义头部视图（也可以不用设置）     参数1：自定义头部视图（例如广告位）， 参数2：上拉加载更多是否可用
-//        mRefreshLayout.setCustomHeaderView(mBanner, false);
-//        // 可选配置  -------------END
     }
 
     @OnClick(R.id.back)
@@ -212,39 +198,4 @@ public class PeripheryFragment extends BaseActivity implements BGARefreshLayout.
         unbinder.unbind();
     }
 
-    @Override
-    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout bgaRefreshLayout) {
-        if (HttpUtils.isConnected(this)){    //  有网   加载数据
-            swipeRefer.endRefreshing();
-            initData();
-        }else{
-            // 网络不可用，结束下拉刷新
-            toTast(this ,"网络不可用");
-            swipeRefer.endRefreshing();
-        }
-    }
-
-    @Override
-    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout bgaRefreshLayout) {
-        // 在这里加载更多数据，或者更具产品需求实现上拉刷新也可以
-        if (HttpUtils.isConnected(this)){    //  有网   加载数据
-            swipeRefer.endLoadingMore();
-            return true ;
-        }else{
-            // 网络不可用，结束下拉刷新
-            toTast(this ,"网络不可用");
-            swipeRefer.endLoadingMore();
-            return false;
-        }
-
-    }
-
-    public void beginRefreshing() {
-        swipeRefer.beginRefreshing();
-    }
-
-    // 通过代码方式控制进入加载更多状态
-    public void beginLoadingMore() {
-        swipeRefer.beginLoadingMore();
-    }
 }

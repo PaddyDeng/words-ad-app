@@ -38,20 +38,20 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        observable  = RxBus.get().register(C.RXBUS_EXLOING ,Boolean.class);
-        observable.subscribe(new Consumer<Boolean>() {
-            @Override
-            public void accept(@NonNull Boolean aBoolean) throws Exception {
-                init();
-            }
-        });
-        loginObservable = RxBus.get().register(C.RXBUS_LOGIN ,Boolean.class);
-        loginObservable.subscribe(new Consumer<Boolean>() {
-            @Override
-            public void accept(@NonNull Boolean aBoolean) throws Exception {
-                init();
-            }
-        });
+//        observable  = RxBus.get().register(C.RXBUS_EXLOING ,Boolean.class);
+//        observable.subscribe(new Consumer<Boolean>() {
+//            @Override
+//            public void accept(@NonNull Boolean aBoolean) throws Exception {
+//                init();
+//            }
+//        });
+//        loginObservable = RxBus.get().register(C.RXBUS_LOGIN ,Boolean.class);
+//        loginObservable.subscribe(new Consumer<Boolean>() {
+//            @Override
+//            public void accept(@NonNull Boolean aBoolean) throws Exception {
+//                init();
+//            }
+//        });
         return inflater.inflate(R.layout.fragment_home_first,container,false);
     }
 
@@ -59,6 +59,13 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         findView(view);
         setClick();
+        init();
+    }
+
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
         init();
     }
 
@@ -74,7 +81,21 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
     }
 
     public void init(){
-        String mode = SharedPreferencesUtils.getMemoryMode(_mActivity);
+        String mode = ""  ;
+        String initMode = SharedPreferencesUtils.getStudyMode(_mActivity);
+        switch (initMode){
+            case "1":
+                mode = "艾宾浩斯记忆法（科学记忆）";
+                break;
+            case "2":
+                mode = "复习记忆法（快速巩固）";
+                break;
+            case "3":
+                mode = "只背新单词（快速记忆）";
+                break;
+            default:
+                break;
+        }
         if (!TextUtils.isEmpty(mode)) {
             now_type.setText("你正在使用" + mode + "记忆单词");
         }else{
@@ -97,7 +118,7 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RxBus.get().unregister(C.RXBUS_EXLOING ,observable);
-        RxBus.get().unregister(C.RXBUS_LOGIN ,loginObservable);
+//        RxBus.get().unregister(C.RXBUS_EXLOING ,observable);
+//        RxBus.get().unregister(C.RXBUS_LOGIN ,loginObservable);
     }
 }

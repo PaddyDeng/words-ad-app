@@ -1,10 +1,12 @@
 package thinku.com.word.ui.periphery.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2018/5/7.
  */
 
-public class CourseBean {
+public class CourseBean implements Serializable{
 
     /**
      * id : 394

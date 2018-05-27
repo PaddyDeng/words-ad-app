@@ -277,35 +277,42 @@
                                 android:layout_toRightOf="@id/image4"
                                 android:text="例题入口"
                                 android:textColor="@color/mainColor" />
-                            <TextView
+                            <WebView
                                 android:layout_below="@id/image4"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@color/white"
                                 android:id="@+id/article"
-                                android:text="fdsfafafafa"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:paddingLeft="20dp"
                                 android:paddingRight="20dp"
-                                android:lineSpacingMultiplier="0.5"
-                                android:textSize="13sp"
                                 android:layout_marginTop="10dp"/>
 
 
-                            <TextView
-                                android:layout_below="@id/article"
+                            <!--<TextView-->
+                                <!--android:layout_below="@id/article"-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:background="@color/white"-->
+                                <!--android:id="@+id/question_home"-->
+                                <!--android:text="fdsfafafafa"-->
+                                <!--android:lineSpacingMultiplier="0.5"-->
+                                <!--android:layout_marginLeft="10dp"-->
+                                <!--android:layout_marginRight="10dp"-->
+                                <!--android:paddingLeft="20dp"-->
+                                <!--android:paddingRight="20dp"-->
+                                <!--android:textSize="13sp"-->
+                                <!--android:paddingTop="10dp"/>-->
+                            <WebView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/white"
                                 android:id="@+id/question_home"
-                                android:text="fdsfafafafa"
-                                android:lineSpacingMultiplier="0.5"
+                                android:layout_below="@id/article"
+                                android:paddingLeft="20dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:paddingLeft="20dp"
                                 android:paddingRight="20dp"
-                                android:textSize="13sp"
                                 android:paddingTop="10dp"/>
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/question_list"

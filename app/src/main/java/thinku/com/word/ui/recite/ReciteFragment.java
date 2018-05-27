@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +31,6 @@ import thinku.com.word.ui.seacher.TopicSearchActivity;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.FileUtil;
 import thinku.com.word.utils.GlideUtils;
-import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.utils.WaitUtils;
@@ -50,8 +48,9 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     private SparseArray<Fragment> fragments;
     private int oldPage = -1;
     private Observable<String> observable;
-    private Observable<Boolean> booleanObservable ;
-    private Observable<Boolean> exitLoginObservable ;
+    private Observable<Boolean> booleanObservable;
+    private Observable<Boolean> exitLoginObservable;
+
     public static ReciteFragment newInstance() {
         ReciteFragment reciteFragment = new ReciteFragment();
         return reciteFragment;
@@ -60,8 +59,8 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_recite, container, false);
-        return view ;
+        View view = inflater.inflate(R.layout.fragment_recite, container, false);
+        return view;
     }
 
     @Override
@@ -69,23 +68,23 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
         findView(view);
         setClick();
         initView();
-        observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE ,String.class);
+        observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE, String.class);
         observable.subscribe(new Consumer<String>() {
             @Override
             public void accept(@NonNull String s) throws Exception {
-                new GlideUtils().loadCircle(_mActivity ,NetworkTitle.WORDRESOURE + s ,portrait);
+                new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + s, portrait);
             }
         });
 
-        booleanObservable = RxBus.get().register(C.RXBUS_LOGIN ,Boolean.class);
+        booleanObservable = RxBus.get().register(C.RXBUS_LOGIN, Boolean.class);
         booleanObservable.subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(@NonNull Boolean aBoolean) throws Exception {
-                new GlideUtils().loadCircle(_mActivity ,NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(_mActivity) ,portrait);
+                new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(_mActivity), portrait);
                 initView();
             }
         });
-        exitLoginObservable = RxBus.get().register(C.RXBUS_EXLOING ,Boolean.class);
+        exitLoginObservable = RxBus.get().register(C.RXBUS_EXLOING, Boolean.class);
         exitLoginObservable.subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(@NonNull Boolean aBoolean) throws Exception {
@@ -100,12 +99,19 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
         super.onResume();
 
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) initView();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RxBus.get().unregister(C.RXBUS_HEAD_IMAGE ,observable);
-        RxBus.get().unregister(C.RXBUS_LOGIN ,booleanObservable);
-        RxBus.get().unregister(C.RXBUS_EXLOING ,exitLoginObservable);
+        RxBus.get().unregister(C.RXBUS_HEAD_IMAGE, observable);
+        RxBus.get().unregister(C.RXBUS_LOGIN, booleanObservable);
+        RxBus.get().unregister(C.RXBUS_EXLOING, exitLoginObservable);
     }
 
     private void initView() {
@@ -113,13 +119,13 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
-                        WaitUtils.show(_mActivity,"TAG");
+                        WaitUtils.show(_mActivity, "TAG");
                     }
                 })
                 .subscribe(new Consumer<ResultBeen<UserData>>() {
                     @Override
                     public void accept(@NonNull ResultBeen<UserData> been) throws Exception {
-                        if(WaitUtils.isRunning("TAG")){
+                        if (WaitUtils.isRunning("TAG")) {
                             WaitUtils.dismiss("TAG");
                         }
                         if (getHttpResSuc(been.getCode())) {
@@ -128,13 +134,16 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                                 SharedPreferencesUtils.setPlanWords(_mActivity, userData.getPlanWords());
                                 new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + userData.getImage(), portrait);
                                 SharedPreferencesUtils.setImage(_mActivity, userData.getImage());
+                                SharedPreferencesUtils.setStudyMode(_mActivity, userData.getStudyModel());
                                 if (TextUtils.isEmpty(userData.getPlanWords())) {
-                                    toTast(_mActivity ,"请先选择背单词计划");
+                                    toTast(_mActivity, "请先选择背单词计划");
                                     setFragment(0);
                                 } else {
                                     setFragment(1);
                                 }
                             }
+                        } else if (been.getCode() == 98){
+                            setFragment(0);
                         }
                         else {
                             setFragment(0);
@@ -143,7 +152,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        if(WaitUtils.isRunning("TAG")){
+                        if (WaitUtils.isRunning("TAG")) {
                             WaitUtils.dismiss("TAG");
                         }
                     }

@@ -11,6 +11,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -59,7 +60,7 @@ import thinku.com.word.utils.HtmlUtil;
  */
 
 public class WordEvaluateFragment extends BaseActivity {
-
+    public final static String CSS_STYLE ="<style>* {font-size:16px;line-height:20px;}p {color:#dfdfdf;}</style>";
     private static final String TAG = WordEvaluateFragment.class.getSimpleName();
     @BindView(R.id.newWord)
     TextView newWord;
@@ -131,9 +132,10 @@ public class WordEvaluateFragment extends BaseActivity {
     @BindView(R.id.phonogram)
     TextView phonogram;
     @BindView(R.id.article)
-    TextView article ;
+    WebView article ;
     @BindView(R.id.question_home)
-    TextView question_home ;
+//    TextView question_home ;
+    WebView question_home ;
 
     private RecitWordBeen recitWord;
     private int status;   //  单词状态
@@ -491,15 +493,15 @@ public class WordEvaluateFragment extends BaseActivity {
             final QuestionBean questionBean =  recitWord.getQuestion();
             if (!TextUtils.isEmpty(questionBean.getArticle())){
                 article.setVisibility(View.VISIBLE);
-                article.setText(Jsoup.clean(questionBean.getArticle() , Whitelist.basicWithImages()));
+                article.loadDataWithBaseURL(null,HtmlUtil.getHtml(questionBean.getArticle()), "text/html"," charset=UTF-8", null);//这种写法可以正确解码
             }else{
                 article.setVisibility(View.GONE);
             }
             if (!TextUtils.isEmpty(questionBean.getQuestion())){
                 question_home.setVisibility(View.VISIBLE);
-                Log.e(TAG, "getData: " + questionBean.getQuestion() );
-                question_home.setText(HtmlUtil.replaceSpace(questionBean.getQuestion() ));
-
+//                question_home.setText(HtmlUtil.replaceSpace(questionBean.getQuestion() ));
+                Log.e(TAG, "getData: " + HtmlUtil.getHtml(questionBean.getQuestion()) );
+                question_home.loadDataWithBaseURL(null,HtmlUtil.getHtml(questionBean.getQuestion()), "text/html"," charset=UTF-8", null);//这种写法可以正确解码
             }else{
                 question_home.setVisibility(View.GONE);
             }
@@ -512,14 +514,17 @@ public class WordEvaluateFragment extends BaseActivity {
                     @Override
                     public void setClickListener(int position, RecyclerView.ViewHolder viewHolder, View view) {
                         QuestionAdapter.QuestionHolder holder = (QuestionAdapter.QuestionHolder) viewHolder;
-                        QuestionBean.QslctarrBean  qslctarrBean = questionBean.getQslctarr().get(position);
                         int currentP = getCurrentP(questionBean.getQuestionanswer());
                         if (position == currentP){
-                            holder.question.setImageResource(R.mipmap.green_circle);
+                             questions.get(position).setAnswer(1);
+                            questionAdapter.notifyItemChanged(currentP);
                         }else{
-                            holder.question.setImageResource(R.mipmap.circle_red);
-                            questions.get(currentP).setAnswer(true);
+                            questions.get(position).setAnswer(2);
+                            questions.get(currentP).setAnswer(1);
+                            questionAdapter.notifyItemChanged(currentP);
+                            questionAdapter.notifyItemChanged(position);
                         }
+
                     }
                 });
                 questionAdapter.notifyDataSetChanged();
@@ -529,6 +534,15 @@ public class WordEvaluateFragment extends BaseActivity {
 
         }
 
+    }
+
+    public String getHtmlData(String contnet){
+        String body =  contnet ;
+        if (!body.trim().startsWith("<style>")){
+            body = CSS_STYLE + body ;
+        }
+        Log.e(TAG, "getHtmlData: " + body );
+        return body;
     }
 
     public int getCurrentP(String answer){

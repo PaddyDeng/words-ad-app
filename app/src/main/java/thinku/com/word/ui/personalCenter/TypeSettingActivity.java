@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -85,19 +86,13 @@ public class TypeSettingActivity extends BaseActivity  implements DialogClickLis
             int userMode = Integer.parseInt(mode);
             switch (userMode){
                 case LGStudyEbbinghaus:
-                    ebbinghaus.setSelected(true);
-                    review.setSelected(false);
-                    onlyNew.setSelected(false);
+                    setSelect(0);
                     break;
                 case LGStudyReview:
-                    ebbinghaus.setSelected(false);
-                    review.setSelected(true);
-                    onlyNew.setSelected(false);
+                    setSelect(1);
                     break;
                 case LGStudyOnlyNew:
-                    ebbinghaus.setSelected(false);
-                    review.setSelected(false);
-                    onlyNew.setSelected(true);
+                   setSelect(2);
                     break;
             }
         }catch (Exception e){
@@ -116,7 +111,6 @@ public class TypeSettingActivity extends BaseActivity  implements DialogClickLis
                 if (!isFirst) {
                     choseStudyMode();
                 } else {
-                    SharedPreferencesUtils.saveMemoryMode(TypeSettingActivity.this, mode);
                     MainActivity.toMain(this);
                     this.finishWithAnim();
                 }
@@ -125,7 +119,7 @@ public class TypeSettingActivity extends BaseActivity  implements DialogClickLis
                 if (isFirst) {
                     setSelect(0);
                     mode = ebbinghaus.getText().toString().trim();
-                    SharedPreferencesUtils.saveMemoryMode(TypeSettingActivity.this, mode);
+                    SharedPreferencesUtils.setStudyMode(this , "1");
                     this.finishWithAnim();
                     MainActivity.toMain(this);
                 }else{
@@ -137,7 +131,7 @@ public class TypeSettingActivity extends BaseActivity  implements DialogClickLis
                 if (isFirst) {
                     setSelect(1);
                     mode = review.getText().toString().trim();
-                    SharedPreferencesUtils.saveMemoryMode(TypeSettingActivity.this, mode);
+                    SharedPreferencesUtils.setStudyMode(this , "2");
                     this.finishWithAnim();
                     MainActivity.toMain(this);
                 }else{
@@ -150,7 +144,7 @@ public class TypeSettingActivity extends BaseActivity  implements DialogClickLis
                 if (isFirst) {
                     setSelect(2);
                     mode = onlyNew.getText().toString().trim();
-                    SharedPreferencesUtils.saveMemoryMode(TypeSettingActivity.this, mode);
+                    SharedPreferencesUtils.setStudyMode(this , "3");
                     this.finishWithAnim();
                     MainActivity.toMain(this);
                 }else{
@@ -215,7 +209,7 @@ public class TypeSettingActivity extends BaseActivity  implements DialogClickLis
                                 toTast(TypeSettingActivity.this, backCode.getMessage());
                             } else {
                                 toTast(TypeSettingActivity.this, backCode.getMessage());
-                                SharedPreferencesUtils.saveMemoryMode(TypeSettingActivity.this, mode);
+                                SharedPreferencesUtils.setStudyMode(TypeSettingActivity.this ,status +"");
                                 finish();
                             }
                         }

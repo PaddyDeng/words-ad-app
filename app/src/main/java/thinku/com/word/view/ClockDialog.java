@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import thinku.com.word.R;
@@ -16,12 +17,13 @@ import thinku.com.word.R;
  * Created by Administrator on 2018/3/30.
  */
 
-public class ClockDialog extends AlertDialog {
+public class ClockDialog extends AlertDialog implements View.OnClickListener {
     private static final String TAG = ClockDialog.class.getSimpleName();
     private OnReviewClickListener onReviewClickListener;
 
     private CheckBox mondayCheck, tuesdayCheck, wedCheck, thuCheck, friCheck, satCheck, sunCheck;
     private TextView montxt, tuetxt, wedtxt, thutxt, fritxt, sattxt, suntxt;
+    private RelativeLayout r1 , r2 , r3 , r4 , r5 , r6 ,r7 ;
     private TextView definite;
     public CheckBox[] checkBoxes = new CheckBox[7];
     public TextView[] texts = new TextView[7];
@@ -60,6 +62,13 @@ public class ClockDialog extends AlertDialog {
         satCheck = (CheckBox) findViewById(R.id.sat_check);
         sunCheck = (CheckBox) findViewById(R.id.sun_check);
         definite = (TextView) findViewById(R.id.definite);
+        r1= (RelativeLayout) findViewById(R.id.r1);
+        r2= (RelativeLayout) findViewById(R.id.r2);
+        r3= (RelativeLayout) findViewById(R.id.r3);
+        r4= (RelativeLayout) findViewById(R.id.r4);
+        r5= (RelativeLayout) findViewById(R.id.r5);
+        r6= (RelativeLayout) findViewById(R.id.r6);
+        r7= (RelativeLayout) findViewById(R.id.r7);
         montxt = (TextView) findViewById(R.id.mon_txt);
         tuetxt = (TextView) findViewById(R.id.tue_txt);
         wedtxt = (TextView) findViewById(R.id.wek_txt);
@@ -67,7 +76,15 @@ public class ClockDialog extends AlertDialog {
         fritxt = (TextView) findViewById(R.id.fri_txt);
         sattxt = (TextView) findViewById(R.id.sat_txt);
         suntxt = (TextView) findViewById(R.id.sun_txt);
+        r1.setOnClickListener(this);
+        r2.setOnClickListener(this);
+        r3.setOnClickListener(this);
+        r4.setOnClickListener(this);
+        r5.setOnClickListener(this);
+        r6.setOnClickListener(this);
+        r7.setOnClickListener(this);
     }
+
 
     public void initCheck() {
         checkBoxes[0] = mondayCheck;
@@ -141,6 +158,43 @@ public class ClockDialog extends AlertDialog {
                 }
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+       switch (v.getId()){
+           case R.id.r1:
+               check(checkBoxes[0]);
+               break;
+           case R.id.r2:
+               check(checkBoxes[1]);
+               break;
+           case R.id.r3:
+               check(checkBoxes[2]);
+               break;
+           case R.id.r4:
+               check(checkBoxes[3]);
+               break;
+           case R.id.r5:
+               check(checkBoxes[4]);
+               break;
+           case R.id.r6:
+               check(checkBoxes[5]);
+               break;
+           case R.id.r7:
+               check(checkBoxes[6]);
+               break;
+
+       }
+    }
+
+    public void check(CheckBox checkBox){
+        if (checkBox.isChecked()){
+            checkBox.setChecked(false);
+        }else{
+            checkBox.setChecked(true);
+        }
+
     }
 
 

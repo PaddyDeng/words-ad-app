@@ -15,31 +15,37 @@ import java.util.List;
 
 import thinku.com.word.R;
 import thinku.com.word.callback.SelectListener;
-import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.periphery.bean.RoundBean;
+import thinku.com.word.utils.DateUtil;
 import thinku.com.word.utils.GlideUtils;
 
 /**
  * Created by Administrator on 2018/5/8.
  */
 
-public class EvaAdapter extends RecyclerView.Adapter {
+public class EvaAdapter1 extends RecyclerView.Adapter {
 
     private List<RoundBean.CaseBean>  caseBeanList ;
     private Context context ;
     private SelectListener selectListener ;
-    public EvaAdapter(Context context , List<RoundBean.CaseBean> caseBeanList){
+    private boolean date ;
+    public EvaAdapter1(Context context , List<RoundBean.CaseBean> caseBeanList){
         this.context = context ;
         this.caseBeanList = caseBeanList ;
     }
 
+    public EvaAdapter1(Context context , List<RoundBean.CaseBean> caseBeanList , boolean date){
+        this.context = context ;
+        this.caseBeanList = caseBeanList ;
+        this.date = date ;
+    }
 
     public void setSelectListener(SelectListener selectListener){
         this.selectListener = selectListener ;
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        EvaHolder evaHolder = new EvaHolder(LayoutInflater.from(context).inflate(R.layout.item_round_eva , parent , false));
+        EvaHolder evaHolder = new EvaHolder(LayoutInflater.from(context).inflate(R.layout.item_round_eva1 , parent , false));
         return evaHolder;
     }
 
@@ -55,6 +61,7 @@ public class EvaAdapter extends RecyclerView.Adapter {
                 selectListener.setListener(position);
             }
         });
+        evaHolder.date.setText(DateUtil.longTodate(caseBean.getCreateTime() * 1000 ,"yyyy-MM-dd"));
 
     }
 
@@ -67,12 +74,14 @@ public class EvaAdapter extends RecyclerView.Adapter {
         private ImageView image ;
         private TextView name ;
         private RelativeLayout eva_rl ;
+        private TextView date ;
         public EvaHolder(View itemView) {
             super(itemView);
             AutoUtils.autoSize(itemView);
             image = (ImageView) itemView.findViewById(R.id.user_image);
             name = (TextView) itemView.findViewById(R.id.user_name);
             eva_rl = (RelativeLayout) itemView.findViewById(R.id.eva_rl);
+            date = (TextView) itemView.findViewById(R.id.date);
         }
     }
 

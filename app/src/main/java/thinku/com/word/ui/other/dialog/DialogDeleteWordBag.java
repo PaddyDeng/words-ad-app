@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -23,15 +24,17 @@ public class DialogDeleteWordBag extends Dialog{
     private String content;
     private DeleteListener listener;
     private int position ;
+    private RecyclerView.ViewHolder holder ;
     public DialogDeleteWordBag(@NonNull Context context) {
         super(context, R.style.AlphaDialogAct);
         this.context=context;
     }
 
-    public void setContent(String s,DeleteListener listener , int position){
+    public void setContent(String s, DeleteListener listener , int position , RecyclerView.ViewHolder holder){
         this.content=s;
         this.listener=listener;
         this.position = position ;
+        this.holder = holder ;
         if(null!=content_t)content_t.setText(content);
     }
 
@@ -52,7 +55,7 @@ public class DialogDeleteWordBag extends Dialog{
         y.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.delete(position);
+                listener.delete( holder,position);
                 dismiss();
             }
         });

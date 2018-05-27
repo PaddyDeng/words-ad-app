@@ -17,6 +17,7 @@ import java.util.List;
 
 import thinku.com.word.R;
 import thinku.com.word.callback.SelectListener;
+import thinku.com.word.callback.SelectRlClickListener;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.periphery.bean.CourseBean;
 import thinku.com.word.ui.periphery.bean.RoundBean;
@@ -31,7 +32,7 @@ public class CourseAdapter extends RecyclerView.Adapter {
     private Context context ;
     private SelectListener selectListener ;
     private List<RoundBean.LivePreviewBean.DataBean > liveList ;
-
+    private SelectRlClickListener selectRlClickListener ;
 
     public CourseAdapter(Context context  ){
         this.context = context ;
@@ -45,6 +46,10 @@ public class CourseAdapter extends RecyclerView.Adapter {
         this .liveList = liveList ;
         notifyDataSetChanged();
     }
+
+    public void setSelectRlClickListener(SelectRlClickListener selectRlClickListener){
+        this. selectRlClickListener  = selectRlClickListener ;
+    }
     public void  setSelectListener(SelectListener selectListener){
         this.selectListener  = selectListener ;
     }
@@ -55,7 +60,7 @@ public class CourseAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         CourseHolder courseHolder = (CourseHolder) holder;
         if (courseBeanList != null && courseBeanList.size() > 0) {
             CourseBean courseBean = courseBeanList.get(position);
@@ -67,6 +72,12 @@ public class CourseAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     selectListener.setListener(position);
+                }
+            });
+            courseHolder.rl.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   selectRlClickListener.setClickListener(position ,holder ,v);
                 }
             });
         }else if (liveList != null && liveList.size() > 0){

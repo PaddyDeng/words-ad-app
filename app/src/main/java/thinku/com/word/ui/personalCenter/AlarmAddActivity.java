@@ -2,6 +2,7 @@ package thinku.com.word.ui.personalCenter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.zhy.autolayout.AutoLinearLayout;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,12 +21,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import thinku.com.word.R;
+import thinku.com.word.adapter.MyWheelAdapter1;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.db.ClockDao;
 import thinku.com.word.db.bean.Clock;
+import thinku.com.word.utils.MeasureUtils;
 import thinku.com.word.view.ClockDialog;
-import thinku.com.word.view.loopview.LoopView;
-import thinku.com.word.view.loopview.OnItemSelectedListener;
+import thinku.com.word.view.wheelview.widget.WheelView;
 
 public class AlarmAddActivity extends BaseActivity {
 
@@ -39,9 +42,9 @@ public class AlarmAddActivity extends BaseActivity {
     @BindView(R.id.lin_rl)
     AutoLinearLayout linRl;
     @BindView(R.id.hour)
-    LoopView hour;
+    WheelView hour;
     @BindView(R.id.minute)
-    LoopView minute;
+    WheelView minute;
     @BindView(R.id.weeks)
     TextView weeks;
     @BindView(R.id.chose_weeks)
@@ -52,6 +55,9 @@ public class AlarmAddActivity extends BaseActivity {
     private ClockDao clockDao;
 
     private Clock defaultClock;
+
+    private List<String> hours;
+    private List<String> minutes;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, AlarmAddActivity.class);
@@ -80,35 +86,58 @@ public class AlarmAddActivity extends BaseActivity {
     public void initView() {
         titleT.setText("编辑闹钟");
         titleIv.setBackgroundResource(R.mipmap.right);
-        hour.setItems(d(0, 24));
-        hour.setOuterTextColor(R.color.black);
-        minute.setItems(d(0, 60));
-        minute.setOuterTextColor(R.color.black);
+        hours = new ArrayList<>();
+        minutes = new ArrayList<>();
+        for (int i = 0; i < 24; i++) {
+            hours.add(i + "");
+        }
+        for (int i = 0; i < 60; i++) {
+            minutes.add(i + "");
+        }
+        WheelView.WheelViewStyle style = new WheelView.WheelViewStyle();
+        style.textColor = Color.DKGRAY;
+        style.selectedTextColor = getResources().getColor(R.color.mainColor);
+        style.backgroundColor = getResources().getColor(R.color.gray);
+        hour.setStyle(style);
+        minute.setStyle(style);
+        hour.setSkin(WheelView.Skin.Common);
+        minute.setSkin(WheelView.Skin.Common);
+        hour.setLoop(true);
+        minute.setLoop(true);
+        hour.setWheelAdapter(new MyWheelAdapter1(this));
+        minute.setWheelAdapter(new MyWheelAdapter1(this));
+        hour.setWheelSize(5);
+        minute.setWheelSize(5);
+        hour.setWheelData(hours);
+        minute.setWheelData(minutes);
+        hour.setExtraText("时", R.color.white, MeasureUtils.dp2px(this, 13), MeasureUtils.dp2px(this, 20));
+        minute.setExtraText("分", R.color.white, MeasureUtils.dp2px(this, 13), MeasureUtils.dp2px(this, 20));
         if (defaultClock != null) {
             String time = defaultClock.getTime();
             String weekTxt = defaultClock.getWeek();
             String[] times = time.split(":");
-            hour.setCurrentPosition(Integer.parseInt(times[0]));
-            minute.setCurrentPosition(Integer.parseInt(times[1]));
+            hour.setSelection(Integer.parseInt(times[0]));
+            minute.setSelection(Integer.parseInt(times[1]));
             hourTxt = times[0];
             minuteTxt = times[1];
             weeks.setText(weekTxt);
         } else {
-            hour.setCurrentPosition(12);
-            minute.setCurrentPosition(30);
+            hour.setSelection(12);
+            minute.setSelection(30);
             hourTxt = "12";
             minuteTxt = "30";
         }
-        hour.setListener(new OnItemSelectedListener() {
+        hour.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
             @Override
-            public void onItemSelected(int index) {
-               hourTxt = index < 10 ? "0" + index : ""+ index;
+            public void onItemSelected(int position, Object o) {
+                hourTxt = position < 10 ? "0" + hours.get(position) : "" + hours.get(position);
             }
+
         });
-        minute.setListener(new OnItemSelectedListener() {
+        minute.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
             @Override
-            public void onItemSelected(int index) {
-                minuteTxt = index < 10 ? "0" + index : ""+ index;
+            public void onItemSelected(int position, Object o) {
+                minuteTxt = position < 10 ? "0" + minutes.get(position) : "" + minutes.get(position);
             }
         });
     }
@@ -130,22 +159,23 @@ public class AlarmAddActivity extends BaseActivity {
 
 
     public void choseWeeks() {
-        final ClockDialog clockDialog = new ClockDialog(this ,weeks.getText().toString().trim());
+        final ClockDialog clockDialog = new ClockDialog(this, weeks.getText().toString().trim());
         clockDialog.setOnReviewClickListener(new ClockDialog.OnReviewClickListener() {
             @Override
             public void onReviewClick() {
                 StringBuilder choseWeeksText = new StringBuilder();
+                boolean isCheckAll = true;
                 for (int i = 0; i < clockDialog.checkBoxes.length; i++) {
-                    boolean isCheckAll = true;
                     if (clockDialog.checkBoxes[i].isChecked()) {
                         choseWeeksText.append(clockDialog.texts[i].getText().toString().trim() + '\t');
                     } else {
                         isCheckAll = false;
                     }
-                    if (isCheckAll) weeks.setText("每天");
-                    else weeks.setText(choseWeeksText.toString());
-                    clockDialog.dismiss();
                 }
+                if (isCheckAll) weeks.setText("每天");
+                else weeks.setText(choseWeeksText.toString());
+                Log.e(TAG, "onReviewClick: " + weeks.getText() );
+                clockDialog.dismiss();
             }
         });
         clockDialog.setCancelable(false);
@@ -176,16 +206,17 @@ public class AlarmAddActivity extends BaseActivity {
         }
         if (!TextUtils.isEmpty(weeks.getText().toString().trim())) {
             StringBuilder timeBuilder = new StringBuilder();
-            int data = -1 ;
+            Log.e(TAG, "addClock: " + weeks.getText() );
+            int data = -1;
             if (defaultClock == null) {
                 Clock clock = new Clock();
                 clock.setWeek(weeks.getText().toString());
-                clock.setClock(false);
+                clock.setClock(true);
                 clock.setTime(timeBuilder.append(hourTxt + ":").append(minuteTxt).toString());
                 data = clockDao.addClock(clock);
-            }else{
+            } else {
                 defaultClock.setWeek(weeks.getText().toString());
-                defaultClock.setClock(false);
+                defaultClock.setClock(true);
                 defaultClock.setTime(timeBuilder.append(hourTxt + ":").append(minuteTxt).toString());
                 data = clockDao.addClock(defaultClock);
             }
@@ -204,4 +235,6 @@ public class AlarmAddActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
+
 }

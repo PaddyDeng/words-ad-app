@@ -241,6 +241,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 MainActivity.toMain(SettingActivity.this);
                 SharedPreferencesUtils.saveMemoryMode(mContext, "");
                 SharedPreferencesUtils.setImage(mContext, "");
+                SharedPreferencesUtils.setStudyMode(mContext,"");
                 RxBus.get().post(C.RXBUS_EXLOING, true);
             }
         });

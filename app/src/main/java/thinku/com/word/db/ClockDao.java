@@ -1,6 +1,7 @@
 package thinku.com.word.db;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.misc.TransactionManager;
@@ -39,6 +40,7 @@ public class ClockDao {
             clockDaoOpo.createOrUpdate(clock);
             return (int) clockDaoOpo.countOf();
         } catch (SQLException e) {
+            Log.e("Ba", "addClock: " + e.getMessage() );
             e.printStackTrace();
             return -1 ;
         }

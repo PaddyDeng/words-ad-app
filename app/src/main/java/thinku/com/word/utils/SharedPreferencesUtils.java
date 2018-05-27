@@ -145,6 +145,9 @@ public class SharedPreferencesUtils {
         return login;
     }
 
+    public static void setStudyMode(Context context , String mode){
+        setString("studyMode",context ,mode);
+    }
 
     public static String getStudyMode(Context context){
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString("studyMode" ,"");

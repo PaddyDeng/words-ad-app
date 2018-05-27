@@ -241,6 +241,7 @@ public class PKHomeActivity extends BaseActivity {
                         @Override
                         public void accept(@NonNull Integer integer) throws Exception {
                             timer.setText("倒计时：" +integer+ "s");
+                            Log.e(TAG, "accept: " + integer );
                             if (integer == 0){
                                pkChose(PK_CANCEL);
                             }

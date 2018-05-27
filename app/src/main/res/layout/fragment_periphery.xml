@@ -5,16 +5,15 @@
     android:orientation="vertical">
 
     <include layout="@layout/title_layout" />
-
-    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/swipeRefer">
+        android:id="@+id/refresh">
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/course_list"/>
-    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>
