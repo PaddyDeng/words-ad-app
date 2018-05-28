@@ -76,8 +76,10 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         bean_num.setText(singBeen.getIntegral());
         if (singBeen.getType() == 0){
             sign.setEnabled(true);
+            sign.setText("签到");
         }else{
             sign.setEnabled(false);
+            sign.setText("已签到");
         }
     }
     private void findView() {

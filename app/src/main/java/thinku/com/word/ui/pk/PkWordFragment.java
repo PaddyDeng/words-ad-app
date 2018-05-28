@@ -71,6 +71,7 @@ public class PkWordFragment extends BaseFragment {
         });
     }
 
+
     /**
      *  获取数据
      */

@@ -153,7 +153,7 @@ public class PicSearchActivity extends BaseNoImmActivity {
             @Override
             public void setListener(int position) {
                 WordBean wordBean = words.get(position);
-                WordEvaluateFragment.start(PicSearchActivity.this, wordBean.getId());
+                WordEvaluateFragment.start(PicSearchActivity.this, wordBean.getId() );
             }
         });
         mRecyclerView.addItemDecoration(new RecycleViewLinearDivider(mContext, LinearLayoutManager.VERTICAL, R.drawable.gray_one_height_divider));

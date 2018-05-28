@@ -3,6 +3,7 @@ package thinku.com.word.ui.recite;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +96,8 @@ public class HomeFragment extends BaseFragment {
 
     private Observable<Boolean> observable ;
     private MediaPlayer recitePlayer ;
+
+    private Observable<Boolean> login ;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -110,12 +113,21 @@ public class HomeFragment extends BaseFragment {
             }
         });
         recitePlayer = MediaPlayer.create(_mActivity ,R.raw.start_recite);
+
+        login = RxBus.get().register(C.RXBUS_LOGIN ,Boolean.class);
+        login.subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean aBoolean) throws Exception {
+                initData();
+            }
+        });
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        initData();
 
     }
 
@@ -166,6 +178,11 @@ public class HomeFragment extends BaseFragment {
         );
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.e(TAG, "onHiddenChanged: " + hidden );
+    }
 
     @OnClick({R.id.change_plan, R.id.modify_word_package, R.id.start_recite, R.id.start_review, R.id.sign})
     public void onClick(View v) {
@@ -248,9 +265,5 @@ public class HomeFragment extends BaseFragment {
         completeDialog.show();
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) initData();
-    }
+
 }

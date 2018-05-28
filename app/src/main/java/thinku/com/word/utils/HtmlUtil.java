@@ -111,8 +111,10 @@ public class HtmlUtil {
         sb.append("body{");
         sb.append("word-wrap: break-word;");
         sb.append("font-size: 14px;");
-        sb.append(" color:#dfdfdf; ");
+        sb.append(" color:#000000; ");
         sb.append("font-family:Arial;");
+        sb.append("padding-left:10px ;");
+        sb.append("padding-left:10px;");
         sb.append("}");
         sb.append("img{");
         sb.append("max-width:95%;");

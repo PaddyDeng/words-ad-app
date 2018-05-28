@@ -63,11 +63,6 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
     }
 
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        init();
-    }
 
     private void setClick() {
         change_type.setOnClickListener(this);

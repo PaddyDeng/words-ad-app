@@ -34,7 +34,7 @@ import static thinku.com.word.utils.C.RXBUS_HEAD_IMAGE;
  */
 
 public class PersonalCenterActivity extends BaseActivity implements View.OnClickListener {
-
+    
     private ImageView back;
     private TextView title_t,name,setting;
     private ImageView portrait;

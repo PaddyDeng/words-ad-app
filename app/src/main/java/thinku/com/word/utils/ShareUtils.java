@@ -61,6 +61,7 @@ public class ShareUtils {
         oks.setTitle("雷哥单词");
         oks.setTitleUrl(NetworkTitle.WORD1+ File.separator +"wap/share/index?uid=" + SharedPreferencesUtils.getUid(context)+"&type=2");
         Log.e(TAG, "shareContent: " + content );
+        oks.setUrl(NetworkTitle.WORD1+ File.separator +"wap/share/index?uid=" + SharedPreferencesUtils.getUid(context)+"&type=2");
         oks.setText(content);
         oks.setImagePath(filePath);
         oks.show(context);

@@ -9,9 +9,9 @@
         android:layout_height="@dimen/title_bar_height"
         android:background="@color/tittle" />
 
-    <RelativeLayout
+    <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="120px"
         android:background="@color/tittle">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -73,7 +73,7 @@
                 android:layout_marginLeft="40px"
                 android:background="@mipmap/voice" />
         </LinearLayout>
-    </RelativeLayout>
+    </com.zhy.autolayout.AutoRelativeLayout>
 
     <FrameLayout
         android:id="@+id/fl"

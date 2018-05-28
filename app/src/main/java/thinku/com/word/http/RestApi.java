@@ -46,6 +46,7 @@ import thinku.com.word.ui.personalCenter.update.bean.VersionInfo;
 import thinku.com.word.ui.personalCenter.update.localdb.UpdateLocalDbData;
 import thinku.com.word.ui.pk.been.PkWordData;
 import thinku.com.word.ui.report.bean.ReviewBean;
+import thinku.com.word.ui.report.bean.ReviewCaseBean;
 import thinku.com.word.ui.seacher.WordBean;
 import thinku.com.word.ui.seacher.WordListBean;
 
@@ -130,7 +131,7 @@ public interface RestApi {
 
 
     @POST(NetworkChildren.REVIEW_CASE_WORDS)
-    Observable<ResultBeen<List<String>>> reviewCaseWords();
+    Observable<ReviewBean> reviewCaseWords();
 
     @FormUrlEncoded
     @POST(NetworkChildren.WORD_DETAILS)
@@ -141,7 +142,7 @@ public interface RestApi {
     Observable<WordListBean> wordDetails2(@Field("wordsId") String wordId);
 
     @POST(NetworkChildren.IS_REVIEW)
-    Observable<ReviewBean> isReview();
+    Observable<ReviewCaseBean> isReview();
 
     @FormUrlEncoded
     @POST(NetworkChildren.REVIEWE_UPDATA)

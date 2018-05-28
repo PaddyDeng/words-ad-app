@@ -36,6 +36,7 @@ import thinku.com.word.bean.RecitWordBeen;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.callback.SelectClickListener;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.ui.report.*;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.MeasureUtils;
 import thinku.com.word.utils.RxHelper;
@@ -259,7 +260,7 @@ public class DictionDetailActivity extends BaseActivity {
     }
 
     public void toWordTip(RecitWordBeen recitWordBeen) {
-        DictionDetailWordActivity.start(DictionDetailActivity.this, recitWordBeen);
+        thinku.com.word.ui.report.WordEvaluateFragment.start(this ,recitWordBeen.getWords().getId());
     }
 
     /**

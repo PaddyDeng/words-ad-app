@@ -43,7 +43,7 @@ public class PkWordAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         PkWordHolder pkWordHolder = (PkWordHolder) holder;
         final PkWordData.DataBean dataBean = dataBeanList.get(position);
-        new GlideUtils().loadRoundCircle(context, NetworkTitle.WORDRESOURE + dataBean.getImage(), pkWordHolder.image);
+        new GlideUtils().load(context, NetworkTitle.WORDRESOURE + dataBean.getImage(), pkWordHolder.image);
         pkWordHolder.title.setText(dataBean.getTitle());
         pkWordHolder.date.setText(dataBean.getDate());
         pkWordHolder.pk_rl.setOnClickListener(new View.OnClickListener() {

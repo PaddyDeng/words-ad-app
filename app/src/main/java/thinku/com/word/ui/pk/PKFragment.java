@@ -80,6 +80,7 @@ public class PKFragment extends BaseFragment implements View.OnClickListener {
         setFragment(i);
     }
 
+
     public void setFragment(int tag) {
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         if (oldPage != -1) {

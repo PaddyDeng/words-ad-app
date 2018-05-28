@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Administrator on 2018/5/22/022.
  */
 
-public class ReviewBean {
+public class ReviewCaseBean {
 
     /**
      * code : 1
@@ -16,7 +16,7 @@ public class ReviewBean {
 
     private int code;
     private String message;
-    private List<String> wordsId;
+    private List<String> words;
 
     public int getCode() {
         return code;
@@ -35,10 +35,10 @@ public class ReviewBean {
     }
 
     public List<String> getWords() {
-        return wordsId;
+        return words;
     }
 
     public void setWords(List<String> words) {
-        this.wordsId = words;
+        this.words = words;
     }
 }

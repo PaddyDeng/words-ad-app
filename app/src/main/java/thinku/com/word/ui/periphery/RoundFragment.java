@@ -190,6 +190,7 @@ public class RoundFragment extends BaseFragment {
         rollPager.setHintView(new ColorPointHintView(_mActivity, getResources().getColor(R.color.gray_text), getResources().getColor(R.color.mainColor)));
     }
 
+
     /**
      * 获取数据
      */

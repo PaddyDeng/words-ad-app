@@ -3,6 +3,7 @@ package thinku.com.word.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ import thinku.com.word.jpush.TagAliasOperatorHelper;
 import thinku.com.word.ui.other.LoginActivity;
 import thinku.com.word.ui.other.dialog.NeedLoginDialog;
 import thinku.com.word.ui.other.dialog.callback.DialogClickListener;
+import thinku.com.word.ui.personalCenter.SetNickNameActivity;
 
 
 /**
@@ -64,17 +66,22 @@ public class LoginHelper {
                         public void accept(@NonNull final UserInfo userInfo) throws Exception {
                             if (userInfo != null) {
                                 if (userInfo.getCode() == 1) {
-                                    setSession(context, userInfo, new ICallBack() {
-                                        @Override
-                                        public void onSuccess(Object o) {
-                                            requestCallback.requestSuccess(userInfo);
-                                        }
+                                    if (!TextUtils.isEmpty(userInfo.getNickname())) {
+                                        setJpushAlians(context, userInfo.getUid());
+                                        setSession(context, userInfo, new ICallBack() {
+                                            @Override
+                                            public void onSuccess(Object o) {
+                                                requestCallback.requestSuccess(userInfo);
+                                            }
 
-                                        @Override
-                                        public void onFail() {
-                                            requestCallback.requestFail("");
-                                        }
-                                    });
+                                            @Override
+                                            public void onFail() {
+                                                requestCallback.requestFail("");
+                                            }
+                                        });
+                                    }else{
+                                        SetNickNameActivity.start(context);
+                                    }
                                 } else {
                                     requestCallback.requestFail(userInfo.getMessage());
                                 }
@@ -169,7 +176,6 @@ public class LoginHelper {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
-                        setJpushAlians(context, mUserInfo.getUid());
                         mICallBack.onSuccess(o);
                     }
                 }, new Consumer<Throwable>() {
@@ -245,17 +251,26 @@ public class LoginHelper {
     }
 
     public static void needLogin(Context context, String s) {
-        NeedLoginDialog dialog = new NeedLoginDialog(context, R.style.AlphaDialogAct);
-        dialog.setContent(s);
-        dialog.show();
+//        NeedLoginDialog dialog = new NeedLoginDialog(context, R.style.AlphaDialogAct);
+//        dialog.setContent(s);
+//        dialog.show();
+        Intent intent = new Intent(context , LoginActivity.class);
+        context.startActivity(intent);
     }
 
-    public static void needLogin(Context context, String s , int requestCode) {
-        NeedLoginDialog dialog = new NeedLoginDialog(context, R.style.AlphaDialogAct);
-        dialog.setContent(s);
-        dialog.setRequestCode(requestCode);
-        dialog.show();
-    }
+//    public static void needLogin(Context context, String s , int requestCode) {
+//        NeedLoginDialog dialog = new NeedLoginDialog(context, R.style.AlphaDialogAct);
+//        dialog.setContent(s);
+//        dialog.setRequestCode(requestCode);
+//        dialog.show();
+//    }
+
+     public static void needLogin(Activity context , String s ,int requestCode){
+         Intent intent = new Intent(context, LoginActivity.class);
+         context.startActivity(intent);
+     }
+
+
 
     public static void needLogin(Context context , String s , DialogClickListener dialogClickListener){
         NeedLoginDialog dialog = new NeedLoginDialog(context, R.style.AlphaDialogAct , dialogClickListener);

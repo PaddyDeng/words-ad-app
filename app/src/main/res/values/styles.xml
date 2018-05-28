@@ -342,4 +342,39 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:src">@drawable/icon_back</item>
     </style>
+
+
+    <!--report-->
+    <style name="report_lin">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="report_view">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">13dp</item>
+    </style>
+
+    <style name="report_text_base">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="report_title" parent="report_text_base">
+        <item name="android:layout_marginLeft">3dp</item>
+    </style>
+
+    <style name="report_name" parent="report_text_base">
+        <item name="android:layout_marginLeft">8dp</item>
+    </style>
+
+
+    <style name="report_view2">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">15dp</item>
+    </style>
 </resources>

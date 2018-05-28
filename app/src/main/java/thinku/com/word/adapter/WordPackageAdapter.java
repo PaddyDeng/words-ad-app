@@ -18,6 +18,7 @@ import java.util.List;
 import thinku.com.word.R;
 import thinku.com.word.bean.WordPackageBeen;
 import thinku.com.word.callback.SelectListener;
+import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.utils.GlideUtils;
 
 /**
@@ -63,7 +64,7 @@ public class WordPackageAdapter extends RecyclerView.Adapter {
         } else {
             packageHolder.rl.setBackgroundColor(context.getResources().getColor(R.color.white));
         }
-        if (!TextUtils.isEmpty(data.getImage())) new GlideUtils().load(context, data.getImage(), packageHolder.packageImg);
+        if (!TextUtils.isEmpty(data.getImage())) new GlideUtils().loadCircle(context, NetworkTitle.WORDRESOURE + data.getImage(), packageHolder.packageImg);
         packageHolder.title.setText(data.getName());
         packageHolder.rl.setOnClickListener(new View.OnClickListener() {
             @Override

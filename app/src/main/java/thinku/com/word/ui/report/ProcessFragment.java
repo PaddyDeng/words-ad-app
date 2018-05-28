@@ -134,6 +134,7 @@ public class ProcessFragment extends BaseFragment {
 
     }
 
+
     // 请求网络刷新UI
     public void referNetUi() {
         addToCompositeDis(HttpUtil.trackObservable()
@@ -152,7 +153,7 @@ public class ProcessFragment extends BaseFragment {
                         if (trackBeen.getCode() == 99) {
                             LoginHelper.needLogin(_mActivity, "您未登陆，请先登陆");
                         } else {
-
+                                new GlideUtils().loadCircle(_mActivity ,NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(_mActivity),portrait);
                             if (trackBeen != null) {
                                 totalDay.setText(trackBeen.getInsistDay() + "");
                                 totalNum.setText(trackBeen.getUserAllWords());

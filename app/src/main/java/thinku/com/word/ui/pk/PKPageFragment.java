@@ -114,6 +114,7 @@ public class PKPageFragment extends BaseFragment {
         });
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();

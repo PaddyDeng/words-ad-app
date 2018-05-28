@@ -1,5 +1,7 @@
 package thinku.com.word.ui.personalCenter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -42,6 +44,10 @@ public class SetNickNameActivity extends BaseActivity {
     @BindView(R.id.title_right_t)
     TextView titleRightT;
     private boolean hasNickName;
+
+    public static void start(Context context){
+        context.startActivity(new Intent(context ,SetNickNameActivity.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

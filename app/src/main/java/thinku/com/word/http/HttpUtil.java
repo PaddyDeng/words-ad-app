@@ -37,6 +37,7 @@ import thinku.com.word.ui.personalCenter.update.bean.VersionInfo;
 import thinku.com.word.ui.personalCenter.update.localdb.UpdateLocalDbData;
 import thinku.com.word.ui.pk.been.PkWordData;
 import thinku.com.word.ui.report.bean.ReviewBean;
+import thinku.com.word.ui.report.bean.ReviewCaseBean;
 import thinku.com.word.ui.seacher.WordBean;
 import thinku.com.word.ui.seacher.WordListBean;
 
@@ -175,13 +176,13 @@ public class HttpUtil {
     }
 
     //复习单词
-    public static Observable<ResultBeen<List<String>>> wordReviewTodayBeenObservable(){
-        return getRestApi(HostType.WORDS_URL_HOST).reviewCaseWords().compose(new SchedulerTransformer<ResultBeen<List<String>>>());
+    public static Observable<ReviewBean> wordReviewTodayBeenObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).reviewCaseWords().compose(new SchedulerTransformer<ReviewBean>());
     }
 
     //单词详情
     public static Observable<RecitWordBeen> wordDetailsObservable(String wordId){
-        return getRestApi(HostType.WORDS_URL_HOST).wordDetails(wordId).compose(new SchedulerTransformer<RecitWordBeen>());
+        return getRestApiReciteWord(HostType.WORDS_URL_HOST).wordDetails(wordId).compose(new SchedulerTransformer<RecitWordBeen>());
     }
 
     //单词详情
@@ -190,8 +191,8 @@ public class HttpUtil {
     }
 
     //根据复习模式后台返回改复习情况
-    public static Observable<ReviewBean> isReviewObservable(){
-        return getRestApi(HostType.WORDS_URL_HOST).isReview().compose(new SchedulerTransformer<ReviewBean>());
+    public static Observable<ReviewCaseBean> isReviewObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).isReview().compose(new SchedulerTransformer<ReviewCaseBean>());
     }
 
     //背单词上传对单词认识状态

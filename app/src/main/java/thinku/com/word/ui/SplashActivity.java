@@ -14,6 +14,7 @@ import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
 import thinku.com.word.ui.other.MainActivity;
+import thinku.com.word.ui.share.ShareDateActivity;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.Screenshot;
 import thinku.com.word.utils.SharedPreferencesUtils;

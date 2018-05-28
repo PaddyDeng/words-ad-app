@@ -6,12 +6,9 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,8 +20,6 @@ import android.widget.TextView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,12 +38,12 @@ import thinku.com.word.bean.RecitWordBeen;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.callback.SelectRlClickListener;
 import thinku.com.word.http.HttpUtil;
-import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.adapter.QuestionAdapter;
 import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.recite.WordErrorActivity;
 import thinku.com.word.ui.report.bean.QuestionBean;
 import thinku.com.word.ui.report.bean.ReviewBean;
+import thinku.com.word.ui.report.bean.ReviewCaseBean;
 import thinku.com.word.ui.share.ShareDateActivity;
 import thinku.com.word.ui.webView.WebViewActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
@@ -158,6 +153,7 @@ public class WordEvaluateFragment extends BaseActivity {
     private ReciteWordAdapter low ;
     private  ReciteWordAdapter sentence ;
     private QuestionAdapter questionAdapter ;
+    private boolean isShow = true ;
     /**
      * @param context
      * @param tag     tag 表明是背单词进入 还是其他情况进入
@@ -174,7 +170,7 @@ public class WordEvaluateFragment extends BaseActivity {
         context.startActivity(intent);
     }
 
-    public static void start(Context context, String wordId) {
+    public static void start(Context context, String wordId ) {
         Intent intent = new Intent(context, WordEvaluateFragment.class);
         intent.putExtra("wordId", wordId);
         context.startActivity(intent);
@@ -200,12 +196,22 @@ public class WordEvaluateFragment extends BaseActivity {
                 reciteWords(words);
             }
             if (!TextUtils.isEmpty(wordId)) {
+                isShow = false ;
                 fromWordsIdGetWordDetails(wordId);
             }
         }
+        isShow();
         setFocusable();
         initAudioManager();
         initRecycler();
+    }
+
+    public void isShow(){
+        if (isShow){
+            bottomClick.setVisibility(View.VISIBLE);
+        }else{
+            bottomClick.setVisibility(View.GONE);
+        }
     }
 
 
@@ -240,7 +246,6 @@ public class WordEvaluateFragment extends BaseActivity {
                     public void accept(@NonNull RecitWordBeen recitWordBeen) throws Exception {
                         dismissLoadDialog();
                         if (getHttpResSuc(recitWordBeen.getCode())) {
-                            Log.e(TAG, "accept:  + normal"  );
                             referUi1(recitWordBeen);
                         } else if (recitWordBeen.getCode() == 98) {
                             newAiBinHaoSi();
@@ -269,7 +274,6 @@ public class WordEvaluateFragment extends BaseActivity {
      * code 不等于0 ， 返回wordId数组 ,  用id 获得word ，若熟识或者认识，将该id从此数组中去除，直到此数组为0  调用nowFinsh
      */
     public void newAiBinHaoSi() {
-        tag = C.REVIEW ;
         isNewAiBinHaoSi = true ;
         addToCompositeDis(HttpUtil.isReviewObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
@@ -278,9 +282,9 @@ public class WordEvaluateFragment extends BaseActivity {
                         showLoadDialog();
                     }
                 })
-                .subscribe(new Consumer<ReviewBean>() {
+                .subscribe(new Consumer<ReviewCaseBean>() {
                     @Override
-                    public void accept(@NonNull ReviewBean voidResultBeen) throws Exception {
+                    public void accept(@NonNull ReviewCaseBean voidResultBeen) throws Exception {
                         dismissLoadDialog();
                         if (voidResultBeen.getCode() == 0) {
                             nowFinsh();
@@ -291,6 +295,7 @@ public class WordEvaluateFragment extends BaseActivity {
                             } else {
                                 words = (ArrayList<String>) voidResultBeen.getWords();
                             }
+                            Log.e(TAG, "accept: " + words.size());
                             reciteWords(words);
                         }
                     }
@@ -335,20 +340,21 @@ public class WordEvaluateFragment extends BaseActivity {
                     public void accept(@NonNull Disposable disposable) throws Exception {
                         showLoadDialog();
                     }
-                }).subscribe(new Consumer<ResultBeen<List<String>>>() {
+                }).subscribe(new Consumer<ReviewBean>() {
                     @Override
-                    public void accept(@NonNull ResultBeen<List<String>> reviewCaseBean) throws Exception {
+                    public void accept(@NonNull ReviewBean reviewCaseBean) throws Exception {
                         dismissLoadDialog();
                         if (reviewCaseBean.getCode() == 2) {
                             share();
                         } else {
                             if (words != null) {
                                 words.clear();
-                                words.addAll(reviewCaseBean.getData());
+                                words.addAll(reviewCaseBean.getWords());
                             } else {
-                                words = (ArrayList<String>) reviewCaseBean.getData();
+                                words = (ArrayList<String>) reviewCaseBean.getWords();
                             }
                         }
+                        Log.e(TAG, "oldAibinhaosi: " + words );
                         reciteWords(words);
                     }
                 }, new Consumer<Throwable>() {
@@ -425,7 +431,6 @@ public class WordEvaluateFragment extends BaseActivity {
      * 需复习  正常背单词 userNeedRevies    进入新艾宾浩斯 needReviews   + 剩余数组   , 复习模式下  数组数量
      **/
     public void setStudyAndReviewNum(RecitWordBeen recitWord) {
-        if (MyApplication.task != 3) {
             if (tag == C.NORMAL) {
                 if (isNewAiBinHaoSi) {
                     if (words != null) {
@@ -437,7 +442,6 @@ public class WordEvaluateFragment extends BaseActivity {
             } else {
                 if (words != null) newWord.setText("需复习" + (words.size() - posiiton));
             }
-        }
     }
 
     /**
@@ -500,7 +504,6 @@ public class WordEvaluateFragment extends BaseActivity {
             if (!TextUtils.isEmpty(questionBean.getQuestion())){
                 question_home.setVisibility(View.VISIBLE);
 //                question_home.setText(HtmlUtil.replaceSpace(questionBean.getQuestion() ));
-                Log.e(TAG, "getData: " + HtmlUtil.getHtml(questionBean.getQuestion()) );
                 question_home.loadDataWithBaseURL(null,HtmlUtil.getHtml(questionBean.getQuestion()), "text/html"," charset=UTF-8", null);//这种写法可以正确解码
             }else{
                 question_home.setVisibility(View.GONE);
@@ -608,7 +611,11 @@ public class WordEvaluateFragment extends BaseActivity {
         //
         isNewAiBinHaoSi = false ;
         if (tag == C.NORMAL) {
-            normalReciteWords();
+
+            if (MyApplication.task == 3 ){
+            }else{
+                normalReciteWords();
+            }
         } else {
             //  复习单词
             if (MyApplication.task == 3) {
@@ -673,6 +680,7 @@ public class WordEvaluateFragment extends BaseActivity {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         dismissLoadDialog();
+                        Log.e(TAG, "accept: " + throwable.toString());
                     }
                 }));
     }
@@ -767,16 +775,26 @@ public class WordEvaluateFragment extends BaseActivity {
                         public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
                             dismissLoadDialog();
                             Log.e(TAG, "accept: " + (words == null));
-                            if(words != null) Log.e(TAG, "accept: " + words.size() + " " + posiiton );
-                            posiiton++;
-                            if (words == null || words.size() <= 0) {
+
+                            if (words == null ) {
+//                                Log.e(TAG, "accept: " + posiiton + "  " + words.size() );
                                 reciteWords();
                             } else {
-
-                                if (posiiton == words.size()) {
-                                    share();
-                                } else if (posiiton < words.size()) {
-                                    fromWordsIdGetWordDetails(words.get(posiiton));
+                                Log.e(TAG, "not: " + (words == null));
+                                posiiton++;
+                                if (isNewAiBinHaoSi){
+                                    if (posiiton == words.size()){
+                                        nowFinsh();
+                                    }else{
+                                        fromWordsIdGetWordDetails(words.get(posiiton));
+                                    }
+                                }else {
+                                    Log.e(TAG, "accept: " + posiiton + "  " + words.size() );
+                                    if (posiiton >= words.size()) {
+                                        share();
+                                    } else if (posiiton < words.size()) {
+                                        fromWordsIdGetWordDetails(words.get(posiiton));
+                                    }
                                 }
                             }
                         }

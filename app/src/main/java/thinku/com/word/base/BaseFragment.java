@@ -56,27 +56,6 @@ public abstract class BaseFragment extends SupportFragment  {
     //如果Fragment从可见->不可见，那么setUserVisibleHint()也会被调用，传入isVisibleToUser = false
     //总结：setUserVisibleHint()除了Fragment的可见状态发生变化时会被回调外，在new Fragment()时也会被回调
     //如果我们需要在 Fragment 可见与不可见时干点事，用这个的话就会有多余的回调了，那么就需要重新封装一个
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        //setUserVisibleHint()有可能在fragment的生命周期外被调用
-        if (rootView == null) {
-            return;
-        }
-        if (isFirstVisible && isVisibleToUser) {
-            onFragmentFirstVisible();
-            isFirstVisible = false;
-        }
-        if (isVisibleToUser) {
-            onFragmentVisibleChange(true);
-            isFragmentVisible = true;
-            return;
-        }
-        if (isFragmentVisible) {
-            isFragmentVisible = false;
-            onFragmentVisibleChange(false);
-        }
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,14 +104,6 @@ public abstract class BaseFragment extends SupportFragment  {
         //保证onFragmentVisibleChange()的回调发生在rootView创建完成之后，以便支持ui操作
         if (rootView == null) {
             rootView = view;
-            if (getUserVisibleHint()) {
-                if (isFirstVisible) {
-                    onFragmentFirstVisible();
-                    isFirstVisible = false;
-                }
-                onFragmentVisibleChange(true);
-                isFragmentVisible = true;
-            }
         }
         super.onViewCreated(isReuseView ? rootView : view, savedInstanceState);
     }
@@ -146,6 +117,12 @@ public abstract class BaseFragment extends SupportFragment  {
     public void onDestroy() {
         super.onDestroy();
         initVariable();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.e(TAG, "onHiddenChanged: " + hidden );
     }
 
     public void toLogin(){
@@ -180,9 +157,6 @@ public abstract class BaseFragment extends SupportFragment  {
      * @param isVisible true  不可见 -> 可见
      *                  false 可见  -> 不可见
      */
-    protected void onFragmentVisibleChange(boolean isVisible) {
-
-    }
 
     /**
      * 在fragment首次可见时回调，可在这里进行加载数据，保证只在第一次打开Fragment时才会加载数据，
@@ -193,10 +167,6 @@ public abstract class BaseFragment extends SupportFragment  {
      */
     protected void onFragmentFirstVisible() {
 
-    }
-
-    protected boolean isFragmentVisible() {
-        return isFragmentVisible;
     }
 
     /**

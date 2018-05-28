@@ -1,316 +1,293 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipeRefer"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="30px"
-            android:background="@color/gray_white" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="60px"
-            android:layout_marginTop="20px"
-            android:text="周报"
-            android:textSize="45px" />
-
-        <thinku.com.word.view.PieView
-            android:layout_width="330px"
-            android:layout_height="330px"
-            android:id="@+id/week"
-            android:layout_gravity="center_horizontal" />
-
-        <TextView
-            android:id="@+id/total_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="60px"
-            android:text="总量：0"
-            android:textSize="35px" />
-
-        <TableLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="50px"
-            android:layout_marginRight="50px"
-            android:layout_marginTop="40px">
+            android:orientation="vertical">
 
-            <TableRow
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_height="30px"
+                android:background="@color/gray_white" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical">
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20px"
+                    android:text="周报"
+                    android:textColor="@color/black"
+                    android:textSize="45px" />
 
-                    <View
-                        android:layout_width="20px"
-                        android:layout_height="20px"
-                        android:background="@drawable/familiar_dot" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20px"
-                        android:text="熟知量"
-                        android:textSize="35px" />
-
-                    <TextView
-                        android:id="@+id/familiar_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20px"
-                        android:text="0"
-                        android:textSize="35px" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/weekAll"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical">
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20px"
+                    android:text="总量:(54)"
+                    android:textColor="@color/mainColor"
+                    android:textSize="36px" />
+            </LinearLayout>
 
-                    <View
-                        android:layout_width="20px"
-                        android:layout_height="20px"
-                        android:background="@drawable/know_dot" />
+            <thinku.com.word.view.PieView
+                android:id="@+id/week"
+                android:layout_width="330px"
+                android:layout_height="330px"
+                android:layout_gravity="center_horizontal" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20px"
-                        android:text="认识量"
-                        android:textSize="35px" />
-
-                    <TextView
-                        android:id="@+id/know_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="40px"
-                        android:text="0"
-                        android:textSize="35px" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical">
-
-                    <View
-                        android:layout_width="20px"
-                        android:layout_height="20px"
-                        android:background="@drawable/not_know_diot" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20px"
-                        android:text="不认识量"
-                        android:textSize="35px" />
-
-                    <TextView
-                        android:id="@+id/not_know_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="40px"
-                        android:text="0"
-                        android:textSize="35px" />
-                </LinearLayout>
-            </TableRow>
-
-            <TableRow
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:weightSum="3">
+                android:layout_height="match_parent"
+                android:layout_marginTop="40px">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20px"
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <LinearLayout style="@style/report_lin">
+
+                        <View
+                            android:id="@+id/image1"
+                            style="@style/report_view"
+                            android:background="@color/color_know_well" />
+
+                        <TextView
+                            android:id="@+id/text1"
+                            style="@style/report_title"
+                            android:text="熟知量" />
+
+                        <TextView
+                            android:id="@+id/familiar_num"
+                            style="@style/report_name"
+                            android:layout_toEndOf="@id/text1"
+                            android:text="(0)" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/report_lin">
+
+                        <View
+                            style="@style/report_view"
+                            android:layout_toStartOf="@id/know"
+                            android:background="@color/color_know" />
+
+                        <TextView
+                            android:id="@+id/know"
+                            style="@style/report_title"
+                            android:layout_toStartOf="@id/know_num"
+                            android:text="认识量" />
+
+                        <TextView
+                            android:id="@+id/know_num"
+                            style="@style/report_name"
+                            android:text="(0)" />
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:gravity="center_vertical">
+                    >
 
-                    <View
-                        android:layout_width="20px"
-                        android:layout_height="20px"
-                        android:background="@drawable/vague_dot" />
+                    <LinearLayout style="@style/report_lin">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20px"
-                        android:text="模糊量"
-                        android:textSize="35px" />
+                        <View
+                            style="@style/report_view"
+                            android:background="@color/color_dim" />
 
-                    <TextView
-                        android:id="@+id/vague_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20px"
-                        android:text="0"
-                        android:textSize="35px" />
-                </LinearLayout>
+                        <TextView
+                            style="@style/report_title"
+                            android:text="模糊量" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20px"
+                        <TextView
+                            android:id="@+id/vague_num"
+                            style="@style/report_name"
+                            android:text="(0)" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/report_lin">
+
+                        <View
+                            style="@style/report_view"
+                            android:background="@color/forget" />
+
+                        <TextView
+                            style="@style/report_title"
+                            android:text="忘记量" />
+
+                        <TextView
+                            android:id="@+id/forget_num"
+                            style="@style/report_name"
+                            android:text="0" />
+                    </LinearLayout>
+
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:gravity="center_vertical">
+                    android:weightSum="2">
 
-                    <View
-                        android:layout_width="20px"
-                        android:layout_height="20px"
-                        android:background="@drawable/forget_dot" />
+                    <LinearLayout style="@style/report_lin">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20px"
-                        android:text="忘记量"
-                        android:textSize="35px" />
+                        <View
 
-                    <TextView
-                        android:id="@+id/forget_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="40px"
-                        android:text="0"
-                        android:textSize="35px" />
-                </LinearLayout>
-            </TableRow>
-        </TableLayout>
+                            style="@style/report_view"
+                            android:background="@color/color_notknow" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="50px"
-            android:layout_marginTop="40px"
-            android:background="@color/gray_white" />
+                        <TextView
+                            style="@style/report_title"
+                            android:text="不认识" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="60px"
-            android:layout_marginTop="40px">
+                        <TextView
+                            android:id="@+id/not_know_num"
+                            style="@style/report_name"
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60px"
-                android:text="日报"
-                android:textSize="45px" />
-
-        </RelativeLayout>
-
-
-        <thinku.com.word.view.BarChartView
-            android:layout_width="match_parent"
-            android:layout_height="600px"
-            android:id="@+id/date_report"
-            android:visibility="visible"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:orientation="horizontal"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp">
-        <View
-            android:layout_width="80dp"
-            android:layout_height="20dp"
-            android:background="@color/color_paint1"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="熟识量"
-            android:layout_marginLeft="20dp"/>
-
-        <View
-            android:layout_marginLeft="20dp"
-            android:layout_width="80dp"
-            android:layout_height="20dp"
-            android:background="@color/color_paint2"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="认识量"
-            android:layout_marginLeft="20dp"/>
-    </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:orientation="horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp">
-            <View
-                android:layout_width="80dp"
-                android:layout_height="20dp"
-                android:background="@color/color_paint3"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="模糊量"
-                android:layout_marginLeft="20dp"/>
+                            android:text="(0)" />
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
 
             <View
-                android:layout_marginLeft="20dp"
-                android:layout_width="80dp"
-                android:layout_height="20dp"
-                android:background="@color/color_paint4"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="50px"
+                android:layout_marginTop="40px"
+                android:background="@color/gray_white" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="不认识量"
-                android:layout_marginLeft="20dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60px"
+                android:layout_marginTop="40px">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="60px"
+                    android:text="日报"
+                    android:textSize="45px"
+                    android:textColor="@color/black"/>
+
+            </RelativeLayout>
+
+
+            <thinku.com.word.view.BarChartView
+                android:id="@+id/date_report"
+                android:layout_width="match_parent"
+                android:layout_height="600px"
+                android:visibility="visible" />
+
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="40px">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <LinearLayout style="@style/report_lin">
+
+                        <View
+                            style="@style/report_view"
+                            android:background="@color/color_know_well" />
+
+                        <TextView
+                            style="@style/report_title"
+                            android:text="熟知" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/report_lin">
+
+                        <View
+                            style="@style/report_view"
+                            android:layout_toStartOf="@id/know"
+                            android:background="@color/color_know" />
+
+                        <TextView
+                            style="@style/report_title"
+                            android:layout_toStartOf="@id/know_num"
+
+                            android:text="认   识" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/report_lin">
+
+                        <View
+                            style="@style/report_view"
+                            android:background="@color/color_dim" />
+
+                        <TextView
+                            style="@style/report_title"
+                            android:text="模糊" />
+
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    >
+
+                    <LinearLayout style="@style/report_lin">
+
+                        <View
+                            style="@style/report_view"
+                            android:background="@color/color_forget" />
+
+                        <TextView
+                            style="@style/report_title"
+                            android:text="忘记" />
+
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/report_lin">
+
+                        <View
+                            style="@style/report_view"
+                            android:background="@color/color_notknow" />
+
+                        <TextView
+                            style="@style/report_title"
+                            android:text="不认识" />
+                    </LinearLayout>
+                    <LinearLayout style="@style/report_lin">
+
+                        <View
+                            style="@style/report_view"
+                            android:background="@color/gray_text" />
+
+                        <TextView
+                            style="@style/report_title"
+                            android:text="复习" />
+                    </LinearLayout>
+
+
+                </TableRow>
+
+            </TableLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:orientation="horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp">
-            <View
-                android:layout_width="80dp"
-                android:layout_height="20dp"
-                android:background="@color/color_paint5"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="忘记量"
-                android:layout_marginLeft="20dp"/>
-
-        </LinearLayout>
-    </LinearLayout>
-</ScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </ScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>

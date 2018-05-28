@@ -40,7 +40,7 @@ import thinku.com.word.view.PieView;
 public class WordReportFragment extends BaseFragment {
 
     private static final String TAG = WordReportFragment.class.getSimpleName();
-    @BindView(R.id.total_num)
+    @BindView(R.id.weekAll)
     TextView totalNum;
     @BindView(R.id.familiar_num)
     TextView familiarNum;
@@ -104,6 +104,7 @@ public class WordReportFragment extends BaseFragment {
         return view;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
@@ -143,12 +144,12 @@ public class WordReportFragment extends BaseFragment {
     //  刷新UI
     public void referUi(WordReportBeen wordReportBeen) {
         WordReportBeen.WeekBean weekBean = wordReportBeen.getWeek();
-        familiarNum.setText(weekBean.getKnowWell());
-        notKnowNum.setText(weekBean.getNotKnow());
-        knowNum.setText(weekBean.getKnow());
-        forgetNum.setText(weekBean.getForget());
-        vagueNum.setText(weekBean.getDim());
-        totalNum.setText("总量：" + weekBean.getAll());
+        familiarNum.setText("(" + weekBean.getKnowWell() +")");
+        notKnowNum.setText("(" +weekBean.getNotKnow() +")");
+        knowNum.setText("(" +weekBean.getKnow()+")");
+        forgetNum.setText("("+weekBean.getForget()+")");
+        vagueNum.setText("("+weekBean.getDim()+")");
+        totalNum.setText("总量：(" + weekBean.getAll()+")");
         if (!"0".equals(weekBean.getAll())) {
             getPercent("forget", weekBean.getForget(), weekBean.getAll());
             getPercent("notKnow", weekBean.getNotKnow(), weekBean.getAll());

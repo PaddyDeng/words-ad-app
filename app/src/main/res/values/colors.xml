@@ -3,7 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="mainColor">#31C287</color>
+    <color name="mainColor">#4dc494</color>
     <color name="mainGray">#F1EFE3</color>
     <color name="black">#000</color>
     <color name="white">#fff</color>
@@ -88,4 +88,12 @@
     <color name="word_know">#B8FFE0</color>
     <color name="word_not_know">#FCB7B7</color>
     <color name="word_dim">#FEE7B2</color>
+    
+    
+    <!--repore-->
+    <color name="color_know_well">#40c596</color>
+    <color name="color_know">#51dfe7</color>
+    <color name="color_dim">#4D8EDA</color>
+    <color name="color_forget">#F1975B</color>
+    <color name="color_notknow">#e25859</color>
 </resources>

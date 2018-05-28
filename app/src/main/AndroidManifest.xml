@@ -401,7 +401,8 @@
         <activity
             android:name=".ui.share.ShareDateActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme" />
+            android:theme="@style/NoTitleTheme" >
+            </activity>
         <activity
             android:name=".ui.recite.ReviewExerciseTypeActivity"
             android:screenOrientation="portrait"

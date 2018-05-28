@@ -22,8 +22,8 @@ public class NotificationUtil {
         Intent intent = new Intent(context , MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setContentText("Word 背单词")
-                .setContentText("应该被单词了")
+        builder
+                .setContentText("不是约好现在背单词么，打开雷哥单词来背单词吧，么么哒~")
                 .setPriority(Notification.PRIORITY_HIGH)
                 .setDefaults(Notification.DEFAULT_SOUND)
                 .setSmallIcon(R.mipmap.logo)

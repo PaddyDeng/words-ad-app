@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,10 +101,12 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
 
     }
 
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden) initView();
+        Log.e(TAG, "onHiddenChanged: " + hidden );
+        initView();
     }
 
     @Override

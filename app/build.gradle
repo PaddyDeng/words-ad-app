@@ -26,6 +26,15 @@ android {
         ]
     }
 
+
+//    signingConfigs{
+//        debug{
+//            storeFile file("E:/company/words-ad-app/word.jks")   //这个文件是我的,改成你自己的release签名文件
+//            storePassword "word123"   //密码改成自己的
+//            keyAlias "word"              //再改成你自己的
+//            keyPassword "word123"     //再改成你自己的
+//        }
+//    }
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
@@ -33,7 +42,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -138,9 +147,9 @@ dependencies {
     compile 'cn.jiguang.sdk:jpush:3.1.1'
     compile 'cn.jiguang.sdk:jcore:1.1.9'
     compile 'ch.ielse:switchbutton:1.0.1'
-    compile 'cn.bingoogolapple:bga-refreshlayout:1.1.8@aar'
+//    compile 'cn.bingoogolapple:bga-refreshlayout:1.1.8@aar'
     compile 'com.jude:rollviewpager:1.4.6'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-    compile files('libs/jsoup-1.11.3.jar')
+//    compile files('libs/jsoup-1.11.3.jar')
 }

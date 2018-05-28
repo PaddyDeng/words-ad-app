@@ -194,7 +194,6 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
         adapter.setDeleteListener(this);
     }
     public void setWheel(final int totals, final int dayInt, int wordInt) {
-        Log.e(TAG, "setWheel: " + totals +"  " + dayInt + "  " + wordInt );
         isFirst = 0 ;
         wheelView_r2.removeAllViews();
         wheelView_rl.removeAllViews();
@@ -226,7 +225,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
         wheel_day.setWheelSize(7);
         wheel_num.setWheelSize(7);
         wheel_day.setSelection(dayInt );
-//        wheel_num.setSelection(wordInt );
+        wheel_num.setSelection(wordInt );
         num_of_day.setText(dayList.get(dayInt));
         num_of_word.setText(wordList.get(wordInt));
         wheel_day.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
@@ -251,7 +250,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void onItemSelected(int position, Object o) {
                 if (isFirst == 0) {
-//                    num2day(position);
+                    num2day(position);
                     isFirst++;
                 } else {
                     isFirst = 0;
@@ -364,6 +363,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
                             dismissLoadDialog();
                             if (getHttpResSuc(voidResultBeen.getCode())) {
                                 toTast(MyPlanActivity.this, "修改成功");
+                                MainActivity.toMain(MyPlanActivity.this);
                             } else {
                                 toTast(MyPlanActivity.this, "修改失败");
                             }

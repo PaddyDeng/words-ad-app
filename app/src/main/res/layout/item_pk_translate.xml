@@ -6,11 +6,11 @@
     
     <TextView
        android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/white_20round"
+        android:background="@drawable/white_10round"
         android:textColor="@color/color_black_text"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:id="@+id/item_translate"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"

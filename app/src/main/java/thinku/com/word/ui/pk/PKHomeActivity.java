@@ -102,6 +102,10 @@ public class PKHomeActivity extends BaseActivity {
     RelativeLayout pkNumRl2;
     @BindView(R.id.pk_button)
     RelativeLayout pkButton;
+    @BindView(R.id.myImage)
+    ImageView myImage ;
+    @BindView(R.id.match_Image)
+    ImageView matchImg ;
 
     private EventPkListData eventPkListData;
     private ValueAnimator valueAnimator;
@@ -139,6 +143,8 @@ public class PKHomeActivity extends BaseActivity {
     }
 
     public void init() {
+        new GlideUtils().loadCircle(this ,NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(this) ,myImage);
+        new GlideUtils().loadCircle(this ,NetworkTitle.WORDRESOURE + "" ,matchImg);
         hideAll();
         EventBus.getDefault().register(this);
         uid = SharedPreferencesUtils.getString("uid", PKHomeActivity.this);
@@ -171,6 +177,8 @@ public class PKHomeActivity extends BaseActivity {
                 pkChose(PK_CANCEL);
                 break;
             case R.id.pking:
+                pking.setSelected(false);
+                pking.setTextColor(getResources().getColor(R.color.white));
                 pkChose(PK_AGREE);
                 break;
 
@@ -211,11 +219,15 @@ public class PKHomeActivity extends BaseActivity {
             valueAnimator.cancel();
         }
         if (eventPkData != null) {
+            pking.setSelected(true);
+            pking.setTextColor(getResources().getColor(R.color.gray_white));
             setMySelfUser(eventPkData);
             SharedPreferencesUtils.setPk(PKHomeActivity.this, mathUser);
             mySelfUid = mySelfUser.getUid();
             matchUid = mathUser.getUid();
             words1.setText(mathUser.getWords());
+            myImage.setVisibility(View.GONE);
+            matchImg.setVisibility(View.GONE);
             winNum1.setText("win：" + mathUser.getWin());
             loseNum1.setText("lose：" + mathUser.getLose());
             new GlideUtils().loadCircle(PKHomeActivity.this, NetworkTitle.WORDRESOURE + mathUser.getImage(), img1);
@@ -241,7 +253,6 @@ public class PKHomeActivity extends BaseActivity {
                         @Override
                         public void accept(@NonNull Integer integer) throws Exception {
                             timer.setText("倒计时：" +integer+ "s");
-                            Log.e(TAG, "accept: " + integer );
                             if (integer == 0){
                                pkChose(PK_CANCEL);
                             }
@@ -261,7 +272,6 @@ public class PKHomeActivity extends BaseActivity {
                     public void accept(ResultBeen<Void> voidResultBeen) throws Exception {
                         if (getHttpResSuc(voidResultBeen.getCode())) {
                             if (type == PK_AGREE) {
-                                toTast(PKHomeActivity.this, "等待对手开始");
                             } else {
                                 hideAll();
                                 addNet();
@@ -300,6 +310,8 @@ public class PKHomeActivity extends BaseActivity {
         name2.setVisibility(View.INVISIBLE);
         pkButton.setVisibility(View.GONE);
         timerRl.setVisibility(View.GONE);
+        matchImg.setVisibility(View.VISIBLE);
+        myImage.setVisibility(View.VISIBLE);
         if (valueAnimator == null) {
             valueAnimator = ValueAnimator.ofInt(0, 4).setDuration(2000);
             valueAnimator.setRepeatCount(ValueAnimator.INFINITE);

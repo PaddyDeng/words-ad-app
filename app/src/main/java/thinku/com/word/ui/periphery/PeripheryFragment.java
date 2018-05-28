@@ -18,9 +18,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -32,7 +29,6 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.periphery.adapter.CourseAdapter;
 import thinku.com.word.ui.periphery.bean.CourseBean;
 import thinku.com.word.ui.periphery.bean.RoundBean;
-import thinku.com.word.utils.HttpUtils;
 
 /**
  * 周边
@@ -55,22 +51,23 @@ public class PeripheryFragment extends BaseActivity {
     private List<CourseBean> courseBeanList;
     private CourseAdapter courseAdapter;
 
-    private int type = 0  ;
+    private int type = 0;
 
-    private int page  =1 ;
-    private int pageSize = 20 ;
+    private int page = 1;
+    private int pageSize = 20;
 
-    private List<RoundBean.LivePreviewBean.DataBean> dataBeanList ;
+    private List<RoundBean.LivePreviewBean.DataBean> dataBeanList;
 
-    private CourseAdapter  liveAdatper ;
-    public static void start(Context context , int type){
-        Intent intent = new Intent(context ,PeripheryFragment.class);
-        intent.putExtra("type" , type);
+    private CourseAdapter liveAdatper;
+
+    public static void start(Context context, int type) {
+        Intent intent = new Intent(context, PeripheryFragment.class);
+        intent.putExtra("type", type);
         context.startActivity(intent);
     }
 
-    public static void start(Context context ){
-        Intent intent = new Intent(context ,PeripheryFragment.class);
+    public static void start(Context context) {
+        Intent intent = new Intent(context, PeripheryFragment.class);
         context.startActivity(intent);
     }
 
@@ -79,7 +76,7 @@ public class PeripheryFragment extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_periphery);
         unbinder = ButterKnife.bind(this);
-        Intent intent = getIntent() ;
+        Intent intent = getIntent();
         if (intent != null) {
             type = getIntent().getIntExtra("type", 0);
         }
@@ -95,8 +92,8 @@ public class PeripheryFragment extends BaseActivity {
     }
 
 
-    public void initData(){
-        if (type  != 0) {
+    public void initData() {
+        if (type != 0) {
             addToCompositeDis(HttpUtil.courseBeanObservable(type)
                     .doOnSubscribe(new Consumer<Disposable>() {
                         @Override
@@ -113,7 +110,7 @@ public class PeripheryFragment extends BaseActivity {
                                 courseAdapter.setSelectRlClickListener(new SelectRlClickListener() {
                                     @Override
                                     public void setClickListener(int position, RecyclerView.ViewHolder viewHolder, View view) {
-                                            ClassDetailActivity.start(PeripheryFragment.this ,courseBeans.get(position));
+                                        ClassDetailActivity.start(PeripheryFragment.this, courseBeans.get(position));
                                     }
                                 });
                             }
@@ -125,14 +122,14 @@ public class PeripheryFragment extends BaseActivity {
                             toTast(PeripheryFragment.this, throwable.toString());
                         }
                     }));
-        }else{
-            addToCompositeDis(HttpUtil.liveListen(page +"" ,pageSize +"")
-            .doOnSubscribe(new Consumer<Disposable>() {
-                @Override
-                public void accept(@NonNull Disposable disposable) throws Exception {
-                    showLoadDialog();
-                }
-            }).subscribe(new Consumer<List<RoundBean.LivePreviewBean.DataBean> >() {
+        } else {
+            addToCompositeDis(HttpUtil.liveListen(page + "", pageSize + "")
+                    .doOnSubscribe(new Consumer<Disposable>() {
+                        @Override
+                        public void accept(@NonNull Disposable disposable) throws Exception {
+                            showLoadDialog();
+                        }
+                    }).subscribe(new Consumer<List<RoundBean.LivePreviewBean.DataBean>>() {
                         @Override
                         public void accept(@NonNull List<RoundBean.LivePreviewBean.DataBean> dataBeanLists) throws Exception {
                             dismissLoadDialog();
@@ -143,21 +140,21 @@ public class PeripheryFragment extends BaseActivity {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
                             dismissLoadDialog();
-                            toTast(PeripheryFragment.this ,throwable.toString());
+                            toTast(PeripheryFragment.this, throwable.toString());
                         }
                     }));
         }
     }
 
     @OnClick(R.id.back)
-    public void back(){
+    public void back() {
         this.finishWithAnim();
     }
 
     public void init() {
         if (type != 0) {
             titleT.setText("课程列表");
-        }else{
+        } else {
             titleT.setText("直播列表");
         }
         if (type != 0) {
@@ -174,7 +171,7 @@ public class PeripheryFragment extends BaseActivity {
             });
             courseList.setLayoutManager(new LinearLayoutManager(this));
             courseList.setAdapter(courseAdapter);
-        }else{
+        } else {
             dataBeanList = new ArrayList<>();
             liveAdatper = new CourseAdapter(this);
             liveAdatper.setData(dataBeanList);
@@ -185,7 +182,7 @@ public class PeripheryFragment extends BaseActivity {
                 public void setListener(int position) {
                     RoundBean.LivePreviewBean.DataBean dataBean = dataBeanList.get(position);
                     if (dataBean != null) {
-                       ClassDetailActivity.start(PeripheryFragment.this ,dataBean);
+                        ClassDetailActivity.start(PeripheryFragment.this, dataBean);
                     }
                 }
             });

@@ -69,10 +69,6 @@ public class PkActivity extends BaseActivity {
     LoadingCustomView pkProgress;
     @BindView(R.id.word)
     TextView word;
-    @BindView(R.id.music)
-    ImageView music;
-    @BindView(R.id.word_translate)
-    TextView wordTranslate;
     @BindView(R.id.pk_rl)
     RecyclerView pkRl;
     @BindView(R.id.userCurrent)
@@ -83,8 +79,6 @@ public class PkActivity extends BaseActivity {
     ImageView pkWaitAnimator;
     @BindView(R.id.pk_wait_rl)
     AutoRelativeLayout pkWaitRl;
-    @BindView(R.id.music_rl)
-    AutoLinearLayout musicRl;
 
     private EventPkListData eventPkListData;
     private int totalId;
@@ -112,6 +106,7 @@ public class PkActivity extends BaseActivity {
     private String matchUid;
     private ValueAnimator valueAnimator ;
     private MediaPlayer pkbg ;
+    private boolean isOne ;
     private int[] waitAnimator = new int[]{
             R.mipmap.pk_wait_0 , R.mipmap.pk_wait_1 , R.mipmap.pk_wait_2 , R.mipmap.pk_wait_3} ;
     public static void start(Context context,  EventPkListData eventPkListData) {
@@ -163,13 +158,15 @@ public class PkActivity extends BaseActivity {
         pkAdapter.setSelectRlClickListener(new SelectAnswerClickListener() {
             @Override
             public void onClick(int position, View view, int AnswerPosition) {
+                if (timePosable != null)
                 timePosable.dispose();
+                isOne = true ;
                 if (position != AnswerPosition) {
                     pkSelectBeenList.get(position).setChose(true);
                     pkSelectBeenList.get(AnswerPosition).setChose(true);
                     type = PK_TYPE_ERROR;
-                    currentNum++;
                 } else {
+                    currentNum++;
                     type = PK_TYPE_CURRENT;
                     pkSelectBeenList.get(AnswerPosition).setChose(true);
 
@@ -181,7 +178,7 @@ public class PkActivity extends BaseActivity {
                             public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
                             }
                         }));
-                addToCompositeDis(RxHelper.delay(300)
+               addToCompositeDis(RxHelper.delay(300)
                         .subscribe(new Consumer<Integer>() {
                             @Override
                             public void accept(@NonNull Integer integer) throws Exception {
@@ -197,6 +194,8 @@ public class PkActivity extends BaseActivity {
      * pk中下一个单词
      */
     public void pkNext() {
+        Log.e(TAG, "pkNext: "  );
+        if (timePosable != null)  timePosable.dispose();
         addToCompositeDis(HttpUtil.pkAnswerObservable(totalId + "", wordsId, "", PK_TYPE_ERROR + "", duration + "")
                 .subscribe(new Consumer<ResultBeen<Void>>() {
                     @Override
@@ -227,10 +226,11 @@ public class PkActivity extends BaseActivity {
      * 等待对手完成
      */
     public void waiteMatch() {
+        if (timePosable != null) timePosable.dispose();
         pkWaitRl.setVisibility(View.VISIBLE);
-        musicRl.setVisibility(View.GONE);
         pkRl.setVisibility(View.GONE);
         word.setVisibility(View.GONE);
+        timer.setVisibility(View.GONE);
         if (valueAnimator == null) {
             valueAnimator = ValueAnimator.ofInt(0, 4).setDuration(2000);
             valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
@@ -243,6 +243,8 @@ public class PkActivity extends BaseActivity {
             });
         }
         valueAnimator.start();
+
+
        netPoll();
 
     }
@@ -291,7 +293,6 @@ public class PkActivity extends BaseActivity {
         if (wordsBeanList != null && wordsBeanList.size() > 0) {
             rivalCurrent.setText("进度：" + (Integer.parseInt(mathUser.getNum())) + "/" + wordsBeanList.size());
         }
-        userAccuracy = mySelfUser.getAccuracy();
         mathAccuracy = mathUser.getAccuracy();
         referAccuracy();
     }
@@ -330,14 +331,14 @@ public class PkActivity extends BaseActivity {
     public void referAccuracy() {
         float toatlPercent = userAccuracy + mathAccuracy;
         if (toatlPercent == 0) {
-            userCorrectRate.setText("50%");
-            rivalCurrentRate.setText("50");
+            userCorrectRate.setText("0%");
+            rivalCurrentRate.setText("0%");
             pkProgress.setProgress(50);
         } else {
             NumberFormat nf = NumberFormat.getPercentInstance();
             float userRate = Math.round((userAccuracy / (userAccuracy + mathAccuracy)) * 100);
-            userCorrectRate.setText(userRate + "%");
-            rivalCurrentRate.setText((100 - userRate) + "%");
+            userCorrectRate.setText(userAccuracy + "%");
+            rivalCurrentRate.setText(mathAccuracy+ "%");
             pkProgress.setProgress(userRate);
         }
     }
@@ -345,19 +346,25 @@ public class PkActivity extends BaseActivity {
     public void initEventPkData() {
         totalId = eventPkListData.getTotalId();
         wordsBeanList = eventPkListData.getWords();
+        if (wordsBeanList != null && wordsBeanList.size() > 0)
         referUI(wordsBeanList.get(wordIndex));
     }
 
     public void referUI(final EventPkListData.WordsBean wordsBean) {
+        isOne = false ;
         timer.setText("10s");
         timePosable = RxHelper.countDown(10).subscribe(new Consumer<Integer>() {
             @Override
             public void accept(@NonNull Integer integer) throws Exception {
-                if (integer > 0) {
-                    duration = 10 - integer;
-                    timer.setText(integer + "s");
+                Log.e(TAG, "accept: " + integer);
+                if (integer > 1) {
+                    duration = 9 - integer;
+                    timer.setText((integer -1) + "s");
                 } else {
-                    pkNext();
+                    Log.e(TAG, "accept: " + isOne);
+                    if ( !isOne ) {
+                        pkNext();
+                    }
                 }
             }
         });
@@ -367,7 +374,6 @@ public class PkActivity extends BaseActivity {
         userNum = (wordIndex + 1);
         this.wordsBeen = wordsBean;
         word.setText(wordsBean.getWord());
-        wordTranslate.setText(wordsBean.getPhonetic_uk());
         pkSelectBeenList.clear();
         for (String select : StringUtils.spiltString(wordsBean.getSelect())) {
             PKSelctBeen pkSelectBeene = new PKSelctBeen();
@@ -380,18 +386,6 @@ public class PkActivity extends BaseActivity {
         }
         pkAdapter.notifyDataSetChanged();
     }
-
-
-    @OnClick(R.id.music_rl)
-    public void music() {
-        IMAudioManager.instance().playSound(wordsBeen.getUk_audio(), new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-//                        Toast.makeText(context, "播放结束", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
 
     @Override
     protected void onDestroy() {

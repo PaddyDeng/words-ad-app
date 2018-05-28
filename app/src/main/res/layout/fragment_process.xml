@@ -1,153 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipeRefer"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
     <ScrollView
-        android:scrollbars="none"
-        android:layout_above="@+id/ll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll"
+        android:scrollbars="none">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:weightSum="1">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_weight="0.05">
+
                 <RelativeLayout
                     android:layout_width="300px"
                     android:layout_height="170px">
+
                     <ImageView
-                        android:background="@mipmap/all_day"
-                        android:layout_marginTop="50px"
                         android:layout_width="match_parent"
-                        android:layout_height="120px" />
+                        android:layout_height="120px"
+                        android:layout_marginTop="50px"
+                        android:background="@mipmap/all_day" />
+
                     <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="10px"
                         android:layout_marginLeft="50px"
                         android:layout_marginRight="30px"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="10px"
-                        android:gravity="center_vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:gravity="center_vertical">
+
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="总天数:"
                             android:textColor="@color/white"
-                            android:textSize="40px"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:textSize="40px" />
+
                         <TextView
                             android:id="@+id/total_day"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="0"
-                            android:textSize="50px"
                             android:textColor="@color/white"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:textSize="50px" />
+
                         <TextView
-                            android:text="天"
-                            android:textSize="40px"
-                            android:textColor="@color/white"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:text="天"
+                            android:textColor="@color/white"
+                            android:textSize="40px" />
                     </LinearLayout>
                 </RelativeLayout>
+
                 <LinearLayout
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/total_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="0"
-                        android:textSize="80px"
                         android:textColor="@color/mainColor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:textSize="80px" />
+
                     <TextView
-                        android:text="总单词数"
-                        android:textSize="35px"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="总单词数"
+                        android:textSize="35px" />
                 </LinearLayout>
             </RelativeLayout>
+
             <LinearLayout
-                android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="200px">
+                android:layout_height="200px"
+                android:gravity="center_vertical">
+
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_weight="1"
                     android:layout_width="0px"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/know_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="0"
-                        android:textSize="50px"
                         android:textColor="@color/dark_gray"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:textSize="50px" />
+
                     <TextView
-                        android:textSize="35px"
-                        android:text="认识数"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="认识数"
+                        android:textSize="35px" />
                 </LinearLayout>
+
                 <View
-                    android:background="@color/dark_gray"
                     android:layout_width="2px"
-                    android:layout_height="100px"/>
+                    android:layout_height="100px"
+                    android:background="@color/dark_gray" />
+
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_weight="1"
                     android:layout_width="0px"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/unknow_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="0"
-                        android:textSize="50px"
                         android:textColor="@color/dark_gray"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:textSize="50px" />
+
                     <TextView
-                        android:textSize="35px"
-                        android:text="不认识数"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="不认识数"
+                        android:textSize="35px" />
                 </LinearLayout>
             </LinearLayout>
+
             <View
-                android:background="@color/color_interval_line"
                 android:layout_width="match_parent"
-                android:layout_height="30px"/>
+                android:layout_height="30px"
+                android:background="@color/color_interval_line" />
+
             <thinku.com.word.view.CirView
+                android:id="@+id/cirView"
                 android:layout_width="match_parent"
                 android:layout_height="300px"
-                android:layout_marginTop="20px"
                 android:layout_marginBottom="20px"
-                android:id="@+id/cirView"/>
+                android:layout_marginTop="20px" />
+
             <View
-                android:background="@color/color_interval_line"
                 android:layout_width="match_parent"
-                android:layout_height="30px"/>
+                android:layout_height="30px"
+                android:background="@color/color_interval_line" />
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <TextView
-                    android:text="已完成单词包"
-                    android:textSize="40px"
-                    android:layout_marginTop="40px"
-                    android:layout_marginLeft="60px"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="60px"
+                    android:layout_marginTop="40px"
+                    android:text="已完成单词包"
+                    android:textSize="40px" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/bag_list"
@@ -155,92 +179,103 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="40px"
                     android:layout_marginLeft="60px"
-                    android:layout_marginRight="60px"
-                     />
+                    android:layout_marginRight="60px" />
             </LinearLayout>
+
             <View
-                android:background="@color/gray_white"
                 android:layout_width="match_parent"
-                android:layout_height="30px"/>
+                android:layout_height="30px"
+                android:background="@color/gray_white" />
+
             <RelativeLayout
-                android:background="@color/green_shallow"
                 android:layout_width="match_parent"
-                android:gravity="center_vertical"
-                android:layout_height="200px">
+                android:layout_height="200px"
+                android:background="@color/green_shallow"
+                android:gravity="center_vertical">
+
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/portrait"
-                    android:background="@mipmap/a1"
+                    android:layout_width="80px"
+                    android:layout_height="80px"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="60px"
-                    android:layout_width="80px"
-                    android:layout_height="80px" />
+                    android:background="@mipmap/a1" />
+
                 <LinearLayout
-                    android:layout_toRightOf="@+id/portrait"
-                    android:layout_centerVertical="true"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="40px"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="40px"
+                    android:layout_toRightOf="@+id/portrait"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/name"
-                        android:textSize="40px"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textSize="40px" />
+
                     <LinearLayout
-                        android:gravity="center_vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+
                         <TextView
-                            android:text="词汇量:"
-                            android:textSize="35px"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:text="词汇量:"
+                            android:textSize="35px" />
+
                         <TextView
                             android:id="@+id/total_word_num"
-                            android:textColor="@color/mainColor"
-                            android:textSize="40px"
-                            android:text="0"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/mainColor"
+                            android:textSize="40px" />
                     </LinearLayout>
                 </LinearLayout>
+
                 <RelativeLayout
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="60px"
                     android:layout_width="150px"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="60px">
+
                     <ImageView
                         android:id="@+id/iv1"
-                        android:background="@mipmap/rank_bg"
                         android:layout_width="match_parent"
-                        android:layout_height="120px" />
+                        android:layout_height="120px"
+                        android:background="@mipmap/rank_bg" />
+
                     <TextView
                         android:id="@+id/ranking"
-                        android:text="0"
-                        android:textSize="50px"
-                        android:layout_marginTop="30px"
-                        android:textColor="@color/white"
-                        android:layout_centerHorizontal="true"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="30px"
+                        android:text="0"
+                        android:textColor="@color/white"
+                        android:textSize="50px" />
+
                     <TextView
-                        android:text="你的排名"
-                        android:textColor="@color/mainColor"
-                        android:textSize="35px"
-                        android:layout_marginTop="10px"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_below="@+id/iv1"
                         android:layout_centerHorizontal="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_marginTop="10px"
+                        android:text="你的排名"
+                        android:textColor="@color/mainColor"
+                        android:textSize="35px" />
                 </RelativeLayout>
             </RelativeLayout>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/ranking_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="match_parent" />
         </LinearLayout>
 
     </ScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

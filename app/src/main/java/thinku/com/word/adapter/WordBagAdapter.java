@@ -117,8 +117,6 @@ public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHold
             holder.num.setText("(" + packData.getUserWords() + "/" + packData.getTotal() + ")");
             holder.progress.setMaxCount(Float.parseFloat(packData.getTotal()));
             holder.progress.setCurrentCount(Float.parseFloat(packData.getUserWords()));
-
-
             holder.rl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -135,7 +133,9 @@ public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHold
                     dialog.setContent("你确定删除" + packData.getName() + "词包的" + packData.getTotal() + "个单词？", deleteListener, position , holder);
                 }
             });
-        }
+        }else{
+            holder.study.setVisibility(View.GONE);
+            }
         }
 
     }

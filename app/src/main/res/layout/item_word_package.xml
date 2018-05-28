@@ -33,7 +33,6 @@
         app:lineHeight="1px"
         app:dashOrientation="0"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="2dp"
         app:lineColor="@color/interal"
         />
 </com.zhy.autolayout.AutoRelativeLayout>

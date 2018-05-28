@@ -36,11 +36,11 @@ public class PieView extends View {
 
 
     public void initColor(){
-        colors.put("knowWell" ,R.color.pie_green);
-        colors.put("know", R.color.pie_blue);
-        colors.put("dim" ,R.color.pie_orange_3);
-        colors.put("notKnow" ,R.color.color_not_know);
-        colors.put("forget",R.color.pie_orange);
+        colors.put("knowWell" ,R.color.color_know_well);
+        colors.put("know", R.color.color_know);
+        colors.put("dim" ,R.color.color_dim);
+        colors.put("notKnow" ,R.color.color_notknow);
+        colors.put("forget",R.color.color_forget);
     }
 
     public void setData(List<WeekData> weekDataList ,int value){

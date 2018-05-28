@@ -90,6 +90,7 @@
             android:layout_marginTop="50px"
             android:src="@color/color_translate_black"
             app:civ_border_width="3dp"
+            android:id="@+id/match_Image"
             app:civ_border_color="@color/yellow_right_round"
             />
 
@@ -224,6 +225,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="50px"
             android:src="@color/color_translate_black"
+            android:id="@+id/myImage"
             app:civ_border_width="3dp"
             app:civ_border_color="@color/yellow_right_round"/>
         <LinearLayout
@@ -279,7 +281,7 @@
             android:layout_height="100px"
             android:layout_marginLeft="50px"
             android:layout_toRightOf="@id/middle_2"
-            android:background="@drawable/yellow_20round"
+            android:background="@drawable/pk_drawable"
             android:gravity="center"
             android:text="立即PK"
             android:textColor="@color/white" />
