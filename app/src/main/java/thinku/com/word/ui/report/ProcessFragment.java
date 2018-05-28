@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,6 +135,13 @@ public class ProcessFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.e(TAG, "onHiddenChanged: " + hidden );
+        if (!hidden) referNetUi();
+    }
+
 
     // 请求网络刷新UI
     public void referNetUi() {
@@ -141,15 +149,11 @@ public class ProcessFragment extends BaseFragment {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
-                        WaitUtils.show(_mActivity, TAG);
                     }
                 })
                 .subscribe(new Consumer<TrackBeen>() {
                     @Override
                     public void accept(TrackBeen trackBeen) throws Exception {
-                        if (WaitUtils.isRunning(TAG)) {
-                            WaitUtils.dismiss(TAG);
-                        }
                         if (trackBeen.getCode() == 99) {
                             LoginHelper.needLogin(_mActivity, "您未登陆，请先登陆");
                         } else {
@@ -178,9 +182,7 @@ public class ProcessFragment extends BaseFragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        if (WaitUtils.isRunning(TAG)) {
-                            WaitUtils.dismiss(TAG);
-                        }
+
                     }
                 }));
     }

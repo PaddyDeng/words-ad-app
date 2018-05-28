@@ -3,6 +3,7 @@ package thinku.com.word.ui.report;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,15 +117,11 @@ public class WordReportFragment extends BaseFragment {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
-                        WaitUtils.show(_mActivity, TAG);
                     }
                 })
                 .subscribe(new Consumer<WordReportBeen>() {
                     @Override
                     public void accept(WordReportBeen wordReportBeen) throws Exception {
-                        if (WaitUtils.isRunning(TAG)) {
-                            WaitUtils.dismiss(TAG);
-                        }
                         if (getHttpResSuc(wordReportBeen.getCode())) {
                             referUi(wordReportBeen);
                         } else if (wordReportBeen.getCode() == 99) {
@@ -134,11 +131,16 @@ public class WordReportFragment extends BaseFragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        if (WaitUtils.isRunning(TAG)) {
-                            WaitUtils.dismiss(TAG);
-                        }
+
                     }
                 }));
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.e(TAG, "onHiddenChanged: " + hidden );
+        if (!hidden) addNet();
     }
 
     //  刷新UI

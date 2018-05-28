@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,12 @@ public class PkWordFragment extends BaseFragment {
         });
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.e(TAG, "onHiddenChanged: " + hidden );
+        if (!hidden) addNet();
+    }
 
     /**
      *  获取数据
@@ -80,15 +87,11 @@ public class PkWordFragment extends BaseFragment {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
-                        WaitUtils.show(_mActivity ,TAG);
                     }
                 })
         .subscribe(new Consumer<PkWordData>() {
             @Override
             public void accept(@NonNull PkWordData pkWordData) throws Exception {
-                if (WaitUtils.isRunning(TAG)){
-                    WaitUtils.dismiss(TAG);
-                }
                 if (getHttpResSuc(pkWordData.getCode())) {
                     if (pkWordData.getData() != null && pkWordData.getData().size() > 0) {
                         referUi(pkWordData.getData());
@@ -100,9 +103,7 @@ public class PkWordFragment extends BaseFragment {
         }, new Consumer<Throwable>() {
             @Override
             public void accept(@NonNull Throwable throwable) throws Exception {
-                if (WaitUtils.isRunning(TAG)){
-                    WaitUtils.dismiss(TAG);
-                }
+
             }
         }));
     }

@@ -119,11 +119,6 @@ public abstract class BaseFragment extends SupportFragment  {
         initVariable();
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        Log.e(TAG, "onHiddenChanged: " + hidden );
-    }
 
     public void toLogin(){
         LoginHelper.needLogin(_mActivity, "您还未登陆，请先登陆");

@@ -27,7 +27,12 @@ import thinku.com.word.callback.ICallBack;
 import thinku.com.word.thrlib.OCRProxy;
 import thinku.com.word.ui.fparent.PKParentFragment;
 import thinku.com.word.ui.fparent.PeripheryParentFragment;
+import thinku.com.word.ui.fparent.ReportParentFragment;
 import thinku.com.word.ui.fparent.WordParentFragment;
+import thinku.com.word.ui.periphery.PeripheryFragment;
+import thinku.com.word.ui.periphery.RoundFragment;
+import thinku.com.word.ui.pk.PKFragment;
+import thinku.com.word.ui.recite.ReciteFragment;
 import thinku.com.word.ui.report.ReportFragment;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
@@ -84,9 +89,9 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
         initBootom();
         reciteFragment = findFragment(WordParentFragment.class);
         if (reciteFragment == null) {
-            fragments[FIRST] = WordParentFragment.newInstance();
+            fragments[FIRST] = ReciteFragment.newInstance();
             fragments[SECOND] = ReportFragment.newInstance();
-            fragments[THIRD] = PKParentFragment.newInstance();
+            fragments[THIRD] = PKFragment.newInstance();
             fragments[FOURTH] = PeripheryParentFragment.newInstance();
             loadMultipleRootFragment(R.id.fl, 1,
                     fragments[FIRST],
@@ -94,10 +99,10 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
                     fragments[THIRD],
                     fragments[FOURTH]);
         } else {
-            fragments[FIRST] = findFragment(WordParentFragment.class);
+            fragments[FIRST] = findFragment(ReciteFragment.class);
             fragments[SECOND]  = findFragment(ReportFragment.class);
-            fragments[THIRD]  = findFragment(PeripheryParentFragment.class);
-            fragments[FOURTH]  = findFragment(PKParentFragment.class);
+            fragments[THIRD]  = findFragment(PKFragment.class);
+            fragments[FOURTH]  = findFragment(PeripheryParentFragment.class);
         }
         setSelect(0);
     }

@@ -68,7 +68,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         findView(view);
         setClick();
-        initView();
+//        initView();
         observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE, String.class);
         observable.subscribe(new Consumer<String>() {
             @Override
@@ -105,7 +105,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Log.e(TAG, "onHiddenChanged: " + hidden );
+        if (!hidden)
         initView();
     }
 
@@ -122,15 +122,13 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
-                        WaitUtils.show(_mActivity, "TAG");
+
                     }
                 })
                 .subscribe(new Consumer<ResultBeen<UserData>>() {
                     @Override
                     public void accept(@NonNull ResultBeen<UserData> been) throws Exception {
-                        if (WaitUtils.isRunning("TAG")) {
-                            WaitUtils.dismiss("TAG");
-                        }
+
                         if (getHttpResSuc(been.getCode())) {
                             UserData userData = been.getData();
                             if (userData != null && !TextUtils.isEmpty(userData.getPassword())) {
@@ -155,9 +153,6 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        if (WaitUtils.isRunning("TAG")) {
-                            WaitUtils.dismiss("TAG");
-                        }
                     }
                 }));
     }

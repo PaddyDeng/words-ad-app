@@ -225,7 +225,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
         wheel_day.setWheelSize(7);
         wheel_num.setWheelSize(7);
         wheel_day.setSelection(dayInt );
-        wheel_num.setSelection(wordInt );
+//        wheel_num.setSelection(wordInt );
         num_of_day.setText(dayList.get(dayInt));
         num_of_word.setText(wordList.get(wordInt));
         wheel_day.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {

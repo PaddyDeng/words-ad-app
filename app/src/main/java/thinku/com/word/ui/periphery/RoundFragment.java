@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -199,14 +200,10 @@ public class RoundFragment extends BaseFragment {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
-                        WaitUtils.show(_mActivity, TAG);
                     }
                 }).subscribe(new Consumer<RoundBean>() {
                     @Override
                     public void accept(@NonNull RoundBean roundBean) throws Exception {
-                        if (WaitUtils.isRunning(TAG)) {
-                            WaitUtils.dismiss(TAG);
-                        }
                         if (roundBean != null) {
                             referUi(roundBean);
                         }
@@ -214,12 +211,15 @@ public class RoundFragment extends BaseFragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        if (WaitUtils.isRunning(TAG)) {
-                            WaitUtils.dismiss(TAG);
-                        }
                         toTast(_mActivity, "网络出错");
                     }
                 }));
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) initData();
     }
 
     public void referUi(RoundBean roundBean) {

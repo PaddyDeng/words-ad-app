@@ -141,19 +141,17 @@ public class HomeFragment extends BaseFragment {
     }
 
 
+
     public void initData() {
         addToCompositeDis(HttpUtil.reciteIndex()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
-                        WaitUtils.show(_mActivity,"word");
+
                     }
                 }).subscribe(new Consumer<UserIndex>() {
                     @Override
                     public void accept(@NonNull UserIndex userIndex) throws Exception {
-                        if(WaitUtils.isRunning("word")){
-                            WaitUtils.dismiss("word");
-                        }
                         days.setText("已坚持" + userIndex.getInsistDay() + "天");
                         surplusDay.setText(userIndex.getSurplusDay());
                         needNum.setText(userIndex.getUserPackage().getPlanWords());
@@ -181,7 +179,15 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Log.e(TAG, "onHiddenChanged: " + hidden );
+        Log.e(TAG, "onHiddenChanged: " + hidden);
+        if (!hidden)  initData();
+    }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        Log.e(TAG, "setUserVisibleHint: " + isVisibleToUser + "   " + getUserVisibleHint() );
     }
 
     @OnClick({R.id.change_plan, R.id.modify_word_package, R.id.start_recite, R.id.start_review, R.id.sign})

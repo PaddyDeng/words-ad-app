@@ -111,6 +111,13 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.e("tag", "onHiddenChanged: "  + hidden );
+        if ( !hidden) init();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
 //        RxBus.get().unregister(C.RXBUS_EXLOING ,observable);

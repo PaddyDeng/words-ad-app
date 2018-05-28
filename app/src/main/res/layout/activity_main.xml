@@ -22,13 +22,13 @@
                 android:id="@+id/recite_iv"
                 android:layout_marginTop="20px"
                 android:background="@drawable/word_main_image_select"
-                android:layout_width="50px"
-                android:layout_height="50px" />
+                android:layout_width="40px"
+                android:layout_height="40px" />
             <TextView
                 android:id="@+id/recite_tv"
                 android:text="背单词"
                 android:layout_marginTop="10px"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -44,13 +44,13 @@
                 android:id="@+id/report_iv"
                 android:layout_marginTop="20px"
                 android:background="@drawable/report_main_image_select"
-                android:layout_width="60px"
-                android:layout_height="60px" />
+                android:layout_width="40px"
+                android:layout_height="40px" />
             <TextView
                 android:id="@+id/report_tv"
                 android:text="单词报告"
                 android:layout_marginTop="10px"
-                android:textSize="40px"
+                android:textSize="12sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -65,16 +65,16 @@
 
             <ImageView
                 android:id="@+id/pk_iv"
-                android:layout_width="60px"
-                android:layout_height="60px"
+                android:layout_width="40px"
+                android:layout_height="40px"
                 android:layout_marginTop="20px"
                 android:background="@drawable/pk_main_image_select" />
 
             <TextView
                 android:id="@+id/pk_tv"
-                android:text="战友PK"
+                android:text="PK"
                 android:layout_marginTop="10px"
-                android:textSize="40px"
+                android:textSize="12sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -90,13 +90,13 @@
                 android:id="@+id/periphery_iv"
                 android:layout_marginTop="20px"
                 android:background="@drawable/around_main_image_select"
-                android:layout_width="60px"
-                android:layout_height="60px" />
+                android:layout_width="40px"
+                android:layout_height="40px" />
             <TextView
                 android:id="@+id/periphery_tv"
                 android:text="周边"
                 android:layout_marginTop="10px"
-                android:textSize="40px"
+                android:textSize="12sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -138,15 +139,13 @@ public class PKPageFragment extends BaseFragment {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
-                        WaitUtils.show(_mActivity, TAG);
+
                     }
                 })
                 .subscribe(new Consumer<PkIndexBeen>() {
                     @Override
                     public void accept(PkIndexBeen pkIndexBeen) throws Exception {
-                        if (WaitUtils.isRunning(TAG)) {
-                            WaitUtils.dismiss(TAG);
-                        }
+
                         if (pkIndexBeen.getCode() == 99){
                             LoginHelper.needLogin(_mActivity , "您还未登陆， 请先登陆");
                         }
@@ -159,9 +158,6 @@ public class PKPageFragment extends BaseFragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        if (WaitUtils.isRunning(TAG)) {
-                            WaitUtils.dismiss(TAG);
-                        }
                     }
                 }));
     }
@@ -215,6 +211,8 @@ public class PKPageFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        Log.e(TAG, "onHiddenChanged: " + hidden );
+        if (!hidden) addNet();
     }
 
     @Override
