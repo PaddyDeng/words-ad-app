@@ -26,22 +26,17 @@ import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
 import thinku.com.word.bean.ResultBeen;
-import thinku.com.word.bean.ReviewDialogBeen;
 import thinku.com.word.bean.UserIndex;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.other.dialog.callback.DialogClickListener;
 import thinku.com.word.ui.personalCenter.SignActivity;
-import thinku.com.word.ui.personalCenter.TypeSettingActivity;
-import thinku.com.word.ui.personalCenter.dialog.load.WaitDialog;
-import thinku.com.word.ui.report.*;
 import thinku.com.word.utils.C;
+import thinku.com.word.utils.DateUtil;
 import thinku.com.word.utils.RxBus;
-import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.utils.WaitUtils;
 import thinku.com.word.view.AutoZoomTextView;
 import thinku.com.word.view.CompleteDialog;
 import thinku.com.word.view.LoadingCustomView;
-import thinku.com.word.view.ReviewDialog;
 
 import static thinku.com.word.view.LoadingCustomView.HOLLOW;
 
@@ -90,14 +85,18 @@ public class HomeFragment extends BaseFragment {
     Unbinder unbinder;
     @BindView(R.id.name)
     TextView name;
-
+    @BindView(R.id.modify_rl)
+    LinearLayout modify;
+    @BindView(R.id.sign_text)
+    TextView signTxt ;
     private String name_text;
     private SimpleDateFormat simpleDateFormat;
 
-    private Observable<Boolean> observable ;
-    private MediaPlayer recitePlayer ;
+    private MediaPlayer recitePlayer;
+    private boolean isInitData = false;
 
-    private Observable<Boolean> login ;
+    private Observable<Boolean> referUiObservable ;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -105,17 +104,9 @@ public class HomeFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, view);
         init();
         initData();
-        observable = RxBus.get().register(C.RXBUS_LOGIN_BACKMAIN ,Boolean.class);
-        observable.subscribe(new Consumer<Boolean>() {
-            @Override
-            public void accept(@NonNull Boolean aBoolean) throws Exception {
-                initData();
-            }
-        });
-        recitePlayer = MediaPlayer.create(_mActivity ,R.raw.start_recite);
-
-        login = RxBus.get().register(C.RXBUS_LOGIN ,Boolean.class);
-        login.subscribe(new Consumer<Boolean>() {
+        recitePlayer = MediaPlayer.create(_mActivity, R.raw.start_recite);
+        referUiObservable = RxBus.get().register(C.RXBUS_REFER_HOME,Boolean.class);
+        referUiObservable.subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(@NonNull Boolean aBoolean) throws Exception {
                 initData();
@@ -127,8 +118,6 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        initData();
-
     }
 
     private void init() {
@@ -140,9 +129,20 @@ public class HomeFragment extends BaseFragment {
         progress.setProgressBarFrameHeight(3);
     }
 
-
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+//        if (hidden) initData();
+        Log.e(TAG, "onHiddenChanged: " );
+    }
 
     public void initData() {
+        if (DateUtil.compare(MyApplication.signTime)){
+            signTxt.setText("已打卡");
+        }else{
+            signTxt.setText("打卡");
+        }
+        isInitData = true;
         addToCompositeDis(HttpUtil.reciteIndex()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -168,7 +168,7 @@ public class HomeFragment extends BaseFragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        if(WaitUtils.isRunning("word")){
+                        if (WaitUtils.isRunning("word")) {
                             WaitUtils.dismiss("word");
                         }
                     }
@@ -176,21 +176,9 @@ public class HomeFragment extends BaseFragment {
         );
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        Log.e(TAG, "onHiddenChanged: " + hidden);
-        if (!hidden)  initData();
-    }
 
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        Log.e(TAG, "setUserVisibleHint: " + isVisibleToUser + "   " + getUserVisibleHint() );
-    }
-
-    @OnClick({R.id.change_plan, R.id.modify_word_package, R.id.start_recite, R.id.start_review, R.id.sign})
+    @OnClick({R.id.change_plan, R.id.modify_word_package, R.id.start_recite, R.id.start_review, R.id.sign, R.id.modify_rl})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign:  // 打卡
@@ -208,6 +196,9 @@ public class HomeFragment extends BaseFragment {
             case R.id.start_review:  // 复习
                 ReviewActivity.start(_mActivity);
                 break;
+            case R.id.modify_rl:
+                WordPackageActivity.start(_mActivity);
+                break;
         }
     }
 
@@ -215,8 +206,7 @@ public class HomeFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        RxBus.get().unregister(C.RXBUS_LOGIN_BACKMAIN ,observable);
-        if (recitePlayer != null){
+        if (recitePlayer != null) {
             if (recitePlayer.isPlaying()) recitePlayer.stop();
             recitePlayer.release();
         }
@@ -224,41 +214,41 @@ public class HomeFragment extends BaseFragment {
 
 
     /**
-     *  背单词
-     *  依据task 进行判断 if  task  =1   弹窗  是否继续  先调用接口
-     *  task  =2  正常进入
-     *  task  = 3  老艾宾浩斯调用   review -casewords  code == 2  老艾宾浩斯  弹分享
-     *  task  = 4 提示  词包已经背完
+     * 背单词
+     * 依据task 进行判断 if  task  =1   弹窗  是否继续  先调用接口
+     * task  =2  正常进入
+     * task  = 3  老艾宾浩斯调用   review -casewords  code == 2  老艾宾浩斯  弹分享
+     * task  = 4 提示  词包已经背完
      */
     public void reciteWord() {
         if (recitePlayer != null && !recitePlayer.isPlaying()) recitePlayer.start();
-        if (MyApplication.task == 1){
+        if (MyApplication.task == 1) {
             showCompeleteDialog();
-        }else if (MyApplication.task ==2 ){
+        } else if (MyApplication.task == 2) {
             //  背单词进入
-            thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity,C.NORMAL);
-        }else if (MyApplication.task ==3 ){
-              // 背单词进入
-            thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity,C.NORMAL);
-        }else {
-            toTast(_mActivity,"该词包已背完，请选择另一个词包");
+            thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity, C.NORMAL);
+        } else if (MyApplication.task == 3) {
+            // 背单词进入
+            thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity, C.NORMAL);
+        } else {
+            toTast(_mActivity, "该词包已背完，请选择另一个词包");
         }
     }
 
 
-    public void showCompeleteDialog(){
+    public void showCompeleteDialog() {
         final CompleteDialog completeDialog = new CompleteDialog(_mActivity);
         completeDialog.setDialogClickListener(new DialogClickListener() {
             @Override
             public void clickTrue() {
                 // 背单词进入
                 addToCompositeDis(HttpUtil.isReciteWordsObservable()
-                .subscribe(new Consumer<ResultBeen<Void>>() {
-                    @Override
-                    public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                        thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity,C.NORMAL);
-                    }
-                }));
+                        .subscribe(new Consumer<ResultBeen<Void>>() {
+                            @Override
+                            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                                thinku.com.word.ui.report.WordEvaluateFragment.start(_mActivity, C.NORMAL);
+                            }
+                        }));
                 completeDialog.dismiss();
             }
 

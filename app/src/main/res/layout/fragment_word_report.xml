@@ -125,7 +125,7 @@
 
                         <View
                             style="@style/report_view"
-                            android:background="@color/forget" />
+                            android:background="@color/color_forget" />
 
                         <TextView
                             style="@style/report_title"

@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -24,7 +25,9 @@ import thinku.com.word.base.BaseFragment;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.pk.adapter.PkWordAdapter;
 import thinku.com.word.ui.pk.been.PkWordData;
+import thinku.com.word.utils.C;
 import thinku.com.word.utils.LoginHelper;
+import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.WaitUtils;
 
 /**
@@ -41,6 +44,7 @@ public class PkWordFragment extends BaseFragment {
 
     private PkWordAdapter pkWordAdapter ;
     private List<PkWordData.DataBean>  dataBeanList ;
+    private Observable referUiObsrvable ;
     private int page = 1 ;
     public static PkWordFragment newInstance() {
         PkWordFragment pkPageFragment = new PkWordFragment();
@@ -52,6 +56,13 @@ public class PkWordFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pk_word, container, false);
         unbinder = ButterKnife.bind(this, view);
+        referUiObsrvable = RxBus.get().register(C.RXBUS_PK_WORD ,Boolean.class);
+        referUiObsrvable.subscribe(new Consumer() {
+            @Override
+            public void accept(@NonNull Object o) throws Exception {
+                addNet();
+            }
+        });
         initRecy();
         addNet();
         return view;
@@ -75,7 +86,6 @@ public class PkWordFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Log.e(TAG, "onHiddenChanged: " + hidden );
         if (!hidden) addNet();
     }
 
@@ -93,6 +103,7 @@ public class PkWordFragment extends BaseFragment {
             @Override
             public void accept(@NonNull PkWordData pkWordData) throws Exception {
                 if (getHttpResSuc(pkWordData.getCode())) {
+                    page ++ ;
                     if (pkWordData.getData() != null && pkWordData.getData().size() > 0) {
                         referUi(pkWordData.getData());
                     }
@@ -112,11 +123,11 @@ public class PkWordFragment extends BaseFragment {
     public void referUi(List<PkWordData.DataBean> dataBeans){
         dataBeanList.addAll(dataBeans);
         pkWordAdapter.notifyDataSetChanged();
-        page++;
     }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        RxBus.get().unregister(C.RXBUS_PK_WORD ,referUiObsrvable);
     }
 }

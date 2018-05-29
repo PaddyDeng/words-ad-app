@@ -19,6 +19,7 @@ import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
 import thinku.com.word.bean.ResultBeen;
@@ -68,7 +69,8 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         findView(view);
         setClick();
-//        initView();
+        new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(_mActivity), portrait);
+        initView();
         observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE, String.class);
         observable.subscribe(new Consumer<String>() {
             @Override
@@ -82,30 +84,27 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
             @Override
             public void accept(@NonNull Boolean aBoolean) throws Exception {
                 new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(_mActivity), portrait);
-                initView();
+//                initView();
             }
         });
         exitLoginObservable = RxBus.get().register(C.RXBUS_EXLOING, Boolean.class);
         exitLoginObservable.subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(@NonNull Boolean aBoolean) throws Exception {
-                initView();
+//                initView();
             }
         });
     }
 
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-    }
-
-
-    @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden)
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         initView();
     }
 
@@ -133,10 +132,12 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                             UserData userData = been.getData();
                             if (userData != null && !TextUtils.isEmpty(userData.getPassword())) {
                                 SharedPreferencesUtils.setPlanWords(_mActivity, userData.getPlanWords());
+                                MyApplication.signTime = been.getData().getLastSign();
                                 new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + userData.getImage(), portrait);
                                 SharedPreferencesUtils.setImage(_mActivity, userData.getImage());
                                 SharedPreferencesUtils.setStudyMode(_mActivity, userData.getStudyModel());
                                 if (TextUtils.isEmpty(userData.getPlanWords())) {
+                                    Log.e(TAG, "accept: 0"  );
                                     toTast(_mActivity, "请先选择背单词计划");
                                     setFragment(0);
                                 } else {
@@ -145,8 +146,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                             }
                         } else if (been.getCode() == 98){
                             setFragment(0);
-                        }
-                        else {
+                        } else {
                             setFragment(0);
                         }
                     }
@@ -202,9 +202,10 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
 
     public void setFragment(int tag) {
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        if (oldPage != -1) {
+        if (oldPage != -1 && oldPage != tag) {
             ft.hide(fragments.get(oldPage));
         }
+
         if (null != fragments.get(tag) && fragments.get(tag).isAdded()) {
             ft.show(fragments.get(tag));
         } else {
@@ -222,6 +223,11 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
             }
         }
         oldPage = tag;
+        if (tag==0) {
+            RxBus.get().post(C.RXBUS_REFER_HOMEFIRST, true);
+        } else {
+            RxBus.get().post(C.RXBUS_REFER_HOME, true);
+        }
         try {
             ft.commit();
         } catch (Exception e) {

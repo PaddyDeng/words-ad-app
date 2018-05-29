@@ -33,6 +33,7 @@ import thinku.com.word.bean.WrongIndexBeen;
 import thinku.com.word.ui.periphery.bean.CourseBean;
 import thinku.com.word.ui.periphery.bean.RoundBean;
 import thinku.com.word.ui.personalCenter.bean.ImageBean;
+import thinku.com.word.ui.personalCenter.bean.SignBean;
 import thinku.com.word.ui.personalCenter.update.bean.VersionInfo;
 import thinku.com.word.ui.personalCenter.update.localdb.UpdateLocalDbData;
 import thinku.com.word.ui.pk.been.PkWordData;
@@ -196,8 +197,8 @@ public class HttpUtil {
     }
 
     //背单词上传对单词认识状态
-    public static Observable<ResultBeen<Void>> reviewUpdataObservable(String wordId ,String status){
-        return getRestApi(HostType.WORDS_URL_HOST).reviewUpdata(wordId, status).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    public static Observable<ResultBeen<Void>> reviewUpdataObservable(String wordId ,String status , String type){
+        return getRestApi(HostType.WORDS_URL_HOST).reviewUpdata(wordId, status , type).compose(new SchedulerTransformer<ResultBeen<Void>>());
     }
 
     //复习时上传对单词认识状态
@@ -246,8 +247,8 @@ public class HttpUtil {
     }
 
     //用户签到
-    public static Observable<ResultBeen<Void>> singObservable(){
-        return getRestApi(HostType.WORDS_URL_HOST).sing().compose(new SchedulerTransformer<ResultBeen<Void>>());
+    public static Observable<SignBean> singObservable(){
+        return getRestApi(HostType.WORDS_URL_HOST).sing().compose(new SchedulerTransformer<SignBean>());
     }
 
     //单词报告轨迹

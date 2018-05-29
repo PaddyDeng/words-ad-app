@@ -2,6 +2,7 @@ package thinku.com.word.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,7 @@ public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        Log.e("tag", "onBindViewHolder: " +position  + datas.size() );
         if (isDelete) {
             if (null == datas || position == datas.size()) {
                 holder.delete.setVisibility(View.GONE);
@@ -132,10 +134,10 @@ public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHold
                         dialog.setContent("你确定删除" + packData.getName() + "词包的" + packData.getTotal() + "个单词？", deleteListener, position, holder);
                     }
                 });
-            } else {
-                holder.study.setVisibility(View.GONE);
-                holder.rl.setBackground(context.getResources().getDrawable(R.drawable.drak_gray_20round));
             }
+        } else {
+            holder.study.setVisibility(View.GONE);
+            holder.rl.setBackground(context.getResources().getDrawable(R.drawable.drak_gray_20round));
         }
 
     }

@@ -279,7 +279,7 @@ public class DictionDetailActivity extends BaseActivity {
                         wordBuilder.append(texts.get(i).getText().toString().trim());
                     }
                         if (recitWord.getWords().getWord().equals(wordBuilder.toString())){
-                            addToCompositeDis(HttpUtil.reviewUpdataObservable(wordList.get(wordIdIndex) , 100 +"")
+                            addToCompositeDis(HttpUtil.reviewUpdataObservable(wordList.get(wordIdIndex) , 100 +"" , 0 +"")
                                     .doOnSubscribe(new Consumer<Disposable>() {
                                         @Override
                                         public void accept(@NonNull Disposable disposable) throws Exception {

@@ -42,6 +42,7 @@ import thinku.com.word.bean.WrongIndexBeen;
 import thinku.com.word.ui.periphery.bean.CourseBean;
 import thinku.com.word.ui.periphery.bean.RoundBean;
 import thinku.com.word.ui.personalCenter.bean.ImageBean;
+import thinku.com.word.ui.personalCenter.bean.SignBean;
 import thinku.com.word.ui.personalCenter.update.bean.VersionInfo;
 import thinku.com.word.ui.personalCenter.update.localdb.UpdateLocalDbData;
 import thinku.com.word.ui.pk.been.PkWordData;
@@ -146,7 +147,7 @@ public interface RestApi {
 
     @FormUrlEncoded
     @POST(NetworkChildren.REVIEWE_UPDATA)
-    Observable<ResultBeen<Void>> reviewUpdata(@Field("wordsId") String wordId , @Field("status") String status);
+    Observable<ResultBeen<Void>> reviewUpdata(@Field("wordsId") String wordId , @Field("status") String status , @Field("type") String type);
 
     @FormUrlEncoded
     @POST(NetworkChildren.UPDATA_STATUS)
@@ -182,7 +183,7 @@ public interface RestApi {
     Observable<SingBeen> userSign();
 
     @POST(NetworkChildren.SIGN)
-    Observable<ResultBeen<Void>> sing();
+    Observable<SignBean> sing();
 
     @POST(NetworkChildren.TRACK)
     Observable<TrackBeen> track();

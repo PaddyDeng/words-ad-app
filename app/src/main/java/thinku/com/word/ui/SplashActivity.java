@@ -14,7 +14,6 @@ import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
 import thinku.com.word.ui.other.MainActivity;
-import thinku.com.word.ui.share.ShareDateActivity;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.Screenshot;
 import thinku.com.word.utils.SharedPreferencesUtils;
@@ -24,6 +23,7 @@ public class SplashActivity extends BaseActivity {
     private String[] permissions = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_SETTINGS
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,14 +31,14 @@ public class SplashActivity extends BaseActivity {
         checkMyPermission();
     }
 
-    public void checkMyPermission(){
+    public void checkMyPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             for (int i = 0; i < permissions.length; i++) {
                 if (ContextCompat.checkSelfPermission(this, permissions[i]) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(this, permissions, 1);
                 }
             }
-        }else{
+        } else {
             login();
         }
 
@@ -48,19 +48,19 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @android.support.annotation.NonNull String[] permissions, @android.support.annotation.NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 login();
             }
-        }else{
+        } else {
             finish();
-            toTast(this ,"获取权限失败");
+            toTast(this, "获取权限失败");
         }
     }
 
-    public void init(){
+    public void init() {
         if (!SharedPreferencesUtils.getLogo(this)) {
-            SharedPreferencesUtils.setLogo(this , true);
+            SharedPreferencesUtils.setLogo(this, true);
             Screenshot.downLogo(this, R.mipmap.logo);
         }
         if (SharedPreferencesUtils.getFirstOpen(this)) {
@@ -97,7 +97,7 @@ public class SplashActivity extends BaseActivity {
                     init();
                 }
             });
-        }else{
+        } else {
             init();
         }
     }

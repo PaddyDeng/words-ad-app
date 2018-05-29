@@ -33,6 +33,15 @@ public class TrackBeen {
     @SerializedName("package")
     private List<PackageBean> packageX;
     private List<RankBean> rank;
+    private DataBean  ev ;
+
+    public DataBean getEv() {
+        return ev;
+    }
+
+    public void setEv(DataBean ev) {
+        this.ev = ev;
+    }
 
     public int getCode() {
         return code;
@@ -113,6 +122,7 @@ public class TrackBeen {
     public void setRank(List<RankBean> rank) {
         this.rank = rank;
     }
+
 
     public static class DataBean {
         /**

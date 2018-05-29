@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <RelativeLayout
+    <com.zhy.autolayout.AutoRelativeLayout
         android:id="@+id/top_rl"
         android:background="@color/mainColor_dark"
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_marginTop="70px"
             android:layout_width="300px"
             android:layout_height="80px" />
-        <LinearLayout
+        <com.zhy.autolayout.AutoLinearLayout
             android:id="@+id/day_ll"
             android:orientation="vertical"
             android:background="@drawable/day_round"
@@ -33,7 +33,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <LinearLayout
+            <com.zhy.autolayout.AutoLinearLayout
                 android:layout_marginTop="10px"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -53,9 +53,9 @@
                     android:textColor="@color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-            </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
+            </com.zhy.autolayout.AutoLinearLayout>
+        </com.zhy.autolayout.AutoLinearLayout>
+        <com.zhy.autolayout.AutoLinearLayout
             android:id="@+id/sign"
             android:layout_toRightOf="@+id/day_ll"
             android:layout_marginTop="85px"
@@ -71,10 +71,11 @@
                 android:textSize="40px"
                 android:textColor="@color/white"
                 android:text="打卡"
+                android:id="@+id/sign_text"
                 android:layout_marginLeft="10px"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
+        </com.zhy.autolayout.AutoLinearLayout>
         <TextView
             android:id="@+id/change_plan"
             android:background="@drawable/white_side_round"
@@ -87,19 +88,19 @@
             android:textColor="@color/white"
             android:layout_width="140px"
             android:layout_height="60px" />
-        <RelativeLayout
+        <com.zhy.autolayout.AutoRelativeLayout
             android:layout_marginTop="60px"
             android:layout_below="@id/change_plan"
             android:layout_marginLeft="200px"
             android:layout_marginRight="200px"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <LinearLayout
+            <com.zhy.autolayout.AutoLinearLayout
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <LinearLayout
+                <com.zhy.autolayout.AutoLinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <TextView
@@ -116,7 +117,7 @@
                         android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
-                </LinearLayout>
+                </com.zhy.autolayout.AutoLinearLayout>
                 <TextView
                     android:textSize="40px"
                     android:layout_marginTop="10px"
@@ -124,19 +125,19 @@
                     android:text="今天需背单词"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-            </LinearLayout>
+            </com.zhy.autolayout.AutoLinearLayout>
             <View
                 android:background="@color/white"
                 android:layout_centerInParent="true"
                 android:layout_width="2px"
                 android:layout_height="100px"/>
-            <LinearLayout
+            <com.zhy.autolayout.AutoLinearLayout
                 android:orientation="vertical"
                 android:layout_alignParentRight="true"
                 android:gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <LinearLayout
+                <com.zhy.autolayout.AutoLinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <TextView
@@ -153,7 +154,7 @@
                         android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
-                </LinearLayout>
+                </com.zhy.autolayout.AutoLinearLayout>
                 <TextView
                     android:textSize="40px"
                     android:layout_marginTop="10px"
@@ -161,16 +162,16 @@
                     android:text="累计已背"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-            </LinearLayout>
-        </RelativeLayout>
-    </RelativeLayout>
+            </com.zhy.autolayout.AutoLinearLayout>
+        </com.zhy.autolayout.AutoRelativeLayout>
+    </com.zhy.autolayout.AutoRelativeLayout>
     <View
         android:background="#F6EDEE"
         android:layout_below="@id/top_rl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <RelativeLayout
+    <com.zhy.autolayout.AutoRelativeLayout
         android:id="@+id/middle"
         android:layout_marginTop="560px"
         android:layout_width="match_parent"
@@ -179,7 +180,7 @@
         android:background="@mipmap/half_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-        <LinearLayout
+        <com.zhy.autolayout.AutoLinearLayout
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:layout_centerInParent="true"
@@ -189,18 +190,20 @@
             <LinearLayout
                 android:gravity="center_vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/modify_rl">
                 <TextView
-                    android:textSize="40px"
+                    android:textSize="12sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/name"/>
+                    android:id="@+id/name"
+                    />
                 <ImageView
                     android:id="@+id/modify_word_package"
                     android:layout_marginLeft="10px"
                     android:background="@mipmap/change_memory_mode"
-                    android:layout_width="50px"
-                    android:layout_height="50px" />
+                    android:layout_width="30px"
+                    android:layout_height="30px" />
             </LinearLayout>
             <thinku.com.word.view.LoadingCustomView
             android:layout_width="800px"
@@ -208,7 +211,7 @@
             android:layout_marginTop="20px"
             android:id="@+id/progress"
             />
-            <LinearLayout
+            <com.zhy.autolayout.AutoLinearLayout
                 android:layout_marginTop="20px"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -231,14 +234,15 @@
                     android:textSize="35px"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-            </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
-    <RelativeLayout
+            </com.zhy.autolayout.AutoLinearLayout>
+        </com.zhy.autolayout.AutoLinearLayout>
+    </com.zhy.autolayout.AutoRelativeLayout>
+    <com.zhy.autolayout.AutoLinearLayout
         android:layout_below="@id/middle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.zhy.autolayout.AutoLinearLayout
             android:orientation="vertical"
             android:layout_centerVertical="true"
             android:layout_marginLeft="150px"
@@ -246,9 +250,10 @@
             android:layout_width="match_parent"
             android:gravity="center_horizontal"
             android:layout_height="wrap_content">
-            <LinearLayout
+            <com.zhy.autolayout.AutoLinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="200px">
                 <TextView
                     android:text="今日新学："
                     android:textSize="35px"
@@ -271,27 +276,27 @@
                     android:textSize="35px"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-            </LinearLayout>
+            </com.zhy.autolayout.AutoLinearLayout>
             <TextView
                 android:id="@+id/start_recite"
-                android:textSize="50px"
+                android:textSize="40px"
                 android:layout_marginTop="30px"
                 android:textColor="@color/white"
                 android:background="@drawable/main_20round_tv"
                 android:gravity="center"
                 android:text="开始背单词"
                 android:layout_width="match_parent"
-                android:layout_height="120px" />
+                android:layout_height="100px" />
             <TextView
                 android:id="@+id/start_review"
                 android:text="复习"
-                android:textSize="50px"
+                android:textSize="40px"
                 android:textColor="@color/mainColor"
                 android:gravity="center"
-                android:layout_marginTop="30px"
+                android:layout_marginTop="20px"
                 android:background="@drawable/main_side_round_tv"
                 android:layout_width="match_parent"
-                android:layout_height="120px" />
-        </LinearLayout>
-    </RelativeLayout>
-</RelativeLayout>
+                android:layout_height="100px" />
+        </com.zhy.autolayout.AutoLinearLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
+</com.zhy.autolayout.AutoRelativeLayout>

@@ -6,6 +6,7 @@
     <color name="mainColor">#4dc494</color>
     <color name="mainGray">#F1EFE3</color>
     <color name="black">#000</color>
+    <color name="transparent">#00000000</color>
     <color name="white">#fff</color>
     <color name="search_back">#1FA870</color>
     <color name="login_btn">#50BDEE</color>

@@ -68,7 +68,7 @@ public class WordReportFragment extends BaseFragment {
 //    BarChartView dateReport;
     BarChartView dateReport;
     private Observable<Boolean> exitLoginObservable;
-    private Observable<Boolean> loginObservable;
+    private Observable<Boolean> referUiObservable;
 
     public static WordReportFragment newInstance() {
         WordReportFragment wordReportFragment = new WordReportFragment();
@@ -95,8 +95,8 @@ public class WordReportFragment extends BaseFragment {
                 addNet();
             }
         });
-        loginObservable = RxBus.get().register(C.RXBUS_LOGIN, Boolean.class);
-        loginObservable.subscribe(new Consumer<Boolean>() {
+        referUiObservable = RxBus.get().register(C.RXBUS_REPORT_WORD, Boolean.class);
+        referUiObservable.subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(@NonNull Boolean aBoolean) throws Exception {
                 addNet();
@@ -139,8 +139,8 @@ public class WordReportFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Log.e(TAG, "onHiddenChanged: " + hidden );
-        if (!hidden) addNet();
+//        Log.e(TAG, "onHiddenChanged: " + hidden );
+//        if (!hidden) addNet();
     }
 
     //  刷新UI
@@ -314,7 +314,7 @@ public class WordReportFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
         RxBus.get().unregister(C.RXBUS_EXLOING, exitLoginObservable);
-        RxBus.get().unregister(C.RXBUS_LOGIN, loginObservable);
+//        RxBus.get().unregister(C.RXBUS_REPORT_WORD, referUiObservable);
     }
 
 

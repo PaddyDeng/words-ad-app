@@ -30,8 +30,8 @@
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="2dp"
-        app:dashWidth="4dp"
+        app:dashWidth="2dp"
         app:lineColor="@color/interal"
         app:lineHeight="1px"
-        app:lineWidth="8dp" />
+        app:lineWidth="2dp" />
 </RelativeLayout>

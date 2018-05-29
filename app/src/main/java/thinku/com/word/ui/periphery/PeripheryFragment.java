@@ -18,6 +18,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -29,12 +33,13 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.periphery.adapter.CourseAdapter;
 import thinku.com.word.ui.periphery.bean.CourseBean;
 import thinku.com.word.ui.periphery.bean.RoundBean;
+import thinku.com.word.utils.HttpUtils;
 
 /**
  * 周边
  */
 
-public class PeripheryFragment extends BaseActivity {
+public class PeripheryFragment extends BaseActivity implements  BGARefreshLayout.BGARefreshLayoutDelegate {
 
     @BindView(R.id.back)
     ImageView back;
@@ -46,7 +51,7 @@ public class PeripheryFragment extends BaseActivity {
     RecyclerView courseList;
     Unbinder unbinder;
     @BindView(R.id.refresh)
-    SwipeRefreshLayout swipeRefer;
+    BGARefreshLayout swipeRefer;
 
     private List<CourseBean> courseBeanList;
     private CourseAdapter courseAdapter;
@@ -81,16 +86,24 @@ public class PeripheryFragment extends BaseActivity {
             type = getIntent().getIntExtra("type", 0);
         }
         init();
-        initData();
-        swipeRefer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                initData();
-                swipeRefer.setRefreshing(false);
-            }
-        });
+        initRecycler();
     }
 
+    public void initRecycler(){
+        swipeRefer.setDelegate(this);
+        // 设置下拉刷新和上拉加载更多的风格     参数1：应用程序上下文，参数2：是否具有上拉加载更多功能
+        BGARefreshViewHolder refreshViewHolder = new BGANormalRefreshViewHolder(this, true);
+        // 设置下拉刷新和上拉加载更多的风格
+//        refreshViewHolder.setLoadingMoreText("加载更多");
+        swipeRefer.setRefreshViewHolder(refreshViewHolder);
+//        swipeRefer.setIsShowLoadingMoreView(false);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        beginRefreshing();
+    }
 
     public void initData() {
         if (type != 0) {
@@ -104,7 +117,8 @@ public class PeripheryFragment extends BaseActivity {
                         @Override
                         public void accept(@NonNull final List<CourseBean> courseBeans) throws Exception {
                             dismissLoadDialog();
-                            if (courseBeans != null && courseBeans.size() > 0) {
+                            if (courseBeans != null) {
+                                courseBeanList.clear();
                                 courseBeanList.addAll(courseBeans);
                                 courseAdapter.notifyDataSetChanged();
                                 courseAdapter.setSelectRlClickListener(new SelectRlClickListener() {
@@ -132,9 +146,11 @@ public class PeripheryFragment extends BaseActivity {
                     }).subscribe(new Consumer<List<RoundBean.LivePreviewBean.DataBean>>() {
                         @Override
                         public void accept(@NonNull List<RoundBean.LivePreviewBean.DataBean> dataBeanLists) throws Exception {
-                            dismissLoadDialog();
-                            dataBeanList.addAll(dataBeanLists);
-                            liveAdatper.notifyDataSetChanged();
+                           dismissLoadDialog();
+                            if (dataBeanList != null) {
+                                dataBeanList.addAll(dataBeanLists);
+                                liveAdatper.notifyDataSetChanged();
+                            }
                         }
                     }, new Consumer<Throwable>() {
                         @Override
@@ -182,7 +198,7 @@ public class PeripheryFragment extends BaseActivity {
                 public void setListener(int position) {
                     RoundBean.LivePreviewBean.DataBean dataBean = dataBeanList.get(position);
                     if (dataBean != null) {
-                        ClassDetailActivity.start(PeripheryFragment.this, dataBean);
+                        ClassDetailActivity1.start(PeripheryFragment.this, dataBean);
                     }
                 }
             });
@@ -195,4 +211,33 @@ public class PeripheryFragment extends BaseActivity {
         unbinder.unbind();
     }
 
+    @Override
+    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout bgaRefreshLayout) {
+        if (HttpUtils.isConnected(this)){
+            swipeRefer.endRefreshing();
+            initData();
+        }else{
+            swipeRefer.endRefreshing();
+            toTast(this,"网络未连接,请检查网络");
+        }
+    }
+
+    @Override
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout bgaRefreshLayout) {
+        if (HttpUtils.isConnected(this)){
+//            initData();
+//            swipeRefer.endLoadingMore();
+            return  true ;
+        }else{
+//            swipeRefer.endLoadingMore();
+//            toTast(this,"网络未连接,请检查网络");
+            return false;
+        }
+
+    }
+
+
+    public void beginRefreshing() {
+        swipeRefer.beginRefreshing();
+    }
 }

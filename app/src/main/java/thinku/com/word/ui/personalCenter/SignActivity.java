@@ -6,20 +6,26 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.SingBeen;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.ui.personalCenter.bean.SignBean;
 import thinku.com.word.utils.DateUtil;
+import thinku.com.word.utils.RxHelper;
 import thinku.com.word.utils.StringUtils;
+import thinku.com.word.view.AddLeidouDialog;
 import thinku.com.word.view.SignDate;
 
 /**
@@ -108,18 +114,32 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    public void addLeidou(int num){
+        final AddLeidouDialog addLeidouDialog = new AddLeidouDialog(this,R.style.dialog,"签到成功，+" + num + "雷豆");
+        addLeidouDialog.show();
+        RxHelper.delay(2000)
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(@NonNull Integer integer) throws Exception {
+                        addLeidouDialog.dismiss();
+                    }
+                });
+
+    }
+
     /**
      * 签到
      */
     public void sign(){
         addToCompositeDis(HttpUtil.singObservable()
-                .subscribe(new Consumer<ResultBeen<Void>>() {
+                .subscribe(new Consumer<SignBean>() {
                     @Override
-                    public void accept(ResultBeen<Void> voidResultBeen) throws Exception {
+                    public void accept(SignBean voidResultBeen) throws Exception {
                         if (getHttpResSuc(voidResultBeen.getCode())) {
                             toTast(SignActivity.this, voidResultBeen.getMessage());
                             list.add(DateUtil.getToday());
                             calendar.setSign(list);
+                            addLeidou(voidResultBeen.getNum());
                             initData();
                         }
                     }

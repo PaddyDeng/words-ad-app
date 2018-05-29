@@ -122,7 +122,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
             Package.PackData packData = packDatas.get(i);
             words[i] = packData.getPlanWords();
             days[i] = packData.getPlanDay();
-            Ids[i] = packData.getCatId();
+            Ids[i] = packData.getId();
             if (nowPackId == Integer.parseInt(packData.getCatId())) {
                 nowPackage = packDatas.indexOf(packData);
             }
@@ -135,7 +135,6 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
         try {
             day = Integer.parseInt(packdatas.get(nowPackage).getPlanDay()) -1;
         } catch (Exception e) {
-            Log.e(TAG, "initWheelPackData: " + e.getMessage());
             day = 0;
         }
         try {
@@ -166,7 +165,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
                                 isInit = false;
                                 dismissLoadDialog();
                                 if (getHttpResSuc(voidResultBeen.getCode())) {
-                                    Ids[position] = packdatas.get(position).getCatId();
+                                    Ids[position] = packdatas.get(position).getId();
                                     wordPosition = position;
                                     total = Integer.parseInt(packdatas.get(position).getTotal());
                                     try {
@@ -225,37 +224,35 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
         wheel_day.setWheelSize(7);
         wheel_num.setWheelSize(7);
         wheel_day.setSelection(dayInt );
-//        wheel_num.setSelection(wordInt );
+        wheel_num.setSelection(wordInt );
         num_of_day.setText(dayList.get(dayInt));
         num_of_word.setText(wordList.get(wordInt));
         wheel_day.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
             @Override
             public void onItemSelected(int position, Object o) {
                   //  为0 表示没有联动滑动 ， 所有联动滑动  ，如果为1 表明已经联动滑动了，禁止联动滑动
-                if (isFirst == 0) {
-                    day2num(position);
-                    isFirst++;
-                } else {
-                    isFirst = 0;
-                }
+//                if (isFirst == 0) {
+                  if (wheel_day.isTouch) {
+                      day2num(position);
+                      isFirst++;
+                      wheel_day.isTouch = false ;
+            }
+                Log.e(TAG, "onItemSelected_day: " + num_of_word.getText().toString() );
+                Log.e(TAG, "onItemSelected_day: " + num_of_day.getText().toString() );
                 words[wordPosition] = num_of_word.getText().toString().trim();
                 days[wordPosition] = num_of_day.getText().toString().trim();
-
-                days[wordPosition] = dayList.get(position);
-                words[wordPosition] = wordList.get(position);
             }
         });
 
         wheel_num.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
             @Override
             public void onItemSelected(int position, Object o) {
-                if (isFirst == 0) {
+                if (wheel_num.isTouch) {
                     num2day(position);
-                    isFirst++;
-                } else {
-                    isFirst = 0;
+                    wheel_num.isTouch = false ;
                 }
-
+                Log.e(TAG, "onItemSelected_day: " + num_of_word.getText().toString() );
+                Log.e(TAG, "onItemSelected_day: " + num_of_day.getText().toString() );
                 words[wordPosition] = num_of_word.getText().toString().trim();
                 days[wordPosition] = num_of_day.getText().toString().trim();
             }
@@ -283,18 +280,22 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void day2num(int i) {
+        Log.e(TAG, "day2num: " + i );
         int n = (int) Math.ceil(Double.valueOf(total) / (i + 1));
+        Log.e(TAG, "day2num: " + n );
         wheel_num.setSelection(n  - 1);
-//        num_of_day.setText(dayList.get(i));
+        num_of_day.setText(dayList.get(i));
         num_of_word.setText(wordList.get(n  - 1));
         Log.e(TAG, "day2num: " + n  + "  " + i );
     }
 
     private void num2day(int i) {
         int n = (int) Math.ceil(Double.valueOf(total) / (i + 1));
+        Log.e(TAG, "num2day: " + i );
+        Log.e(TAG, "num2day: " + n );
         wheel_day.setSelection(n -1  );
         num_of_day.setText(dayList.get(n  -1 ));
-//        num_of_word.setText(wordList.get(i  ));
+        num_of_word.setText(wordList.get(i  ));
     }
 
     @Override
@@ -329,8 +330,8 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
             for (int i = 0; i < packdatas.size(); i++) {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("id", Ids[i]);
-                jsonObject.put("planDay", StringUtils.getStringNum(words[i]));
-                jsonObject.put("planWords", StringUtils.getStringNum(days[i]));
+                jsonObject.put("planDay", StringUtils.getStringNum(days[i]));
+                jsonObject.put("planWords", StringUtils.getStringNum(words[i]));
                 jsonArray.add(jsonObject);
             }
             // 返回一个JSONArray对象

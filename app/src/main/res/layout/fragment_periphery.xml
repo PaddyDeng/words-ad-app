@@ -1,19 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include layout="@layout/title_layout" />
-    <android.support.v4.widget.SwipeRefreshLayout
+
+    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+        android:id="@+id/refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/refresh">
+        android:layout_height="wrap_content">
 
-        <android.support.v7.widget.RecyclerView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/course_list"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
 
+            <View
+                android:id="@+id/inter_1"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/mainColor" />
+
+            <View
+                android:id="@+id/interval"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:background="@color/color_interval_line_1" />
+
+            <View
+                android:id="@+id/inter_2"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/mainColor" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/course_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
 </LinearLayout>

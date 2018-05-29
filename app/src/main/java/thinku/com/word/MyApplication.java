@@ -39,6 +39,7 @@ public class MyApplication extends Application {
     private static MyApplication myApplication;
     public static MediaPlayer mediaPlayer ;
     public static int task ;
+    public static String signTime ;
     public static Context getInstance() {
         return mContext;
     }

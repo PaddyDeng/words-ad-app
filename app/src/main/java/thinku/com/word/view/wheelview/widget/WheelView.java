@@ -55,7 +55,6 @@ import thinku.com.word.view.wheelview.util.WheelUtils;
  * @author venshine
  */
 public class WheelView<T> extends ListView implements IWheelView<T> {
-
     private int mItemH = 0; // 每一项高度
     private int mWheelSize = WHEEL_SIZE;    // 滚轮个数
     private boolean mLoop = LOOP;   // 是否循环滚动
@@ -84,6 +83,7 @@ public class WheelView<T> extends ListView implements IWheelView<T> {
 
     private OnWheelItemClickListener<T> mOnWheelItemClickListener;
 
+    public boolean isTouch = false ;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -113,6 +113,15 @@ public class WheelView<T> extends ListView implements IWheelView<T> {
             }
         }
     };
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN){
+           isTouch = true ;
+        }
+        return super.onTouchEvent(ev);
+    }
+
 
     private OnTouchListener mTouchListener = new OnTouchListener() {
         @Override

@@ -79,4 +79,11 @@ public class C {
     public static final int RXBUS_LOGIN_BACKMAIN = 3 ;
     public static final int RXBUS_EXLOING = 4 ;
 
+    //  referUI
+    public  static final int RXBUS_REFER_HOME = 1 ;
+    public static final int RXBUS_REFER_HOMEFIRST = 2 ;
+    public static final int RXBUS_REPORT_PAGE  = 3 ;
+    public static final int RXBUS_REPORT_WORD = 4 ;
+    public static final int RXBUS_PK_PAGE = 5 ;
+    public static final int RXBUS_PK_WORD = 6 ;
 }

@@ -53,6 +53,25 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
         return view ;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            if (oldPage  == -1 || oldPage ==0) {
+                RxBus.get().post(C.RXBUS_REPORT_PAGE, true);
+            }else{
+                RxBus.get().post(C.RXBUS_REPORT_WORD, true);
+            }
+        }
+    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         findView(view);

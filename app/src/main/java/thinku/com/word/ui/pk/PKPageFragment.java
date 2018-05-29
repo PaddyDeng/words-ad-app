@@ -32,6 +32,7 @@ import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.RxBus;
+import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.utils.WaitUtils;
 import thinku.com.word.view.ProgressView;
 
@@ -60,28 +61,17 @@ public class PKPageFragment extends BaseFragment {
 
     private Observable<String> observable;
 
-    private Observable<Boolean> exitLoginObservable ;
-    private Observable<Boolean> loginObservable ;
+    private Observable<Boolean> referUiObservable ;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pk_page, container, false);
         unbinder = ButterKnife.bind(this, view);
+        return view;
+    }
 
-        exitLoginObservable = RxBus.get().register(C.RXBUS_EXLOING ,Boolean.class);
-        exitLoginObservable.subscribe(new Consumer<Boolean>() {
-            @Override
-            public void accept(@NonNull Boolean aBoolean) throws Exception {
-                addNet();
-            }
-        });
-        loginObservable = RxBus.get().register(C.RXBUS_LOGIN ,Boolean.class);
-        loginObservable.subscribe(new Consumer<Boolean>() {
-            @Override
-            public void accept(@NonNull Boolean aBoolean) throws Exception {
-                addNet();
-            }
-        });
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         observable= RxBus.get().register(C.RXBUS_HEAD_IMAGE ,String.class);
         observable.subscribe(new Consumer<String>() {
             @Override
@@ -89,23 +79,18 @@ public class PKPageFragment extends BaseFragment {
                 addNet();
             }
         });
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        referUiObservable = RxBus.get().register(C.RXBUS_PK_PAGE ,Boolean.class);
+        referUiObservable.subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean aBoolean) throws Exception {
+                Log.e(TAG, "RXBUS_PK_PAGE: "  );
+                addNet();
+            }
+        });
         findView(view);
         setClick();
         initRecy();
         addNet();
-        observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE, String.class);
-        observable.subscribe(new Consumer<String>() {
-            @Override
-            public void accept(@NonNull String s) throws Exception {
-                new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + s, portrait);
-                addNet();
-            }
-        });
         swipeRefer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -113,13 +98,14 @@ public class PKPageFragment extends BaseFragment {
                 addNet();
             }
         });
-    }
 
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         RxBus.get().unregister(C.RXBUS_HEAD_IMAGE, observable);
+        RxBus.get().unregister(C.RXBUS_PK_PAGE ,referUiObservable);
     }
 
     @Override
@@ -135,6 +121,7 @@ public class PKPageFragment extends BaseFragment {
     }
 
     public void addNet() {
+        Log.e(TAG, "addNet: "  );
         addToCompositeDis(HttpUtil.pkIndexObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -161,6 +148,8 @@ public class PKPageFragment extends BaseFragment {
                     }
                 }));
     }
+
+
 
     public void initReferUi(){
         new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + "", portrait);
@@ -212,15 +201,7 @@ public class PKPageFragment extends BaseFragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         Log.e(TAG, "onHiddenChanged: " + hidden );
-        if (!hidden) addNet();
+//        if (!hidden) addNet();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-        RxBus.get().unregister(C.RXBUS_EXLOING, exitLoginObservable);
-        RxBus.get().unregister(C.RXBUS_LOGIN, loginObservable);
-        RxBus.get().unregister(C.RXBUS_HEAD_IMAGE, observable);
-    }
 }

@@ -9,52 +9,61 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
        >
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/recite_ll"
             android:layout_weight="1"
             android:layout_width="0px"
             android:orientation="vertical"
             android:background="@drawable/main_title_select"
-            android:gravity="center"
-
+            android:gravity="center_horizontal"
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/recite_iv"
-                android:layout_marginTop="20px"
                 android:background="@drawable/word_main_image_select"
                 android:layout_width="40px"
-                android:layout_height="40px" />
+                android:layout_height="40px"
+                android:layout_marginTop="12dp"
+                android:layout_centerHorizontal="true" />
             <TextView
                 android:id="@+id/recite_tv"
                 android:text="背单词"
-                android:layout_marginTop="10px"
-                android:textSize="12sp"
+                android:textSize="10sp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="2dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/report_ll"
-            android:layout_weight="1"
             android:layout_width="0px"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/main_title_select"
             android:gravity="center"
-            android:layout_height="match_parent">
+            android:orientation="vertical">
+
             <ImageView
                 android:id="@+id/report_iv"
-                android:layout_marginTop="20px"
-                android:background="@drawable/report_main_image_select"
                 android:layout_width="40px"
-                android:layout_height="40px" />
+                android:layout_height="40px"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/report_main_image_select" />
+
             <TextView
                 android:id="@+id/report_tv"
-                android:text="单词报告"
-                android:layout_marginTop="10px"
-                android:textSize="12sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="2dp"
+                android:text="单词报告"
+                android:textSize="10sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/pk_ll"
             android:layout_weight="1"
             android:layout_width="0px"
@@ -67,18 +76,21 @@
                 android:id="@+id/pk_iv"
                 android:layout_width="40px"
                 android:layout_height="40px"
-                android:layout_marginTop="20px"
+                android:layout_marginTop="12dp"
+                android:layout_centerHorizontal="true"
                 android:background="@drawable/pk_main_image_select" />
 
             <TextView
                 android:id="@+id/pk_tv"
                 android:text="PK"
-                android:layout_marginTop="10px"
-                android:textSize="12sp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="2dp"
+                android:textSize="10sp"
+                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/periphery_ll"
             android:layout_weight="1"
             android:layout_width="0px"
@@ -88,18 +100,21 @@
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/periphery_iv"
-                android:layout_marginTop="20px"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/around_main_image_select"
                 android:layout_width="40px"
-                android:layout_height="40px" />
+                android:layout_height="40px"
+                android:layout_centerHorizontal="true"/>
             <TextView
                 android:id="@+id/periphery_tv"
                 android:text="周边"
-                android:layout_marginTop="10px"
-                android:textSize="12sp"
+                android:layout_marginBottom="2dp"
+                android:textSize="10sp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
     <FrameLayout
         android:id="@+id/fl"

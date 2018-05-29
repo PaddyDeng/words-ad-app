@@ -22,6 +22,7 @@ import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
 import thinku.com.word.ui.personalCenter.TypeSettingActivity;
 import thinku.com.word.utils.C;
+import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
@@ -30,28 +31,13 @@ import thinku.com.word.utils.SharedPreferencesUtils;
  */
 
 public class HomeFirstFragment extends BaseFragment implements View.OnClickListener {
-
+    private static final String TAG = HomeFirstFragment.class.getSimpleName();
     private TextView now_type,word_depot;
     private LinearLayout change_type;
-    private Observable<Boolean> observable ;
-    private Observable<Boolean> loginObservable ;
+    private Observable<Boolean> referObservable ;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        observable  = RxBus.get().register(C.RXBUS_EXLOING ,Boolean.class);
-//        observable.subscribe(new Consumer<Boolean>() {
-//            @Override
-//            public void accept(@NonNull Boolean aBoolean) throws Exception {
-//                init();
-//            }
-//        });
-//        loginObservable = RxBus.get().register(C.RXBUS_LOGIN ,Boolean.class);
-//        loginObservable.subscribe(new Consumer<Boolean>() {
-//            @Override
-//            public void accept(@NonNull Boolean aBoolean) throws Exception {
-//                init();
-//            }
-//        });
         return inflater.inflate(R.layout.fragment_home_first,container,false);
     }
 
@@ -60,6 +46,13 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
         findView(view);
         setClick();
         init();
+        referObservable = RxBus.get().register(C.RXBUS_REFER_HOMEFIRST ,Boolean.class);
+        referObservable.subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean aBoolean) throws Exception {
+                init();
+            }
+        });
     }
 
 
@@ -76,6 +69,7 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
     }
 
     public void init(){
+        Log.e(TAG, "init: " );
         String mode = ""  ;
         String initMode = SharedPreferencesUtils.getStudyMode(_mActivity);
         switch (initMode){
@@ -96,6 +90,7 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
         }else{
             now_type.setText("你还未选择记忆模式");
         }
+        LoginHelper.needLogin(_mActivity ,"");
     }
 
     @Override
@@ -113,14 +108,15 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Log.e("tag", "onHiddenChanged: "  + hidden );
-        if ( !hidden) init();
+        Log.e("homefirst", "onHiddenChanged: ");
+//        if (!hidden) {
+//            init();
+//        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        RxBus.get().unregister(C.RXBUS_EXLOING ,observable);
-//        RxBus.get().unregister(C.RXBUS_LOGIN ,loginObservable);
+        RxBus.get().unregister(C.RXBUS_REFER_HOMEFIRST ,referObservable);
     }
 }

@@ -1,8 +1,10 @@
 package thinku.com.word.ui.pk;
 
 import android.os.Bundle;
+import android.support.annotation.BoolRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,8 @@ import java.util.Map;
 import me.yokeyword.fragmentation.SupportFragment;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
+import thinku.com.word.utils.C;
+import thinku.com.word.utils.RxBus;
 
 /**
  *PK
@@ -56,6 +60,22 @@ public class PKFragment extends BaseFragment implements View.OnClickListener {
         find = (TextView) view.findViewById(R.id.find);
     }
 
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.e("tag", "onHiddenChanged: " + hidden +"  "+ oldPage  );
+        if (!hidden){
+            if (oldPage == -1 || oldPage== 0){
+                Log.e("tag", "onHiddenChanged: " + hidden +" 0 "  );
+                RxBus.get().post(C.RXBUS_PK_PAGE , true);
+            }else{
+                Log.e("tag", "onHiddenChanged: "  + hidden + "1");
+                RxBus.get().post(C.RXBUS_PK_WORD,true);
+            }
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -71,11 +91,9 @@ public class PKFragment extends BaseFragment implements View.OnClickListener {
         if(i==0){
             find.setSelected(false);
             pk.setSelected(true);
-
         }else{
             pk.setSelected(false);
             find.setSelected(true);
-            showHideFragment(pkWordFragment);
         }
         setFragment(i);
     }
@@ -102,6 +120,7 @@ public class PKFragment extends BaseFragment implements View.OnClickListener {
                     break;
             }
         }
+        Log.e("tag", "setFragment: " + tag );
         oldPage = tag;
         try {
             ft.commit();

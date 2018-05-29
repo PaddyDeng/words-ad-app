@@ -159,7 +159,7 @@ public class RoundFragment extends BaseFragment {
         liveAdapter.SelectListener(new SelectListener() {
             @Override
             public void setListener(int position) {
-                ClassDetailActivity.start(_mActivity, dataBeanList.get(position));
+                ClassDetailActivity1.start(_mActivity, dataBeanList.get(position));
             }
         });
         live.setLayoutManager(new LinearLayoutManager(_mActivity));
@@ -228,7 +228,7 @@ public class RoundFragment extends BaseFragment {
         recentClassAdapter.setSelectListener(new SelectListener() {
             @Override
             public void setListener(int position) {
-                ClassDetailActivity.start(_mActivity, recentClassBeanList.get(position));
+                ClassDetailActivity1.start(_mActivity, recentClassBeanList.get(position));
             }
         });
         rollPager.setAdapter(recentClassAdapter);
@@ -349,10 +349,6 @@ public class RoundFragment extends BaseFragment {
             default:
                 break;
         }
-    }
-
-    public void addLiveNet(){
-
     }
     @Override
     public void onDestroyView() {

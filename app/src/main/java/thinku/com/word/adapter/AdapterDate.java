@@ -1,7 +1,6 @@
 package thinku.com.word.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,6 @@ import java.util.List;
 
 import thinku.com.word.R;
 import thinku.com.word.utils.DateUtil;
-
-import static thinku.com.word.R.mipmap.singin_today;
 
 /**
  * Created by Administrator on 2017/8/16.
@@ -42,21 +39,21 @@ public class AdapterDate extends BaseAdapter {
             //false代表为签到状态
         }
         for (int i = 0; i < maxDay; i++) {
-            days.add(i+1);
+            days.add(i + 1);
             //初始化日历数据
             status.add(false);
             //初始化日历签到状态
         }
-        int first=DateUtil.getFirstDayOfMonth()-1;
-        int day =DateUtil.getToday()-1;
-        today=day+first;
+        int first = DateUtil.getFirstDayOfMonth() - 1;
+        int day = DateUtil.getToday() - 1;
+        today = day + first;
     }
 
 
-    public void setStatus(List<Integer> list){
-        int first=DateUtil.getFirstDayOfMonth()-1;
-        for(int i:list){
-            status.set(first+i-1,true);
+    public void setStatus(List<Integer> list) {
+        int first = DateUtil.getFirstDayOfMonth() - 1;
+        for (int i : list) {
+            status.set(first + i - 1, true);
         }
         notifyDataSetChanged();
     }
@@ -79,35 +76,31 @@ public class AdapterDate extends BaseAdapter {
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder;
-        if(view==null){
-            view = LayoutInflater.from(context).inflate(R.layout.item_gv,null);
+        if (view == null) {
+            view = LayoutInflater.from(context).inflate(R.layout.item_gv, null);
             viewHolder = new ViewHolder();
             view.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (ViewHolder) view.getTag();
         }
         viewHolder.tv = (TextView) view.findViewById(R.id.tvWeek);
         viewHolder.rlItem = (RelativeLayout) view.findViewById(R.id.rlItem);
         viewHolder.ivStatus = (ImageView) view.findViewById(R.id.iv_status);
-        viewHolder.tv.setText(days.get(i)+"");
-        if(days.get(i)==0){
+        viewHolder.tv.setText(days.get(i) + "");
+        if (days.get(i) == 0) {
             viewHolder.rlItem.setVisibility(View.GONE);
         }
-        if(status.get(i)){
+        if (status.get(i)) {
             viewHolder.ivStatus.setVisibility(View.VISIBLE);
-            if (i == today){
-                viewHolder.ivStatus.setImageResource(R.mipmap.singin);
-            }else{
-                viewHolder.ivStatus.setImageResource(R.mipmap.singin_today);
-            }
-        }else{
+            viewHolder.ivStatus.setImageResource(R.mipmap.singin_today);
+        } else {
             viewHolder.ivStatus.setVisibility(View.GONE);
         }
 
         return view;
     }
 
-    class ViewHolder{
+    class ViewHolder {
         RelativeLayout rlItem;
         TextView tv;
         ImageView ivStatus;

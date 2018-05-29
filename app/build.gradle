@@ -67,6 +67,7 @@ MobSDK {
             Wechat {
                 appId "wx43edda5db10ec254"
                 appSecret "64020361b8ec4c99936c0e3999a9f249"
+                bypassApproval false
             }
             QQ {
                 appId "1106849200"
@@ -80,6 +81,7 @@ MobSDK {
             WechatMoments {
                 appId "wx43edda5db10ec254"
                 appSecret "64020361b8ec4c99936c0e3999a9f249"
+                bypassApproval false
             }
 
         }
@@ -147,7 +149,7 @@ dependencies {
     compile 'cn.jiguang.sdk:jpush:3.1.1'
     compile 'cn.jiguang.sdk:jcore:1.1.9'
     compile 'ch.ielse:switchbutton:1.0.1'
-//    compile 'cn.bingoogolapple:bga-refreshlayout:1.1.8@aar'
+    compile 'cn.bingoogolapple:bga-refreshlayout:1.1.8@aar'
     compile 'com.jude:rollviewpager:1.4.6'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'

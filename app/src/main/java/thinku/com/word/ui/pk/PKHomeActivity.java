@@ -3,9 +3,11 @@ package thinku.com.word.ui.pk;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.inputmethodservice.Keyboard;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -128,6 +130,7 @@ public class PKHomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pkhome);
         unbinder = ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         init();
         if (MyApplication.mediaPlayer == null){
             MyApplication.mediaPlayer = MediaPlayer.create(this , R.raw.pk_bg);
@@ -142,11 +145,11 @@ public class PKHomeActivity extends BaseActivity {
             }
     }
 
+
     public void init() {
         new GlideUtils().loadCircle(this ,NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(this) ,myImage);
         new GlideUtils().loadCircle(this ,NetworkTitle.WORDRESOURE + "" ,matchImg);
         hideAll();
-        EventBus.getDefault().register(this);
         uid = SharedPreferencesUtils.getString("uid", PKHomeActivity.this);
         addNet();
     }
@@ -169,9 +172,7 @@ public class PKHomeActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.back:
                 this.finishWithAnim();
-                if (MyApplication.mediaPlayer != null && MyApplication.mediaPlayer.isPlaying()){
-                    MyApplication.mediaPlayer.stop();
-                }
+                stopPlayer();
                 break;
             case R.id.review_match:
                 pkChose(PK_CANCEL);
@@ -182,6 +183,19 @@ public class PKHomeActivity extends BaseActivity {
                 pkChose(PK_AGREE);
                 break;
 
+        }
+    }
+
+    @Override
+    protected boolean preBackExitPage() {
+        stopPlayer();
+        return super.preBackExitPage();
+
+    }
+
+    public void stopPlayer(){
+        if (MyApplication.mediaPlayer != null && MyApplication.mediaPlayer.isPlaying()){
+            MyApplication.mediaPlayer.stop();
         }
     }
 
@@ -202,6 +216,7 @@ public class PKHomeActivity extends BaseActivity {
                 break;
         }
     }
+
 
     /**
      * 同意开始 去pk界面
