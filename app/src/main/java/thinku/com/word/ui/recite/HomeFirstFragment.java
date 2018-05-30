@@ -111,8 +111,14 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        RxBus.get().unregister(C.RXBUS_REFER_HOMEFIRST ,referObservable);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        RxBus.get().unregister(C.RXBUS_REFER_HOMEFIRST ,referObservable);
+
     }
 }

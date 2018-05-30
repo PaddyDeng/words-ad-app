@@ -1,171 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@mipmap/dialog_review_bg"
-    android:padding="50dp">
+    android:background="@color/white"
+   >
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="你需要复习GMAT词汇(核心词包)" />
+        android:text="共需复习单词数" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/num"
+        android:textSize="25sp"
+        android:textColor="@color/yellow_red"
+        android:text="145"
+        android:layout_below="@id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        />
     <LinearLayout
-        android:id="@+id/all_rl_2"
-        style="@style/dialog_review_text_linear"
-        android:gravity="center_horizontal"
-        android:layout_below="@id/name">
-
-        <TextView
-            android:id="@+id/all"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/name"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/mainColor"
-            android:textSize="30sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/all"
-            android:layout_below="@id/name"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/all"
-            android:gravity="center_vertical"
-            android:text="词"
-            android:textColor="@color/mainColor"
-            android:textSize="15sp" />
-    </LinearLayout>
-
-    <View
-        android:id="@+id/interval"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/all_rl_2"
-        android:layout_marginTop="10dp"
-        android:background="@color/mainColor" />
-    <LinearLayout
-        android:id="@+id/know_lr"
-        style="@style/dialog_review_text_linear"
-        android:layout_below="@id/interval">
-
-        <CheckBox
-            android:layout_marginLeft="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/know_check"
-            android:text="背认识的单词"
-            android:paddingLeft="10dp"
-            android:textColor="@color/gray_text"
-            android:checked="true"
-            android:button="@drawable/check_box"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:id="@+id/know"
-            android:layout_marginLeft="5dp"
-            android:textSize="13sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/incognizant_lr"
-        style="@style/dialog_review_text_linear"
-        android:layout_below="@id/know_lr">
-
-        <CheckBox
-            android:layout_marginLeft="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/incognizant_check"
-            android:button="@drawable/check_box"
-            android:textColor="@color/gray_text"
-            android:text="背不认识的单词"
-            android:paddingLeft="10dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:id="@+id/incognizant"
-            android:layout_marginLeft="5dp"
-            android:textSize="13sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/dim_lr"
-        style="@style/dialog_review_text_linear"
-        android:layout_below="@id/incognizant_lr">
-
-        <CheckBox
-            android:layout_marginLeft="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/dim_check"
-            android:button="@drawable/check_box"
-            android:textColor="@color/gray_text"
-            android:text="背模糊的单词"
-            android:paddingLeft="10dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:id="@+id/dim"
-            android:layout_marginLeft="5dp"
-            android:textSize="13sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/all_rl"
-        style="@style/dialog_review_text_linear"
-        android:layout_below="@id/dim_lr">
-
-        <CheckBox
-            android:layout_marginLeft="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/all_check"
-            android:button="@drawable/check_box"
-            android:textColor="@color/gray_text"
-            android:text="全部数"
-            android:paddingLeft="10dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:id="@+id/all_2"
-            android:layout_marginLeft="5dp"
-            android:textSize="13sp" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/review"
-        android:layout_width="90dp"
-        android:layout_height="23dp"
-        android:layout_below="@id/all_rl"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/button_bg_green"
-        android:gravity="center"
-        android:text="立即复习"
-        android:textColor="@color/white" />
+        android:layout_below="@id/num">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:id="@+id/review"
+            android:text="立即复习"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/main_10round_tv"
+            />
 
-    <TextView
-        android:id="@+id/not_review"
-        android:layout_width="90dp"
-        android:layout_height="23dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/all_rl"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/button_bg_yellow"
-        android:gravity="center"
-        android:text="跳过复习"
-        android:textColor="@color/white" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:layout_height="match_parent"
+            android:id="@+id/chose"
+            android:text="重新选择"
+            android:textColor="@color/white"
+            android:background="@color/yellow_red"
+            android:gravity="center"
+            />
+    </LinearLayout>
 </RelativeLayout>

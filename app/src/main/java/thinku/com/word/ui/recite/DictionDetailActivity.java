@@ -189,11 +189,17 @@ public class DictionDetailActivity extends BaseActivity {
 
     public void initTimeText() {
         choseTxt.setText("15");
+        choseTxt.setTextColor(getResources().getColor(R.color.white));
         countTime = RxHelper.countDown(time)
                 .subscribe(new Consumer<Integer>() {
                     @Override
                     public void accept(@NonNull Integer integer) throws Exception {
                         choseTxt.setText(integer + "");
+                        if (integer == 0){
+                            choseTxt.setTextColor(getResources().getColor(R.color.color_red));
+                            choseTxt.startAnimation(mShakeAnimation);
+                            mVibrator.vibrate(new long[]{100 ,100 ,100 ,100 } ,-1);
+                        }
                     }
                 });
         addToCompositeDis(countTime);

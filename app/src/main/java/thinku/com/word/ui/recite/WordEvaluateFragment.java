@@ -29,6 +29,7 @@ import thinku.com.word.bean.WordEvaluateEvent;
 import thinku.com.word.ui.report.bean.WordBean;
 import thinku.com.word.utils.C;
 
+
 public class WordEvaluateFragment extends BaseFragment {
     private static final String TAG = WordEvaluateFragment.class.getSimpleName();
     @BindView(R.id.mnemonic)

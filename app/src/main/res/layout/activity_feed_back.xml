@@ -9,25 +9,37 @@
 
     <include layout="@layout/title_layout" />
 
-    <EditText
-        android:id="@+id/content"
+    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="600px"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:gravity="top"
-        android:hint="请输入反馈，我们将为你不断改进"
-        android:padding="20px"
-        android:textColorHint="@color/gray_text" />
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
-    <EditText
-        android:id="@+id/phone"
-        android:layout_width="match_parent"
-        android:layout_height="400px"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:gravity="top"
-        android:hint="请输入你的联系方式（可选）"
-        android:padding="20px"
-        android:textColorHint="@color/gray_text" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="600px"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="top"
+                android:hint="请输入反馈，我们将为你不断改进"
+                android:padding="20px"
+                android:textColorHint="@color/gray_text" />
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="400px"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="top"
+                android:hint="请输入你的联系方式（可选）"
+                android:padding="20px"
+                android:textColorHint="@color/gray_text" />
+        </LinearLayout>
+    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
 </com.zhy.autolayout.AutoLinearLayout>

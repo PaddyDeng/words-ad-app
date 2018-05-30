@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
-
+    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,8 +74,6 @@
             android:textSize="13sp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"/>
-
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -171,8 +174,9 @@
                                 android:layout_marginTop="5dp"
                                 android:background="@color/white"
                                 android:id="@+id/help_content"
-                                android:lineSpacingExtra="20dp"
+                                android:lineSpacingExtra="10dp"
                                 android:lineSpacingMultiplier="0.5"
+                                android:layout_marginBottom="5dp"
                                 android:textSize="13sp"
                                 android:paddingLeft="20dp"
                                 />
@@ -458,8 +462,6 @@
                 </ScrollView>
             </LinearLayout>
         </RelativeLayout>
-    </LinearLayout>
-
     <LinearLayout
         android:id="@+id/bottom_click"
         android:layout_width="match_parent"
@@ -501,4 +503,7 @@
             android:background="@drawable/button_bg_blue"
             android:text="模糊" />
     </LinearLayout>
+        </LinearLayout>
+</thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
 </RelativeLayout>
+

@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <include android:id="@+id/title"
         layout="@layout/title_layout"/>
+
+    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
         <LinearLayout
             android:layout_centerInParent="true"
             android:orientation="vertical"
@@ -230,4 +236,5 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-</RelativeLayout>
+    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
+</LinearLayout>

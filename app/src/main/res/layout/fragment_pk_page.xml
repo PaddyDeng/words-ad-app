@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/swipeRefer"
+<com.zhy.autolayout.AutoRelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
-<com.zhy.autolayout.AutoRelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
     <com.zhy.autolayout.AutoLinearLayout
         android:id="@+id/ll"
         android:layout_alignParentBottom="true"
@@ -26,11 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </com.zhy.autolayout.AutoLinearLayout>
-   <ScrollView
-       android:layout_above="@+id/ll"
-       android:scrollbars="none"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
 
 
        <com.zhy.autolayout.AutoLinearLayout
@@ -143,13 +134,10 @@
                    android:layout_width="400px"
                    android:layout_height="160px" />
            </com.zhy.autolayout.AutoRelativeLayout>
-           <android.support.v7.widget.RecyclerView
+           <com.jcodecraeer.xrecyclerview.XRecyclerView
                android:id="@+id/ranking_list"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
               />
        </com.zhy.autolayout.AutoLinearLayout>
-
-    </ScrollView>
     </com.zhy.autolayout.AutoRelativeLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>

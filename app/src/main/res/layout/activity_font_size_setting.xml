@@ -1,48 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <include layout="@layout/title_layout" />
 
-    <thinku.com.word.font.ControlTextView
-        android:id="@+id/simple_word"
+    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:padding="@dimen/border_space_sec_max"
-        android:text="@string/str_font_size_tip_info"
-        android:textColor="@color/black"/>
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1">
-
-        <thinku.com.word.font.FontControlContainer
-            android:id="@+id/change_font_size_container"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageView
+            <thinku.com.word.font.ControlTextView
+                android:id="@+id/simple_word"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:src="@mipmap/icon_font_size_bg"/>
+                android:layout_height="0dip"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:padding="@dimen/border_space_sec_max"
+                android:text="@string/str_font_size_tip_info"
+                android:textColor="@color/black" />
 
-            <View
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/shape_guide_bg_defaut"/>
-        </thinku.com.word.font.FontControlContainer>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1">
 
-    </RelativeLayout>
+                <thinku.com.word.font.FontControlContainer
+                    android:id="@+id/change_font_size_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:src="@mipmap/icon_font_size_bg" />
+
+                    <View
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/shape_guide_bg_defaut" />
+                </thinku.com.word.font.FontControlContainer>
+
+            </RelativeLayout>
+        </LinearLayout>
+    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
 </LinearLayout>

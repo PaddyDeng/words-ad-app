@@ -11,6 +11,7 @@ import java.util.List;
 
 import thinku.com.word.R;
 import thinku.com.word.bean.RecitWordBeen;
+import thinku.com.word.utils.HtmlUtil;
 
 /**
  * Created by Administrator on 2018/3/29.
@@ -39,7 +40,7 @@ public class ReciteWordAdapter extends RecyclerView.Adapter {
         RecitWordBeen.LowSentenceBean sentence = sentences.get(position);
         reciteWordHolder.us.setText(sentence.getEnglish());
         reciteWordHolder.us.setVisibility(View.VISIBLE);
-        reciteWordHolder.chinese.setText(sentence.getChinese());
+        reciteWordHolder.chinese.setText(HtmlUtil.replaceRN(sentence.getChinese()));
     }
 
     @Override

@@ -6,6 +6,7 @@ buildscript {
         maven {
             url "http://mvn.mob.com/android"
 //            url 'https://maven.google.com'
+
         }
     }
     dependencies {

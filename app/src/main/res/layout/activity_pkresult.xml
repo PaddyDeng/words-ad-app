@@ -14,202 +14,213 @@
 
     <ImageView
         android:id="@+id/back"
-        android:layout_marginTop="10dp"
         android:layout_width="20dp"
         android:layout_height="25dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:src="@mipmap/white_back" />
 
-    <ImageView
-        android:id="@+id/pk_result_bg"
+    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@mipmap/pk_success" />
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
-    <RelativeLayout
-        android:id="@+id/image_rl"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="40dp">
-
-        <ImageView
-            android:id="@+id/pk_vs"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:src="@mipmap/pk_vs" />
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/user_image"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_alignParentBottom="true"
-            android:visibility="gone"
-            android:src="@mipmap/a1"
-            app:civ_border_color="@color/yellow_right_round"
-            app:civ_border_width="5px"
-            android:layout_marginLeft="30dp"
-            />
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/user_image_big"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentBottom="true"
-                android:src="@mipmap/a1"
-                android:visibility="visible"
-                android:layout_marginLeft="10dp"
-                app:civ_border_color="@color/yellow_right_round"
-                app:civ_border_width="5px" />
-
-            <ImageView
-                android:id="@+id/user_victory"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_alignEnd="@id/user_image_big"
-                android:scaleType="fitXY"
-                android:src="@mipmap/pk_win_image"
-                android:visibility="visible" />
-        </RelativeLayout>
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/match_image"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:src="@mipmap/a1"
-            android:visibility="gone"
-            app:civ_border_color="@color/color_red"
-            app:civ_border_width="5px"
-            android:layout_marginRight="30dp"/>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/match_image_big"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:layout_alignParentBottom="true"
-                android:src="@mipmap/a1"
-                android:visibility="visible"
-                app:civ_border_color="@color/color_red"
-                app:civ_border_width="5px"
-                android:layout_marginRight="10dp"/>
+            android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/match_victory"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_alignEnd="@id/match_image_big"
-                android:scaleType="fitXY"
-                android:src="@mipmap/pk_win_image"
-                android:visibility="visible" />
-        </RelativeLayout>
-    </RelativeLayout>
+                android:id="@+id/pk_result_bg"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@mipmap/pk_success" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="100px"
-        android:layout_marginRight="100px"
-        android:layout_marginTop="50px">
+            <RelativeLayout
+                android:id="@+id/image_rl"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="40dp">
 
-        <TextView
-            android:id="@+id/user_name"
-            style="@style/white_text_40px"
-            android:layout_width="300px"
-            android:gravity="center"
-            android:text="Tina小姐姐fdsfa"
-            android:textSize="16dp"
-            android:ellipsize="end"
-            android:maxLines="1"/>
+                <ImageView
+                    android:id="@+id/pk_vs"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/pk_vs" />
 
-        <TextView
-            android:id="@+id/user_current_num"
-            android:layout_width="350px"
-            android:layout_height="30dp"
-            android:layout_below="@id/user_name"
-            android:layout_marginTop="40px"
-            android:background="@drawable/main_10round_tv"
-            android:gravity="center"
-            android:text="正确：7"
-            android:textColor="@color/white"
-            android:textSize="50px" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/user_image"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="30dp"
+                    android:src="@mipmap/a1"
+                    android:visibility="gone"
+                    app:civ_border_color="@color/yellow_right_round"
+                    app:civ_border_width="5px" />
 
-        <TextView
-            android:id="@+id/user_error_num"
-            android:layout_width="350px"
-            android:layout_height="30dp"
-            android:layout_below="@id/user_current_num"
-            android:layout_marginTop="40px"
-            android:background="@drawable/main_10round_tv"
-            android:gravity="center"
-            android:text="正确：7"
-            android:textColor="@color/white"
-            android:textSize="50px" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/match_name"
-            style="@style/white_text_40px"
-            android:layout_width="300px"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:text="Tina小姐姐fdsfasfasfdsaa"
-            android:maxLines="1"
-            android:textSize="16dp"
-            android:ellipsize="end"
-            />
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/user_image_big"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="10dp"
+                        android:src="@mipmap/a1"
+                        android:visibility="visible"
+                        app:civ_border_color="@color/yellow_right_round"
+                        app:civ_border_width="5px" />
 
-        <TextView
-            android:id="@+id/match_current_num"
-            android:layout_width="350px"
-            android:layout_height="30dp"
-            android:layout_alignStart="@id/match_name"
-            android:layout_below="@id/user_name"
-            android:layout_marginTop="40px"
-            android:background="@drawable/main_10round_tv"
-            android:gravity="center"
-            android:text="正确：7"
-            android:textColor="@color/white"
-            android:textSize="50px" />
+                    <ImageView
+                        android:id="@+id/user_victory"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_alignEnd="@id/user_image_big"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/pk_win_image"
+                        android:visibility="visible" />
+                </RelativeLayout>
 
-        <TextView
-            android:id="@+id/match_error_num"
-            android:layout_width="350px"
-            android:layout_height="30dp"
-            android:layout_alignStart="@id/match_name"
-            android:layout_below="@id/user_current_num"
-            android:layout_marginTop="40px"
-            android:background="@drawable/main_10round_tv"
-            android:gravity="center"
-            android:text="正确：7"
-            android:textColor="@color/white"
-            android:textSize="50px" />
-    </RelativeLayout>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/match_image"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:src="@mipmap/a1"
+                    android:visibility="gone"
+                    app:civ_border_color="@color/color_red"
+                    app:civ_border_width="5px" />
 
-    <TextView
-        android:id="@+id/share"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/yellow_10round"
-        android:gravity="center"
-        android:text="分享一下"
-        android:textColor="@color/white"
-        android:textSize="50px" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/match_image_big"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="10dp"
+                        android:src="@mipmap/a1"
+                        android:visibility="visible"
+                        app:civ_border_color="@color/color_red"
+                        app:civ_border_width="5px" />
+
+                    <ImageView
+                        android:id="@+id/match_victory"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_alignEnd="@id/match_image_big"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/pk_win_image"
+                        android:visibility="visible" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100px"
+                android:layout_marginRight="100px"
+                android:layout_marginTop="50px">
+
+                <TextView
+                    android:id="@+id/user_name"
+                    style="@style/white_text_40px"
+                    android:layout_width="300px"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="Tina小姐姐fdsfa"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/user_current_num"
+                    android:layout_width="350px"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/user_name"
+                    android:layout_marginTop="40px"
+                    android:background="@drawable/main_10round_tv"
+                    android:gravity="center"
+                    android:text="正确：7"
+                    android:textColor="@color/white"
+                    android:textSize="50px" />
+
+                <TextView
+                    android:id="@+id/user_error_num"
+                    android:layout_width="350px"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/user_current_num"
+                    android:layout_marginTop="40px"
+                    android:background="@drawable/main_10round_tv"
+                    android:gravity="center"
+                    android:text="正确：7"
+                    android:textColor="@color/white"
+                    android:textSize="50px" />
+
+                <TextView
+                    android:id="@+id/match_name"
+                    style="@style/white_text_40px"
+                    android:layout_width="300px"
+                    android:layout_alignParentRight="true"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="Tina小姐姐fdsfasfasfdsaa"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/match_current_num"
+                    android:layout_width="350px"
+                    android:layout_height="30dp"
+                    android:layout_alignStart="@id/match_name"
+                    android:layout_below="@id/user_name"
+                    android:layout_marginTop="40px"
+                    android:background="@drawable/main_10round_tv"
+                    android:gravity="center"
+                    android:text="正确：7"
+                    android:textColor="@color/white"
+                    android:textSize="50px" />
+
+                <TextView
+                    android:id="@+id/match_error_num"
+                    android:layout_width="350px"
+                    android:layout_height="30dp"
+                    android:layout_alignStart="@id/match_name"
+                    android:layout_below="@id/user_current_num"
+                    android:layout_marginTop="40px"
+                    android:background="@drawable/main_10round_tv"
+                    android:gravity="center"
+                    android:text="正确：7"
+                    android:textColor="@color/white"
+                    android:textSize="50px" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/share"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/yellow_10round"
+                android:gravity="center"
+                android:text="分享一下"
+                android:textColor="@color/white"
+                android:textSize="50px" />
+        </LinearLayout>
+    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
 </LinearLayout>

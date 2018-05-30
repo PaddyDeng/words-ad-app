@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/title_layout_share"  />
+
+    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
     <TextView
         android:id="@+id/total_num"
         android:layout_marginTop="60px"
@@ -19,4 +29,6 @@
         android:layout_marginRight="40px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+        </LinearLayout>
+    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
 </LinearLayout>

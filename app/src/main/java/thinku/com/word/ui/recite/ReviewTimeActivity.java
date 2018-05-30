@@ -154,14 +154,16 @@ public class ReviewTimeActivity extends BaseActivity implements View.OnClickList
                         wheelStart.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
                             @Override
                             public void onItemSelected(int position, Object o) {
-                                startTime.setText(strings.get(position));
+                                if (position < strings.size())
+                                    startTime.setText(strings.get(position));
                             }
                         });
 
                         wheelEnd.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
                             @Override
                             public void onItemSelected(int position, Object o) {
-                                endTime.setText(strings.get(position));
+                                if (position < strings.size())
+                                    endTime.setText(strings.get(position));
                             }
                         });
                         startRl.addView(wheelStart);

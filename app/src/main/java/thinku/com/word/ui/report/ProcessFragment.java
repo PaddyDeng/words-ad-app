@@ -69,8 +69,6 @@ public class ProcessFragment extends BaseFragment {
     Unbinder unbinder;
 
     CirView cirView;
-    @BindView(R.id.swipeRefer)
-    SwipeRefreshLayout swipeRefer;
 
     private List<TrackBeen.PackageBean> packageBeanList;
     private List<TrackBeen.RankBean> rankBeanList;
@@ -104,13 +102,6 @@ public class ProcessFragment extends BaseFragment {
             }
         });
         new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(_mActivity), portrait);
-        swipeRefer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefer.setRefreshing(false);
-                referNetUi();
-            }
-        });
         referUiObservable = RxBus.get().register(C.RXBUS_REPORT_PAGE ,Boolean.class);
         referUiObservable.subscribe(new Consumer<Boolean>() {
             @Override
@@ -130,7 +121,7 @@ public class ProcessFragment extends BaseFragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
 //        Log.e(TAG, "onHiddenChanged: " + hidden );
-//        if (!hidden) referNetUi();
+        if (!hidden) referNetUi();
     }
 
 
@@ -197,6 +188,7 @@ public class ProcessFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
         RxBus.get().unregister(C.RXBUS_HEAD_IMAGE, observable);
+        RxBus.get().unregister(C.RXBUS_REPORT_PAGE ,referUiObservable);
     }
 
 }

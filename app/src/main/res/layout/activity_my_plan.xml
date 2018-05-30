@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,6 +7,15 @@
 
     <include layout="@layout/title_layout" />
 
+    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -101,4 +111,6 @@
                 android:background="@drawable/gray_20round"></RelativeLayout>
         </LinearLayout>
     </LinearLayout>
+        </LinearLayout>
+    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
 </LinearLayout>

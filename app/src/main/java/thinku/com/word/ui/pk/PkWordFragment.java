@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,10 +40,8 @@ import thinku.com.word.utils.WaitUtils;
 public class PkWordFragment extends BaseFragment {
     private static final String TAG = PkWordFragment.class.getSimpleName();
     @BindView(R.id.pk_word_rl)
-    RecyclerView pkWordRl;
+    XRecyclerView pkWordRl;
     Unbinder unbinder;
-    @BindView(R.id.refer)
-    SwipeRefreshLayout refer;
 
     private PkWordAdapter pkWordAdapter ;
     private List<PkWordData.DataBean>  dataBeanList ;
@@ -73,15 +74,32 @@ public class PkWordFragment extends BaseFragment {
         pkWordAdapter = new PkWordAdapter(_mActivity , dataBeanList);
         pkWordRl.setLayoutManager(new LinearLayoutManager(_mActivity));
         pkWordRl.setAdapter(pkWordAdapter);
+        pkWordRl.setRefreshProgressStyle(ProgressStyle.SysProgress);
+        pkWordRl.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
+        pkWordRl.setArrowImageView(R.drawable.iconfont_downgrey);
+        pkWordRl
+                .getDefaultRefreshHeaderView()
+                .setRefreshTimeVisible(true);
 
-        refer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        pkWordRl.getDefaultFootView().setLoadingHint("加载中");
+        pkWordRl.getDefaultFootView().setNoMoreHint("加载完成");
+        pkWordRl.setLimitNumberToCallLoadMore(2);
+        pkWordRl.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                refer.setRefreshing(false);
                 addNet();
+                pkWordRl.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+                addNet();
+                pkWordRl.loadMoreComplete();
             }
         });
+
     }
+
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -129,5 +147,9 @@ public class PkWordFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
         RxBus.get().unregister(C.RXBUS_PK_WORD ,referUiObsrvable);
+        if(pkWordRl != null){
+            pkWordRl.destroy();
+            pkWordRl = null;
+        }
     }
 }

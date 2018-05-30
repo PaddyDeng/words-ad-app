@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@mipmap/pk_match_bg"
     android:orientation="vertical"
     tools:context="thinku.com.word.ui.pk.PKHomeActivity">
@@ -16,274 +16,288 @@
         android:layout_marginTop="100px"
         android:src="@mipmap/white_back" />
 
-
-
-    <RelativeLayout
+    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="60px"
-        android:layout_marginTop="30px"
-        android:id="@+id/pk_num_rl_1">
-
-        <View
-            android:id="@+id/middle"
-            android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-             />
-
-        <ImageView
-            android:id="@+id/pk_lose_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20px"
-            android:layout_toRightOf="@id/middle"
-            android:src="@mipmap/pk_lose" />
-
-        <TextView
-            android:id="@+id/lose_num_1"
-            style="@style/white_text_30px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10px"
-            android:layout_toRightOf="@id/pk_lose_img"
-            android:text="lose:9" />
-
-        <TextView
-            android:id="@+id/win_num_1"
-            style="@style/white_text_30px"
-            android:textColor="@color/yellow_right_round"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20px"
-            android:layout_toLeftOf="@id/middle"
-            android:text="win:9" />
-
-        <ImageView
-            android:id="@+id/pk_win_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10px"
-            android:layout_toLeftOf="@id/win_num_1"
-            android:src="@mipmap/pk_win" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="400px">
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/img_1"
-        android:layout_width="350px"
-        android:layout_height="350px"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="50px"
-        android:src="@mipmap/image_default"
-        app:civ_border_width="3dp"
-        app:civ_border_color="@color/yellow_right_round"/>
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="350px"
-            android:layout_height="350px"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="50px"
-            android:src="@color/color_translate_black"
-            app:civ_border_width="3dp"
-            android:id="@+id/match_Image"
-            app:civ_border_color="@color/yellow_right_round"
-            />
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
-            android:id="@+id/words_rl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/pk_num_rl_1"
+                android:layout_width="match_parent"
+                android:layout_height="60px"
+                android:layout_marginTop="30px">
+
+                <View
+                    android:id="@+id/middle"
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true" />
+
+                <ImageView
+                    android:id="@+id/pk_lose_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20px"
+                    android:layout_toRightOf="@id/middle"
+                    android:src="@mipmap/pk_lose" />
+
+                <TextView
+                    android:id="@+id/lose_num_1"
+                    style="@style/white_text_30px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10px"
+                    android:layout_toRightOf="@id/pk_lose_img"
+                    android:text="lose:9" />
+
+                <TextView
+                    android:id="@+id/win_num_1"
+                    style="@style/white_text_30px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20px"
+                    android:layout_toLeftOf="@id/middle"
+                    android:text="win:9"
+                    android:textColor="@color/yellow_right_round" />
+
+                <ImageView
+                    android:id="@+id/pk_win_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10px"
+                    android:layout_toLeftOf="@id/win_num_1"
+                    android:src="@mipmap/pk_win" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="400px">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img_1"
+                    android:layout_width="350px"
+                    android:layout_height="350px"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="50px"
+                    android:src="@mipmap/image_default"
+                    app:civ_border_color="@color/yellow_right_round"
+                    app:civ_border_width="3dp" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/match_Image"
+                    android:layout_width="350px"
+                    android:layout_height="350px"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="50px"
+                    android:src="@color/color_translate_black"
+                    app:civ_border_color="@color/yellow_right_round"
+                    app:civ_border_width="3dp" />
+
+                <LinearLayout
+                    android:id="@+id/words_rl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <TextView
+                        style="@style/white_text_30px"
+                        android:text="词汇量：" />
+
+                    <TextView
+                        android:id="@+id/words_1"
+                        style="@style/white_text_30px"
+                        android:layout_width="wrap_content"
+                        android:layout_below="@id/back"
+                        android:text="6230" />
+                </LinearLayout>
+            </RelativeLayout>
 
             <TextView
-                style="@style/white_text_30px"
-                android:text="词汇量：" />
+                android:id="@+id/name_1"
+                style="@style/white_text_50px"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50px"
+                android:text="独角戏" />
 
-            <TextView
-                android:id="@+id/words_1"
-                style="@style/white_text_30px"
+            <ImageView
+                android:id="@+id/match_success"
+                android:layout_width="370px"
+                android:layout_height="90px"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="50px"
+                android:layout_marginTop="20px"
+                android:src="@mipmap/match_success" />
+
+            <LinearLayout
+                android:id="@+id/timer_rl"
                 android:layout_width="wrap_content"
-                android:layout_below="@id/back"
-                android:text="6230" />
-        </LinearLayout>
-    </RelativeLayout>
-    <TextView
-        android:id="@+id/name_1"
-        style="@style/white_text_50px"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50px"
-        android:text="独角戏" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-    <ImageView
-        android:id="@+id/match_success"
-        android:layout_width="370px"
-        android:layout_height="90px"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="50px"
-        android:layout_marginTop="20px"
-        android:src="@mipmap/match_success" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/pk_clock" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:id="@+id/timer_rl"
-        android:visibility="gone">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/pk_clock"
-            android:layout_centerHorizontal="true"/>
+                <TextView
+                    android:id="@+id/timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20px"
+                    android:text="倒计时：5s"
+                    android:textColor="@color/yellow_right_round"
+                    android:textSize="40px" />
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/yellow_right_round"
-            android:textSize="40px"
-            android:layout_marginLeft="20px"
-            android:text="倒计时：5s"
-            android:id="@+id/timer"
-            />
-    </LinearLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="60px"
-        android:layout_below="@id/words_rl"
-        android:layout_marginTop="20px"
-        android:id="@+id/pk_num_rl_2">
+            <RelativeLayout
+                android:id="@+id/pk_num_rl_2"
+                android:layout_width="match_parent"
+                android:layout_height="60px"
+                android:layout_below="@id/words_rl"
+                android:layout_marginTop="20px">
 
-        <View
-            android:id="@+id/middle_1"
-            android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            />
+                <View
+                    android:id="@+id/middle_1"
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true" />
 
-        <ImageView
-            android:id="@+id/pk_lose_img_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20px"
-            android:layout_toRightOf="@id/middle_1"
-            android:src="@mipmap/pk_lose" />
+                <ImageView
+                    android:id="@+id/pk_lose_img_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20px"
+                    android:layout_toRightOf="@id/middle_1"
+                    android:src="@mipmap/pk_lose" />
 
-        <TextView
-            android:id="@+id/lose_num_2"
-            style="@style/white_text_30px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10px"
-            android:layout_toRightOf="@id/pk_lose_img_1"
-            android:text="lose:9" />
+                <TextView
+                    android:id="@+id/lose_num_2"
+                    style="@style/white_text_30px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10px"
+                    android:layout_toRightOf="@id/pk_lose_img_1"
+                    android:text="lose:9" />
 
-        <TextView
-            android:id="@+id/win_num_2"
-            style="@style/white_text_30px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20px"
-            android:layout_toLeftOf="@id/middle_1"
-            android:textColor="@color/yellow_right_round"
-            android:text="win:9" />
+                <TextView
+                    android:id="@+id/win_num_2"
+                    style="@style/white_text_30px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20px"
+                    android:layout_toLeftOf="@id/middle_1"
+                    android:text="win:9"
+                    android:textColor="@color/yellow_right_round" />
 
-        <ImageView
-            android:id="@+id/pk_win_img_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10px"
-            android:layout_toLeftOf="@id/win_num_2"
-            android:src="@mipmap/pk_win" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="400px">
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/img_2"
-        android:layout_width="400px"
-        android:layout_height="400px"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="50px"
-        app:civ_border_width="5dp"
-        android:src="@mipmap/image_default"
-        app:civ_border_color="@color/yellow_right_round"
-        />
+                <ImageView
+                    android:id="@+id/pk_win_img_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10px"
+                    android:layout_toLeftOf="@id/win_num_2"
+                    android:src="@mipmap/pk_win" />
+            </RelativeLayout>
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="350px"
-            android:layout_height="350px"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="50px"
-            android:src="@color/color_translate_black"
-            android:id="@+id/myImage"
-            app:civ_border_width="3dp"
-            app:civ_border_color="@color/yellow_right_round"/>
-        <LinearLayout
-            android:id="@+id/words_r2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="400px">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img_2"
+                    android:layout_width="400px"
+                    android:layout_height="400px"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="50px"
+                    android:src="@mipmap/image_default"
+                    app:civ_border_color="@color/yellow_right_round"
+                    app:civ_border_width="5dp" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/myImage"
+                    android:layout_width="350px"
+                    android:layout_height="350px"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="50px"
+                    android:src="@color/color_translate_black"
+                    app:civ_border_color="@color/yellow_right_round"
+                    app:civ_border_width="3dp" />
+
+                <LinearLayout
+                    android:id="@+id/words_r2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <TextView
+                        style="@style/white_text_30px"
+                        android:text="词汇量：" />
+
+                    <TextView
+                        android:id="@+id/words_2"
+                        style="@style/white_text_40px"
+                        android:layout_below="@id/back"
+                        android:text="6230" />
+                </LinearLayout>
+            </RelativeLayout>
 
             <TextView
-                style="@style/white_text_30px"
-                android:text="词汇量：" />
+                android:id="@+id/name_2"
+                style="@style/white_text_50px"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50px"
+                android:text="独角戏" />
 
-            <TextView
-                android:id="@+id/words_2"
-                style="@style/white_text_40px"
-                android:layout_below="@id/back"
-                android:text="6230" />
+            <RelativeLayout
+                android:id="@+id/pk_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50px">
+
+                <View
+                    android:id="@+id/middle_2"
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true" />
+
+                <TextView
+                    android:id="@+id/review_match"
+                    android:layout_width="350px"
+                    android:layout_height="100px"
+                    android:layout_marginRight="50px"
+                    android:layout_toLeftOf="@id/middle_2"
+                    android:background="@drawable/white_20round"
+                    android:gravity="center"
+                    android:text="重新匹配"
+                    android:textColor="@color/gray_text" />
+
+                <TextView
+                    android:id="@+id/pking"
+                    android:layout_width="350px"
+                    android:layout_height="100px"
+                    android:layout_marginLeft="50px"
+                    android:layout_toRightOf="@id/middle_2"
+                    android:background="@drawable/pk_drawable"
+                    android:gravity="center"
+                    android:text="立即PK"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
         </LinearLayout>
-    </RelativeLayout>
-    <TextView
-        android:id="@+id/name_2"
-        style="@style/white_text_50px"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50px"
-        android:text="独角戏" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50px"
-        android:id="@+id/pk_button">
-
-        <View
-            android:id="@+id/middle_2"
-            android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true" />
-
-        <TextView
-            android:id="@+id/review_match"
-            android:layout_width="350px"
-            android:layout_height="100px"
-            android:layout_marginRight="50px"
-            android:layout_toLeftOf="@id/middle_2"
-            android:background="@drawable/white_20round"
-            android:gravity="center"
-            android:text="重新匹配"
-            android:textColor="@color/gray_text" />
-
-        <TextView
-            android:id="@+id/pking"
-            android:layout_width="350px"
-            android:layout_height="100px"
-            android:layout_marginLeft="50px"
-            android:layout_toRightOf="@id/middle_2"
-            android:background="@drawable/pk_drawable"
-            android:gravity="center"
-            android:text="立即PK"
-            android:textColor="@color/white" />
-    </RelativeLayout>
+    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
 </LinearLayout>

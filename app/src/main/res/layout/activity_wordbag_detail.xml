@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/refresh"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -11,12 +8,20 @@
         <include
             android:id="@+id/title"
             layout="@layout/title_layout" />
-
+    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/title1"
+        android:scrollbars="none"
+        android:layout_below="@id/title"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
         <LinearLayout
             android:id="@+id/ll"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@id/title"
             android:background="@color/white"
             android:gravity="center_vertical">
 
@@ -155,5 +160,6 @@
             android:layout_height="match_parent"
             android:layout_above="@id/to_recite"
             android:layout_below="@id/ll" />
+        </RelativeLayout>
+    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
     </RelativeLayout>
-</android.support.v4.widget.SwipeRefreshLayout>

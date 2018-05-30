@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<thinku.com.word.weight.overscroll.FastAndOverScrollScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -255,7 +259,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="200px">
                 <TextView
-                    android:text="今日新学："
+                    android:text="今日新学"
                     android:textSize="35px"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -267,7 +271,7 @@
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/review_t"
-                    android:text=",今日需复习："
+                    android:text="，今日需复习："
                     android:textSize="35px"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -299,4 +303,6 @@
                 android:layout_height="100px" />
         </com.zhy.autolayout.AutoLinearLayout>
     </com.zhy.autolayout.AutoLinearLayout>
+
 </com.zhy.autolayout.AutoRelativeLayout>
+</thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>

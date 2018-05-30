@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -45,13 +47,11 @@ import thinku.com.word.view.ProgressView;
 
 public class PKPageFragment extends BaseFragment {
     private static final String TAG = PKPageFragment.class.getSimpleName();
-    @BindView(R.id.swipeRefer)
-    SwipeRefreshLayout swipeRefer;
     Unbinder unbinder;
     private TextView to_pk, name, win_num, lose_num, vocabulary;
     private ImageView portrait;
     private ProgressView winning_probability;
-    private RecyclerView ranking_list;
+    private XRecyclerView ranking_list;
 
     @BindView(R.id.userInfo)
     AutoRelativeLayout userInfo ;
@@ -87,7 +87,6 @@ public class PKPageFragment extends BaseFragment {
         referUiObservable.subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(@NonNull Boolean aBoolean) throws Exception {
-                Log.e(TAG, "RXBUS_PK_PAGE: "  );
                 addNet();
             }
         });
@@ -95,13 +94,6 @@ public class PKPageFragment extends BaseFragment {
         setClick();
         initRecy();
         addNet();
-        swipeRefer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefer.setRefreshing(false);
-                addNet();
-            }
-        });
 
     }
 
@@ -125,7 +117,6 @@ public class PKPageFragment extends BaseFragment {
     }
 
     public void addNet() {
-        Log.e(TAG, "addNet: "  );
         addToCompositeDis(HttpUtil.pkIndexObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -194,14 +185,37 @@ public class PKPageFragment extends BaseFragment {
         win_num = (TextView) v.findViewById(R.id.win_num);
         lose_num = (TextView) v.findViewById(R.id.lose_num);
         vocabulary = (TextView) v.findViewById(R.id.vocabulary);
-        ranking_list = (RecyclerView) v.findViewById(R.id.ranking_list);
+        ranking_list = (XRecyclerView) v.findViewById(R.id.ranking_list);
+        ranking_list.setRefreshProgressStyle(ProgressStyle.SysProgress);
+        ranking_list.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
+        ranking_list.setArrowImageView(R.drawable.iconfont_downgrey);
+        ranking_list
+                .getDefaultRefreshHeaderView()
+                .setRefreshTimeVisible(true);
+
+        ranking_list.getDefaultFootView().setLoadingHint("加载中");
+        ranking_list.getDefaultFootView().setNoMoreHint("加载完成");
+        ranking_list.setLimitNumberToCallLoadMore(2);
+        ranking_list.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                addNet();
+                ranking_list.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+                addNet();
+                ranking_list.loadMoreComplete();
+            }
+        });
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         Log.e(TAG, "onHiddenChanged: " + hidden );
-//        if (!hidden) addNet();
+        if (!hidden) addNet();
     }
 
 }

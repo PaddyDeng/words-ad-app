@@ -57,8 +57,6 @@ public class WordReportFragment extends BaseFragment {
     @BindView(R.id.week)
     PieView week;
     List<WeekData> weekDataList = new ArrayList<>();
-    @BindView(R.id.swipeRefer)
-    SwipeRefreshLayout swipeRefer;
     private int poisition = 0;
     //  日报图
     private List<String> xValue = new ArrayList<>();
@@ -80,14 +78,6 @@ public class WordReportFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_word_report, container, false);
         unbinder = ButterKnife.bind(this, view);
-        swipeRefer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefer.setRefreshing(false);
-                addNet();
-            }
-        });
-
         exitLoginObservable = RxBus.get().register(C.RXBUS_EXLOING, Boolean.class);
         exitLoginObservable.subscribe(new Consumer<Boolean>() {
             @Override
@@ -140,7 +130,7 @@ public class WordReportFragment extends BaseFragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
 //        Log.e(TAG, "onHiddenChanged: " + hidden );
-//        if (!hidden) addNet();
+        if (!hidden) addNet();
     }
 
     //  刷新UI
@@ -314,7 +304,7 @@ public class WordReportFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
         RxBus.get().unregister(C.RXBUS_EXLOING, exitLoginObservable);
-//        RxBus.get().unregister(C.RXBUS_REPORT_WORD, referUiObservable);
+        RxBus.get().unregister(C.RXBUS_REPORT_WORD, referUiObservable);
     }
 
 

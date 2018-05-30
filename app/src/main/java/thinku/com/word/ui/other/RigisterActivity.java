@@ -173,6 +173,9 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
                                     if (TextUtils.isEmpty(userInfo.getNickname())) {
                                         startActivity(new Intent(RigisterActivity.this, SetNickNameActivity.class));
                                         RigisterActivity.this.finishWithAnim();
+                                    }else{
+                                        MainActivity.toMain(RigisterActivity.this);
+                                        RigisterActivity.this.finishWithAnim();
                                     }
                                 }
 
@@ -196,7 +199,7 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
                 agree.setSelected(isAgree);
                 break;
             case R.id.protocol:
-
+                startActivity(new Intent(  RigisterActivity.this,UserActivity.class));
                 break;
             case R.id.to_login:
                 RigisterActivity.this.finishWithAnim();

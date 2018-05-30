@@ -60,9 +60,7 @@ public class HtmlUtil {
 
     public static String replaceRN(String content) {
         content = content.trim();
-        if (content.contains("\\r\\n\\r\\n")) {
-            content = content.replace("\\r\\n\\r\\n", "").trim();
-        }
+        content = content.replace("\n" ,"");
 //        if (content.contains("\\r")) {
 //            content = content.replace("\\r", "").trim();
 //        }

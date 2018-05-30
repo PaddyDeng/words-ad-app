@@ -213,6 +213,7 @@ public class HomeFragment extends BaseFragment {
             if (recitePlayer.isPlaying()) recitePlayer.stop();
             recitePlayer.release();
         }
+        RxBus.get().unregister(C.RXBUS_REFER_HOME ,referUiObservable);
     }
 
 

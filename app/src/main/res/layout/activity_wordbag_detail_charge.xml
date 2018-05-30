@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include android:id="@+id/title"
         layout="@layout/title_layout"/>
+
+    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:id="@+id/title1"
+        android:layout_below="@id/title"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:accessibilityTraversalBefore="@id/title1">
     <LinearLayout
         android:id="@+id/ll"
-        android:layout_below="@id/title"
         android:gravity="center_vertical"
         android:background="@color/gray_white"
         android:layout_width="match_parent"
@@ -188,4 +199,6 @@
         android:layout_above="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+        </RelativeLayout>
+    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
 </RelativeLayout>

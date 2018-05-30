@@ -6,10 +6,10 @@
     tools:context="thinku.com.word.ui.pk.PkDiscoverDetailActivity">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/mainColor"
-        android:id="@+id/title"
         android:orientation="vertical">
 
         <View
@@ -33,36 +33,50 @@
                 android:layout_width="700px"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
-                android:ellipsize="end"
                 android:textColor="@color/white"
                 android:textSize="@dimen/title_text_size" />
         </RelativeLayout>
     </LinearLayout>
 
-    <ImageView
+    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="350px"
-        android:scaleType="fitXY"
-        android:id="@+id/image"
-        android:layout_below="@id/title"/>
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
-    <WebView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30px"
-        android:layout_marginRight="30px"
-        android:id="@+id/content"
-        android:layout_below="@id/image"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/online"
-        android:background="@color/mainColor"
-        android:gravity="center"
-        android:text="立即报名"
-        android:textSize="50px"
-        android:layout_alignParentBottom="true"
-        android:textColor="@color/white"/>
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/title1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/title">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_below="@+id/title1"
+                android:scaleType="fitXY" />
+
+            <WebView
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="30px" />
+
+            <TextView
+                android:id="@+id/online"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/mainColor"
+                android:gravity="center"
+                android:text="立即报名"
+                android:textColor="@color/white"
+                android:textSize="50px" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
 </com.zhy.autolayout.AutoRelativeLayout>

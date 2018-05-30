@@ -15,11 +15,11 @@
 
         <ImageView
             android:id="@+id/back"
-            android:layout_width="70px"
-            android:layout_height="70px"
-            android:padding="20px"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20px"
+            android:layout_marginLeft="5dp"
             android:src="@mipmap/white_back" />
 
         <TextView

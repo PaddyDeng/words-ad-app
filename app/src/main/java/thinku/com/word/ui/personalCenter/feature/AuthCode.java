@@ -64,7 +64,7 @@ public class AuthCode extends CountDownTimer implements IDestoryView {
             view.setClickable(false);
             view.setText(millisUntilFinished / 1000 + "秒");
             view.setTextColor(ContextCompat.getColor(mContext, R.color.black));
-            view.setBackgroundResource(mShowResId);
+            view.setBackgroundResource(R.drawable.white_10round);
         }
     }
 

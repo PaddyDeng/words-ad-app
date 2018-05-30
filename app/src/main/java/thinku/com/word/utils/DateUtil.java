@@ -272,7 +272,6 @@ public class DateUtil {
             calendar.setTime(liveDate);
             int year1 = calendar.get(Calendar.YEAR);
             int day1 = calendar.get(Calendar.DAY_OF_YEAR);
-
             calendar.setTime(Date2);
             int year2 = calendar.get(Calendar.YEAR);
             int day2 = calendar.get(Calendar.DAY_OF_YEAR);
@@ -281,7 +280,7 @@ public class DateUtil {
             }else{
                 return false ;
             }
-        }catch (ParseException e){
+        }catch (Exception e){
             Log.i("date" ,e.getMessage());
             return false ;
         }

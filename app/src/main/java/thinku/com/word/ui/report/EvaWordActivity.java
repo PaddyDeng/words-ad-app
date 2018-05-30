@@ -32,6 +32,7 @@ import thinku.com.word.callback.SelectRlClickListener;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.recite.WordErrorActivity;
+import thinku.com.word.ui.report.bean.WordEva;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.StringUtils;
 
@@ -55,7 +56,7 @@ public class EvaWordActivity extends BaseActivity {
     @BindView(R.id.data_list)
     RecyclerView dataList;
     private EvaWordAdapter evaWordAdapter;
-    private List<String> EvaWordList = new ArrayList<>();
+    private List<WordEva> EvaWordList = new ArrayList<>();
     private String answer ;
     private Unbinder unbinder ;
     private int type  ;    //  答案是否正确   1 正确  0 错误
@@ -102,8 +103,8 @@ public class EvaWordActivity extends BaseActivity {
             public void setClickListener(int position, RecyclerView.ViewHolder viewHolder, View view) {
                 EvaWordAdapter.EvaHolder evaHolder = (EvaWordAdapter.EvaHolder) viewHolder;
                 if (position <EvaWordList.size()) {
-                    userAnswer = EvaWordList.get(position);
-                    if (EvaWordList.get(position).equals(answer)) {
+                    userAnswer = EvaWordList.get(position).getContent();
+                    if (EvaWordList.get(position).getContent().equals(answer)) {
                         evaHolder.error.setVisibility(View.GONE);
                         evaHolder.rl.setBackgroundResource(R.drawable.main_20round_tv);
                         type = 1 ;
@@ -111,7 +112,13 @@ public class EvaWordActivity extends BaseActivity {
                             rightPlayer.start();
                         }
                     } else {
+                        int currentIndex = 0 ;
+                        for (int i = 0 ; i < EvaWordList.size() ; i ++){
+                            if (answer.equals(EvaWordList.get(position).getContent()))
+                                currentIndex = i ;
+                        }
                         evaHolder.error.setVisibility(View.VISIBLE);
+                        EvaWordList.get(currentIndex).setAnswer(true);
                         type = 0 ;
                         if (!errorPlayer.isPlaying()){
                             errorPlayer.start();
@@ -198,9 +205,9 @@ public class EvaWordActivity extends BaseActivity {
                                     public void onCompletion(MediaPlayer mediaPlayer) {
                                     }
                                 });
-                                EvaWordList.clear();
-                                EvaWordList.addAll(StringUtils.spiltString(evaWordBeen.getWords().getSelect()));
-                                evaWordAdapter.notifyDataSetChanged();
+//                                EvaWordList.clear();
+//                                EvaWordList.addAll(StringUtils.spiltString(evaWordBeen.getWords().getSelect()));
+//                                evaWordAdapter.notifyDataSetChanged();
                             }
                         }
                     }

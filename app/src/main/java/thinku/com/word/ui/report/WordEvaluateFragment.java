@@ -38,6 +38,7 @@ import thinku.com.word.bean.RecitWordBeen;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.callback.SelectRlClickListener;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.adapter.QuestionAdapter;
 import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.recite.WordErrorActivity;
@@ -55,7 +56,6 @@ import thinku.com.word.utils.HtmlUtil;
  */
 
 public class WordEvaluateFragment extends BaseActivity {
-    public final static String CSS_STYLE = "<style>* {font-size:16px;line-height:20px;}p {color:#dfdfdf;}</style>";
     private static final String TAG = WordEvaluateFragment.class.getSimpleName();
     @BindView(R.id.newWord)
     TextView newWord;
@@ -213,8 +213,10 @@ public class WordEvaluateFragment extends BaseActivity {
 
     public void isShow() {
         if (isShow) {
+            bottomClick.setBackgroundColor(getResources().getColor(R.color.white));
             bottomClick.setVisibility(View.VISIBLE);
         } else {
+            bottomClick.setBackground(null);
             bottomClick.setVisibility(View.GONE);
         }
     }
@@ -288,13 +290,13 @@ public class WordEvaluateFragment extends BaseActivity {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
-                        showLoadDialog();
+//                        showLoadDialog();
                     }
                 })
                 .subscribe(new Consumer<ReviewCaseBean>() {
                     @Override
                     public void accept(@NonNull ReviewCaseBean voidResultBeen) throws Exception {
-                        dismissLoadDialog();
+//                        dismissLoadDialog();
                         if (voidResultBeen.getCode() == 0) {
                             nowFinsh();
                         } else {
@@ -304,14 +306,14 @@ public class WordEvaluateFragment extends BaseActivity {
                             } else {
                                 words = (ArrayList<String>) voidResultBeen.getWords();
                             }
-                            Log.e(TAG, "accept: " + words.size());
                             reciteWords(words);
                         }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        dismissLoadDialog();
+//                        dismissLoadDialog();
+                        toTast(throwable.getMessage());
                     }
                 }));
     }
@@ -350,12 +352,10 @@ public class WordEvaluateFragment extends BaseActivity {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
-//                        showLoadDialog();
                     }
                 }).subscribe(new Consumer<ReviewBean>() {
                     @Override
                     public void accept(@NonNull ReviewBean reviewCaseBean) throws Exception {
-//                        dismissLoadDialog();
                         if (reviewCaseBean.getCode() == 2) {
                             share();
                         } else {
@@ -372,7 +372,6 @@ public class WordEvaluateFragment extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-//                        dismissLoadDialog();
                         toTast(throwable.getMessage());
                     }
                 }));
@@ -421,7 +420,8 @@ public class WordEvaluateFragment extends BaseActivity {
         contentShow.setVisibility(View.GONE);
         contentHide.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(recitWord.getWords().getMnemonic())) {
-            helpContent.setText(recitWord.getWords().getMnemonic());
+            String content = HtmlUtil.replaceRN(recitWord.getWords().getMnemonic()) ;
+            helpContent.setText(content);
             helpMemory.setVisibility(View.VISIBLE);
         } else helpMemory.setVisibility(View.GONE);
         getData(recitWord);
@@ -447,10 +447,10 @@ public class WordEvaluateFragment extends BaseActivity {
         if (tag == C.NORMAL) {
             if (isNewAiBinHaoSi) {
                 if (words != null) {
-                    newWord.setText("新学" + recitWord.getDoX() + " |需复习" + (recitWord.getNeedReviewWords() + (words.size() - posiiton)));
+                    newWord.setText("新学" + recitWord.getDoX() + " | 需复习" + (recitWord.getNeedReviewWords() + (words.size() - posiiton)));
                 }
             } else {
-                newWord.setText("新学" + recitWord.getDoX() + " |需复习" + recitWord.getUserNeedReviewWords());
+                newWord.setText("新学" + recitWord.getDoX() + " | 需复习" + recitWord.getUserNeedReviewWords());
             }
         } else {
             if (words != null) newWord.setText("需复习" + (words.size() - posiiton));
@@ -510,14 +510,17 @@ public class WordEvaluateFragment extends BaseActivity {
             final QuestionBean questionBean = recitWord.getQuestion();
             if (!TextUtils.isEmpty(questionBean.getArticle())) {
                 article.setVisibility(View.VISIBLE);
-                article.loadDataWithBaseURL(null, HtmlUtil.getHtml(questionBean.getArticle()), "text/html", " charset=UTF-8", null);//这种写法可以正确解码
+                String content = HtmlUtil.getHtml(questionBean.getArticle());
+                String urlContent = HtmlUtil.repairContent(content , NetworkTitle.WORDRESOURE);
+                article.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
                 article.setVisibility(View.GONE);
             }
             if (!TextUtils.isEmpty(questionBean.getQuestion())) {
                 question_home.setVisibility(View.VISIBLE);
-//                question_home.setText(HtmlUtil.replaceSpace(questionBean.getQuestion() ));
-                question_home.loadDataWithBaseURL(null, HtmlUtil.getHtml(questionBean.getQuestion()), "text/html", " charset=UTF-8", null);//这种写法可以正确解码
+                String content = HtmlUtil.getHtml(questionBean.getQuestion());
+                String urlContent = HtmlUtil.repairContent(content ,NetworkTitle.WORDRESOURE);
+                question_home.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
                 question_home.setVisibility(View.GONE);
             }
@@ -550,15 +553,6 @@ public class WordEvaluateFragment extends BaseActivity {
 
         }
 
-    }
-
-    public String getHtmlData(String contnet) {
-        String body = contnet;
-        if (!body.trim().startsWith("<style>")) {
-            body = CSS_STYLE + body;
-        }
-        Log.e(TAG, "getHtmlData: " + body);
-        return body;
     }
 
     public int getCurrentP(String answer) {

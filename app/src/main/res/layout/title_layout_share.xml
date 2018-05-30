@@ -23,28 +23,33 @@
             android:layout_centerInParent="true"
             android:textColor="@color/white"
             android:text="加载中..."
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/title_iv"
+            android:background="@color/white"
+            android:layout_marginTop="15dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:padding="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layout_alignParentRight="true"
             android:id="@+id/chose_txt"
+            android:textSize="13sp"
             android:textColor="@color/white"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="60px"
-            />
-        <ImageView
-            android:id="@+id/title_iv"
-            android:background="@color/white"
-            android:layout_marginTop="40px"
-            android:layout_width="50px"
-            android:layout_height="50px"
-            android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/title_iv"
             />
+
         <!--<ImageView-->
             <!--android:id="@+id/title_iv"-->
             <!--android:background="@color/white"-->

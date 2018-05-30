@@ -116,7 +116,7 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
 //        }
         setSelect(0);
     }
-
+    
     private void initBootom() {
         ivs = new ArrayList<>();
         ivs.add(recite_iv);

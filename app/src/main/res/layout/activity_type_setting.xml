@@ -43,70 +43,82 @@
             android:background="@mipmap/right" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@mipmap/study_mode_bg">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="150px"
-            android:gravity="center_horizontal"
-            android:lineSpacingMultiplier="1.2"
-            android:text="请选择适合你的\n背单词模式"
-            android:textColor="@color/black"
-            android:textSize="50px" />
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="150px"
-            android:layout_marginRight="150px"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/ebbinghaus"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/type_setting_select"
-                android:gravity="center"
-                android:text="艾宾浩斯记忆法（科学记忆）"
-                android:textColor="@color/dark_gray"
-                android:textSize="40px" />
+                android:layout_height="match_parent"
+                android:background="@mipmap/study_mode_bg">
 
-            <TextView
-                android:id="@+id/review"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="40px"
-                android:background="@drawable/type_setting_select"
-                android:gravity="center"
-                android:text="复习记忆法（快速巩固）"
-                android:textColor="@color/dark_gray"
-                android:textSize="40px" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="150px"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="请选择适合你的\n背单词模式"
+                    android:textColor="@color/black"
+                    android:textSize="50px" />
 
-            <TextView
-                android:id="@+id/only_new"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="40px"
-                android:background="@drawable/type_setting_select"
-                android:gravity="center"
-                android:text="只背新单词（快速记忆）"
-                android:textColor="@color/dark_gray"
-                android:textSize="40px" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="150px"
+                    android:layout_marginRight="150px"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/ebbinghaus"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/type_setting_select"
+                        android:gravity="center"
+                        android:text="艾宾浩斯记忆法（科学记忆）"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="40px" />
+
+                    <TextView
+                        android:id="@+id/review"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="40px"
+                        android:background="@drawable/type_setting_select"
+                        android:gravity="center"
+                        android:text="复习记忆法（快速巩固）"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="40px" />
+
+                    <TextView
+                        android:id="@+id/only_new"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="40px"
+                        android:background="@drawable/type_setting_select"
+                        android:gravity="center"
+                        android:text="只背新单词（快速记忆）"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="40px" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="40px"
+                    android:text="在个人中心-学习模式可更换设置模式哦~"
+                    android:textSize="40px" />
+            </RelativeLayout>
         </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40px"
-            android:text="在个人中心-学习模式可更换设置模式哦~"
-            android:textSize="40px" />
-    </RelativeLayout>
+    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
 </LinearLayout>

@@ -8,6 +8,10 @@
 
         <include layout="@layout/title_layout_word" />
 
+    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        xmlns:android="http://schemas.android.com/apk/res/android">
             <ImageView
                 android:id="@+id/play"
                 android:layout_width="15dp"
@@ -46,4 +50,5 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"/>
+    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
     </LinearLayout>

@@ -1,167 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<thinku.com.word.weight.overscroll.FastAndOverScrollScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/pk_bg"
-    tools:context="thinku.com.word.ui.pk.PkActivity">
+    android:scrollbars="none">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_marginTop="60px"
-        android:layout_marginLeft="60px"
-        android:layout_width="200px"
-        android:layout_height="200px"
-        app:civ_border_color="@color/yellow_right_round"
-        app:civ_border_width="10px"
-        android:id="@+id/userImage"
-        />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_marginTop="60px"
-        android:layout_marginLeft="60px"
-        android:layout_width="200px"
-        android:layout_height="200px"
-        android:src="@color/color_translate_black"
-        app:civ_border_color="@color/color_translate_black"
-        app:civ_border_width="10px"
-        />
-
-    <TextView
-        android:layout_marginTop="60px"
-        android:layout_marginLeft="60px"
-        android:layout_width="200px"
-        android:layout_height="200px"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="30px"
-        android:text="进度：1/8"
-        android:id="@+id/userCurrent"/>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_marginTop="60px"
-        android:layout_marginRight="60px"
-        android:layout_width="200px"
-        android:layout_height="200px"
-        app:civ_border_color="@color/color_red"
-        android:layout_alignParentRight="true"
-        app:civ_border_width="10px"
-        android:id="@+id/rivalImage"
-        />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_marginTop="60px"
-        android:layout_marginRight="60px"
-        android:layout_width="200px"
-        android:layout_height="200px"
-        app:civ_border_color="@color/color_translate_black"
-        android:layout_alignParentRight="true"
-        app:civ_border_width="10px"
-        android:src="@color/color_translate_black"
-        />
-
-    <TextView
-        android:layout_marginTop="60px"
-        android:layout_marginRight="60px"
-        android:layout_width="200px"
-        android:layout_height="200px"
-        android:layout_alignParentRight="true"
-        app:civ_border_width="10px"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="30px"
-        android:text="进度：1/8"
-        android:id="@+id/rivalCurrent"
-        />
-
-    <thinku.com.word.view.LoadingCustomView
-        android:layout_width="700px"
-        android:layout_height="40px"
-        android:layout_marginTop="20px"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/rivalImage"
-        android:id="@+id/pk_progress"
-        app:progressColor="@color/yellow_right_round"
-        app:progressBarFrameHeight="0dp"
-        app:progressBarBankgroundStyle="1"
-        app:progressBankgroundColor="@color/color_red"/>
-
-    <TextView
-        style="@style/white_text_50px"
-        android:textColor="@color/white"
-        android:id="@+id/timer"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/pk_progress"
-        android:layout_centerHorizontal="true"
-        />
-    <com.zhy.autolayout.AutoRelativeLayout
+    <com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/pk_wait_rl"
-        android:layout_marginTop="150px"
-        android:visibility="gone"
-        android:layout_below="@id/pk_progress">
+        android:layout_height="match_parent"
+        android:background="@mipmap/pk_bg"
+        tools:context="thinku.com.word.ui.pk.PkActivity">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="700px"
-            android:src="@mipmap/pk_wait_fly"
-            android:layout_marginLeft="20px"
-            android:layout_marginRight="20px"
-            android:id="@+id/pk_fly"
-            android:layout_centerHorizontal="true"/>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="300px"
-            android:background="@mipmap/pk_wait_bg"
-            android:layout_below="@id/pk_fly"
-            android:layout_marginTop="50px"
-            android:layout_centerHorizontal="true"
-            >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/userImage"
+            android:layout_width="200px"
+            android:layout_height="200px"
+            android:layout_marginLeft="60px"
+            android:layout_marginTop="60px"
+            app:civ_border_color="@color/yellow_right_round"
+            app:civ_border_width="10px" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="100px"
-            android:src="@mipmap/pk_wait_0"
-            android:layout_marginTop="80px"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="200px"
+            android:layout_height="200px"
+            android:layout_marginLeft="60px"
+            android:layout_marginTop="60px"
+            android:src="@color/color_translate_black"
+            app:civ_border_color="@color/color_translate_black"
+            app:civ_border_width="10px" />
+
+        <TextView
+            android:id="@+id/userCurrent"
+            android:layout_width="200px"
+            android:layout_height="200px"
+            android:layout_marginLeft="60px"
+            android:layout_marginTop="60px"
+            android:gravity="center"
+            android:text="进度：1/8"
+            android:textColor="@color/white"
+            android:textSize="30px" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/rivalImage"
+            android:layout_width="200px"
+            android:layout_height="200px"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="60px"
+            android:layout_marginTop="60px"
+            app:civ_border_color="@color/color_red"
+            app:civ_border_width="10px" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="200px"
+            android:layout_height="200px"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="60px"
+            android:layout_marginTop="60px"
+            android:src="@color/color_translate_black"
+            app:civ_border_color="@color/color_translate_black"
+            app:civ_border_width="10px" />
+
+        <TextView
+            android:id="@+id/rivalCurrent"
+            android:layout_width="200px"
+            android:layout_height="200px"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="60px"
+            android:layout_marginTop="60px"
+            android:gravity="center"
+            android:text="进度：1/8"
+            android:textColor="@color/white"
+            android:textSize="30px"
+            app:civ_border_width="10px" />
+
+        <thinku.com.word.view.LoadingCustomView
+            android:id="@+id/pk_progress"
+            android:layout_width="700px"
+            android:layout_height="40px"
+            android:layout_below="@id/rivalImage"
             android:layout_centerHorizontal="true"
-            android:id="@+id/pk_wait_animator"/>
-        </RelativeLayout>
+            android:layout_marginTop="20px"
+            app:progressBankgroundColor="@color/color_red"
+            app:progressBarBankgroundStyle="1"
+            app:progressBarFrameHeight="0dp"
+            app:progressColor="@color/yellow_right_round" />
+
+        <TextView
+            android:id="@+id/timer"
+            style="@style/white_text_50px"
+            android:layout_below="@id/pk_progress"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white" />
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/pk_wait_rl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pk_progress"
+            android:layout_marginTop="150px"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/pk_fly"
+                android:layout_width="match_parent"
+                android:layout_height="700px"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="20px"
+                android:layout_marginRight="20px"
+                android:src="@mipmap/pk_wait_fly" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="300px"
+                android:layout_below="@id/pk_fly"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50px"
+                android:background="@mipmap/pk_wait_bg">
+
+                <ImageView
+                    android:id="@+id/pk_wait_animator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100px"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="80px"
+                    android:src="@mipmap/pk_wait_0" />
+            </RelativeLayout>
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <TextView
+            android:id="@+id/rivalCurrentRate"
+            style="@style/white_text_40px"
+            android:layout_alignBottom="@id/pk_progress"
+            android:layout_marginLeft="40px"
+            android:layout_toRightOf="@id/pk_progress"
+            android:text="0"
+            android:textColor="@color/color_red" />
+
+        <TextView
+            android:id="@+id/userCorrectRate"
+            style="@style/white_text_40px"
+            android:layout_alignBottom="@id/pk_progress"
+            android:layout_marginRight="40px"
+            android:layout_toLeftOf="@id/pk_progress"
+            android:text="0"
+            android:textColor="@color/yellow_right_round" />
+
+        <TextView
+            android:id="@+id/word"
+            style="@style/white_text_90px"
+            android:layout_below="@id/pk_progress"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200px" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/pk_rl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/word"
+            android:layout_marginLeft="120px"
+            android:layout_marginRight="120px"
+            android:layout_marginTop="200px" />
+
     </com.zhy.autolayout.AutoRelativeLayout>
-    <TextView
-        style="@style/white_text_40px"
-        android:textColor="@color/color_red"
-        android:id="@+id/rivalCurrentRate"
-        android:text="0"
-        android:layout_alignBottom="@id/pk_progress"
-        android:layout_toRightOf="@id/pk_progress"
-        android:layout_marginLeft="40px"/>
-
-    <TextView
-        style="@style/white_text_40px"
-        android:textColor="@color/yellow_right_round"
-        android:id="@+id/userCorrectRate"
-        android:layout_alignBottom="@id/pk_progress"
-        android:layout_toLeftOf="@id/pk_progress"
-        android:text="0"
-        android:layout_marginRight="40px"/>
-
-    <TextView
-        style="@style/white_text_90px"
-        android:layout_below="@id/pk_progress"
-        android:layout_marginTop="200px"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/word"
-        />
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/pk_rl"
-        android:layout_marginLeft="120px"
-        android:layout_marginRight="120px"
-        android:layout_below="@id/word"
-        android:layout_marginTop="200px"
-        />
-
-</com.zhy.autolayout.AutoRelativeLayout>
+</thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>

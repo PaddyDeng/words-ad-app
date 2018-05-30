@@ -406,7 +406,7 @@
         <activity
             android:name=".ui.share.ShareDateActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme"></activity>
+            android:theme="@style/NoTitleTheme" />
         <activity
             android:name=".ui.recite.ReviewExerciseTypeActivity"
             android:screenOrientation="portrait"
@@ -419,7 +419,12 @@
             android:name=".ui.periphery.ClassDetailActivity1"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
-        <activity android:name=".ui.personalCenter.ReadMeActivity"
+        <activity
+            android:name=".ui.personalCenter.ReadMeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+
+        <activity android:name=".ui.other.UserActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
     </application>

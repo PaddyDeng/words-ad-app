@@ -5,19 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
@@ -43,12 +42,12 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
 
     private ImageView back, share, portrait, ranking_bg;
     private TextView title_t, name, num, ranking_num, tv;
-    private RecyclerView ranking_list;
-    private SwipeRefreshLayout refer;
+    private XRecyclerView ranking_list;
 
     private RankAdapter rankAdapter;
     private List<UserRankBeen.RankBean> rankBeanList;
-    private Observable<String> observable ;
+    private Observable<String> observable;
+
     public static void start(Context context) {
         Intent intent = new Intent(context, EvaluateRankingActivity.class);
         context.startActivity(intent);
@@ -62,11 +61,11 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
         findView();
         setClick();
         addNet();
-        observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE ,String.class);
+        observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE, String.class);
         observable.subscribe(new Consumer<String>() {
             @Override
             public void accept(@NonNull String s) throws Exception {
-                new GlideUtils().loadCircle(EvaluateRankingActivity.this , NetworkTitle.WORDRESOURE + s ,portrait);
+                new GlideUtils().loadCircle(EvaluateRankingActivity.this, NetworkTitle.WORDRESOURE + s, portrait);
                 addNet();
             }
         });
@@ -108,7 +107,12 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.get().unregister(C.RXBUS_HEAD_IMAGE ,observable);
+        RxBus.get().unregister(C.RXBUS_HEAD_IMAGE, observable);
+        if (ranking_list != null) {
+            ranking_list.destroy();
+            ranking_list = null;
+        }
+
     }
 
     public void referUI(UserRankBeen userRankBeen) {
@@ -117,8 +121,8 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
         rankAdapter.notifyDataSetChanged();
         name.setText(SharedPreferencesUtils.getString("nickname", EvaluateRankingActivity.this));
         num.setText(userRankBeen.getData().getNum());
-        ranking_num.setText(userRankBeen.getData().getRank() +"");
-        new GlideUtils().loadCircle(EvaluateRankingActivity.this , NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(this) ,portrait);
+        ranking_num.setText(userRankBeen.getData().getRank() + "");
+        new GlideUtils().loadCircle(EvaluateRankingActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(this), portrait);
     }
 
     private void findView() {
@@ -134,25 +138,38 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
         ranking_num = (TextView) findViewById(R.id.ranking_num);
         tv = (TextView) findViewById(R.id.tv);
         tv.setVisibility(View.VISIBLE);
-        ranking_list = (RecyclerView) findViewById(R.id.ranking_list);
+        ranking_list = (XRecyclerView) findViewById(R.id.ranking_list);
         rankBeanList = new ArrayList<>();
-        rankAdapter = new RankAdapter(EvaluateRankingActivity.this, rankBeanList);
-        LinearLayoutManager manager = new LinearLayoutManager(EvaluateRankingActivity.this, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager manager = new LinearLayoutManager(EvaluateRankingActivity.this);
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
         ranking_list.setLayoutManager(manager);
+        rankAdapter = new RankAdapter(this, rankBeanList);
         ranking_list.setAdapter(rankAdapter);
-        ranking_bg = (ImageView) findViewById(R.id.ranking_bg);
-        ranking_bg.setBackgroundResource(R.mipmap.rank_me);
-        refer = (SwipeRefreshLayout) findViewById(R.id.refer);
-        refer.setProgressBackgroundColorSchemeResource(android.R.color.white);
-        // 设置下拉进度的主题颜色
-        refer.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
-        refer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        ranking_list.setRefreshProgressStyle(ProgressStyle.SysProgress);
+        ranking_list.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
+        ranking_list.setArrowImageView(R.drawable.iconfont_downgrey);
+        ranking_list
+                .getDefaultRefreshHeaderView()
+                .setRefreshTimeVisible(true);
+
+        ranking_list.getDefaultFootView().setLoadingHint("加载中");
+        ranking_list.getDefaultFootView().setNoMoreHint("加载完成");
+        ranking_list.setLimitNumberToCallLoadMore(2);
+        ranking_list.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                refer.setRefreshing(false);
                 addNet();
+                ranking_list.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+                addNet();
+                ranking_list.loadMoreComplete();
             }
         });
+        ranking_bg = (ImageView) findViewById(R.id.ranking_bg);
+        ranking_bg.setBackgroundResource(R.mipmap.rank_me);
     }
 
     @Override
@@ -173,4 +190,6 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
         String filePath = sdCardPath + File.separator + System.currentTimeMillis() + ".png";
         ShareUtils.shareOnlyImage(this, filePath);
     }
+
+
 }
