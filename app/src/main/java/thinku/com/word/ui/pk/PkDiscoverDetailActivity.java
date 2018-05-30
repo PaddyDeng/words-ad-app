@@ -66,7 +66,7 @@ public class PkDiscoverDetailActivity extends BaseActivity {
      */
     public void initData() {
         titleT.setText(dataBean.getTitle());
-        new GlideUtils().loadCircle(PkDiscoverDetailActivity.this , NetworkTitle.WORDRESOURE + dataBean.getImage() ,image);
+        new GlideUtils().load(PkDiscoverDetailActivity.this , NetworkTitle.WORDRESOURE + dataBean.getImage() ,image);
         String s = HtmlUtil.repairContent(dataBean.getContent(), NetworkTitle.DomainSmartApplyResourceNormal);
         String html = HtmlUtil.getHtml(s,0);
         content.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);

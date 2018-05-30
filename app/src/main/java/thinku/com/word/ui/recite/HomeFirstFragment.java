@@ -18,6 +18,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
 import thinku.com.word.ui.personalCenter.TypeSettingActivity;
@@ -69,7 +70,7 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
     }
 
     public void init(){
-        Log.e(TAG, "init: " );
+
         String mode = ""  ;
         String initMode = SharedPreferencesUtils.getStudyMode(_mActivity);
         switch (initMode){
@@ -90,7 +91,11 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
         }else{
             now_type.setText("你还未选择记忆模式");
         }
-        LoginHelper.needLogin(_mActivity ,"");
+        Log.e(TAG, "uid: " + SharedPreferencesUtils.getUid(_mActivity));
+        if (!MyApplication.isLogin){
+            Log.e(TAG, "init: " );
+            LoginHelper.needLogin(_mActivity, "");
+        }
     }
 
     @Override
@@ -103,15 +108,6 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
                 WordPackageActivity.start(getActivity());
                 break;
         }
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        Log.e("homefirst", "onHiddenChanged: ");
-//        if (!hidden) {
-//            init();
-//        }
     }
 
     @Override

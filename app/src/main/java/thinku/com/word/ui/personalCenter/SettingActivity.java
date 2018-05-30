@@ -43,6 +43,7 @@ import io.reactivex.functions.Consumer;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.UserInfo;
@@ -59,6 +60,7 @@ import thinku.com.word.ui.personalCenter.update.SimpleUpdateApk;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.ImageUtil;
+import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharePref;
 import thinku.com.word.utils.SharedPreferencesUtils;
@@ -228,6 +230,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         alertDialog.setPositiveButton("是", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                MyApplication.isLogin = false ;
                 dialog.dismiss();
                 SharedPreferencesUtils.clearLogin(SettingActivity.this);
                 SharedPreferencesUtils.clearMatch(SettingActivity.this);
@@ -238,7 +241,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 pass.setText("");
                 email.setText("");
                 SharePref.saveCookie(mContext, "");
-                MainActivity.toMain(SettingActivity.this);
+                LoginHelper.needLogin(SettingActivity.this,"");
                 SharedPreferencesUtils.saveMemoryMode(mContext, "");
                 SharedPreferencesUtils.setImage(mContext, "");
                 SharedPreferencesUtils.setStudyMode(mContext,"");

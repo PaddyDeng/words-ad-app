@@ -17,8 +17,9 @@
             android:id="@+id/back"
             android:layout_width="70px"
             android:layout_height="70px"
+            android:padding="20px"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="40px"
+            android:layout_marginLeft="20px"
             android:src="@mipmap/white_back" />
 
         <TextView
@@ -31,7 +32,7 @@
             android:textColor="@color/white"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textSize="@dimen/title_text_size" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/title_right_t"

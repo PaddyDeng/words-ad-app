@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.yanzhenjie.nohttp.Headers;
@@ -254,6 +255,7 @@ public class LoginHelper {
 //        NeedLoginDialog dialog = new NeedLoginDialog(context, R.style.AlphaDialogAct);
 //        dialog.setContent(s);
 //        dialog.show();
+        Log.e(TAG, "needLogin: "  + s);
         Intent intent = new Intent(context , LoginActivity.class);
         context.startActivity(intent);
     }

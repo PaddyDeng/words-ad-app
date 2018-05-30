@@ -18,6 +18,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,6 +38,7 @@ import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.recite.MyPlanActivity;
+import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.RxHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
@@ -134,6 +137,8 @@ public class PKHomeActivity extends BaseActivity {
         init();
         if (MyApplication.mediaPlayer == null){
             MyApplication.mediaPlayer = MediaPlayer.create(this , R.raw.pk_bg);
+            MyApplication.mediaPlayer.setLooping(true);
+
         }
     }
 
@@ -141,10 +146,21 @@ public class PKHomeActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
             if (!MyApplication.mediaPlayer.isPlaying()) {
-                MyApplication.mediaPlayer.start();
+                try {
+                    MyApplication.mediaPlayer.prepareAsync();
+                    MyApplication.mediaPlayer.seekTo(0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                MyApplication.mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        MyApplication.mediaPlayer.start();
+                    }
+                });
+
             }
     }
-
 
     public void init() {
         new GlideUtils().loadCircle(this ,NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(this) ,myImage);
@@ -171,8 +187,8 @@ public class PKHomeActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
-                this.finishWithAnim();
                 stopPlayer();
+                this.finishWithAnim();
                 break;
             case R.id.review_match:
                 pkChose(PK_CANCEL);
@@ -188,25 +204,52 @@ public class PKHomeActivity extends BaseActivity {
 
     @Override
     protected boolean preBackExitPage() {
+        Log.e(TAG, "preBackExitPage: ");
         stopPlayer();
-        return super.preBackExitPage();
+        return true ;
+    }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+            Log.e(TAG, "onKeyDown: ");
+            stopPlayer();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     public void stopPlayer(){
+        Log.e(TAG, "stopPlayer: " + MyApplication.mediaPlayer.isPlaying() );
         if (MyApplication.mediaPlayer != null && MyApplication.mediaPlayer.isPlaying()){
             MyApplication.mediaPlayer.stop();
+            try {
+                MyApplication.mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                    @Override
+                    public boolean onError(MediaPlayer mp, int what, int extra) {
+                        Log.e(TAG, "onError: " + what +"  " + extra);
+//                        MyApplication.mediaPlayer.reset();
+                        return true ;
+                    }
+                });
+            } catch (Exception e) {
+                Log.e(TAG, "stopPlayer: " + e.getMessage() );
+                e.printStackTrace();
+            }
+
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(JPushData jPushData) {
+
         int type = jPushData.getType();
+        Log.e(TAG, "onEvent: " + type  );
         switch (type) {
             case PK_MATCH_SUCCESS:
                 showAll((EventPkData) jPushData.getMessage());
                 break;
             case PK_MATCH_CANCLE:
+                Log.e(TAG, "onEvent: "  );
                 hideAll();
                 addNet();
                 break;

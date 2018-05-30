@@ -6,10 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,7 +26,6 @@ import thinku.com.word.bean.PkResultBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.utils.GlideUtils;
-import thinku.com.word.utils.MeasureUtils;
 import thinku.com.word.utils.ShareUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
 

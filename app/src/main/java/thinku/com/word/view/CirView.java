@@ -108,6 +108,7 @@ public class CirView extends View {
         canvas.translate(width / 2, height / 2);
         paint.setColor(Color.GREEN);
         RectF rect = new RectF(-radius, -radius, radius, radius);
+        paint.setColor(context.getResources().getColor(R.color.yellow_right_round));
         canvas.drawArc(rect, -90, (float) Math.round((reviewValue / totalValue) * 360), true, paint);
         paint.setColor(context.getResources().getColor(R.color.circle_green));
         canvas.drawArc(rect, (float) Math.round((reviewValue / totalValue) * 360 - 90), (Math.round((newValue / totalValue) * 360)), true, paint);
@@ -192,7 +193,7 @@ public class CirView extends View {
         canvas.drawText(ReviewLableSecond, centerTextX(reviewX), reviewBaseY + (lableWidth.bottom - lableWidth.top) + (lableSecondWidth.bottom - lableSecondWidth.top) / 2, textPaintLable);
         Rect rect = new Rect();
         textPaintNum.getTextBounds(reviewWord, 0, reviewWord.length(), rect);
-        textPaintNum.setColor(context.getResources().getColor(R.color.circle_yellow));
+        textPaintNum.setColor(context.getResources().getColor(R.color.yellow_right_round));
         canvas.drawText(reviewWord, centerTextX(reviewX), reviewBaseY + (lableWidth.bottom - lableWidth.top) + (lableSecondWidth.bottom - lableSecondWidth.top) + (rect.bottom - rect.top), textPaintNum);
     }
 

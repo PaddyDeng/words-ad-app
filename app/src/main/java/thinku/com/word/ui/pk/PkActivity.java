@@ -30,6 +30,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.adapter.PKAdapter;
 import thinku.com.word.adapter.been.PKSelctBeen;
@@ -158,8 +159,7 @@ public class PkActivity extends BaseActivity {
         pkAdapter.setSelectRlClickListener(new SelectAnswerClickListener() {
             @Override
             public void onClick(int position, View view, int AnswerPosition) {
-                if (timePosable != null)
-                timePosable.dispose();
+                if (timePosable != null) timePosable.dispose();
                 isOne = true ;
                 if (position != AnswerPosition) {
                     pkSelectBeenList.get(position).setChose(true);
@@ -182,7 +182,7 @@ public class PkActivity extends BaseActivity {
                         .subscribe(new Consumer<Integer>() {
                             @Override
                             public void accept(@NonNull Integer integer) throws Exception {
-                                pkNext();
+                                pkNext(false);
                             }
                         }));
             }
@@ -193,15 +193,17 @@ public class PkActivity extends BaseActivity {
     /**
      * pk中下一个单词
      */
-    public void pkNext() {
+    public void pkNext(Boolean isFinsh) {
         Log.e(TAG, "pkNext: "  );
         if (timePosable != null)  timePosable.dispose();
-        addToCompositeDis(HttpUtil.pkAnswerObservable(totalId + "", wordsId, "", PK_TYPE_ERROR + "", duration + "")
-                .subscribe(new Consumer<ResultBeen<Void>>() {
-                    @Override
-                    public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                    }
-                }));
+        if (isFinsh) {
+            addToCompositeDis(HttpUtil.pkAnswerObservable(totalId + "", wordsId, "", PK_TYPE_ERROR + "", duration + "")
+                    .subscribe(new Consumer<ResultBeen<Void>>() {
+                        @Override
+                        public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                        }
+                    }));
+        }
         wordIndex++;
         if (wordIndex <=(wordsBeanList.size()-1)) {
             referUI(wordsBeanList.get(wordIndex));
@@ -212,8 +214,12 @@ public class PkActivity extends BaseActivity {
                         @Override
                         public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
                             if (getHttpResSuc(voidResultBeen.getCode())) {
+                                if (MyApplication.mediaPlayer != null && MyApplication.mediaPlayer.isPlaying() ) {
+                                    MyApplication.mediaPlayer.stop();
+                                }
                                 PKResultActivity.start(PkActivity.this , matchUid ,totalId+"");
                                 PkActivity.this.finishWithAnim();
+
                             } else {
                                 waiteMatch();
                             }
@@ -257,6 +263,9 @@ public class PkActivity extends BaseActivity {
                         if (getHttpResSuc(voidResultBeen.getCode())){
                             PKResultActivity.start(PkActivity.this, matchUid , totalId+"");
                             PkActivity.this.finishWithAnim();
+                            if (MyApplication.mediaPlayer != null && MyApplication.mediaPlayer.isPlaying() ) {
+                                MyApplication.mediaPlayer.stop();
+                            }
                         }else{
                             addToCompositeDis(RxHelper.delay(2000)
                                     .subscribe(new Consumer<Integer>() {
@@ -351,6 +360,7 @@ public class PkActivity extends BaseActivity {
     }
 
     public void referUI(final EventPkListData.WordsBean wordsBean) {
+        if (timePosable != null) timePosable.dispose();
         isOne = false ;
         timer.setText("10s");
         timePosable = RxHelper.countDown(10).subscribe(new Consumer<Integer>() {
@@ -361,9 +371,8 @@ public class PkActivity extends BaseActivity {
                     duration = 9 - integer;
                     timer.setText((integer -1) + "s");
                 } else {
-                    Log.e(TAG, "accept: " + isOne);
                     if ( !isOne ) {
-                        pkNext();
+                        pkNext(true);
                     }
                 }
             }

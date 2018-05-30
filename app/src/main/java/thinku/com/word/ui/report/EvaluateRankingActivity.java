@@ -46,7 +46,6 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
     private RecyclerView ranking_list;
     private SwipeRefreshLayout refer;
 
-
     private RankAdapter rankAdapter;
     private List<UserRankBeen.RankBean> rankBeanList;
     private Observable<String> observable ;

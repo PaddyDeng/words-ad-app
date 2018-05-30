@@ -16,11 +16,13 @@ import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import me.yokeyword.fragmentation.SupportActivity;
+import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.RequestCallback;
+import thinku.com.word.ui.personalCenter.SetNickNameActivity;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.PhoneAndEmailUtils;
@@ -74,6 +76,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         switch (v.getId()){
             case R.id.back:
                 finish();
+                MainActivity.toMain(this);
                 break;
             case R.id.login:
                 if(TextUtils.isEmpty(num_et.getText())){
@@ -105,17 +108,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     public void requestSuccess(UserInfo userInfo) {
                         dismissLoadDialog();
                         if (getHttpResSuc(userInfo.getCode())) {
-                            RxBus.get().post(C.RXBUS_LOGIN ,true);
-                            SharedPreferencesUtils.setPassword(LoginActivity.this, TextUtils.isEmpty(userInfo.getPhone()) ? userInfo.getEmail() : userInfo.getPhone(), userInfo.getPassword());
-                            SharedPreferencesUtils.setLogin(LoginActivity.this, userInfo);
-                            RxHelper.delay(500)
-                                    .subscribe(new Consumer<Integer>() {
-                                        @Override
-                                        public void accept(@NonNull Integer integer) throws Exception {
-                                            MainActivity.toMain(LoginActivity.this);
-                                        }
-                                    });
-                            LoginActivity.this.finish();
+                            if (TextUtils.isEmpty(userInfo.getNickname())){
+                                SetNickNameActivity.start(LoginActivity.this);
+                            }else {
+                                MyApplication.isLogin = true;
+                                RxBus.get().post(C.RXBUS_LOGIN, true);
+                                SharedPreferencesUtils.setPassword(LoginActivity.this, TextUtils.isEmpty(userInfo.getPhone()) ? userInfo.getEmail() : userInfo.getPhone(), userInfo.getPassword());
+                                SharedPreferencesUtils.setLogin(LoginActivity.this, userInfo);
+                                RxHelper.delay(500)
+                                        .subscribe(new Consumer<Integer>() {
+                                            @Override
+                                            public void accept(@NonNull Integer integer) throws Exception {
+                                                MainActivity.toMain(LoginActivity.this);
+                                            }
+                                        });
+                                LoginActivity.this.finish();
+                            }
                         }else{
                             toTast(userInfo.getMessage());
                         }

@@ -394,6 +394,11 @@
             </intent-filter>
         </receiver>
 
+        <!-- <activity  android:name=".wxapi.WXEntryActivity" -->
+        <!-- android:theme="@android:style/Theme.Translucent.NoTitleBar" -->
+        <!-- android:configChanges="keyboardHidden|orientation|screenSize" -->
+        <!-- android:exported="true" -->
+        <!-- android:screenOrientation="portrait" /> -->
         <activity
             android:name=".ui.recite.AddMyPlanActivity"
             android:screenOrientation="portrait"
@@ -401,19 +406,22 @@
         <activity
             android:name=".ui.share.ShareDateActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme" >
-            </activity>
+            android:theme="@style/NoTitleTheme"></activity>
         <activity
             android:name=".ui.recite.ReviewExerciseTypeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
-        <activity android:name=".ui.webView.WebViewActivity"
+        <activity
+            android:name=".ui.webView.WebViewActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme"
-            />
-        <activity android:name=".ui.periphery.ClassDetailActivity1"
+            android:theme="@style/NoTitleTheme" />
+        <activity
+            android:name=".ui.periphery.ClassDetailActivity1"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme"/>
+            android:theme="@style/NoTitleTheme" />
+        <activity android:name=".ui.personalCenter.ReadMeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
     </application>
 
 </manifest>

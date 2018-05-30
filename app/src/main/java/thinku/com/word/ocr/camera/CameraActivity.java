@@ -365,18 +365,7 @@ public class CameraActivity extends FragmentActivity {
                     e.printStackTrace();
                 }
 
-//                Intent intent = new Intent();
-//                intent.putExtra(CameraActivity.KEY_CONTENT_TYPE, contentType);
-//                setResult(Activity.RESULT_OK, intent);
-//
-//                RecognizeService.recGeneral(outputFile.getAbsolutePath(),
-//                        new RecognizeService.ServiceListener() {
-//                            @Override
-//                            public void onResult(String result) {
                 CameraSearchActivity.startAct(CameraActivity.this, "");
-//                            }
-//                        });
-//                finish();
             }
         }.start();
     }

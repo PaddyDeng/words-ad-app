@@ -268,7 +268,7 @@ public class WordEvaluateFragment extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        Log.e(TAG, "accept: " + throwable.toString());
+                        toTast(WordEvaluateFragment.this ,"");
                         dismissLoadDialog();
                     }
                 }));
@@ -331,6 +331,7 @@ public class WordEvaluateFragment extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
+                        toTast(throwable.getMessage());
                         Log.e(TAG, "accept: " + throwable.toString());
                     }
                 }));
@@ -349,12 +350,12 @@ public class WordEvaluateFragment extends BaseActivity {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
-                        showLoadDialog();
+//                        showLoadDialog();
                     }
                 }).subscribe(new Consumer<ReviewBean>() {
                     @Override
                     public void accept(@NonNull ReviewBean reviewCaseBean) throws Exception {
-                        dismissLoadDialog();
+//                        dismissLoadDialog();
                         if (reviewCaseBean.getCode() == 2) {
                             share();
                         } else {
@@ -371,7 +372,8 @@ public class WordEvaluateFragment extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        dismissLoadDialog();
+//                        dismissLoadDialog();
+                        toTast(throwable.getMessage());
                     }
                 }));
     }
@@ -625,6 +627,7 @@ public class WordEvaluateFragment extends BaseActivity {
         if (tag == C.NORMAL) {
 
             if (MyApplication.task == 3) {
+                oldAiBinHaoSi();
             } else {
                 normalReciteWords();
             }
@@ -636,12 +639,12 @@ public class WordEvaluateFragment extends BaseActivity {
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(@NonNull Disposable disposable) throws Exception {
-                                showLoadDialog();
+//                                showLoadDialog();
                             }
                         }).subscribe(new Consumer<ResultBeen<List<String>>>() {
                             @Override
                             public void accept(@NonNull ResultBeen<List<String>> listResultBeen) throws Exception {
-                                dismissLoadDialog();
+//                                dismissLoadDialog();
                                 if (words != null) {
                                     words.clear();
                                     words.addAll(listResultBeen.getData());
@@ -654,7 +657,7 @@ public class WordEvaluateFragment extends BaseActivity {
                         }, new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                dismissLoadDialog();
+//                                dismissLoadDialog();
                             }
                         }));
             }
@@ -693,6 +696,7 @@ public class WordEvaluateFragment extends BaseActivity {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         dismissLoadDialog();
+                        toTast(WordEvaluateFragment.this ,throwable.getMessage());
                         Log.e(TAG, "accept: " + throwable.toString());
                     }
                 }));
@@ -706,29 +710,29 @@ public class WordEvaluateFragment extends BaseActivity {
                 this.finish();
                 break;
             case R.id.familiar:
-                if (knowWellPlayer != null && !knowWellPlayer.isPlaying()) knowWellPlayer.start();
+//                if (knowWellPlayer != null && !knowWellPlayer.isPlaying()) knowWellPlayer.start();
                 updataStatus(C.LGWordStatusFamiliar);
                 break;
             case R.id.errors:
                 WordErrorActivity.start(WordEvaluateFragment.this, wordId);
                 break;
             case R.id.unknow:
-                if (notKnowPlayer != null) {
-                    if (!notKnowPlayer.isPlaying()) {
-                        notKnowPlayer.start();
-                    }
-                }
+//                if (notKnowPlayer != null) {
+//                    if (!notKnowPlayer.isPlaying()) {
+//                        notKnowPlayer.start();
+//                    }
+//                }
                 if (tag == C.NORMAL) {
                     addWords(recitWord);
                 }
                 updataStatus(C.LGWordStatusIncoginzance);
                 break;
             case R.id.know:
-                if (knowPlayer != null && !knowPlayer.isPlaying()) knowPlayer.start();
+//                if (knowPlayer != null && !knowPlayer.isPlaying()) knowPlayer.start();
                 updataStatus(C.LGWordStatusKnow);
                 break;
             case R.id.blurry:
-                if (dimPlayer != null && !dimPlayer.isPlaying()) dimPlayer.start();
+//                if (dimPlayer != null && !dimPlayer.isPlaying()) dimPlayer.start();
                 if (tag == C.NORMAL) {
                     addWords(recitWord);
                 }
@@ -795,12 +799,12 @@ public class WordEvaluateFragment extends BaseActivity {
                             .doOnSubscribe(new Consumer<Disposable>() {
                                 @Override
                                 public void accept(@NonNull Disposable disposable) throws Exception {
-                                    showLoadDialog();
+//                                    showLoadDialog();
                                 }
                             }).subscribe(new Consumer<ResultBeen<Void>>() {
                                 @Override
                                 public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                                    dismissLoadDialog();
+//                                    dismissLoadDialog();
                                     posiiton++;
                                     if (isNewAiBinHaoSi) {
                                         if (posiiton == words.size()) {
@@ -820,7 +824,7 @@ public class WordEvaluateFragment extends BaseActivity {
                             }, new Consumer<Throwable>() {
                                 @Override
                                 public void accept(@NonNull Throwable throwable) throws Exception {
-                                    dismissLoadDialog();
+//                                    dismissLoadDialog();
                                     toTast(WordEvaluateFragment.this, throwable.toString());
                                 }
                             }));
@@ -829,12 +833,12 @@ public class WordEvaluateFragment extends BaseActivity {
                             .doOnSubscribe(new Consumer<Disposable>() {
                                 @Override
                                 public void accept(@NonNull Disposable disposable) throws Exception {
-                                    showLoadDialog();
+//                                    showLoadDialog();
                                 }
                             }).subscribe(new Consumer<ResultBeen<Void>>() {
                                 @Override
                                 public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                                    dismissLoadDialog();
+//                                    dismissLoadDialog();
                                     if (isNormal){
                                         reciteWords();
                                     } else {
@@ -859,7 +863,7 @@ public class WordEvaluateFragment extends BaseActivity {
                             }, new Consumer<Throwable>() {
                                 @Override
                                 public void accept(@NonNull Throwable throwable) throws Exception {
-                                    dismissLoadDialog();
+//                                    dismissLoadDialog();
                                     toTast(WordEvaluateFragment.this, throwable.getMessage());
                                 }
                             }));
@@ -876,12 +880,12 @@ public class WordEvaluateFragment extends BaseActivity {
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(@NonNull Disposable disposable) throws Exception {
-                                showLoadDialog();
+//                                showLoadDialog();
                             }
                         }).subscribe(new Consumer<ResultBeen<Void>>() {
                             @Override
                             public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                                dismissLoadDialog();
+//                                dismissLoadDialog();
                                 posiiton++;
                                 if (words != null) {
                                     if (posiiton < words.size()) {
@@ -899,7 +903,7 @@ public class WordEvaluateFragment extends BaseActivity {
                         }, new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                dismissLoadDialog();
+//                                dismissLoadDialog();
                                 toTast(WordEvaluateFragment.this, throwable.toString());
                             }
                         }));

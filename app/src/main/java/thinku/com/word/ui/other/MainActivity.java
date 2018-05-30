@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -259,8 +260,17 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         if (MyApplication.mediaPlayer != null){
-            if (MyApplication.mediaPlayer.isPlaying()) MyApplication.mediaPlayer.stop();
-            MyApplication.mediaPlayer.release();
+            if (MyApplication.mediaPlayer.isPlaying()) {
+                MyApplication.mediaPlayer.stop();
+                try {
+//                    MyApplication.mediaPlayer.prepare();
+//                    MyApplication.mediaPlayer.seekTo(0);
+                    MyApplication.mediaPlayer.release();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
         }
         OCRProxy.orcRelease();
     }

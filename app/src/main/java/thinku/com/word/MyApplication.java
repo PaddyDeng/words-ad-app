@@ -40,6 +40,7 @@ public class MyApplication extends Application {
     public static MediaPlayer mediaPlayer ;
     public static int task ;
     public static String signTime ;
+    public static boolean isLogin = false ;
     public static Context getInstance() {
         return mContext;
     }

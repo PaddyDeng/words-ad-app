@@ -132,8 +132,6 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-//        if (hidden) initData();
-        Log.e(TAG, "onHiddenChanged: " );
     }
 
     public void initData() {
@@ -164,6 +162,11 @@ public class HomeFragment extends BaseFragment {
                         todayNum.setText(userIndex.getToDayWords());
                         reviewNum.setText(userIndex.getUserReviewWords() + "/" + userIndex.getUserNeedReviewWords());
                         MyApplication.task = Integer.parseInt(userIndex.getTask());
+                        if (MyApplication.task == 1){
+                            startRecite.setText("今日任务已完成，继续背单词");
+                        }else{
+                            startRecite.setText("开始背单词");
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override

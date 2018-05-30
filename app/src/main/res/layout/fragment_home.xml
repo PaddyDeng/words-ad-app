@@ -282,7 +282,7 @@
                 android:textSize="40px"
                 android:layout_marginTop="30px"
                 android:textColor="@color/white"
-                android:background="@drawable/main_20round_tv"
+                android:background="@drawable/main_10round_tv"
                 android:gravity="center"
                 android:text="开始背单词"
                 android:layout_width="match_parent"

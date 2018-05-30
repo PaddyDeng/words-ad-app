@@ -26,7 +26,6 @@ android {
         ]
     }
 
-
 //    signingConfigs{
 //        debug{
 //            storeFile file("E:/company/words-ad-app/word.jks")   //这个文件是我的,改成你自己的release签名文件
@@ -153,5 +152,4 @@ dependencies {
     compile 'com.jude:rollviewpager:1.4.6'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-//    compile files('libs/jsoup-1.11.3.jar')
 }

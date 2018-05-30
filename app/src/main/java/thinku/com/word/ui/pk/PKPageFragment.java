@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.zhy.autolayout.AutoLinearLayout;
+import com.zhy.autolayout.AutoRelativeLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +53,8 @@ public class PKPageFragment extends BaseFragment {
     private ProgressView winning_probability;
     private RecyclerView ranking_list;
 
-
+    @BindView(R.id.userInfo)
+    AutoRelativeLayout userInfo ;
     private PkRankAdapter pkRankAdapter;
     private List<PkIndexBeen.RankingListBean> rankingListBeans;
 
@@ -133,11 +137,8 @@ public class PKPageFragment extends BaseFragment {
                     @Override
                     public void accept(PkIndexBeen pkIndexBeen) throws Exception {
 
-                        if (pkIndexBeen.getCode() == 99){
-                            LoginHelper.needLogin(_mActivity , "您还未登陆， 请先登陆");
-                        }
                         if (pkIndexBeen != null) {
-                            referUi(pkIndexBeen);
+                                referUi(pkIndexBeen);
                         }else{
                             initReferUi();
                         }
@@ -145,6 +146,7 @@ public class PKPageFragment extends BaseFragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
+                        Log.e(TAG, "accept: " + throwable.toString() );
                     }
                 }));
     }
@@ -152,11 +154,7 @@ public class PKPageFragment extends BaseFragment {
 
 
     public void initReferUi(){
-        new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + "", portrait);
-        name.setText("");
-        win_num.setText("win：" + 0);
-        lose_num.setText("loss：" +0);
-        vocabulary.setText(0+"");
+        userInfo.setVisibility(View.GONE);
     }
     public void referUi(PkIndexBeen pkIndexBeen) {
         PkIndexBeen.UserBean userBean = pkIndexBeen.getUser();
@@ -166,6 +164,8 @@ public class PKPageFragment extends BaseFragment {
             win_num.setText("win：" + userBean.getWin());
             lose_num.setText("loss：" + userBean.getLose());
             vocabulary.setText(userBean.getWords());
+        }else{
+            userInfo.setVisibility(View.GONE);
         }
         if (pkIndexBeen.getRankingList() != null && pkIndexBeen.getRankingList().size() > 0) {
             rankingListBeans.clear();

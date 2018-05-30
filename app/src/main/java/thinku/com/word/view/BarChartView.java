@@ -113,10 +113,10 @@ public class BarChartView extends View {
         hintPaint.setColor(getResources().getColor(R.color.mainColor));
 
         hintTextPaint = new TextPaint();
-        hintTextPaint.setTextSize(sp2px(12));
+        hintTextPaint.setTextSize(sp2px(10));
         hintTextPaint.setTextAlign(Align.CENTER);
+        hintTextPaint.setColor(getResources().getColor(R.color.dark_gray_l));
         hintTextPaint.setAntiAlias(true);
-        hintTextPaint.setColor(getResources().getColor(R.color.black));
         paint = new Paint();
         paint.setTextSize(sp2px(10));
         paint.setAntiAlias(true);
@@ -235,7 +235,7 @@ public class BarChartView extends View {
                  startX =  coordinateRect.left + cutoffwidth
                         * i * (yRawData.size() + 1) + cutoffwidth + cutoffwidth
                         * yRawData.size() / 2  - coordinateRect.width() / 15 / 2;
-                 stopX = startX + coordinateRect.width() / 15;
+                 stopX = startX + coordinateRect.width() / 12;
                 if (stopX <= offsetWidth + coordinateRect.left) {
                     continue;
                 }
@@ -275,18 +275,17 @@ public class BarChartView extends View {
                             drawText(text, coordinateRect.left + cutoffwidth
                                             * i * (yRawData.size() + 1) + cutoffwidth + cutoffwidth
                                             * yRawData.size() / 2, coordinateRect.height() - dip2px(5) + rectF.height() * k,
-                                    canvas, Align.CENTER, 10, Color.BLACK); // X轴上的坐标
+                                    canvas, Align.CENTER, 10, context.getResources().getColor(R.color.dark_gray_l)); // X轴上的坐标
                         } else {
                             if (k == 0) {
                                 text = s.substring(k, k + 2);
                             } else {
                                 text = s.substring(k + 1, k + 2);
                             }
-
                             drawText(text, coordinateRect.left + cutoffwidth
                                             * i * (yRawData.size() + 1) + cutoffwidth + cutoffwidth
                                             * yRawData.size() / 2, coordinateRect.height() - dip2px(5) + rectF.height() * k,
-                                    canvas, Align.CENTER, 10, Color.BLACK); // X轴上的坐标
+                                    canvas, Align.CENTER, 10, context.getResources().getColor(R.color.dark_gray_l)); // X轴上的坐标
                         }
 
                     }
@@ -297,7 +296,7 @@ public class BarChartView extends View {
                         drawText(text, coordinateRect.left + cutoffwidth
                                         * i * (yRawData.size() + 1) + cutoffwidth + cutoffwidth
                                         * yRawData.size() / 2, coordinateRect.height() - dip2px(5) + rectF.height() * m,
-                                canvas, Align.CENTER, 10, Color.BLACK); // X轴上的坐标
+                                canvas, Align.CENTER, 10, context.getResources().getColor(R.color.circle_green)); // X轴上的坐标
                     }
                 }
             }

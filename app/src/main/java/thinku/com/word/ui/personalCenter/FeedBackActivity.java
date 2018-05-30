@@ -81,7 +81,10 @@ public class FeedBackActivity extends BaseActivity {
                             dismissLoadDialog();
                             if (voidResultBeen.getCode() == 99) {
                                 LoginHelper.needLogin(FeedBackActivity.this, "你还没登录，请先登录");
-                            } else  toTast(FeedBackActivity.this ,voidResultBeen.getMessage());
+                            } else {
+                                toTast(FeedBackActivity.this, voidResultBeen.getMessage());
+                                FeedBackActivity.this.finishWithAnim();
+                            }
                         }
                     }, new Consumer<Throwable>() {
                         @Override

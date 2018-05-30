@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tool="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -14,7 +14,7 @@
         tool:text="你还未选择记忆模式"
         android:gravity="center_horizontal"
         android:layout_height="wrap_content" />
-    <LinearLayout
+    <com.zhy.autolayout.AutoLinearLayout
         android:id="@+id/change_type"
         android:layout_marginTop="30dp"
         android:gravity="center_vertical"
@@ -31,16 +31,16 @@
         android:text="点击更改记忆模式"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
+    </com.zhy.autolayout.AutoLinearLayout>
+    <com.zhy.autolayout.AutoLinearLayout
         android:orientation="vertical"
-        android:layout_marginTop="40px"
-        android:layout_marginLeft="150px"
-        android:layout_marginRight="150px"
+        android:layout_marginTop="100px"
+        android:layout_marginLeft="100px"
+        android:layout_marginRight="100px"
         android:background="@drawable/gray_round_ll"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="700px">
+        android:layout_height="800px">
         <de.hdodenhof.circleimageview.CircleImageView
             android:src="@mipmap/a1"
             android:layout_marginTop="150px"
@@ -52,7 +52,7 @@
             android:layout_marginTop="40px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-    </LinearLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
     <TextView
         android:id="@+id/word_depot"
         android:textSize="50px"
@@ -61,8 +61,8 @@
         android:text="进入词库"
         android:background="@drawable/main_20round_tv"
         android:layout_marginTop="30dp"
-        android:layout_marginRight="150px"
-        android:layout_marginLeft="150px"
+        android:layout_marginRight="100px"
+        android:layout_marginLeft="100px"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
-</LinearLayout>
+        android:layout_height="40dp" />
+</com.zhy.autolayout.AutoLinearLayout>

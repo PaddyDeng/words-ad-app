@@ -9,11 +9,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
+import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
 import thinku.com.word.ui.other.MainActivity;
+import thinku.com.word.ui.share.ShareDateActivity;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.Screenshot;
 import thinku.com.word.utils.SharedPreferencesUtils;
@@ -89,6 +91,7 @@ public class SplashActivity extends BaseActivity {
             LoginHelper.setSession(SplashActivity.this, userInfo, new ICallBack() {
                 @Override
                 public void onSuccess(Object o) {
+                    MyApplication.isLogin = true ;
                     init();
                 }
 

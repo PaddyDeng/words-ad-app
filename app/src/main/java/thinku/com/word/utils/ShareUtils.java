@@ -13,6 +13,7 @@ import java.util.HashMap;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.wechat.friends.Wechat;
 import thinku.com.word.R;
 import thinku.com.word.http.NetworkTitle;
 
@@ -58,11 +59,11 @@ public class ShareUtils {
         //关闭sso授权
         oks.disableSSOWhenAuthorize();
         // title标题，微信、QQ和QQ空间等平台使用
-        oks.setTitle("雷哥单词");
+        oks.setTitle(content);
         oks.setTitleUrl(NetworkTitle.WORD1+ File.separator +"wap/share/index?uid=" + SharedPreferencesUtils.getUid(context)+"&type=2");
         Log.e(TAG, "shareContent: " + content );
         oks.setUrl(NetworkTitle.WORD1+ File.separator +"wap/share/index?uid=" + SharedPreferencesUtils.getUid(context)+"&type=2");
-        oks.setText(content);
+//        oks.setText(content);
         oks.setImagePath(filePath);
         oks.show(context);
         oks.setCallback(new PlatformActionListener() {
@@ -81,5 +82,6 @@ public class ShareUtils {
                 Log.e(TAG, "onCancel: " + platform + "  " + i + "   " + i );
             }
         });
+
     }
 }

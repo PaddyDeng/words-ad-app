@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -47,15 +48,19 @@ public class MyReceiver extends BroadcastReceiver {
 					Logger.i(TAG, "This message has no Extra data");
 					continue;
 				}
+				Log.e(TAG, "printBundle: " + bundle.getString(JPushInterface.EXTRA_EXTRA) );
 				try {
 					JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
 					switch (json.optInt("type")){
+
 						case 1:
 							JPushData<EventPkData> jPushData = FromJsonUtils.fromJson(bundle.getString(JPushInterface.EXTRA_EXTRA), EventPkData.class);
 							EventBus.getDefault().post(jPushData);
 							break;
 						case 3:
+
 							JPushData  jPushData1 = new JPushData();
+							jPushData1.setType(3);
 							EventBus.getDefault().post(jPushData1);
 							break;
 						case 2:

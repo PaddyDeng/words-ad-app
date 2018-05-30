@@ -51,7 +51,7 @@
     </RelativeLayout>
     <de.hdodenhof.circleimageview.CircleImageView
         android:src="@mipmap/logo"
-        android:layout_marginTop="150px"
+        android:layout_marginTop="80dp"
         android:layout_width="400px"
         android:layout_height="400px" />
     <TextView
@@ -69,7 +69,7 @@
         android:layout_height="120px"
         android:layout_marginLeft="150px"
         android:layout_marginRight="150px"
-        android:layout_marginTop="150px"
+        android:layout_marginTop="30dp"
         android:background="@color/mainColor"
         android:gravity="center"
         android:text="立即评估"
@@ -82,7 +82,7 @@
         android:layout_height="120px"
         android:layout_marginLeft="150px"
         android:layout_marginRight="150px"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:background="@color/mainColor"
         android:gravity="center"
         android:text="查看评估排行榜"

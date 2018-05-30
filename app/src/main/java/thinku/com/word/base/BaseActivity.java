@@ -51,6 +51,7 @@ public class BaseActivity extends AutoLayoutActivity {
     private ImmersionBar immersionBar;
     protected RxPermissions mRxPermissions;
 
+
     protected ConcurrentMap<String, CompositeDisposable> mConcurrentMap = new ConcurrentHashMap<>();
     private int firstTime ;
     @Override
@@ -199,7 +200,7 @@ public class BaseActivity extends AutoLayoutActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_BACK == keyCode) {
+        if (KeyEvent.KEYCODE_BACK == keyCode ) {
             if (preBackExitPage()) {
                 return true;
             }
@@ -212,6 +213,7 @@ public class BaseActivity extends AutoLayoutActivity {
 
         return super.onKeyDown(keyCode, event);
     }
+
 
 
 

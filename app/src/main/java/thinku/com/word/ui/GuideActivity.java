@@ -13,9 +13,12 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.ui.adapter.SplashAdapter;
 import thinku.com.word.ui.personalCenter.TypeSettingActivity;
+import thinku.com.word.utils.RxHelper;
 
 /**
  * 引导页
@@ -89,8 +92,15 @@ public class GuideActivity extends AppCompatActivity implements ViewPager.OnPage
             }
         }
         if (position == points.size() -1 ){
-            TypeSettingActivity.start(this ,true);
-            this.finish();
+            RxHelper.delay(1000)
+                    .subscribe(new Consumer<Integer>() {
+                        @Override
+                        public void accept(@NonNull Integer integer) throws Exception {
+                            TypeSettingActivity.start(GuideActivity.this ,true);
+                            GuideActivity.this.finish();
+                        }
+                    });
+
         }
     }
 

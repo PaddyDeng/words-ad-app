@@ -233,7 +233,11 @@ public class RoundFragment extends BaseFragment {
         });
         rollPager.setAdapter(recentClassAdapter);
         choseLiveList(roundBean.getLivePreview());
-        caseBeanList.addAll(roundBean.getCaseX());
+        if (roundBean.getCaseX() .size() > 4) {
+            caseBeanList.addAll(roundBean.getCaseX().subList(0  ,4 ));
+        }else{
+            caseBeanList.addAll(roundBean.getCaseX().subList(0  ,4 ));
+        }
         evaAdapter.notifyDataSetChanged();
         setClass(roundBean.getChoiceness());
     }

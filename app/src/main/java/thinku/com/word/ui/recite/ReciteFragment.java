@@ -35,7 +35,6 @@ import thinku.com.word.utils.FileUtil;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
-import thinku.com.word.utils.WaitUtils;
 
 /**
  * 背单词
@@ -70,7 +69,6 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
         findView(view);
         setClick();
         new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(_mActivity), portrait);
-        initView();
         observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE, String.class);
         observable.subscribe(new Consumer<String>() {
             @Override
@@ -100,6 +98,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+
     }
 
     @Override
@@ -200,6 +199,11 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
         startActivityForResult(intent, REQUEST_CODE_GENERAL);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     public void setFragment(int tag) {
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         if (oldPage != -1 && oldPage != tag) {
@@ -223,8 +227,9 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
             }
         }
         oldPage = tag;
+        Log.e(TAG, "setFragment: " + tag );
         if (tag==0) {
-            RxBus.get().post(C.RXBUS_REFER_HOMEFIRST, true);
+//            RxBus.get().post(C.RXBUS_REFER_HOMEFIRST, true);
         } else {
             RxBus.get().post(C.RXBUS_REFER_HOME, true);
         }
