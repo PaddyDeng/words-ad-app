@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl"
+    android:layout_width="100dp"
+    android:layout_marginTop="10dp"
+    android:layout_height="match_parent"
+    android:background="@drawable/word_bag_select"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="添加\n词包"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        android:visibility="visible" />
+
+
+</RelativeLayout>

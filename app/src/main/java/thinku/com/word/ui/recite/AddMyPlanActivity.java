@@ -224,7 +224,7 @@ public class AddMyPlanActivity extends BaseActivity {
                             //  添加词包成功
                             updataNowPack(id);
                         }else{
-                            toTast(AddMyPlanActivity.this ,"添加词包失败");
+                            toTast(AddMyPlanActivity.this ,"添加词包成功");
                         }
                     }
                 }, new Consumer<Throwable>() {
@@ -245,7 +245,7 @@ public class AddMyPlanActivity extends BaseActivity {
                 if (getHttpResSuc(voidResultBeen.getCode())) {
                     MainActivity.toMain(AddMyPlanActivity.this);
                 } else {
-                    toTast("添加词包失败");
+                    toTast("修改当前词包失败");
                 }
             }
         }, new Consumer<Throwable>() {

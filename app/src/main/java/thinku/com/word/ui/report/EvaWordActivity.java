@@ -49,6 +49,8 @@ public class EvaWordActivity extends BaseActivity {
     LinearLayout errors;
     @BindView(R.id.word)
     TextView word;
+    @BindView(R.id.newWord)
+    TextView needView ;
     @BindView(R.id.play)
     ImageView play;
     @BindView(R.id.mnemonic)
@@ -88,10 +90,9 @@ public class EvaWordActivity extends BaseActivity {
         rightPlayer = MediaPlayer.create(this ,R.raw.eva_right_and_know);
     }
 
-
-
     public void initView(){
         familiar.setVisibility(View.GONE);
+        needView.setVisibility(View.GONE);
     }
 
     public void initRecy() {

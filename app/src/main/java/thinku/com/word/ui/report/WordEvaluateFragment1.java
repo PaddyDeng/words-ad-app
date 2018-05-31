@@ -67,8 +67,6 @@ public class WordEvaluateFragment1 extends BaseActivity {
     ImageView top;
     @BindView(R.id.content_show)
     RelativeLayout contentShow;
-    @BindView(R.id.content_scroll)
-    ScrollView content_srcoll ;
     @BindView(R.id.bottom_click)
     LinearLayout bottomClick;
     @BindView(R.id.prencente)
@@ -178,61 +176,16 @@ public class WordEvaluateFragment1 extends BaseActivity {
         notKnowPlayer = MediaPlayer.create(this, R.raw.eva_error_and_not_know);
         knowWellPlayer = MediaPlayer.create(this, R.raw.know_well);
     }
-
-
-
-
-
-
-
-
     /**
      * @param recitWord
      */
     public void referUi1(final RecitWordBeen recitWord) {
-        this.recitWord = recitWord;
-        //  首页显示的内容
-        if (SharedPreferencesUtils.getChoseMode(WordEvaluateFragment1.this).equals("英中")&& tag == C.REVIEW){
-            word.setVisibility(View.VISIBLE);
-            name.setVisibility(View.GONE);
-        }else if (SharedPreferencesUtils.getChoseMode(WordEvaluateFragment1.this).equals("中英")){
-            name.setVisibility(View.VISIBLE);
-            word.setVisibility(View.GONE);
-        }else if ( tag == C.NORMAL){
-            name.setVisibility(View.GONE);
-            word.setVisibility(View.VISIBLE);
-        }
         prencente.setText("认知率" + recitWord.getPercent() + "%");
         phonogram.setText(recitWord.getWords().getPhonetic_us());
         name.setText(recitWord.getWords().getTranslate());
-        if (!TextUtils.isEmpty(recitWord.getWords().getUs_audio())) {
-            IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-
-                }
-            });
-        } else {
-            if (!TextUtils.isEmpty(recitWord.getWords().getUk_audio()))
-                IMAudioManager.instance().playSound(recitWord.getWords().getUk_audio(), new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-
-                    }
-                });
-        }
         word.setText(recitWord.getWords().getWord());
-        if (isShow) {
-            contentShow.setVisibility(View.GONE);
-            bottomClick.setVisibility(View.GONE);
-            contentHide.setVisibility(View.VISIBLE);
-        } else {
-            bottomClick.setBackground(null);
-            bottomClick.setVisibility(View.GONE);
-            contentHide.setVisibility(View.GONE);
-            contentShow.setVisibility(View.VISIBLE);
-        }
-
+        contentShow.setVisibility(View.GONE);
+        contentHide.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(recitWord.getWords().getMnemonic())) {
             String content = HtmlUtil.replaceRN(recitWord.getWords().getMnemonic()) ;
             helpContent.setText(content);
@@ -243,7 +196,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
             @Override
             public void onClick(View view) {
                 //  显示更多内容
-                content_srcoll.scrollTo(0, 0);
+                contentShow.scrollTo(0, 0);
                 contentShow.setVisibility(View.VISIBLE);
                 contentHide.setVisibility(View.GONE);
                 bottomClick.setVisibility(View.VISIBLE);

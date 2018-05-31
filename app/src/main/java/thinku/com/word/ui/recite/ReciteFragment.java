@@ -98,7 +98,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-
+        if (!hidden) initView();
     }
 
     @Override
@@ -145,7 +145,9 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                             }
                         } else if (been.getCode() == 98){
                             setFragment(0);
+                            new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE , portrait);
                         } else {
+                            new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE , portrait);
                             setFragment(0);
                         }
                     }

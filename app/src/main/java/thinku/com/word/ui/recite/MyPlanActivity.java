@@ -405,7 +405,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void delete(final RecyclerView.ViewHolder viewHolder, final int poisition) {
-        Package.PackData packData = packdatas.get(poisition);
+        final Package.PackData packData = packdatas.get(poisition);
         addToCompositeDis(HttpUtil.deletePackageObservable(packData.getId())
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -418,14 +418,15 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
                         dismissLoadDialog();
                         if (getHttpResSuc(voidResultBeen.getCode())) {
                             if (poisition != adapter.getSelectP()) {
+
                                 packdatas.remove(viewHolder.getAdapterPosition());
                                 adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
                             } else {
                                 if (packdatas.size() > 0) {
                                     packdatas.remove(viewHolder.getAdapterPosition());
-                                    adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
                                     adapter.setSelectP(0);
-                                    manager.scrollToPositionWithOffset(viewHolder.getAdapterPosition(), 0);
+                                    adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                                    ((LinearLayoutManager)words_bag_list.getLayoutManager()).scrollToPositionWithOffset(viewHolder.getAdapterPosition() , 0);
                                 }
                             }
                         } else {

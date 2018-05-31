@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="150dp"
+    android:layout_width="120dp"
     android:layout_height="match_parent"
     android:gravity="center_horizontal">
 
@@ -12,16 +12,6 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/word_bag_select"
         android:gravity="center_horizontal">
-
-        <TextView
-            android:id="@+id/add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="添加\n词包"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:visibility="gone" />
 
         <TextView
             android:id="@+id/study"
@@ -57,7 +47,7 @@
                     android:maxLines="1"
                     android:text="阅读"
                     android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <TextView

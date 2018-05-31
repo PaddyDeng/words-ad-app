@@ -2,7 +2,6 @@ package thinku.com.word.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,9 @@ import thinku.com.word.view.ProgressView;
  * Created by Administrator on 2018/2/8.
  */
 
-public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHolder> {
+public class WordBagAdapter extends RecyclerView.Adapter {
+    private static final int PACK = 1;   //  词包布局
+    private static final int ADD = 2;    // 添加词包布局
     private Context context;
     private List<Package.PackData> datas;
     private boolean isDelete;
@@ -63,62 +64,66 @@ public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHold
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.item_word_bag, parent, false);
-        ViewHolder holder = new ViewHolder(v);
-        return holder;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == PACK) {
+            View v = LayoutInflater.from(context).inflate(R.layout.item_word_bag, parent, false);
+            PakcHolder holder = new PakcHolder(v);
+            return holder;
+        } else if (viewType == ADD) {
+            View v = LayoutInflater.from(context).inflate(R.layout.item_add_pack, parent, false);
+            AddHolder addHolder = new AddHolder(v);
+            addHolder.rl.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    WordPackageActivity.start(context);
+                }
+            });
+            return addHolder;
+        } else {
+            View v = LayoutInflater.from(context).inflate(R.layout.item_add_pack, parent, false);
+            AddHolder addHolder = new AddHolder(v);
+            addHolder.rl.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    WordPackageActivity.start(context);
+                }
+            });
+            return addHolder;
+        }
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        Log.e("tag", "onBindViewHolder: " +position  + datas.size() );
-        if (isDelete) {
-            if (null == datas || position == datas.size()) {
-                holder.delete.setVisibility(View.GONE);
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        if (holder instanceof PakcHolder) {
+            PakcHolder pakcHolder = (PakcHolder) holder;
+            if (isDelete) {
+                pakcHolder.delete.setVisibility(View.VISIBLE);
             } else {
-                holder.delete.setVisibility(View.VISIBLE);
+                pakcHolder.delete.setVisibility(View.GONE);
             }
-        } else {
-            holder.delete.setVisibility(View.GONE);
-        }
-        if (null == datas || position == datas.size()) {
-            holder.ll.setVisibility(View.GONE);
-            holder.add.setVisibility(View.VISIBLE);
-        } else {
-            holder.ll.setVisibility(View.VISIBLE);
-            holder.add.setVisibility(View.GONE);
-        }
-
-        holder.add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WordPackageActivity.start(context);
-            }
-        });
-        if (datas != null && datas.size() > 0) {
-            if (position != datas.size()) {
+            if (position < datas.size()) {
                 if (selectP == position) {
-                    holder.study.setVisibility(View.VISIBLE);
-                    holder.rl.setSelected(true);
-                    holder.name.setTextColor(context.getResources().getColor(R.color.white));
-                    holder.num.setTextColor(context.getResources().getColor(R.color.white));
+                    pakcHolder.study.setVisibility(View.VISIBLE);
+                    pakcHolder.rl.setSelected(true);
+                    pakcHolder.name.setTextColor(context.getResources().getColor(R.color.white));
+                    pakcHolder.num.setTextColor(context.getResources().getColor(R.color.white));
                     //设置进度条颜色
-                    holder.progress.setColor(android.R.color.transparent, R.color.white, R.color.drak_green);
+                    pakcHolder.progress.setColor(android.R.color.transparent, R.color.white, R.color.drak_green);
                 } else {
-                    holder.study.setVisibility(View.INVISIBLE);
-                    holder.rl.setSelected(false);
-                    holder.name.setTextColor(context.getResources().getColor(R.color.gray_text));
-                    holder.num.setTextColor(context.getResources().getColor(R.color.gray_text));
+                    pakcHolder.study.setVisibility(View.INVISIBLE);
+                    pakcHolder.rl.setSelected(false);
+                    pakcHolder.name.setTextColor(context.getResources().getColor(R.color.gray_text));
+                    pakcHolder.num.setTextColor(context.getResources().getColor(R.color.gray_text));
                     //设置进度条颜色
-                    holder.progress.setColor(android.R.color.transparent, R.color.white, R.color.white);
+                    pakcHolder.progress.setColor(android.R.color.transparent, R.color.white, R.color.white);
                 }
 
                 final Package.PackData packData = datas.get(position);
-                holder.name.setText(packData.getName());
-                holder.num.setText("(" + packData.getUserWords() + "/" + packData.getTotal() + ")");
-                holder.progress.setMaxCount(Float.parseFloat(packData.getTotal()));
-                holder.progress.setCurrentCount(Float.parseFloat(packData.getUserWords()));
-                holder.rl.setOnClickListener(new View.OnClickListener() {
+                pakcHolder.name.setText(packData.getName());
+                pakcHolder.num.setText("(" + packData.getUserWords() + "/" + packData.getTotal() + ")");
+                pakcHolder.progress.setMaxCount(Float.parseFloat(packData.getTotal()));
+                pakcHolder.progress.setCurrentCount(Float.parseFloat(packData.getUserWords()));
+                pakcHolder.rl.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         listener.setListener(position);
@@ -126,7 +131,7 @@ public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHold
                         notifyDataSetChanged();
                     }
                 });
-                holder.delete.setOnClickListener(new View.OnClickListener() {
+                pakcHolder.delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         DialogDeleteWordBag dialog = new DialogDeleteWordBag(context);
@@ -135,19 +140,25 @@ public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHold
                     }
                 });
             }
-        } else {
-            holder.study.setVisibility(View.GONE);
-            holder.rl.setBackground(context.getResources().getDrawable(R.drawable.drak_gray_20round));
         }
-
     }
 
-    @Override
+
+    public int getItemViewType(int position) {
+        if (position == datas.size()) {
+            return ADD;
+        } else if (position < datas.size()) {
+            return PACK;
+        } else {
+            return super.getItemViewType(position);
+        }
+    }
+
     public int getItemCount() {
-        return null == datas ? 0 + 1 : datas.size() + 1;
+        return null == datas ? 1 : datas.size() + 1;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class PakcHolder extends RecyclerView.ViewHolder {
 
         public final TextView name, num, add;
         public final ProgressView progress;
@@ -156,7 +167,7 @@ public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHold
         public final ImageView delete;
         public final TextView study;
 
-        public ViewHolder(View v) {
+        public PakcHolder(View v) {
             super(v);
             AutoUtils.autoSize(v);
             name = (TextView) v.findViewById(R.id.name);
@@ -168,9 +179,16 @@ public class WordBagAdapter extends RecyclerView.Adapter<WordBagAdapter.ViewHold
             delete = (ImageView) v.findViewById(R.id.delete);
             study = (TextView) v.findViewById(R.id.study);
         }
+    }
 
-        public void autoClick() {
-            rl.performClick();
+
+    class AddHolder extends RecyclerView.ViewHolder {
+        RelativeLayout rl;
+
+        public AddHolder(View itemView) {
+            super(itemView);
+            rl = (RelativeLayout) itemView.findViewById(R.id.rl);
         }
     }
+
 }

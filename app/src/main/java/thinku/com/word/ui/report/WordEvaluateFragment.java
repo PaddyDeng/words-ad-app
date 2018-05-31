@@ -71,8 +71,6 @@ public class WordEvaluateFragment extends BaseActivity {
     ImageView top;
     @BindView(R.id.content_show)
     RelativeLayout contentShow;
-    @BindView(R.id.content_scroll)
-    ScrollView content_srcoll ;
     @BindView(R.id.know)
     Button know;
     @BindView(R.id.unknow)
@@ -440,7 +438,7 @@ public class WordEvaluateFragment extends BaseActivity {
             @Override
             public void onClick(View view) {
                 //  显示更多内容
-                content_srcoll.scrollTo(0, 0);
+                contentShow.scrollTo(0, 0);
                 contentShow.setVisibility(View.VISIBLE);
                 contentHide.setVisibility(View.GONE);
                 bottomClick.setVisibility(View.VISIBLE);
