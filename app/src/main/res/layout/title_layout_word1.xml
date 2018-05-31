@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--背单词标题-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/tittle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height">
+        <ImageView
+            android:id="@+id/back"
+            android:src="@mipmap/white_back"
+            android:layout_marginLeft="40px"
+            android:layout_centerVertical="true"
+            android:layout_width="50px"
+            android:layout_height="50px" />
+
+        <LinearLayout
+            android:layout_marginRight="50px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/familiar"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:background="@mipmap/familiarity"
+                    android:layout_width="50px"
+                    android:layout_height="50px" />
+                <TextView
+                    android:layout_marginLeft="10px"
+                    android:textColor="@color/white"
+                    android:text="熟识"
+                    android:textSize="45px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/errors"
+                android:layout_marginLeft="20px"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:background="@mipmap/error_smile"
+                    android:layout_width="50px"
+                    android:layout_height="50px" />
+                <TextView
+                    android:layout_marginLeft="10px"
+                    android:textColor="@color/white"
+                    android:text="报错"
+                    android:textSize="45px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>
+

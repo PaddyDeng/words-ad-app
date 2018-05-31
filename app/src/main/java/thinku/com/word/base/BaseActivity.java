@@ -23,6 +23,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
@@ -208,6 +209,11 @@ public class BaseActivity extends AutoLayoutActivity {
                 dismissLoadDialog();
             }else {
                 finishWithAnim();
+            }
+        }
+        if (KeyEvent.KEYCODE_HOME == keyCode){
+            if (MyApplication.mediaPlayer != null && MyApplication.mediaPlayer.isPlaying()){
+                MyApplication.mediaPlayer.stop();
             }
         }
 

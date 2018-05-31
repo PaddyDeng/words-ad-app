@@ -200,9 +200,9 @@ public interface RestApi {
 
     @POST(NetworkChildren.EV_RESULT)
     Observable<WordResultBeen> evResult();
-
+    @FormUrlEncoded
     @POST(NetworkChildren.EV_RANK)
-    Observable<UserRankBeen> evRank();
+    Observable<UserRankBeen> evRank(@Field("page") String page ,@Field("size") String size);
 
     @POST(NetworkChildren.WORD_REPORT)
     Observable<WordReportBeen> wordReport();

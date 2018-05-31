@@ -7,18 +7,15 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,24 +24,12 @@ import me.yokeyword.fragmentation.SupportFragment;
 import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragmentActivitiy;
-import thinku.com.word.bean.RecitWordBeen;
-import thinku.com.word.bean.UserInfo;
-import thinku.com.word.callback.ICallBack;
 import thinku.com.word.thrlib.OCRProxy;
-import thinku.com.word.ui.fparent.PKParentFragment;
-import thinku.com.word.ui.fparent.PeripheryParentFragment;
-import thinku.com.word.ui.fparent.ReportParentFragment;
 import thinku.com.word.ui.fparent.WordParentFragment;
-import thinku.com.word.ui.periphery.PeripheryFragment;
 import thinku.com.word.ui.periphery.RoundFragment;
 import thinku.com.word.ui.pk.PKFragment;
-import thinku.com.word.ui.pk.PKPageFragment;
-import thinku.com.word.ui.pk.PkWordFragment;
-import thinku.com.word.ui.recite.HomeFragment;
 import thinku.com.word.ui.recite.ReciteFragment;
 import thinku.com.word.ui.report.ReportFragment;
-import thinku.com.word.utils.LoginHelper;
-import thinku.com.word.utils.SharedPreferencesUtils;
 
 public class MainActivity extends BaseFragmentActivitiy implements View.OnClickListener {
 
@@ -83,8 +68,9 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(TAG, "onResume: " );
-
+        if (MyApplication.mediaPlayer != null && MyApplication.mediaPlayer.isPlaying()){
+            MyApplication.mediaPlayer.stop();
+        }
     }
 
 
@@ -97,23 +83,6 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
 
     private void initView() {
         initBootom();
-//        reciteFragment = findFragment(WordParentFragment.class);
-//        if (reciteFragment == null) {
-//            fragments[FIRST] = ReciteFragment.newInstance();
-//            fragments[SECOND] = ReportFragment.newInstance();
-//            fragments[THIRD] = PKFragment.newInstance();
-//            fragments[FOURTH] = PeripheryParentFragment.newInstance();
-//            loadMultipleRootFragment(R.id.fl, 1,
-//                    fragments[FIRST],
-//                    fragments[SECOND],
-//                    fragments[THIRD],
-//                    fragments[FOURTH]);
-//        } else {
-//            fragments[FIRST] = findFragment(ReciteFragment.class);
-//            fragments[SECOND]  = findFragment(ReportFragment.class);
-//            fragments[THIRD]  = findFragment(PKFragment.class);
-//            fragments[FOURTH]  = findFragment(PeripheryParentFragment.class);
-//        }
         setSelect(0);
     }
     
@@ -178,9 +147,7 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
                 ivs.get(i).setSelected(true);
                 lls.get(i).setSelected(true);
                 tvs.get(i).setTextColor(getResources().getColor(R.color.white));
-//                chooseFragment(i );
                 setFragment(0);
-//                oldPage = i;
             }
         }
         if (oldPage != i || !isSelectOther) {//不是点当前选择，或者未选择过
@@ -191,10 +158,8 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
             ivs.get(i).setSelected(true);
             lls.get(i).setSelected(true);
             tvs.get(i).setTextColor(getResources().getColor(R.color.white));
-//            chooseFragment(i );
             Log.e(TAG, "setSelect: " + i);
             setFragment(i);
-//            oldPage = i;
         }
     }
 
@@ -238,13 +203,6 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
 
         }
     }
-    private void chooseFragment(int i ) {
-        if (oldPage != -1) {
-            showHideFragment(fragments[i], fragments[oldPage]);
-        }else{
-            showHideFragment(fragments[i]);
-        }
-    }
 
     @Override
     public void onBackPressedSupport() {
@@ -263,13 +221,10 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
             if (MyApplication.mediaPlayer.isPlaying()) {
                 MyApplication.mediaPlayer.stop();
                 try {
-//                    MyApplication.mediaPlayer.prepare();
-//                    MyApplication.mediaPlayer.seekTo(0);
                     MyApplication.mediaPlayer.release();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
         }
         OCRProxy.orcRelease();

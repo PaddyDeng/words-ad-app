@@ -45,6 +45,7 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.RxHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.utils.StringUtils;
@@ -108,6 +109,7 @@ public class PkActivity extends BaseActivity {
     private ValueAnimator valueAnimator ;
     private MediaPlayer pkbg ;
     private boolean isOne ;
+    private boolean isClick = true ;
     private int[] waitAnimator = new int[]{
             R.mipmap.pk_wait_0 , R.mipmap.pk_wait_1 , R.mipmap.pk_wait_2 , R.mipmap.pk_wait_3} ;
     public static void start(Context context,  EventPkListData eventPkListData) {
@@ -137,7 +139,6 @@ public class PkActivity extends BaseActivity {
         initPkAudioManager();
     }
 
-
     public void initPkAudioManager(){
         pkbg = MediaPlayer.create(this ,R.raw.pk_bg);
         pkbg.setLooping(true);
@@ -159,32 +160,35 @@ public class PkActivity extends BaseActivity {
         pkAdapter.setSelectRlClickListener(new SelectAnswerClickListener() {
             @Override
             public void onClick(int position, View view, int AnswerPosition) {
-                if (timePosable != null) timePosable.dispose();
-                isOne = true ;
-                if (position != AnswerPosition) {
-                    pkSelectBeenList.get(position).setChose(true);
-                    pkSelectBeenList.get(AnswerPosition).setChose(true);
-                    type = PK_TYPE_ERROR;
-                } else {
-                    currentNum++;
-                    type = PK_TYPE_CURRENT;
-                    pkSelectBeenList.get(AnswerPosition).setChose(true);
+                if (isClick) {
+                    if (timePosable != null) timePosable.dispose();
+                    isOne = true;
+                    if (position != AnswerPosition) {
+                        pkSelectBeenList.get(position).setChose(true);
+                        pkSelectBeenList.get(AnswerPosition).setChose(true);
+                        type = PK_TYPE_ERROR;
+                    } else {
+                        currentNum++;
+                        type = PK_TYPE_CURRENT;
+                        pkSelectBeenList.get(AnswerPosition).setChose(true);
 
+                    }
+                    pkAdapter.notifyDataSetChanged();
+                    addToCompositeDis(HttpUtil.pkAnswerObservable(totalId + "", wordsId, answer, type + "", duration + "")
+                            .subscribe(new Consumer<ResultBeen<Void>>() {
+                                @Override
+                                public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                                }
+                            }));
+                    addToCompositeDis(RxHelper.delay(300)
+                            .subscribe(new Consumer<Integer>() {
+                                @Override
+                                public void accept(@NonNull Integer integer) throws Exception {
+                                    pkNext(false);
+                                }
+                            }));
+                    isClick = false ;
                 }
-                pkAdapter.notifyDataSetChanged();
-                addToCompositeDis(HttpUtil.pkAnswerObservable(totalId + "", wordsId, answer, type + "", duration + "")
-                        .subscribe(new Consumer<ResultBeen<Void>>() {
-                            @Override
-                            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                            }
-                        }));
-               addToCompositeDis(RxHelper.delay(300)
-                        .subscribe(new Consumer<Integer>() {
-                            @Override
-                            public void accept(@NonNull Integer integer) throws Exception {
-                                pkNext(false);
-                            }
-                        }));
             }
         });
         initEventPkData();
@@ -195,12 +199,14 @@ public class PkActivity extends BaseActivity {
      */
     public void pkNext(Boolean isFinsh) {
         Log.e(TAG, "pkNext: "  );
+        isClick = true ;
         if (timePosable != null)  timePosable.dispose();
         if (isFinsh) {
             addToCompositeDis(HttpUtil.pkAnswerObservable(totalId + "", wordsId, "", PK_TYPE_ERROR + "", duration + "")
                     .subscribe(new Consumer<ResultBeen<Void>>() {
                         @Override
                         public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+
                         }
                     }));
         }
@@ -209,6 +215,7 @@ public class PkActivity extends BaseActivity {
             referUI(wordsBeanList.get(wordIndex));
             referLoadPKUi();
         } else {
+            isClick = false ;
             addToCompositeDis(HttpUtil.pkFinshObservable(matchUid, totalId + "")
                     .subscribe(new Consumer<ResultBeen<Void>>() {
                         @Override

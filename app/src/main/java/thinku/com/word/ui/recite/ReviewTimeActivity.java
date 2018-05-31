@@ -68,6 +68,7 @@ public class ReviewTimeActivity extends BaseActivity implements View.OnClickList
 
     private PopHelper popHelper;
     private WheelView.WheelViewStyle style;
+    private List<String> wordsId ;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, ReviewTimeActivity.class);
@@ -249,7 +250,11 @@ public class ReviewTimeActivity extends BaseActivity implements View.OnClickList
         review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                thinku.com.word.ui.report.WordEvaluateFragment.start(ReviewTimeActivity.this, wordIds);
+                if (SharedPreferencesUtils.getChoseMode(ReviewTimeActivity.this).equals("听写")){
+                    DictionDetailActivity.start(ReviewTimeActivity.this ,wordIds);
+                }else {
+                    thinku.com.word.ui.report.WordEvaluateFragment.start(ReviewTimeActivity.this, wordIds);
+                }
                 dialog.dismiss();
             }
         });

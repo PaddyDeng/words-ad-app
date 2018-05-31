@@ -46,18 +46,22 @@ public class EvaWordAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final EvaHolder evaHolder = (EvaHolder) holder;
-            WordEva wordEva = eva.get(position);
-            if (position < eva.size()) evaHolder.evaItem.setText(wordEva.getContent());
-            else evaHolder.evaItem.setText("不认识");
-            evaHolder.rl.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectRlClickListener.setClickListener(position, evaHolder, v);
-                }
-            });
-            if (wordEva.isAnswer()) {
-                evaHolder.rl.setBackground(context.getResources().getDrawable(R.drawable.main_20round_tv));
-            }
+           if (position < eva.size()) {
+               WordEva wordEva = eva.get(position);
+               if (position < eva.size()) evaHolder.evaItem.setText(wordEva.getContent());
+
+               evaHolder.rl.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       selectRlClickListener.setClickListener(position, evaHolder, v);
+                   }
+               });
+               if (wordEva.isAnswer()) {
+                   evaHolder.rl.setBackground(context.getResources().getDrawable(R.drawable.main_20round_tv));
+               }
+           }else{
+                 evaHolder.evaItem.setText("不认识");
+           }
     }
 
     @Override

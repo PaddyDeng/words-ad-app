@@ -26,6 +26,7 @@ import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
@@ -44,17 +45,29 @@ public class SetNickNameActivity extends BaseActivity {
     @BindView(R.id.title_right_t)
     TextView titleRightT;
     private boolean hasNickName;
+    private UserInfo userInfo ;
 
-    public static void start(Context context){
-        context.startActivity(new Intent(context ,SetNickNameActivity.class));
+    public static void start(Context context , UserInfo userInfo){
+        Intent intent = new Intent(context ,SetNickNameActivity.class);
+        intent.putExtra("data" ,userInfo);
+        context.startActivity(intent);
     }
 
+
+    public static void start(Context context ){
+        Intent intent = new Intent(context ,SetNickNameActivity.class);
+        context.startActivity(intent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_nick_name);
         ButterKnife.bind(this);
         initView();
+        Intent intent = getIntent();
+        if (intent != null){
+            userInfo = (UserInfo) intent.getSerializableExtra("data");
+        }
     }
 
     protected void initView() {
@@ -171,12 +184,19 @@ public class SetNickNameActivity extends BaseActivity {
      * 修改账号需要重新获取Session
      */
     private void resetSession() {
-        UserInfo userInfo = SharedPreferencesUtils.getUserInfo(this);
-        LoginHelper.setSession(this, userInfo, new ICallBack() {
+        UserInfo userInfo1 ;
+        Log.e(TAG, "resetSession: " + userInfo.getUid() );
+        if (userInfo != null){
+            userInfo1 = userInfo;
+        }else{
+            userInfo1 =SharedPreferencesUtils.getUserInfo(this);
+        }
+        LoginHelper.setSession(this, userInfo1, new ICallBack() {
             @Override
             public void onSuccess(Object o) {
                 dismissLoadDialog();
                 finishWithAnim();
+                MainActivity.toMain(SetNickNameActivity.this);
             }
 
             @Override

@@ -112,9 +112,9 @@ public class ModifyPhoneOrEmailDialog extends BaseDialog {
                     public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
                         if (voidResultBeen.getCode() == 1) {
                             if (modifyEmail) {
-                                sendAuthCode(HttpUtil.emailCodeObservable(getEditTxt(et)));
+                                sendAuthCode(HttpUtil.emailCodeObservable(getEditTxt(et) , "3"));
                             } else {
-                                sendAuthCode(HttpUtil.phoneCodeObservable(getEditTxt(et)));
+                                sendAuthCode(HttpUtil.phoneCodeObservable(getEditTxt(et) ,"3"));
                             }
                         } else {
                             toastShort(voidResultBeen.getMessage());

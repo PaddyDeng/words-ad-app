@@ -3,6 +3,7 @@ package thinku.com.word.ui.personalCenter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,6 +52,7 @@ public class FontSizeSettingActivity extends BaseActivity implements FontControl
 
     @Override
     public void fontSize(int index) {
+        Log.e(TAG, "fontSize: " + index  );
         SharedPreferencesUtils.saveFontSize(mContext, index);
         mControlTextView.setFontSize(index);
 //        RxBus.get().post(C.FONT_SIEZ_CHANGE, true);

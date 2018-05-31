@@ -25,6 +25,7 @@ import thinku.com.word.adapter.MyWheelAdapter;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.view.wheelview.widget.WheelView;
 
 import static thinku.com.word.R.id.title_t;
@@ -208,7 +209,7 @@ public class AddMyPlanActivity extends BaseActivity {
         }
     }
 
-    public void addPack(String id, String day, String word) {
+    public void addPack(final String id, String day, String word) {
         addToCompositeDis(HttpUtil.addPackageObservableOther(id, day, word)
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -221,7 +222,9 @@ public class AddMyPlanActivity extends BaseActivity {
                         dismissLoadDialog();
                         if (getHttpResSuc(voidResultBeen.getCode())) {
                             //  添加词包成功
-                            MyPlanActivity.start(AddMyPlanActivity.this);
+                            updataNowPack(id);
+                        }else{
+                            toTast(AddMyPlanActivity.this ,"添加词包失败");
                         }
                     }
                 }, new Consumer<Throwable>() {
@@ -234,4 +237,22 @@ public class AddMyPlanActivity extends BaseActivity {
     }
 
 
+    public void updataNowPack(String id ){
+        addToCompositeDis(HttpUtil.updataNowPackage( id)
+        .subscribe(new Consumer<ResultBeen<Void>>() {
+            @Override
+            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                if (getHttpResSuc(voidResultBeen.getCode())) {
+                    MainActivity.toMain(AddMyPlanActivity.this);
+                } else {
+                    toTast("添加词包失败");
+                }
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(@NonNull Throwable throwable) throws Exception {
+                toTast(AddMyPlanActivity.this ,throwable.getMessage());
+            }
+        }));
+    }
 }

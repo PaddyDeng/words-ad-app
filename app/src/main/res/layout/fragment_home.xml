@@ -127,6 +127,7 @@
                     android:layout_marginTop="10px"
                     android:textColor="@color/white"
                     android:text="今天需背单词"
+                    android:id="@+id/need_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </com.zhy.autolayout.AutoLinearLayout>
@@ -271,7 +272,7 @@
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/review_t"
-                    android:text="，今日需复习："
+                    android:text="，今日需复习"
                     android:textSize="35px"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

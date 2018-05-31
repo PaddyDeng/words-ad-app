@@ -47,7 +47,8 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
     private RankAdapter rankAdapter;
     private List<UserRankBeen.RankBean> rankBeanList;
     private Observable<String> observable;
-
+    private int page = 1 ;
+    private int size = 15 ;
     public static void start(Context context) {
         Intent intent = new Intent(context, EvaluateRankingActivity.class);
         context.startActivity(intent);
@@ -82,16 +83,17 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
     }
 
     public void addNet() {
-        addToCompositeDis(HttpUtil.evRankObservable()
+        addToCompositeDis(HttpUtil.evRankObservable(page +"" , size +"")
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
-                        showLoadDialog();
+//                        showLoadDialog();
                     }
                 }).subscribe(new Consumer<UserRankBeen>() {
                     @Override
                     public void accept(UserRankBeen userRankBeen) throws Exception {
-                        dismissLoadDialog();
+//                        dismissLoadDialog();
+                        ranking_list.loadMoreComplete();
                         if (userRankBeen != null) {
                             referUI(userRankBeen);
                         }
@@ -99,7 +101,10 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        dismissLoadDialog();
+//                        dismissLoadDialog();
+                        ranking_list.loadMoreComplete();
+                        page-- ;
+                        toTast(throwable.getMessage());
                     }
                 }));
     }
@@ -116,7 +121,6 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
     }
 
     public void referUI(UserRankBeen userRankBeen) {
-        rankBeanList.clear();
         rankBeanList.addAll(userRankBeen.getRank());
         rankAdapter.notifyDataSetChanged();
         name.setText(SharedPreferencesUtils.getString("nickname", EvaluateRankingActivity.this));
@@ -151,10 +155,9 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
         ranking_list
                 .getDefaultRefreshHeaderView()
                 .setRefreshTimeVisible(true);
-
         ranking_list.getDefaultFootView().setLoadingHint("加载中");
         ranking_list.getDefaultFootView().setNoMoreHint("加载完成");
-        ranking_list.setLimitNumberToCallLoadMore(2);
+        ranking_list.setLimitNumberToCallLoadMore(10);
         ranking_list.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -164,8 +167,9 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
 
             @Override
             public void onLoadMore() {
+                page++ ;
                 addNet();
-                ranking_list.loadMoreComplete();
+
             }
         });
         ranking_bg = (ImageView) findViewById(R.id.ranking_bg);

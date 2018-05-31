@@ -40,6 +40,7 @@ import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.recite.MyPlanActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.RxHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
@@ -134,7 +135,7 @@ public class PKHomeActivity extends BaseActivity {
         setContentView(R.layout.activity_pkhome);
         unbinder = ButterKnife.bind(this);
         EventBus.getDefault().register(this);
-        init();
+        addNet();
         if (MyApplication.mediaPlayer == null){
             MyApplication.mediaPlayer = MediaPlayer.create(this , R.raw.pk_bg);
             MyApplication.mediaPlayer.setLooping(true);
@@ -167,7 +168,6 @@ public class PKHomeActivity extends BaseActivity {
         new GlideUtils().loadCircle(this ,NetworkTitle.WORDRESOURE + "" ,matchImg);
         hideAll();
         uid = SharedPreferencesUtils.getString("uid", PKHomeActivity.this);
-        addNet();
     }
 
 
@@ -177,7 +177,9 @@ public class PKHomeActivity extends BaseActivity {
                     @Override
                     public void accept(ResultBeen<Void> voidResultBeen) throws Exception {
                         if (getHttpResSuc(voidResultBeen.getCode())) {
-
+                            init();
+                        }else if (voidResultBeen.getCode() == 99){
+                            LoginHelper.needLogin(PKHomeActivity.this ,"");
                         }
                     }
                 }));
@@ -189,6 +191,7 @@ public class PKHomeActivity extends BaseActivity {
             case R.id.back:
                 stopPlayer();
                 this.finishWithAnim();
+                pkChose(PK_CANCEL);
                 break;
             case R.id.review_match:
                 pkChose(PK_CANCEL);
@@ -324,19 +327,21 @@ public class PKHomeActivity extends BaseActivity {
      * pk选择
      */
     public void pkChose(final int type) {
-        addToCompositeDis(HttpUtil.pkChoseObservable(mathUser.getUid(), type + "")
-                .subscribe(new Consumer<ResultBeen<Void>>() {
-                    @Override
-                    public void accept(ResultBeen<Void> voidResultBeen) throws Exception {
-                        if (getHttpResSuc(voidResultBeen.getCode())) {
-                            if (type == PK_AGREE) {
-                            } else {
-                                hideAll();
-                                addNet();
+        if (mathUser != null) {
+            addToCompositeDis(HttpUtil.pkChoseObservable(mathUser.getUid(), type + "")
+                    .subscribe(new Consumer<ResultBeen<Void>>() {
+                        @Override
+                        public void accept(ResultBeen<Void> voidResultBeen) throws Exception {
+                            if (getHttpResSuc(voidResultBeen.getCode())) {
+                                if (type == PK_AGREE) {
+                                } else {
+                                    hideAll();
+                                    addNet();
+                                }
                             }
                         }
-                    }
-                }));
+                    }));
+        }
     }
 
     /**

@@ -76,6 +76,8 @@ public class AlarmActivity extends BaseActivity {
         init();
     }
 
+
+
     public void init() {
         if (alarmManager == null) {
             alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -294,4 +296,5 @@ public class AlarmActivity extends BaseActivity {
 //        clockDao.close();
 //        clockDao = null;
     }
+
 }

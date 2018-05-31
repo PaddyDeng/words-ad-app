@@ -23,6 +23,7 @@ public class RecognizeService {
         GeneralParams param = new GeneralParams();
         param.setDetectDirection(true);
         param.setVertexesLocation(true);
+        param.setLanguageType("ENG");
         param.setRecognizeGranularity(GeneralParams.GRANULARITY_SMALL);
         param.setImageFile(new File(filePath));
         if (OCR.getInstance() == null) {

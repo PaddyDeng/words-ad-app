@@ -48,8 +48,6 @@ public class WordbagDetailActivity extends BaseActivity {
     TextView toRecite;
     @BindView(R.id.word_list)
     RecyclerView wordList;
-    @BindView(R.id.refresh)
-    SwipeRefreshLayout refresh;
     private String catId;
     private int page = 1;
     private String total;
@@ -84,7 +82,6 @@ public class WordbagDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         init();
         initData();
-        initRefer();
         titleT.setText(name);
     }
 
@@ -95,25 +92,12 @@ public class WordbagDetailActivity extends BaseActivity {
 
     }
 
-    public void initRefer() {
-        refresh.setProgressBackgroundColorSchemeResource(android.R.color.white);
-        // 设置下拉进度的主题颜色
-        refresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
-        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                page++;
-                initData();
-            }
-        });
-    }
 
     public void initData() {
         addToCompositeDis(HttpUtil.packageDetailsObservable(catId + "", page + "")
                 .subscribe(new Consumer<PackageDetails>() {
                     @Override
                     public void accept(@NonNull PackageDetails packageDetails) throws Exception {
-                        refresh.setRefreshing(false);
                         words.addAll(packageDetails.getPackageDetails());
                         wordAdapter = new WordAdapter(WordbagDetailActivity.this, words);
                         wordList.setAdapter(wordAdapter);
@@ -121,7 +105,6 @@ public class WordbagDetailActivity extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        refresh.setRefreshing(false);
                     }
                 }));
     }

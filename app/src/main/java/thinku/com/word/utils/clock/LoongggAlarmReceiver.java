@@ -1,6 +1,5 @@
 package thinku.com.word.utils.clock;
 
-import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -40,4 +39,6 @@ public class LoongggAlarmReceiver extends BroadcastReceiver {
 //        context.startActivity(clockIntent);
         NotificationUtil.setNotificatio(context ,1);
     }
+
+
 }

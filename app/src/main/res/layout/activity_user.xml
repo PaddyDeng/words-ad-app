@@ -8,8 +8,14 @@
 
     <include layout="@layout/title_layout" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/content"/>
+        android:id="@+id/content"
+        android:textSize="15sp"
+        android:textColor="@color/black"/>
+    </ScrollView>
 </LinearLayout>

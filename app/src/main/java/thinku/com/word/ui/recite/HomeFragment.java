@@ -89,6 +89,8 @@ public class HomeFragment extends BaseFragment {
     LinearLayout modify;
     @BindView(R.id.sign_text)
     TextView signTxt ;
+    @BindView(R.id.need_text)
+    TextView needText ;
     private String name_text;
     private SimpleDateFormat simpleDateFormat;
 
@@ -152,8 +154,8 @@ public class HomeFragment extends BaseFragment {
                     public void accept(@NonNull UserIndex userIndex) throws Exception {
                         days.setText("已坚持" + userIndex.getInsistDay() + "天");
                         surplusDay.setText(userIndex.getSurplusDay());
-                        needNum.setText(userIndex.getUserPackage().getPlanWords());
-                        alreadyNum.setText(userIndex.getUserAllWords());
+
+                        needNum.setText(userIndex.getUserPackage().getPlanWords());  alreadyNum.setText(userIndex.getUserAllWords());
                         num.setText(userIndex.getUserPackageWords());
                         allNum.setText("/" + userIndex.getAllWords());
                         name.setText(userIndex.getPackageName());
@@ -167,6 +169,17 @@ public class HomeFragment extends BaseFragment {
                         }else{
                             startRecite.setText("开始背单词");
                         }
+
+                        if (Integer.parseInt(userIndex.getToDayWords()) > Integer.parseInt(userIndex.getUserPackage().getPlanWords())){
+                            needText.setText("今日已完成");
+                            needNum.setText(userIndex.getToDayWords());
+
+                        }else{
+                            needText.setText("今日需背单词");
+                            needNum.setText(userIndex.getUserPackage().getPlanWords());
+
+                        }
+
                     }
                 }, new Consumer<Throwable>() {
                     @Override

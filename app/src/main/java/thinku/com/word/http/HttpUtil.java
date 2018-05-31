@@ -277,8 +277,8 @@ public class HttpUtil {
     }
 
     //获取rank排名
-    public static Observable<UserRankBeen> evRankObservable(){
-        return getRestApi(HostType.WORDS_URL_HOST).evRank().compose(new SchedulerTransformer<UserRankBeen>());
+    public static Observable<UserRankBeen> evRankObservable(String page ,String size){
+        return getRestApi(HostType.WORDS_URL_HOST).evRank(page ,size).compose(new SchedulerTransformer<UserRankBeen>());
     }
 
     //获取单词报表数据
@@ -349,13 +349,13 @@ public class HttpUtil {
     }
 
     //  手机获取验证码
-    public static Observable<ResultBeen<Void>> phoneCodeObservable(String phoneNum){
-        return getRestApi(HostType.LOGIN_REGIST_HOST).phoneCode(phoneNum ,C.LGPhoneCode).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    public static Observable<ResultBeen<Void>> phoneCodeObservable(String phoneNum ,String type){
+        return getRestApi(HostType.LOGIN_REGIST_HOST).phoneCode(phoneNum ,type).compose(new SchedulerTransformer<ResultBeen<Void>>());
     }
 
     //  邮箱获取验证码
-    public static Observable<ResultBeen<Void>> emailCodeObservable(String email){
-        return getRestApi(HostType.LOGIN_REGIST_HOST).emailCode(email ,C.LGEmailCode).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    public static Observable<ResultBeen<Void>> emailCodeObservable(String email , String type ){
+        return getRestApi(HostType.LOGIN_REGIST_HOST).emailCode(email ,type).compose(new SchedulerTransformer<ResultBeen<Void>>());
     }
 
     //  更新邮箱

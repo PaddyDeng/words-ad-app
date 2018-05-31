@@ -217,7 +217,7 @@ public class ForgetPassActivity extends BaseActivity implements View.OnClickList
                             Request<String> req = NoHttp.createStringRequest(sb.toString(), RequestMethod.POST);
                             if(!isPhone)req.set("email",num);
                             else if(isPhone)req.set("phoneNum",num);
-                            req.set("type","1");
+                            req.set("type","2");
                             String session = SharedPreferencesUtils.getSession(ForgetPassActivity.this,1);
                             if(!TextUtils.isEmpty(session)){
                                 req.setHeader("Cookie","PHPSESSID="+session);

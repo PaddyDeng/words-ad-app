@@ -67,8 +67,10 @@ public class AlarmManagerUtil {
                 .FLAG_CANCEL_CURRENT);
         Log.e(TAG, "setAlarm: " + hour +"  "+ minute  );
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            am.setWindow(AlarmManager.RTC_WAKEUP, calMethod(week, calendar.getTimeInMillis()),
-                    intervalMillis, sender);
+//            am.setWindow(AlarmManager.RTC_WAKEUP, calMethod(week, calendar.getTimeInMillis()),
+//                    intervalMillis, sender);
+            am.setExact(AlarmManager.RTC_WAKEUP, calMethod(week, calendar.getTimeInMillis()),
+                    sender);
         } else {
             if (flag == 0) {
                 am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);

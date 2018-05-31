@@ -41,6 +41,7 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.adapter.QuestionAdapter;
 import thinku.com.word.ui.other.MainActivity;
+import thinku.com.word.ui.recite.ReviewTimeActivity;
 import thinku.com.word.ui.recite.WordErrorActivity;
 import thinku.com.word.ui.report.bean.QuestionBean;
 import thinku.com.word.ui.report.bean.ReviewBean;
@@ -50,6 +51,7 @@ import thinku.com.word.ui.webView.WebViewActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.HtmlUtil;
+import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
  * Created by Administrator on 2018/2/22.
@@ -68,7 +70,9 @@ public class WordEvaluateFragment extends BaseActivity {
     @BindView(R.id.top)
     ImageView top;
     @BindView(R.id.content_show)
-    ScrollView contentShow;
+    RelativeLayout contentShow;
+    @BindView(R.id.content_scroll)
+    ScrollView content_srcoll ;
     @BindView(R.id.know)
     Button know;
     @BindView(R.id.unknow)
@@ -205,20 +209,9 @@ public class WordEvaluateFragment extends BaseActivity {
                 fromWordsIdGetWordDetails(wordId);
             }
         }
-        isShow();
         setFocusable();
         initAudioManager();
         initRecycler();
-    }
-
-    public void isShow() {
-        if (isShow) {
-            bottomClick.setBackgroundColor(getResources().getColor(R.color.white));
-            bottomClick.setVisibility(View.VISIBLE);
-        } else {
-            bottomClick.setBackground(null);
-            bottomClick.setVisibility(View.GONE);
-        }
     }
 
 
@@ -391,10 +384,19 @@ public class WordEvaluateFragment extends BaseActivity {
         this.recitWord = recitWord;
         //  首页显示的内容
         setStudyAndReviewNum(recitWord);
+        if (SharedPreferencesUtils.getChoseMode(WordEvaluateFragment.this).equals("英中")&& tag == C.REVIEW){
+            word.setVisibility(View.VISIBLE);
+            name.setVisibility(View.GONE);
+        }else if (SharedPreferencesUtils.getChoseMode(WordEvaluateFragment.this).equals("中英")){
+            name.setVisibility(View.VISIBLE);
+            word.setVisibility(View.GONE);
+        }else if ( tag == C.NORMAL){
+            name.setVisibility(View.GONE);
+            word.setVisibility(View.VISIBLE);
+        }
         prencente.setText("认知率" + recitWord.getPercent() + "%");
         phonogram.setText(recitWord.getWords().getPhonetic_us());
         name.setText(recitWord.getWords().getTranslate());
-
         if (tag == 100) {
             blurry.setText("模糊");
         } else {
@@ -417,8 +419,17 @@ public class WordEvaluateFragment extends BaseActivity {
                 });
         }
         word.setText(recitWord.getWords().getWord());
-        contentShow.setVisibility(View.GONE);
-        contentHide.setVisibility(View.VISIBLE);
+        if (isShow) {
+            contentShow.setVisibility(View.GONE);
+            bottomClick.setVisibility(View.GONE);
+            contentHide.setVisibility(View.VISIBLE);
+        } else {
+            bottomClick.setBackground(null);
+            bottomClick.setVisibility(View.GONE);
+            contentHide.setVisibility(View.GONE);
+            contentShow.setVisibility(View.VISIBLE);
+        }
+
         if (!TextUtils.isEmpty(recitWord.getWords().getMnemonic())) {
             String content = HtmlUtil.replaceRN(recitWord.getWords().getMnemonic()) ;
             helpContent.setText(content);
@@ -429,10 +440,13 @@ public class WordEvaluateFragment extends BaseActivity {
             @Override
             public void onClick(View view) {
                 //  显示更多内容
-                contentShow.scrollTo(0, 0);
+                content_srcoll.scrollTo(0, 0);
                 contentShow.setVisibility(View.VISIBLE);
                 contentHide.setVisibility(View.GONE);
-
+                bottomClick.setVisibility(View.VISIBLE);
+                if (name.getVisibility() == View.GONE) name.setVisibility(View.VISIBLE);
+                if (phonogram.getVisibility() == View.GONE) phonogram.setVisibility(View.VISIBLE);
+                if (word.getVisibility() == View.GONE)  word.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -511,7 +525,7 @@ public class WordEvaluateFragment extends BaseActivity {
             if (!TextUtils.isEmpty(questionBean.getArticle())) {
                 article.setVisibility(View.VISIBLE);
                 String content = HtmlUtil.getHtml(questionBean.getArticle());
-                String urlContent = HtmlUtil.repairContent(content , NetworkTitle.WORDRESOURE);
+                String urlContent = HtmlUtil.repairContent(content , NetworkTitle.GMAT);
                 article.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
                 article.setVisibility(View.GONE);
@@ -519,7 +533,7 @@ public class WordEvaluateFragment extends BaseActivity {
             if (!TextUtils.isEmpty(questionBean.getQuestion())) {
                 question_home.setVisibility(View.VISIBLE);
                 String content = HtmlUtil.getHtml(questionBean.getQuestion());
-                String urlContent = HtmlUtil.repairContent(content ,NetworkTitle.WORDRESOURE);
+                String urlContent = HtmlUtil.repairContent(content ,NetworkTitle.GMAT);
                 question_home.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
                 question_home.setVisibility(View.GONE);

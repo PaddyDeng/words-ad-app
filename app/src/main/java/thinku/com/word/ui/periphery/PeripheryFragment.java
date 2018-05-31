@@ -7,9 +7,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +44,7 @@ import thinku.com.word.utils.HttpUtils;
  * 周边
  */
 
-public class PeripheryFragment extends BaseActivity implements  BGARefreshLayout.BGARefreshLayoutDelegate {
+public class PeripheryFragment extends BaseActivity  {
 
     @BindView(R.id.back)
     ImageView back;
@@ -48,10 +53,8 @@ public class PeripheryFragment extends BaseActivity implements  BGARefreshLayout
     @BindView(R.id.title_right_t)
     TextView titleRightT;
     @BindView(R.id.course_list)
-    RecyclerView courseList;
+    XRecyclerView pkWordRl;
     Unbinder unbinder;
-    @BindView(R.id.refresh)
-    BGARefreshLayout swipeRefer;
 
     private List<CourseBean> courseBeanList;
     private CourseAdapter courseAdapter;
@@ -87,23 +90,51 @@ public class PeripheryFragment extends BaseActivity implements  BGARefreshLayout
         }
         init();
         initRecycler();
+        initData();
     }
 
     public void initRecycler(){
-        swipeRefer.setDelegate(this);
-        // 设置下拉刷新和上拉加载更多的风格     参数1：应用程序上下文，参数2：是否具有上拉加载更多功能
-        BGARefreshViewHolder refreshViewHolder = new BGANormalRefreshViewHolder(this, true);
-        // 设置下拉刷新和上拉加载更多的风格
-//        refreshViewHolder.setLoadingMoreText("加载更多");
-        swipeRefer.setRefreshViewHolder(refreshViewHolder);
-//        swipeRefer.setIsShowLoadingMoreView(false);
+//        swipeRefer.setDelegate(this);
+//        // 设置下拉刷新和上拉加载更多的风格     参数1：应用程序上下文，参数2：是否具有上拉加载更多功能
+//        BGARefreshViewHolder refreshViewHolder = new BGANormalRefreshViewHolder(this, true);
+//        // 设置下拉刷新和上拉加载更多的风格
+////        refreshViewHolder.setLoadingMoreText("加载更多");
+//        swipeRefer.setRefreshViewHolder(refreshViewHolder);
+////        swipeRefer.setIsShowLoadingMoreView(false);
+
+        pkWordRl.setRefreshProgressStyle(ProgressStyle.SysProgress);
+        pkWordRl.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
+        pkWordRl.setArrowImageView(R.drawable.iconfont_downgrey);
+        pkWordRl
+                .getDefaultRefreshHeaderView()
+                .setRefreshTimeVisible(true);
+        pkWordRl.setLoadingMoreEnabled(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        pkWordRl.setLayoutManager(linearLayoutManager);
+        pkWordRl.getDefaultFootView().setLoadingHint("加载中");
+        pkWordRl.getDefaultFootView().setNoMoreHint("加载完成");
+        pkWordRl.setLimitNumberToCallLoadMore(2);
+        pkWordRl.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                 initData();
+                pkWordRl.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+//                pkWordRl.loadMoreComplete();
+                initData();
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        beginRefreshing();
     }
+
 
     public void initData() {
         if (type != 0) {
@@ -111,15 +142,17 @@ public class PeripheryFragment extends BaseActivity implements  BGARefreshLayout
                     .doOnSubscribe(new Consumer<Disposable>() {
                         @Override
                         public void accept(@NonNull Disposable disposable) throws Exception {
-                            showLoadDialog();
+//                            showLoadDialog();
                         }
                     }).subscribe(new Consumer<List<CourseBean>>() {
                         @Override
                         public void accept(@NonNull final List<CourseBean> courseBeans) throws Exception {
-                            dismissLoadDialog();
+//                            dismissLoadDialog();
+                            pkWordRl.loadMoreComplete();
                             if (courseBeans != null) {
                                 courseBeanList.clear();
                                 courseBeanList.addAll(courseBeans);
+                                Log.e(TAG, "accept: " + courseBeanList.size() );
                                 courseAdapter.notifyDataSetChanged();
                                 courseAdapter.setSelectRlClickListener(new SelectRlClickListener() {
                                     @Override
@@ -132,7 +165,8 @@ public class PeripheryFragment extends BaseActivity implements  BGARefreshLayout
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
-                            dismissLoadDialog();
+//                            dismissLoadDialog();
+                            pkWordRl.loadMoreComplete();
                             toTast(PeripheryFragment.this, throwable.toString());
                         }
                     }));
@@ -141,21 +175,26 @@ public class PeripheryFragment extends BaseActivity implements  BGARefreshLayout
                     .doOnSubscribe(new Consumer<Disposable>() {
                         @Override
                         public void accept(@NonNull Disposable disposable) throws Exception {
-                            showLoadDialog();
+//                            showLoadDialog();
+
                         }
                     }).subscribe(new Consumer<List<RoundBean.LivePreviewBean.DataBean>>() {
                         @Override
                         public void accept(@NonNull List<RoundBean.LivePreviewBean.DataBean> dataBeanLists) throws Exception {
-                           dismissLoadDialog();
+//                           dismissLoadDialog();
+                            pkWordRl.loadMoreComplete();
                             if (dataBeanList != null) {
+                                dataBeanLists.clear();
                                 dataBeanList.addAll(dataBeanLists);
+                                Log.e(TAG, "accept: " + dataBeanList.size() );
                                 liveAdatper.notifyDataSetChanged();
                             }
                         }
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
-                            dismissLoadDialog();
+//                            dismissLoadDialog();
+                            pkWordRl.loadMoreComplete();
                             toTast(PeripheryFragment.this, throwable.toString());
                         }
                     }));
@@ -185,14 +224,12 @@ public class PeripheryFragment extends BaseActivity implements  BGARefreshLayout
                     }
                 }
             });
-            courseList.setLayoutManager(new LinearLayoutManager(this));
-            courseList.setAdapter(courseAdapter);
+            pkWordRl.setAdapter(courseAdapter);
         } else {
             dataBeanList = new ArrayList<>();
             liveAdatper = new CourseAdapter(this);
             liveAdatper.setData(dataBeanList);
-            courseList.setLayoutManager(new LinearLayoutManager(this));
-            courseList.setAdapter(liveAdatper);
+            pkWordRl.setAdapter(liveAdatper);
             liveAdatper.setSelectListener(new SelectListener() {
                 @Override
                 public void setListener(int position) {
@@ -209,35 +246,10 @@ public class PeripheryFragment extends BaseActivity implements  BGARefreshLayout
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
-    }
-
-    @Override
-    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout bgaRefreshLayout) {
-        if (HttpUtils.isConnected(this)){
-            swipeRefer.endRefreshing();
-            initData();
-        }else{
-            swipeRefer.endRefreshing();
-            toTast(this,"网络未连接,请检查网络");
+        if (pkWordRl != null){
+            pkWordRl.destroy();
+            pkWordRl = null;
         }
     }
 
-    @Override
-    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout bgaRefreshLayout) {
-        if (HttpUtils.isConnected(this)){
-//            initData();
-//            swipeRefer.endLoadingMore();
-            return  true ;
-        }else{
-//            swipeRefer.endLoadingMore();
-//            toTast(this,"网络未连接,请检查网络");
-            return false;
-        }
-
-    }
-
-
-    public void beginRefreshing() {
-        swipeRefer.beginRefreshing();
-    }
 }

@@ -112,8 +112,8 @@ public class AlarmAddActivity extends BaseActivity {
         minute.setWheelSize(5);
         hour.setWheelData(hours);
         minute.setWheelData(minutes);
-        hour.setExtraText("时", getResources().getColor(R.color.color_black_text), MeasureUtils.dp2px(this, 13), MeasureUtils.dp2px(this, 20));
-        minute.setExtraText("分", getResources().getColor(R.color.color_black_text), MeasureUtils.dp2px(this, 13), MeasureUtils.dp2px(this, 20));
+        hour.setExtraText("时", getResources().getColor(R.color.color_black_text), MeasureUtils.dp2px(this, 15), MeasureUtils.dp2px(this, 20));
+        minute.setExtraText("分", getResources().getColor(R.color.color_black_text), MeasureUtils.dp2px(this, 15), MeasureUtils.dp2px(this, 20));
         if (defaultClock != null) {
             String time = defaultClock.getTime();
             String weekTxt = defaultClock.getWeek();

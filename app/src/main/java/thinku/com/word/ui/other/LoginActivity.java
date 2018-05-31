@@ -109,7 +109,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         dismissLoadDialog();
                         if (getHttpResSuc(userInfo.getCode())) {
                             if (TextUtils.isEmpty(userInfo.getNickname())){
-                                SetNickNameActivity.start(LoginActivity.this);
+                                SetNickNameActivity.start(LoginActivity.this , userInfo);
+                                MyApplication.isLogin = true;
                             }else {
                                 MyApplication.isLogin = true;
                                 RxBus.get().post(C.RXBUS_LOGIN, true);

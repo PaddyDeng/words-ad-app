@@ -423,10 +423,15 @@
             android:name=".ui.personalCenter.ReadMeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
-
-        <activity android:name=".ui.other.UserActivity"
+        <activity
+            android:name=".ui.other.UserActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
+
+        <service
+            android:name=".ui.personalCenter.ClockService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

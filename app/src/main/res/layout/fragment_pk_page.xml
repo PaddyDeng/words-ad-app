@@ -2,28 +2,6 @@
 <com.zhy.autolayout.AutoRelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.zhy.autolayout.AutoLinearLayout
-        android:id="@+id/ll"
-        android:layout_alignParentBottom="true"
-        android:background="@color/gray_white"
-        android:layout_width="match_parent"
-        android:layout_height="200px">
-        <TextView
-            android:id="@+id/to_pk"
-            android:textSize="50px"
-            android:textColor="@color/white"
-            android:text="立即PK"
-            android:gravity="center"
-            android:background="@drawable/main_10round_tv"
-            android:layout_marginTop="40px"
-            android:layout_marginBottom="40px"
-            android:layout_marginLeft="160px"
-            android:layout_marginRight="160px"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </com.zhy.autolayout.AutoLinearLayout>
-
-
        <com.zhy.autolayout.AutoLinearLayout
            android:orientation="vertical"
            android:background="@color/white"
@@ -138,6 +116,28 @@
                android:id="@+id/ranking_list"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
+               android:layout_marginBottom="200px"
               />
        </com.zhy.autolayout.AutoLinearLayout>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:id="@+id/ll"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gray_white"
+        android:layout_width="match_parent"
+        android:layout_height="200px">
+        <TextView
+            android:id="@+id/to_pk"
+            android:textSize="50px"
+            android:textColor="@color/white"
+            android:text="立即PK"
+            android:gravity="center"
+            android:background="@drawable/main_10round_tv"
+            android:layout_marginTop="40px"
+            android:layout_marginBottom="40px"
+            android:layout_marginLeft="160px"
+            android:layout_marginRight="160px"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.zhy.autolayout.AutoLinearLayout>
     </com.zhy.autolayout.AutoRelativeLayout>

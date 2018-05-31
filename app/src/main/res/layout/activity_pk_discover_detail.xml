@@ -40,12 +40,6 @@
                 android:textSize="@dimen/title_text_size" />
         </RelativeLayout>
     </LinearLayout>
-
-    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none">
-
         <com.zhy.autolayout.AutoRelativeLayout
             android:id="@+id/title1"
             android:layout_width="match_parent"
@@ -78,5 +72,4 @@
                 android:textColor="@color/white"
                 android:textSize="50px" />
         </com.zhy.autolayout.AutoRelativeLayout>
-    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
 </com.zhy.autolayout.AutoRelativeLayout>

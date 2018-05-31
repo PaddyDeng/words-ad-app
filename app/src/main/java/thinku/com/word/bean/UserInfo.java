@@ -1,10 +1,12 @@
 package thinku.com.word.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/12/11.
  */
 
-public class UserInfo {
+public class UserInfo implements Serializable {
     private int code;
     private String message;
     private String uid;

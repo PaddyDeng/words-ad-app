@@ -43,16 +43,6 @@
             android:background="@mipmap/right" />
     </RelativeLayout>
 
-    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -119,6 +109,4 @@
                     android:text="在个人中心-学习模式可更换设置模式哦~"
                     android:textSize="40px" />
             </RelativeLayout>
-        </LinearLayout>
-    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
 </LinearLayout>

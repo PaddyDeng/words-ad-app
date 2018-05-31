@@ -107,6 +107,7 @@
         android:textColor="@color/white"
         android:text="确  定"
         android:gravity="center"
+        android:layout_gravity="center_horizontal"
         android:background="@drawable/main_10round_tv"
         android:layout_width="400px"
         android:layout_height="100px" />

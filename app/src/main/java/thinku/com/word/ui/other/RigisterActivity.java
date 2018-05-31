@@ -26,6 +26,7 @@ import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.BackCode;
@@ -37,9 +38,12 @@ import thinku.com.word.http.NetworkChildren;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.personalCenter.SetNickNameActivity;
 import thinku.com.word.ui.personalCenter.feature.AuthCode;
+import thinku.com.word.utils.C;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.PhoneAndEmailUtils;
 import thinku.com.word.utils.RegexValidateUtil;
+import thinku.com.word.utils.RxBus;
+import thinku.com.word.utils.RxHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
@@ -144,7 +148,9 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
 
                 showLoadDialog();
                 //参数需要对一下
-                addToCompositeDis(HttpUtil.register(type+"" ,num ,pass ,code ,"" ,"3")
+
+
+                addToCompositeDis(HttpUtil.register(type+"" ,num ,pass ,code ,"5" ,"3")
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(@NonNull Disposable disposable) throws Exception {
@@ -159,6 +165,7 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
                             LoginHelper.againLoginRetrofit(RigisterActivity.this, num, pass, new RequestCallback<UserInfo>() {
                                 @Override
                                 public void beforeRequest() {
+
                                 }
 
                                 @Override
@@ -168,14 +175,34 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
                                 }
 
                                 @Override
-                                public void requestSuccess(UserInfo userInfo) {
+                                public void requestSuccess(final UserInfo userInfo) {
                                     dismissLoadDialog();
-                                    if (TextUtils.isEmpty(userInfo.getNickname())) {
-                                        startActivity(new Intent(RigisterActivity.this, SetNickNameActivity.class));
-                                        RigisterActivity.this.finishWithAnim();
+                                    if (getHttpResSuc(userInfo.getCode())) {
+                                        if (TextUtils.isEmpty(userInfo.getNickname())){
+                                            SharedPreferencesUtils.setLogin(RigisterActivity.this, userInfo);
+                                            RxHelper.delay(1000)
+                                                    .subscribe(new Consumer<Integer>() {
+                                                        @Override
+                                                        public void accept(@NonNull Integer integer) throws Exception {
+                                                            SetNickNameActivity.start(RigisterActivity.this , userInfo);
+                                                        }
+                                                    });
+                                        }else {
+                                            MyApplication.isLogin = true;
+                                            RxBus.get().post(C.RXBUS_LOGIN, true);
+                                            SharedPreferencesUtils.setPassword(RigisterActivity.this, TextUtils.isEmpty(userInfo.getPhone()) ? userInfo.getEmail() : userInfo.getPhone(), userInfo.getPassword());
+                                            SharedPreferencesUtils.setLogin(RigisterActivity.this, userInfo);
+                                            RxHelper.delay(500)
+                                                    .subscribe(new Consumer<Integer>() {
+                                                        @Override
+                                                        public void accept(@NonNull Integer integer) throws Exception {
+                                                            MainActivity.toMain(RigisterActivity.this);
+                                                        }
+                                                    });
+                                            RigisterActivity.this.finish();
+                                        }
                                     }else{
-                                        MainActivity.toMain(RigisterActivity.this);
-                                        RigisterActivity.this.finishWithAnim();
+                                        toTast(userInfo.getMessage());
                                     }
                                 }
 
@@ -184,6 +211,9 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
 
                                 }
                             });
+                        }else{
+                            dismissLoadDialog();
+                            toTast(RigisterActivity.this ,voidResultBeen.getMessage());
                         }
                     }
                 }, new Consumer<Throwable>() {
@@ -217,9 +247,9 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
                     public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
                         if (voidResultBeen.getCode() == 1) {
                             if (modifyEmail) {
-                                sendAuthCode(HttpUtil.emailCodeObservable(content), content, modifyEmail);
+                                sendAuthCode(HttpUtil.emailCodeObservable(content , "2"), content, modifyEmail);
                             } else {
-                                sendAuthCode(HttpUtil.phoneCodeObservable(content), content, modifyEmail);
+                                sendAuthCode(HttpUtil.phoneCodeObservable(content , "2"), content, modifyEmail);
                             }
                         } else {
                             toTast(RigisterActivity.this, voidResultBeen.getMessage());

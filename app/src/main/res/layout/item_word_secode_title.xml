@@ -35,19 +35,19 @@
         android:ellipsize="end"
         android:maxLength="9"
         android:maxEms="8"
-        android:textSize="12sp"
-        android:textColor="@drawable/word_package_text"
+        android:textSize="11sp"
+        android:textColor="@color/mainColor"
          />
         <TextView
             android:id="@+id/word_package_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="(16/237)"
-            android:textColor="@color/black"
+            android:textColor="@color/mainColor"
             android:layout_gravity="right"
             android:maxLines="1"
             android:gravity="center"
-            android:textSize="12sp"
+            android:textSize="11sp"
             />
     </LinearLayout>
 
@@ -59,6 +59,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_below="@id/pack_info"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         />
 </LinearLayout>

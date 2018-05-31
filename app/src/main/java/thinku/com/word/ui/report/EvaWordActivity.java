@@ -114,15 +114,18 @@ public class EvaWordActivity extends BaseActivity {
                     } else {
                         int currentIndex = 0 ;
                         for (int i = 0 ; i < EvaWordList.size() ; i ++){
-                            if (answer.equals(EvaWordList.get(position).getContent()))
-                                currentIndex = i ;
+                            if (answer.equals(EvaWordList.get(i).getContent())) {
+                                currentIndex = i;
+                            }
                         }
                         evaHolder.error.setVisibility(View.VISIBLE);
                         EvaWordList.get(currentIndex).setAnswer(true);
                         type = 0 ;
+                        evaWordAdapter.notifyItemChanged(currentIndex);
                         if (!errorPlayer.isPlaying()){
                             errorPlayer.start();
                         }
+
                     }
                 }else {
                     evaHolder.rl.setBackgroundResource(R.drawable.yellow_red_20round);
@@ -148,12 +151,10 @@ public class EvaWordActivity extends BaseActivity {
                     .doOnSubscribe(new Consumer<Disposable>() {
                         @Override
                         public void accept(Disposable disposable) throws Exception {
-                            showLoadDialog();
                         }
                     }).subscribe(new Consumer<EVAnswerBeen>() {
                         @Override
                         public void accept(EVAnswerBeen evAnswerBeen) throws Exception {
-                            dismissLoadDialog();
                             if (getHttpResSuc(evAnswerBeen.getCode())) {
                                 myApplication.finishAllActivity();
                                 refreshActivity();
@@ -166,7 +167,7 @@ public class EvaWordActivity extends BaseActivity {
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable throwable) throws Exception {
-                            dismissLoadDialog();
+                            toTast(throwable.getMessage());
                         }
                     }));
     }
@@ -205,9 +206,13 @@ public class EvaWordActivity extends BaseActivity {
                                     public void onCompletion(MediaPlayer mediaPlayer) {
                                     }
                                 });
-//                                EvaWordList.clear();
-//                                EvaWordList.addAll(StringUtils.spiltString(evaWordBeen.getWords().getSelect()));
-//                                evaWordAdapter.notifyDataSetChanged();
+                                EvaWordList.clear();
+                                if (StringUtils.spiltString(evaWordBeen.getWords().getSelect()).size() > 0) {
+                                    for (String content : StringUtils.spiltString(evaWordBeen.getWords().getSelect())) {
+                                        EvaWordList.add(new WordEva(content , false));
+                                    }
+                                }
+                                evaWordAdapter.notifyDataSetChanged();
                             }
                         }
                     }

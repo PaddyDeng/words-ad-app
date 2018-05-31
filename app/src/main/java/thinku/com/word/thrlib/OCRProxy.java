@@ -22,7 +22,7 @@ public class OCRProxy {
             @Override
             public void onError(OCRError error) {
                 error.printStackTrace();
-//                alertText("AK，SK方式获取token失败", error.getMessage());
+                Log.e("tag", "onError: " + error.getMessage() );
             }
         }, context, "fBmjCWalVR0V8u628ZU8du3V", "57qubjY9BoEAA50p3cFLMWZfowlwduL8");
     }

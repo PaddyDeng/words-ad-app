@@ -39,7 +39,6 @@ import thinku.com.word.utils.WaitUtils;
 
 public class PkWordFragment extends BaseFragment {
     private static final String TAG = PkWordFragment.class.getSimpleName();
-    @BindView(R.id.pk_word_rl)
     XRecyclerView pkWordRl;
     Unbinder unbinder;
 
@@ -64,6 +63,7 @@ public class PkWordFragment extends BaseFragment {
                 addNet();
             }
         });
+        pkWordRl = (XRecyclerView) view.findViewById(R.id.pk_word_rl);
         initRecy();
         addNet();
         return view;
@@ -80,10 +80,10 @@ public class PkWordFragment extends BaseFragment {
         pkWordRl
                 .getDefaultRefreshHeaderView()
                 .setRefreshTimeVisible(true);
-
+        pkWordRl.setLoadingMoreEnabled(true);
         pkWordRl.getDefaultFootView().setLoadingHint("加载中");
         pkWordRl.getDefaultFootView().setNoMoreHint("加载完成");
-        pkWordRl.setLimitNumberToCallLoadMore(2);
+        pkWordRl.setLimitNumberToCallLoadMore(10);
         pkWordRl.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -94,7 +94,7 @@ public class PkWordFragment extends BaseFragment {
             @Override
             public void onLoadMore() {
                 addNet();
-                pkWordRl.loadMoreComplete();
+
             }
         });
 
@@ -120,6 +120,7 @@ public class PkWordFragment extends BaseFragment {
         .subscribe(new Consumer<PkWordData>() {
             @Override
             public void accept(@NonNull PkWordData pkWordData) throws Exception {
+                pkWordRl.loadMoreComplete();
                 if (getHttpResSuc(pkWordData.getCode())) {
                     page ++ ;
                     if (pkWordData.getData() != null && pkWordData.getData().size() > 0) {
@@ -132,7 +133,8 @@ public class PkWordFragment extends BaseFragment {
         }, new Consumer<Throwable>() {
             @Override
             public void accept(@NonNull Throwable throwable) throws Exception {
-
+                pkWordRl.loadMoreComplete();
+                toTast( _mActivity,throwable.getMessage());
             }
         }));
     }

@@ -119,6 +119,7 @@ public class LoginHelper {
      * @param mUserInfo
      */
     public static void setSession(final Context context, final UserInfo mUserInfo, final ICallBack mICallBack) {
+        Log.e(TAG, "setSession: " + mUserInfo.getMessage() );
         final Map param = new HashMap();
         param.put("uid", mUserInfo.getUid());
         param.put("username", mUserInfo.getUsername());

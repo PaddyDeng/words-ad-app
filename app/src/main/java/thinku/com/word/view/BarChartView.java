@@ -79,7 +79,7 @@ public class BarChartView extends View {
     private GestureDetector mGestureDetector;
     private boolean isInteger = true;// 是否是整数坐标
     private float cutoffwidth = 0;
-    private TextPaint hintPaint;
+    private Paint  hintPaint;
     private Rect rectF;
     private Paint paint;
     private float x ;  //  x轴的y坐标的点
@@ -107,9 +107,8 @@ public class BarChartView extends View {
         taggingHeight = 0;
         mGestureDetector = new GestureDetector(getContext(),
                 new GestureListener());
-        hintPaint = new TextPaint();
-        hintPaint.setTextSize(sp2px(12));
-        hintPaint.setTextAlign(Align.CENTER);
+        hintPaint = new Paint();
+        hintPaint.setStrokeWidth(1);
         hintPaint.setColor(getResources().getColor(R.color.mainColor));
 
         hintTextPaint = new TextPaint();
@@ -228,14 +227,15 @@ public class BarChartView extends View {
             if (xRawDatas.get(i).indexOf("后") != -1){
                 isRel = true ;
             }
+
             List<Integer> data = yRawData.get(xRawDatas.get(i));
             for (int j = 0; j < data.size(); j++) {
 
                 //  画柱状图
                  startX =  coordinateRect.left + cutoffwidth
                         * i * (yRawData.size() + 1) + cutoffwidth + cutoffwidth
-                        * yRawData.size() / 2  - coordinateRect.width() / 15 / 2;
-                 stopX = startX + coordinateRect.width() / 12;
+                        * yRawData.size() / 2  - coordinateRect.width() / 10 / 2 ;
+                 stopX = startX + coordinateRect.width() / 10 ;
                 if (stopX <= offsetWidth + coordinateRect.left) {
                     continue;
                 }
@@ -274,7 +274,7 @@ public class BarChartView extends View {
                             text = s.substring(k, k + 1);
                             drawText(text, coordinateRect.left + cutoffwidth
                                             * i * (yRawData.size() + 1) + cutoffwidth + cutoffwidth
-                                            * yRawData.size() / 2, coordinateRect.height() - dip2px(5) + rectF.height() * k,
+                                            * yRawData.size() / 2, coordinateRect.height() + rectF.height() * k,
                                     canvas, Align.CENTER, 10, context.getResources().getColor(R.color.dark_gray_l)); // X轴上的坐标
                         } else {
                             if (k == 0) {
@@ -284,7 +284,7 @@ public class BarChartView extends View {
                             }
                             drawText(text, coordinateRect.left + cutoffwidth
                                             * i * (yRawData.size() + 1) + cutoffwidth + cutoffwidth
-                                            * yRawData.size() / 2, coordinateRect.height() - dip2px(5) + rectF.height() * k,
+                                            * yRawData.size() / 2, coordinateRect.height() + rectF.height() * k,
                                     canvas, Align.CENTER, 10, context.getResources().getColor(R.color.dark_gray_l)); // X轴上的坐标
                         }
 
@@ -295,7 +295,7 @@ public class BarChartView extends View {
                         text = s.substring(m, m + 1);
                         drawText(text, coordinateRect.left + cutoffwidth
                                         * i * (yRawData.size() + 1) + cutoffwidth + cutoffwidth
-                                        * yRawData.size() / 2, coordinateRect.height() - dip2px(5) + rectF.height() * m,
+                                        * yRawData.size() / 2, coordinateRect.height() + rectF.height() * m,
                                 canvas, Align.CENTER, 10, context.getResources().getColor(R.color.circle_green)); // X轴上的坐标
                     }
                 }

@@ -129,7 +129,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
 
                         if (getHttpResSuc(been.getCode())) {
                             UserData userData = been.getData();
-                            if (userData != null && !TextUtils.isEmpty(userData.getPassword())) {
+                            if (userData != null && !TextUtils.isEmpty(userData.getUid())) {
                                 SharedPreferencesUtils.setPlanWords(_mActivity, userData.getPlanWords());
                                 MyApplication.signTime = been.getData().getLastSign();
                                 new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + userData.getImage(), portrait);
@@ -152,6 +152,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
+                        Log.e(TAG, "accept: " + throwable.getMessage());
                     }
                 }));
     }

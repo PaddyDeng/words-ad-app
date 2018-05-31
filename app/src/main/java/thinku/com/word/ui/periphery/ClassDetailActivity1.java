@@ -3,6 +3,7 @@ package thinku.com.word.ui.periphery;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -90,8 +91,9 @@ public class ClassDetailActivity1 extends BaseActivity {
         GlideUtils.load(this, NetworkTitle.OPENRESOURE + recentClassBean.getImage(), courseImg);
         name.setText(recentClassBean.getName());
         people.setText(recentClassBean.getViewCount() + "人已加入");
-        String s = HtmlUtil.repairContent(recentClassBean.getSentenceNumber(), NetworkTitle.DomainSmartApplyResourceNormal);
+        String s = HtmlUtil.repairContent(recentClassBean.getSentenceNumber(), NetworkTitle.OPEN);
         String html = HtmlUtil.getHtml(s, 0);
+        Log.e(TAG, "init: " + html );
         content.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
     }
 

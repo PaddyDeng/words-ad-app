@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.http.NetworkTitle;
@@ -73,6 +75,7 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
         clock = (RelativeLayout) findViewById(R.id.clock);
         night = (RelativeLayout) findViewById(R.id.night);
         service = (RelativeLayout) findViewById(R.id.service);
+
     }
 
     @Override
@@ -82,7 +85,11 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
 
     public void init(){
         new GlideUtils().loadCircle(PersonalCenterActivity.this , NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(PersonalCenterActivity.this) ,portrait);
-        name.setText(SharedPreferencesUtils.getNickName(PersonalCenterActivity.this));
+        if (!TextUtils.isEmpty(SharedPreferencesUtils.getNickName(this))){
+            name.setText(SharedPreferencesUtils.getNickName(this));
+        }else{
+            name.setText("请登录");
+        }
     }
 
     private void setClick() {
