@@ -47,26 +47,39 @@ public class EvaWordAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final EvaHolder evaHolder = (EvaHolder) holder;
            if (position < eva.size()) {
-               WordEva wordEva = eva.get(position);
-               if (position < eva.size()) evaHolder.evaItem.setText(wordEva.getContent());
+             final   WordEva wordEva = eva.get(position);
+                    if (wordEva.getContent().equals("不认识")){
+                        evaHolder.evaItem.setText(wordEva.getContent());
+                        evaHolder.rl.setBackground(context.getResources().getDrawable(R.drawable.yellow_red_20round));
+                        evaHolder.rl.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                        selectRlClickListener.setClickListener(position, evaHolder, v);
+                                if (wordEva.isAnswer()) {
+                                    evaHolder.rl.setBackground(context.getResources().getDrawable(R.drawable.main_20round_tv));
+                                }
+                            }
+                        });
 
-               evaHolder.rl.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View v) {
-                       selectRlClickListener.setClickListener(position, evaHolder, v);
-                   }
-               });
-               if (wordEva.isAnswer()) {
-                   evaHolder.rl.setBackground(context.getResources().getDrawable(R.drawable.main_20round_tv));
+                    }else {
+                        evaHolder.evaItem.setText(wordEva.getContent());
+                        if (wordEva.isAnswer()) {
+                            evaHolder.rl.setBackground(context.getResources().getDrawable(R.drawable.main_20round_tv));
+                        }
+                        evaHolder.rl.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                selectRlClickListener.setClickListener(position, evaHolder, v);
+
+                            }
+                        });
+                    }
                }
-           }else{
-                 evaHolder.evaItem.setText("不认识");
-           }
     }
 
     @Override
     public int getItemCount() {
-        return (eva == null && eva.size() > 0 )? 0 : (eva.size() + 1);
+        return (eva == null && eva.size() > 0 )? 0 + 1 : eva.size() ;
     }
 
     public class EvaHolder extends RecyclerView.ViewHolder{

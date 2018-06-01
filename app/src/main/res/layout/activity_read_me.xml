@@ -7,17 +7,9 @@
     tools:context="thinku.com.word.ui.personalCenter.ReadMeActivity">
 
     <include layout="@layout/title_layout" />
-
-    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none">
-
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
-            android:src="@mipmap/readme" />
-
-    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
+            android:id="@+id/mip" />
 </LinearLayout>

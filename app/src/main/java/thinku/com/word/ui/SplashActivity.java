@@ -9,11 +9,15 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
+import thinku.com.word.bean.BaiduBean;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
+import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.share.ShareDateActivity;
 import thinku.com.word.utils.LoginHelper;

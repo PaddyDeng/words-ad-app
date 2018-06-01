@@ -7,6 +7,7 @@ import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import retrofit2.Response;
 import thinku.com.word.bean.BackCode;
+import thinku.com.word.bean.BaiduBean;
 import thinku.com.word.bean.Dictation;
 import thinku.com.word.bean.EVAnswerBeen;
 import thinku.com.word.bean.EvaWordBeen;
@@ -54,6 +55,10 @@ public class HttpUtil {
         return  RetrofitProvider.getInstance1(hostType).create(RestApi.class);
     }
 
+    private static RestApi getRestApiBaidu(@HostType.HostTypeChecker int hostType){
+        return  RetrofitProviderBaidu.getInstance(hostType).create(RestApi.class);
+    }
+
 
     //重置session
     //================================================================
@@ -82,6 +87,12 @@ public class HttpUtil {
 
     public static Observable<UserInfo> login(String userName, String userPass) {
         return getRestApi(HostType.LOGIN_REGIST_HOST).login(userName, userPass).compose(new SchedulerTransformer<UserInfo>());
+    }
+
+    //  login   先loign 获取userInfo  然后 获取session
+
+    public static Observable<ResultBeen<Void>> findPass(String type,String num, String userPass , String code) {
+        return getRestApi(HostType.LOGIN_REGIST_HOST).findPass( type,num, userPass , code).compose(new SchedulerTransformer<ResultBeen<Void>>());
     }
 
 
@@ -143,7 +154,7 @@ public class HttpUtil {
 
     //  词包详情
     public static Observable<PackageDetails> packageDetailsObservable(String catId ,String page){
-        return getRestApi(HostType.WORDS_URL_HOST).wordDetails(catId ,page).compose(new SchedulerTransformer<PackageDetails>());
+        return getRestApi(HostType.WORDS_URL_HOST).wordDetails(catId ,page ,"20").compose(new SchedulerTransformer<PackageDetails>());
     }
 
     // 添加词包
@@ -438,4 +449,10 @@ public class HttpUtil {
     public static Observable<ResultBeen<Void>> deletePackageObservable(String id){
         return getRestApi(HostType.WORDS_URL_HOST).deletePackage(id).compose(new SchedulerTransformer<ResultBeen<Void>>());
     }
+
+    //  背单词接口
+    public static Observable<BaiduBean> baiduBeanObservable(String appkey , String appsecert){
+        return getRestApiBaidu(HostType.WORDS_URL_HOST).getBaiduToken("client_credentials" ,appkey , appsecert).compose(new SchedulerTransformer<BaiduBean>());
+    }
+
 }

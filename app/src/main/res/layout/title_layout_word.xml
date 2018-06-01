@@ -27,6 +27,7 @@
             android:background="#29AB6A"
             android:orientation="horizontal"
             android:gravity="center"
+            android:id="@+id/need_rl"
             android:layout_marginLeft="20dp"
             >
 

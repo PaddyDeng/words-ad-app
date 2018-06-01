@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -86,6 +87,7 @@ public class CameraSearchActivity extends BaseNoImmActivity {
                     @Override
                     public void onResult(String result) {
                         Utils.setGone(mProgressBar);
+                        toTast(CameraSearchActivity.this ,result);
                         content = result;
                         recognResultTv.setText(content);
                         questionEt.setText(content);

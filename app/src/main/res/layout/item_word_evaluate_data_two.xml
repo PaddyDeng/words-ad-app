@@ -22,6 +22,7 @@
         android:lineSpacingExtra="20dp"
         android:lineSpacingMultiplier="0.5"
         android:text="adminsta"
+        android:textColor="@color/black"
         android:id="@+id/us"
         android:textSize="13sp"
         />
@@ -35,6 +36,7 @@
         android:id="@+id/chinese"
         android:layout_below="@id/us"
         android:text="v.管理支配"
+        android:textColor="@color/black"
         android:textSize="13sp"
         />
 </RelativeLayout>

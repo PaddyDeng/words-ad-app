@@ -55,6 +55,7 @@ public class LoginHelper {
      */
     public static void againLoginRetrofit(final Context context, String phone, String password, final RequestCallback<UserInfo> requestCallback) {
         if (!TextUtils.isEmpty(phone)) {
+            Log.e(TAG, "againLoginRetrofit: " + phone +"  " + password );
             addToCompositeDis(HttpUtil.login(phone, password)
                     .doOnSubscribe(new Consumer<Disposable>() {
                         @Override

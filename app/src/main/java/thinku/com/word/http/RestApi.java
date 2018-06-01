@@ -15,6 +15,7 @@ import retrofit2.http.Part;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 import thinku.com.word.bean.BackCode;
+import thinku.com.word.bean.BaiduBean;
 import thinku.com.word.bean.Dictation;
 import thinku.com.word.bean.EVAnswerBeen;
 import thinku.com.word.bean.EvaWordBeen;
@@ -108,7 +109,7 @@ public interface RestApi {
 
     @FormUrlEncoded
     @POST(NetworkChildren.PACKAGE_DETAILS)
-    Observable<PackageDetails> wordDetails(@Field("catId") String catId ,@Field("page") String page);
+    Observable<PackageDetails> wordDetails(@Field("catId") String catId ,@Field("page") String page ,@Field("size") String size);
 
     @FormUrlEncoded
     @POST(NetworkChildren.ADD_PACKAGE)
@@ -350,4 +351,10 @@ public interface RestApi {
     @FormUrlEncoded
     @POST(NetworkChildren.DICTATION_GROUP)
     Observable<List<WrongIndexBeen>> dictionGroup (@Field("status") String status);
+
+
+    @FormUrlEncoded
+    @POST(NetworkChildren.BAIDU)
+    Observable<BaiduBean> getBaiduToken(@Field("grant_type") String type ,@Field("client_id") String id , @Field("client_secret") String secret);
+
 }

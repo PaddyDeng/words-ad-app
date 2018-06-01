@@ -11,7 +11,7 @@ public class NetworkChildren {
     public static final String PHONECODE="phone-code";//发送短信
     public static final String MAILCODE="send-mail";//发送邮箱验证
     public static final  String REGISTER="register";//注册
-    public static final String FindPass="find-pass";//找回密码
+    public static final String FindPass="app-api/find-pass";//找回密码
     public static final String USERDETAIL="app-api/user-info";//用户信息
     public static final String CHOOSE_STUDY_MODE = "app-api/update-model";  //  选择学习模式
     public static final String UPDATA_PACKAGE    =  "app-api/update-package";  //  上传词包
@@ -94,5 +94,11 @@ public class NetworkChildren {
 
     //  搜索单词
     public static final String SEARCH_WORDS = "app-api/search-words" ;  // 搜索单词
+
+
+
+
+    //  百度
+    public static final String BAIDU = "oauth/2.0/token";  //  百度
 
 }

@@ -1,6 +1,7 @@
 package thinku.com.word.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import thinku.com.word.R;
 
@@ -26,27 +27,33 @@ public class ColorUtils {
 
     public static int getPackDetailsColor(Context context ,String status){
         if (status == null) {
-          return context.getResources().getColor(R.color.gray) ;
+          return R.color.gray ;
         }
         int color  ;
         switch (status){
             case "":
-                color = context.getResources().getColor(R.color.word_none);
+                color = R.color.word_none;
+                Log.e("tag", "word_none: "  );
                 break;
             case "3":
-                color = context.getResources().getColor(R.color.word_not_know);
+                color = R.color.word_not_know;
+                Log.e("tag", "word_not_know: "  );
                 break;
             case "1":
-                color = context.getResources().getColor(R.color.word_know);
+                color = R.color.word_know;
+                Log.e("tag", "word_know: "  );
                 break;
             case "2":
-                color = context.getResources().getColor(R.color.word_know);
+                color = R.color.word_know;
+                Log.e("tag", "word_know: "  );
                 break;
             case "4":
-                color = context.getResources().getColor(R.color.word_dim);
+                color = R.color.word_dim;
+                Log.e("tag", "word_dim: "  );
                 break;
             default:
-                color = context.getResources().getColor(R.color.word_none);
+                color = R.color.word_none;
+                Log.e("tag", "word_none: "  );
                 break;
         }
         return  color ;

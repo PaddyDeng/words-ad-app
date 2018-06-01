@@ -2,6 +2,7 @@
         package thinku.com.word.view;
 
         import android.content.Context;
+        import android.content.Intent;
         import android.graphics.Canvas;
         import android.graphics.Color;
         import android.graphics.Paint;
@@ -20,6 +21,7 @@
         import java.text.DecimalFormat;
         import java.util.ArrayList;
         import java.util.HashMap;
+        import java.util.Iterator;
         import java.util.List;
         import java.util.Map;
 
@@ -30,6 +32,9 @@
  */
 public class BarChartView extends View {
     private static final String TAG = BarChartView.class.getSimpleName();
+    private int scrollWidth  ;
+    private int width ;
+    private boolean isWidth ;
     /**
      * 公共部分
      */
@@ -55,7 +60,7 @@ public class BarChartView extends View {
     private int[] colors = {R.color.color_notknow, R.color.color_forget, R.color.color_dim ,
     R.color.color_know , R.color.color_know_well}; // 柱子的颜色
     private int yIndex = 5; // Y轴位置
-    private Map<String, List<Integer>> yRawData = new HashMap<>();
+    private HashMap<String, List<Integer>> yRawData = new HashMap<>();
     private int priceWeight = 1; // 倍数
 
 
@@ -307,15 +312,31 @@ public class BarChartView extends View {
      * 设置值 tagging：标注 xRawData：x轴坐标 yRawData：为柱形图的内容
      */
     public void setData(List<String> xRawData,
-                        Map<String, List<Integer>> yRawData) {
+                        HashMap<String, List<Integer>> yRawData) {
         this.xRawDatas.clear();
         this.yRawData.clear();
         this.xRawDatas.addAll(xRawData);
-        this.yRawData = yRawData;
-        updateCutoffwidth1((int) (16 * cutoffwidth));
+        HashMapAdd(this.yRawData ,yRawData);
+        int position = xRawData.indexOf("今天");
+        if (xRawData.size() > 17) {
+            if (position != -1) {
+                int width = (int) (((position ) * coordinateRect.width() / 5) + coordinateRect.width() / 2 - scrollWidth);
+                updateCutoffwidth1(width);
+            }
+        }else{
+            if (position != -1) {
+                int width = (int) ((((position )* coordinateRect.width() / 5)) - scrollWidth);
+                updateCutoffwidth1(width);
+            }
+        }
         invalidate();
     }
 
+    public void HashMapAdd(HashMap<String, List<Integer>> map1 , HashMap<String, List<Integer>> map2) {
+        for (String key : map2.keySet()) {
+            map1.put(key, map2.get(key));
+        }
+    }
 
     private void updateCutoffwidth( int  width) {
         if (xRawDatas != null) {
@@ -326,8 +347,9 @@ public class BarChartView extends View {
                         / ((this.yRawData.size() + 1) * horizontalNum + 1) - coordinateRect
                         .width());
                 offsetWidth = offsetWidthMax;
-                cutoffwidth = coordinateRect.width()
-                        / (horizontalNum * (this.yRawData.size() + 1) + 1);
+                cutoffwidth = coordinateRect.width()/ (horizontalNum * (this.yRawData.size() + 1) + 1);
+                Log.e(TAG, "updateCutoffwidth: "  + offsetWidth + "  " + cutoffwidth);
+
                 int start = (int) (offsetWidth / ((this.yRawData.size() + 1) * cutoffwidth));
                 int stop = (int) ((offsetWidth + coordinateRect.width() + cutoffwidth
                         * this.yRawData.size()) / ((this.yRawData.size() + 1) * cutoffwidth));
@@ -364,14 +386,12 @@ public class BarChartView extends View {
                 initMaxAndMin(start, stop);
             } else {
                 cutoffwidth = coordinateRect.width()
-                        / (xRawDatas.size() * (this.yRawData.size() + 1) + 1);
-                if (cutoffwidth > coordinateRect.width() / 8) {
-                    cutoffwidth = coordinateRect.width() / 8;
-                }
+                        / (5 + 1);
                 initMaxAndMin(0, this.xRawDatas.size());
                 offsetWidth = 0;
                 offsetWidthMax = 0;
             }
+            Log.e(TAG, "updateCutoffwidth1: " + width );
             scroll(width);
         }
     }
@@ -385,10 +405,10 @@ public class BarChartView extends View {
         if (stop > this.xRawDatas.size()) {
             stop = this.xRawDatas.size();
         }
-        Map<String, List<Integer>> yRawDataNews = new HashMap<>();
-        for (int i = start; i < stop; i++) {
-            yRawDataNews.put(xRawDatas.get(i), yRawData.get(xRawDatas.get(i)));
-        }
+//        Map<String, List<Integer>> yRawDataNews = new HashMap<>();
+//        for (int i = start; i < stop; i++) {
+//            yRawDataNews.put(xRawDatas.get(i), yRawData.get(xRawDatas.get(i)));
+//        }
         int maxValueNews = maxValue;
         int minValueNews = 0;
         if (isInteger) {
@@ -484,7 +504,6 @@ public class BarChartView extends View {
      * 根据数据大小返回Y坐标
      */
     private float getCutoffKLY(float price) {
-        Log.e(TAG, "getCutoffKLY: " + price +"  " + maxValue );
         float priceY =(coordinateRect.height()  - coordinateRect.height() / 15) * price / maxValue ;
 //        if (priceY < coordinateRect.top)
 //            priceY = coordinateRect.top;
@@ -568,10 +587,12 @@ public class BarChartView extends View {
     }
 
     public void scroll(int width ) {
-        scrollTo(offsetWidth, 0);
+        Log.e(TAG, "scroll: " + width );
+        scrollTo(width, 0);
         int start = (int) (offsetWidth / ((yRawData.size() + 1) * cutoffwidth));
         int stop = (int) ((offsetWidth + coordinateRect.width() + yRawData
                 .size() * cutoffwidth) / ((yRawData.size() + 1) * cutoffwidth));
+        scrollWidth = width ;
         if (!initMaxAndMin(start, stop)) {
             invalidate();
         }

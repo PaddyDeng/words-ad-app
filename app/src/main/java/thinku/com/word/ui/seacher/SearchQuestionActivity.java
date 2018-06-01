@@ -141,7 +141,7 @@ public class SearchQuestionActivity extends BaseNoImmActivity {
             @Override
             public void setListener(int position) {
                 WordBean wordBean = words.get(position);
-             thinku.com.word.ui.report.WordEvaluateFragment.start(SearchQuestionActivity.this, wordBean.getId());
+             thinku.com.word.ui.report.WordEvaluateFragment1.start(SearchQuestionActivity.this, wordBean.getId());
             }
         });
         mRecyclerView.addItemDecoration(new RecycleViewLinearDivider(mContext, LinearLayoutManager.VERTICAL, R.drawable.gray_one_height_divider));

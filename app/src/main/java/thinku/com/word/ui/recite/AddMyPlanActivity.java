@@ -28,6 +28,7 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.view.wheelview.widget.WheelView;
 
+import static thinku.com.word.R.id.find;
 import static thinku.com.word.R.id.title_t;
 
 public class AddMyPlanActivity extends BaseActivity {
@@ -42,7 +43,6 @@ public class AddMyPlanActivity extends BaseActivity {
     TextView daytext;
     @BindView(R.id.num)
     TextView numtext;
-    @BindView(R.id.num_of_day)
     TextView numOfDay;
     @BindView(R.id.wheelView_rl)
     RelativeLayout wheelViewRl;
@@ -79,6 +79,7 @@ public class AddMyPlanActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_my_plan);
         unbinder = ButterKnife.bind(this);
+        numOfDay = (TextView) findViewById(R.id.num_of_day);
         Intent intent = getIntent();
         if (intent != null) {
             packId = intent.getStringExtra("packId");
@@ -154,7 +155,6 @@ public class AddMyPlanActivity extends BaseActivity {
         });
         wheelViewRl.addView(wheel_day);
         numOfDay.setText(dayList.get(dayInt - 1));
-
         wheel_num = new WheelView(this, style);
         wheel_num.setWheelAdapter(new MyWheelAdapter(this));
         wheel_num.setWheelSize(7);

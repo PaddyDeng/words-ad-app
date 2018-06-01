@@ -22,10 +22,10 @@
         android:orientation="horizontal"
         android:id="@+id/pack_info"
         android:layout_below="@id/status"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="5dp">
     <TextView
         android:id="@+id/word_package_title"
         android:layout_width="wrap_content"

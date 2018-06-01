@@ -25,6 +25,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
@@ -35,8 +36,11 @@ import thinku.com.word.callback.RequestCallback;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkChildren;
 import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.ui.personalCenter.SetNickNameActivity;
+import thinku.com.word.ui.personalCenter.feature.AuthCode;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.PhoneAndEmailUtils;
+import thinku.com.word.utils.SharePref;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
@@ -51,6 +55,7 @@ public class ForgetPassActivity extends BaseActivity implements View.OnClickList
     private boolean isSendCode;
     private Timer timer;
     private int recLen = 60;
+    private AuthCode mAuthCode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +63,9 @@ public class ForgetPassActivity extends BaseActivity implements View.OnClickList
         setContentView(R.layout.activity_forget);
         findView();
         setClick();
+        mAuthCode = new AuthCode(60 * 1000, 1000, this, send, R.drawable.blue_round);
+        getAuthCode();
+
     }
 
     private void setClick() {
@@ -66,6 +74,19 @@ public class ForgetPassActivity extends BaseActivity implements View.OnClickList
         confirm.setOnClickListener(this);
     }
 
+
+    /**
+     * 获取验证码
+     */
+    private void getAuthCode() {
+        addToCompositeDis(HttpUtil.sendCode()
+                .subscribe(new Consumer<ResultBeen<Void>>() {
+                    @Override
+                    public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+
+                    }
+                }));
+    }
     private void findView() {
         back = (ImageView) findViewById(R.id.back);
         num_et = (EditText) findViewById(R.id.num_et);
@@ -124,150 +145,122 @@ public class ForgetPassActivity extends BaseActivity implements View.OnClickList
                     return;
                 }
                 showLoadDialog();
-                Request<String> req = NoHttp.createStringRequest(NetworkTitle.DomainLoginNormal + NetworkChildren.FindPass, RequestMethod.POST);
-                req.set("type",type+"").set("registerStr",num).set("pass",pass).set("code",code);
-                String session = SharedPreferencesUtils.getSession(ForgetPassActivity.this,1);
-                if(!TextUtils.isEmpty(session)){
-                    req.setHeader("Cookie","PHPSESSID="+session);
-                }
-                request(0, req, new SimpleResponseListener<String>() {
+
+                addToCompositeDis(HttpUtil.findPass(type +"" ,num ,pass ,code)
+                .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
-                    public void onSucceed(int what, Response<String> response) {
-                        if(response.isSucceed()){
-                            Gson gson = new Gson();
-                            BackCode praiseBack = gson.fromJson(response.get(), BackCode.class);
-                            if(praiseBack.getCode()==1){
-                                LoginHelper.againLoginRetrofit(ForgetPassActivity.this, num ,pass ,new RequestCallback<UserInfo>(){
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        showLoadDialog();
+                    }
+                }).subscribe(new Consumer<ResultBeen<Void>>() {
+                            @Override
+                            public void accept(@NonNull ResultBeen<Void> userInfo) throws Exception {
+                                dismissLoadDialog();
+                                if (userInfo.getCode() == 1) {
+                                    LoginHelper.againLoginRetrofit(ForgetPassActivity.this, num, pass, new RequestCallback<UserInfo>() {
 
-                                            @Override
-                                            public void beforeRequest() {
+                                        @Override
+                                        public void beforeRequest() {
+                                            dismissLoadDialog();
+                                        }
 
-                                            }
+                                        @Override
+                                        public void requestFail(String msg) {
+                                            dismissLoadDialog();
+                                            toTast(ForgetPassActivity.this, msg);
+                                        }
 
-                                            @Override
-                                            public void requestFail(String msg) {
-                                                dismissLoadDialog();
-                                                toTast(ForgetPassActivity.this ,msg);
-                                            }
-
-                                            @Override
-                                            public void requestSuccess(UserInfo userInfo) {
-                                                dismissLoadDialog();
-                                                Toast.makeText(ForgetPassActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
-                                                if (getHttpResSuc(userInfo.getCode())) {
+                                        @Override
+                                        public void requestSuccess(UserInfo userInfo) {
+                                            dismissLoadDialog();
+                                            Toast.makeText(ForgetPassActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                                            if (getHttpResSuc(userInfo.getCode())) {
+                                                if (TextUtils.isEmpty(userInfo.getNickname())) {
+                                                    SharedPreferencesUtils.setLogin(ForgetPassActivity.this, userInfo);
+                                                    SetNickNameActivity.start(ForgetPassActivity.this, userInfo);
+                                                } else {
                                                     SharedPreferencesUtils.setPassword(ForgetPassActivity.this, TextUtils.isEmpty(userInfo.getPhone()) ? userInfo.getEmail() : userInfo.getPhone(), userInfo.getPassword());
                                                     SharedPreferencesUtils.setLogin(ForgetPassActivity.this, userInfo);
-                                                    ForgetPassActivity.this.finishWithAnim();
-                                                    startActivity(new Intent(ForgetPassActivity.this ,MainActivity.class));
-                                                }else{
-                                                    toTast(userInfo.getMessage());
+                                                    MainActivity.toMain(ForgetPassActivity.this);
+                                                    startActivity(new Intent(ForgetPassActivity.this, MainActivity.class));
                                                 }
+                                            } else {
+                                                toTast(userInfo.getMessage());
                                             }
+                                        }
 
-                                            @Override
-                                            public void otherDeal(UserInfo userInfo) {
+                                        @Override
+                                        public void otherDeal(UserInfo userInfo) {
+                                            dismissLoadDialog();
+                                        }
+                                    });
 
-                                            }
-                                        });
+                                } else {
+                                    dismissLoadDialog();
+                                    Toast.makeText(ForgetPassActivity.this, userInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
 
-                            }else{
-                                Toast.makeText(ForgetPassActivity.this,praiseBack.getMessage(),Toast.LENGTH_SHORT).show();
                             }
-
-                        }
-                    }
-
-                    @Override
-                    public void onFailed(int what, Response<String> response) {
-                        super.onFailed(what, response);
-                    }
-                });
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                dismissLoadDialog();
+                                toTast(ForgetPassActivity.this ,throwable.getMessage());
+                            }
+                        }));
                 break;
         }
     }
 
+    /**
+     * 发送
+     *
+     * @param num
+     * @param i
+     */
     private void sendCode(final String num, final int i) {
-        addToCompositeDis(HttpUtil.sendCode()
-                .subscribe(new Consumer<ResultBeen<Void>>() {
-                    @Override
-                    public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                        if (voidResultBeen.getCode() == 1) {
-                            StringBuffer sb =new StringBuffer();
-                            sb.append(NetworkTitle.DomainLoginNormal);
-                            boolean isPhone;
-                            if(i==0){
-                                sb.append(NetworkChildren.PHONECODE);
-                                isPhone=true;
-                            }else{
-                                sb.append(NetworkChildren.MAILCODE);
-                                isPhone=false;
+        mAuthCode.start();
+        if (i ==0){
+            addToCompositeDis(HttpUtil.phoneCodeObservable(num , 2+"")
+                    .subscribe(new Consumer<ResultBeen<Void>>() {
+                        @Override
+                        public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                            if (voidResultBeen.getCode() == 1) {
+                                toTast(ForgetPassActivity.this, voidResultBeen.getMessage());
+                            } else {
+                                mAuthCode.sendAgain();
+                                toTast(ForgetPassActivity.this, voidResultBeen.getMessage());
                             }
-                            showLoadDialog();
-                            isSendCode =true;
-                            timer = new Timer();
-                            timer.schedule(new TimerTask() {
-                                @Override
-                                public void run() {
-                                    recLen--;
-                                    Message message = new Message();
-                                    message.what = 1;
-                                    handler.sendMessage(message);
-                                }
-                            }, 1000, 1000);
-                            Request<String> req = NoHttp.createStringRequest(sb.toString(), RequestMethod.POST);
-                            if(!isPhone)req.set("email",num);
-                            else if(isPhone)req.set("phoneNum",num);
-                            req.set("type","2");
-                            String session = SharedPreferencesUtils.getSession(ForgetPassActivity.this,1);
-                            if(!TextUtils.isEmpty(session)){
-                                req.setHeader("Cookie","PHPSESSID="+session);
-                            }
-                            request(0, req, new SimpleResponseListener<String>() {
-                                @Override
-                                public void onSucceed(int what, Response<String> response) {
-                                    dismissLoadDialog();
-                                    if(response.isSucceed()){
-                                        try {
-                                            Gson gson = new Gson();
-                                            BackCode backCode = gson.fromJson(response.get(), BackCode.class);
-                                            if(backCode.getCode()==1){
-                                                Toast.makeText(ForgetPassActivity.this,"发送成功",Toast.LENGTH_SHORT).show();
-                                            }else {
-                                                Toast.makeText(ForgetPassActivity.this,backCode.getMessage(),Toast.LENGTH_SHORT).show();
-                                            }
-                                        }catch (Exception e){
-
-                                        }
-
-                                    }
-                                }
-
-                                @Override
-                                public void onFailed(int what, Response<String> response) {
-                                    dismissLoadDialog();
-                                }
-                            });
-                        } else {
-                            toTast(ForgetPassActivity.this ,voidResultBeen.getMessage());
                         }
-                    }
-                }));
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@NonNull Throwable throwable) throws Exception {
+                            mAuthCode.sendAgain();
+                        }
+                    })
+            );
+        }else if (i ==1){
 
+            addToCompositeDis(HttpUtil.emailCodeObservable(num , 2+"")
+                    .subscribe(new Consumer<ResultBeen<Void>>() {
+                        @Override
+                        public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                            if (voidResultBeen.getCode() == 1) {
+                                toTast(ForgetPassActivity.this, voidResultBeen.getMessage());
+                            } else {
+                                mAuthCode.sendAgain();
+                                toTast(ForgetPassActivity.this, voidResultBeen.getMessage());
+                            }
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@NonNull Throwable throwable) throws Exception {
+                            mAuthCode.sendAgain();
+                        }
+                    })
+            );
+
+        }
     }
 
-    final Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg){
-            switch (msg.what) {
-                case 1:
-                    send.setText(recLen+"s");
-                    if(recLen < 0){
-                        timer.cancel();
-                        isSendCode =false;
-                        recLen=60;
-                        send.setText("验证码");
-                    }
-            }
-        }
-    };
 }

@@ -109,6 +109,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         dismissLoadDialog();
                         if (getHttpResSuc(userInfo.getCode())) {
                             if (TextUtils.isEmpty(userInfo.getNickname())){
+                                SharedPreferencesUtils.setLogin(LoginActivity.this, userInfo);
                                 SetNickNameActivity.start(LoginActivity.this , userInfo);
                                 MyApplication.isLogin = true;
                             }else {

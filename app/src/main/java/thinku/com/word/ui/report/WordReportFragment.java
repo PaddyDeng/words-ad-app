@@ -61,7 +61,7 @@ public class WordReportFragment extends BaseFragment {
     //  日报图
     private List<String> xValue = new ArrayList<>();
     private List<Integer> yValue = new ArrayList<>();
-    private Map<String, List<Integer>> Value = new HashMap<>();
+    private Map<String, List<Integer>> Value;
     @BindView(R.id.date_report)
 //    BarChartView dateReport;
     BarChartView dateReport;
@@ -121,7 +121,7 @@ public class WordReportFragment extends BaseFragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-
+                        toTast(_mActivity ,throwable.getMessage());
                     }
                 }));
     }
@@ -164,7 +164,6 @@ public class WordReportFragment extends BaseFragment {
         }
         if (dataBeanX.getRe1() != null && dataBeanX.getRe1().size() > 0) {
             XValueString1(dataBeanX.getRe1());
-
         }
     }
 
@@ -174,6 +173,8 @@ public class WordReportFragment extends BaseFragment {
      * @param dataBeanX
      */
     public void setyValue(WordReportBeen.DataBeanX dataBeanX) {
+        Value = new HashMap<>();
+        Value.clear();
         if (Value.size() == 0) {
             int max = 0;
             if (dataBeanX.getRe() != null && dataBeanX.getRe().size() > 0) {
@@ -198,7 +199,7 @@ public class WordReportFragment extends BaseFragment {
             for (int i = 0; i < 7; i++) {
                 yValue.add(percent * i);
             }
-            dateReport.setData(xValue, Value);
+            dateReport.setData(xValue, (HashMap<String, List<Integer>>) Value);
         }
     }
 

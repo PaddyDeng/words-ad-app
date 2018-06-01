@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +50,7 @@ public class WordbagDetailActivity extends BaseActivity {
     @BindView(R.id.to_recite)
     TextView toRecite;
     @BindView(R.id.word_list)
-    RecyclerView wordList;
+    XRecyclerView pkWordRl;
     private String catId;
     private int page = 1;
     private String total;
@@ -82,13 +85,43 @@ public class WordbagDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         init();
         initData();
+        initRecycler();
         titleT.setText(name);
+    }
+
+    public void initRecycler(){
+        wordAdapter = new WordAdapter(WordbagDetailActivity.this, words);
+        pkWordRl.setLayoutManager(new LinearLayoutManager(WordbagDetailActivity.this));
+        pkWordRl.setRefreshProgressStyle(ProgressStyle.SysProgress);
+        pkWordRl.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
+        pkWordRl.setArrowImageView(R.drawable.iconfont_downgrey);
+        pkWordRl
+                .getDefaultRefreshHeaderView()
+                .setRefreshTimeVisible(true);
+        pkWordRl.setLoadingMoreEnabled(true);
+        pkWordRl.getDefaultFootView().setLoadingHint("加载中");
+        pkWordRl.getDefaultFootView().setNoMoreHint("加载完成");
+        pkWordRl.setLimitNumberToCallLoadMore(10);
+        pkWordRl.setAdapter(wordAdapter);
+        pkWordRl.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                initData();
+                pkWordRl.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+                page++ ;
+                initData();
+
+            }
+        });
     }
 
     public void init() {
         havaNum.setText(userwords);
         totalNum.setText(total);
-        wordList.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
@@ -98,13 +131,18 @@ public class WordbagDetailActivity extends BaseActivity {
                 .subscribe(new Consumer<PackageDetails>() {
                     @Override
                     public void accept(@NonNull PackageDetails packageDetails) throws Exception {
-                        words.addAll(packageDetails.getPackageDetails());
-                        wordAdapter = new WordAdapter(WordbagDetailActivity.this, words);
-                        wordList.setAdapter(wordAdapter);
+                        if (packageDetails.getPackageDetails() != null && packageDetails.getPackageDetails().size() > 0) {
+                            pkWordRl.loadMoreComplete();
+                            words.addAll(packageDetails.getPackageDetails());
+                            wordAdapter.notifyDataSetChanged();
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
+                        pkWordRl.loadMoreComplete();
+                        page-- ;
+                        toTast(WordbagDetailActivity.this ,throwable.getMessage());
                     }
                 }));
     }

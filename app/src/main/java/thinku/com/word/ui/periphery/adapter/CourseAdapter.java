@@ -85,7 +85,7 @@ public class CourseAdapter extends RecyclerView.Adapter {
             courseHolder.name.setText(dataBean.getName());
             courseHolder.people.setText(dataBean.getViewCount() + "人已加入");
             courseHolder.listen.setVisibility(View.GONE);
-            new GlideUtils().load(context , NetworkTitle.DomainGossipNormal + dataBean.getImage()   , courseHolder.course_img);
+            new GlideUtils().load(context , NetworkTitle.OPENRESOURE +  dataBean.getImage()   , courseHolder.course_img);
             courseHolder.rl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

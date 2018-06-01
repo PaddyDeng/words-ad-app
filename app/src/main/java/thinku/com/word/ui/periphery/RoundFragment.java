@@ -285,6 +285,7 @@ public class RoundFragment extends BaseFragment {
      * @param livePreviewBeanList
      */
     public void choseLiveList(List<RoundBean.LivePreviewBean> livePreviewBeanList) {
+        dataBeanList.clear();
         for (RoundBean.LivePreviewBean livePreviewBean : livePreviewBeanList) {
             for (RoundBean.LivePreviewBean.DataBean dataBean : livePreviewBean.getData()) {
                 if (DateUtil.compare(dataBean.getCnName())) {
@@ -292,7 +293,6 @@ public class RoundFragment extends BaseFragment {
                     dataBeanList.add(dataBean);
                 }
             }
-
         }
         if (dataBeanList.isEmpty()) {
             openClass.setVisibility(View.GONE);
@@ -350,7 +350,7 @@ public class RoundFragment extends BaseFragment {
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(1));
                 break;
             case R.id.live_more:
-                PeripheryFragment.start(_mActivity);
+                PeripheryFragment.start(_mActivity );
 
             default:
                 break;

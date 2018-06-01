@@ -129,7 +129,8 @@
                     android:id="@+id/content_show"
                     android:layout_below="@id/top"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="#EBEBEB">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -140,7 +141,6 @@
                             android:id="@+id/help_memory"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/top"
                             android:background="@color/color_bg_gray"
                             android:visibility="visible">
 
@@ -173,7 +173,8 @@
                                 android:lineSpacingExtra="10dp"
                                 android:lineSpacingMultiplier="0.5"
                                 android:layout_marginBottom="5dp"
-                                android:textSize="13sp"
+                                android:textColor="@color/black"
+                                android:textSize="12sp"
                                 android:paddingLeft="20dp"
                                 />
 
@@ -328,7 +329,7 @@
                             android:id="@+id/jiekou"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/sentences"
+                            android:layout_below="@id/question"
                             android:layout_marginTop="10dp"
                             android:background="@color/color_bg_gray"
                             android:layout_marginBottom="75dp"
@@ -355,7 +356,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp"
                                 android:layout_below="@id/image5"
-                                android:layout_marginBottom="30dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginTop="5dp"

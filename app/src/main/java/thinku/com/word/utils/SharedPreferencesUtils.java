@@ -18,7 +18,7 @@ public class SharedPreferencesUtils {
     private static final String TAG = SharedPreferencesUtils.class.getSimpleName();
 
     protected static String PREFS_NAME = "UserInfo";
-
+    private static SharedPreferences sp ;
     private final static String PREFS_KEY_USER_PWD = "prefs_key_user_pwd";
     private final static String PREFS_KEY_MEMORY_MODE = "prefs_key_memory_mode";
     private final static String PREFS_KEY_PALN_WORDS = "prefs_key_plan_words" ;
@@ -35,6 +35,13 @@ public class SharedPreferencesUtils {
     private final static String PERFS_PK_UID = "prefs_pk_match_uid" ;
 
     private final static String LOGO = "prefs_logo" ;  //  logo 图片
+
+    private static SharedPreferences getSharePreferences(Context context){
+        if (sp == null){
+            sp = context.getSharedPreferences(PREFS_PK_NAME ,context.MODE_PRIVATE);
+        }
+        return sp ;
+    }
 
     /**
      * 存储PK对手信息
@@ -94,7 +101,7 @@ public class SharedPreferencesUtils {
      * @param login
      */
     public static void setLogin(Context context, UserInfo login) {
-        SharedPreferences sp = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp = getSharePreferences(context);
         SharedPreferences.Editor edit = sp.edit();
         edit.putString("uid", login.getUid());
         edit.putString("username", login.getUsername());
@@ -123,7 +130,7 @@ public class SharedPreferencesUtils {
     }
 
     public static void clearMatch(Context context){
-        SharedPreferences sp = context.getSharedPreferences(PREFS_PK_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp =getSharePreferences(context);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(PERFS_PK_IMAGE,"");
         editor.putString(PERFS_PK_NAME , "");
@@ -135,7 +142,7 @@ public class SharedPreferencesUtils {
 
     public static UserInfo getUserInfo(Context context) {
         UserInfo login = new UserInfo();
-        SharedPreferences sp = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp = getSharePreferences(context);
         login.setUid(sp.getString("uid", ""));
         login.setUsername(sp.getString("username", ""));
         login.setEmail(sp.getString("email", ""));
@@ -150,14 +157,14 @@ public class SharedPreferencesUtils {
     }
 
     public static String getStudyMode(Context context){
-        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString("studyMode" ,"");
+        return  getSharePreferences(context).getString("studyMode" ,"");
     }
     public static String getNickName(Context context){
-        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString("nickname" ,"");
+        return getSharePreferences(context).getString("nickname" ,"");
     }
 
     public static String getUid (Context context){
-        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString("uid" ,"");
+        return  getSharePreferences(context).getString("uid" ,"");
     }
 
     public static String getImage(Context context){
@@ -389,33 +396,33 @@ public class SharedPreferencesUtils {
     }
 
     public static String getString(String key, Context c) {
-        return c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString(key, "");
+        return  getSharePreferences(c).getString(key, "");
     }
 
     public static void setString(String key, Context c, String value) {
-        SharedPreferences.Editor editor = c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor =  getSharePreferences(c).edit();
         editor.putString(key, value);
         editor.commit();
     }
 
     public static int getInt(String key, Context c) {
-        return c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getInt(key, 0);
+        return getSharePreferences(c).getInt(key, 0);
     }
 
     public  static  void setInt(String key, Context c, int value) {
-        SharedPreferences.Editor editor = c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getSharePreferences(c).edit();
         editor.putInt(key, value);
         editor.commit();
     }
 
     public  static  void setBoolean(String key, Context c, boolean value) {
-        SharedPreferences.Editor editor = c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getSharePreferences(c).edit();
         editor.putBoolean(key, value);
         editor.commit();
     }
 
     public static Boolean getBoolean(String key ,Context context){
-        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getBoolean(key, false);
+        return getSharePreferences(context).getBoolean(key, false);
     }
 
 
@@ -429,6 +436,18 @@ public class SharedPreferencesUtils {
         SharedPreferences.Editor editor = sp.edit();
         editor.putBoolean("isfirst" ,false);
         editor.commit();
+    }
+
+
+    public static void setCookie(Context context , String cookie){
+        SharedPreferences sp =context.getSharedPreferences("baidu",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("cookie" ,cookie);
+    }
+
+    public static String getCookie(Context context){
+        SharedPreferences sp =context.getSharedPreferences("baidu",Context.MODE_PRIVATE);
+        return sp.getString("cookie" ,"");
     }
 
 

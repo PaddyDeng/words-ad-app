@@ -428,10 +428,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
 
-        <service
-            android:name=".ui.personalCenter.ClockService"
-            android:enabled="true"
-            android:exported="true"></service>
+        <activity android:name=".ui.report.WordEvaluateFragment1"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme"
+            />
     </application>
 
 </manifest>

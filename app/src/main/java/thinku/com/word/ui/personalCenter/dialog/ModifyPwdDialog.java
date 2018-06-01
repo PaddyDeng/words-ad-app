@@ -42,6 +42,12 @@ public class ModifyPwdDialog extends BaseDialog {
     TextView cancel;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        modifyPwd();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (mCallBack != null)
@@ -70,15 +76,13 @@ public class ModifyPwdDialog extends BaseDialog {
             @Override
             public void onClick(View v) {
                 if (check(newPwd, oldPwd)) {
-                    modifyPwd();
+                    updatePassword();
                 }
             }
         });
     }
 
     private void modifyPwd() {
-
-        showLoadDialog();
         addToCompositeDis(HttpUtil.sendCode()
                 .subscribe(new Consumer<ResultBeen<Void>>() {
                     @Override
@@ -90,7 +94,7 @@ public class ModifyPwdDialog extends BaseDialog {
                         }
                     }
                 }));
-
+        showLoadDialog();
     }
 
 

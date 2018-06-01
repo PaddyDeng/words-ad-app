@@ -78,6 +78,7 @@ public class ModifyPhoneOrEmailDialog extends BaseDialog {
             title.setText("修改邮箱");
             et.setHint("请填写邮箱");
         }
+        getAuthCode();
         mAuthCode = new AuthCode(60 * 1000, 1000, getActivity(), authCode, R.drawable.modify_p_or_e_auth_code_gb);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +101,7 @@ public class ModifyPhoneOrEmailDialog extends BaseDialog {
         authCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getAuthCode();
+               sendAuthCode();
             }
         });
     }
@@ -111,16 +112,20 @@ public class ModifyPhoneOrEmailDialog extends BaseDialog {
                     @Override
                     public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
                         if (voidResultBeen.getCode() == 1) {
-                            if (modifyEmail) {
-                                sendAuthCode(HttpUtil.emailCodeObservable(getEditTxt(et) , "3"));
-                            } else {
-                                sendAuthCode(HttpUtil.phoneCodeObservable(getEditTxt(et) ,"3"));
-                            }
+
                         } else {
                             toastShort(voidResultBeen.getMessage());
                         }
                     }
                 }));
+    }
+
+    public void sendAuthCode(){
+        if (modifyEmail) {
+            sendAuthCode(HttpUtil.emailCodeObservable(getEditTxt(et) , "3"));
+        } else {
+            sendAuthCode(HttpUtil.phoneCodeObservable(getEditTxt(et) ,"3"));
+        }
     }
 
 

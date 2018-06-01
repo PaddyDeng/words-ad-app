@@ -94,14 +94,6 @@ public class PeripheryFragment extends BaseActivity  {
     }
 
     public void initRecycler(){
-//        swipeRefer.setDelegate(this);
-//        // 设置下拉刷新和上拉加载更多的风格     参数1：应用程序上下文，参数2：是否具有上拉加载更多功能
-//        BGARefreshViewHolder refreshViewHolder = new BGANormalRefreshViewHolder(this, true);
-//        // 设置下拉刷新和上拉加载更多的风格
-////        refreshViewHolder.setLoadingMoreText("加载更多");
-//        swipeRefer.setRefreshViewHolder(refreshViewHolder);
-////        swipeRefer.setIsShowLoadingMoreView(false);
-
         pkWordRl.setRefreshProgressStyle(ProgressStyle.SysProgress);
         pkWordRl.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
         pkWordRl.setArrowImageView(R.drawable.iconfont_downgrey);
@@ -124,7 +116,7 @@ public class PeripheryFragment extends BaseActivity  {
 
             @Override
             public void onLoadMore() {
-//                pkWordRl.loadMoreComplete();
+                page ++ ;
                 initData();
             }
         });
@@ -184,9 +176,8 @@ public class PeripheryFragment extends BaseActivity  {
 //                           dismissLoadDialog();
                             pkWordRl.loadMoreComplete();
                             if (dataBeanList != null) {
-                                dataBeanLists.clear();
                                 dataBeanList.addAll(dataBeanLists);
-                                Log.e(TAG, "accept: " + dataBeanList.size() );
+                                Log.e(TAG, "accept: " + dataBeanLists.size() );
                                 liveAdatper.notifyDataSetChanged();
                             }
                         }
@@ -194,6 +185,7 @@ public class PeripheryFragment extends BaseActivity  {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
 //                            dismissLoadDialog();
+                            page-- ;
                             pkWordRl.loadMoreComplete();
                             toTast(PeripheryFragment.this, throwable.toString());
                         }

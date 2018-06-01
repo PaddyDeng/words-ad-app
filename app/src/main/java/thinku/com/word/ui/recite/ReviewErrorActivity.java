@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -173,7 +172,11 @@ public class ReviewErrorActivity extends BaseActivity {
             @Override
             public void accept(@NonNull List<String> strings) throws Exception {
                 dismissLoadDialog();
-                thinku.com.word.ui.report.WordEvaluateFragment.start(ReviewErrorActivity.this, (ArrayList<String>) strings);
+                if (choseTxt.getText().toString().trim().equals("听写")){
+                    DictionDetailActivity.start(ReviewErrorActivity.this , (ArrayList<String>) strings);
+                }else {
+                    thinku.com.word.ui.report.WordEvaluateFragment.start(ReviewErrorActivity.this, (ArrayList<String>) strings);
+                }
             }
         }, new Consumer<Throwable>() {
             @Override

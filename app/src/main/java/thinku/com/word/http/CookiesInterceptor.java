@@ -17,25 +17,42 @@ import thinku.com.word.utils.SharedPreferencesUtils;
 public class CookiesInterceptor implements Interceptor {
 
     private Context mContext;
-
+    private boolean isBaidu ;
     public CookiesInterceptor(Context mContext) {
         this.mContext = mContext;
+        isBaidu = false ;
+    }
+
+    public CookiesInterceptor(Context mContext , boolean isBaidu) {
+        this.mContext = mContext;
+        this.isBaidu = true ;
     }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         Request compressedRequest;
+        String cookie ;
+        if (isBaidu){
+            cookie = SharedPreferencesUtils.getCookie(mContext);
+        }else{
+            cookie = SharePref.getCookie(mContext);
+        }
         compressedRequest = request.newBuilder()
-                .header("cookie", SharePref.getCookie(mContext))
+                .header("cookie", cookie)
                 .build();
-        Log.e("cookie", "intercept: " + SharePref.getCookie(mContext) );
+        Log.e("cookie", "intercept: " + cookie );
         Response originalResponse = chain.proceed(compressedRequest);
         if (!originalResponse.headers("Set-Cookie").isEmpty()) {
             for (String header : originalResponse.headers("Set-Cookie")) {
-                SharePref.saveCookie(mContext, header);
+                if (isBaidu) {
+                    SharedPreferencesUtils.setCookie(mContext ,header);
+                }else{
+                    SharePref.saveCookie(mContext, header);
+                }
             }
         }
         return originalResponse;
     }
+
 }

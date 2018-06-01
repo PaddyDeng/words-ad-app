@@ -68,6 +68,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         findView(view);
         setClick();
+        initView();
         new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(_mActivity), portrait);
         observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE, String.class);
         observable.subscribe(new Consumer<String>() {
@@ -136,12 +137,12 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                                 SharedPreferencesUtils.setImage(_mActivity, userData.getImage());
                                 SharedPreferencesUtils.setStudyMode(_mActivity, userData.getStudyModel());
                                 if (TextUtils.isEmpty(userData.getPlanWords())) {
-                                    Log.e(TAG, "accept: 0"  );
-                                    toTast(_mActivity, "请先选择背单词计划");
                                     setFragment(0);
                                 } else {
                                     setFragment(1);
                                 }
+                            }else{
+                                setFragment(0);
                             }
                         } else if (been.getCode() == 98){
                             setFragment(0);
@@ -154,7 +155,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        Log.e(TAG, "accept: " + throwable.getMessage());
+                        toTast(_mActivity,throwable.getMessage());
                     }
                 }));
     }

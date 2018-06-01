@@ -164,7 +164,7 @@ public class ProcessFragment extends BaseFragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-
+                        toTast(_mActivity,throwable.getMessage());
                     }
                 }));
     }

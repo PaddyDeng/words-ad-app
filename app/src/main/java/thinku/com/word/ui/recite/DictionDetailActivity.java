@@ -131,6 +131,7 @@ public class DictionDetailActivity extends BaseActivity {
         }
         i = 0;
         word_position_min = 0;
+        closeAnimationForever(choseTxt);
     }
 
     /**
@@ -197,7 +198,7 @@ public class DictionDetailActivity extends BaseActivity {
                         choseTxt.setText(integer + "");
                         if (integer == 0){
                             choseTxt.setTextColor(getResources().getColor(R.color.color_red));
-                            choseTxt.startAnimation(mShakeAnimation);
+                            initAnimationForever(choseTxt);
                             mVibrator.vibrate(new long[]{100 ,100 ,100 ,100 } ,-1);
                         }
                     }
@@ -266,7 +267,7 @@ public class DictionDetailActivity extends BaseActivity {
     }
 
     public void toWordTip(RecitWordBeen recitWordBeen) {
-        thinku.com.word.ui.report.WordEvaluateFragment.start(this ,recitWordBeen.getWords().getId());
+        thinku.com.word.ui.report.WordEvaluateFragment1.start(this ,recitWordBeen.getWords().getId());
     }
 
     /**
@@ -336,6 +337,15 @@ public class DictionDetailActivity extends BaseActivity {
 
     public void initAnimation(){
         mShakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake);
+    }
+
+    public void initAnimationForever(TextView textView){
+        Animation   mForeverShake = AnimationUtils.loadAnimation(this, R.anim.shake_forever);
+        textView.startAnimation(mForeverShake);
+    }
+
+    public void closeAnimationForever(TextView textView){
+        textView.clearAnimation();
     }
 
     public void startShakeAnimation(){

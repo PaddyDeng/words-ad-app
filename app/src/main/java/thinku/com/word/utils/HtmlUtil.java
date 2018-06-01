@@ -20,6 +20,8 @@ public class HtmlUtil {
 
 
     public static String replaceSpace(String content) {
+         String regMatchEnter="\\s*|\t|\r|\n";
+         String regMatchTag = "<[^>]*>";
         if (content.contains("&amp;")) {
             content = content.replace("&amp;", "&");
         }
@@ -32,7 +34,15 @@ public class HtmlUtil {
         if (content.contains("\\r<br/>")) {
             content = content.replace("\\r<br/>", "");
         }
-
+        Pattern p = Pattern.compile(regMatchTag);
+        Matcher m = p.matcher(content);
+        content=m.replaceAll("");
+        if (content.contains("<vocab>")){
+            content = content.replace("\\r<br/>", "");
+        }
+        if (content.contains("</vocab>")){
+            content = content.replace("</vocab>","");
+        }
 //        if (content.contains("&amp;nbsp;")) {
 //            content = content.replace("&amp;nbsp;", " ");
 //        }
@@ -61,6 +71,7 @@ public class HtmlUtil {
     public static String replaceRN(String content) {
         content = content.trim();
         content = content.replace("\n" ,"");
+        content = content.replace(" ","");
 //        if (content.contains("\\r")) {
 //            content = content.replace("\\r", "").trim();
 //        }
@@ -108,7 +119,7 @@ public class HtmlUtil {
         sb.append("<style >");
         sb.append("body{");
         sb.append("word-wrap: break-word;");
-        sb.append("font-size: 14px;");
+        sb.append("font-size: 13px;");
         sb.append(" color:#000000; ");
         sb.append("font-family:Arial;");
         sb.append("padding-left:10px ;");

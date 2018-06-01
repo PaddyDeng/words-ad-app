@@ -48,7 +48,7 @@ public class WordAdapter extends RecyclerView.Adapter {
         String translate = StringUtils.spilt(word.getTranslate());
         wordHolder.phonetic_uk.setText(word.getPhonetic_us());
         wordHolder.translate.setText(translate);
-        wordHolder.rl.setBackgroundColor(ColorUtils.getPackDetailsColor(context ,word.getFirstStatus()));
+        wordHolder.rl.setBackgroundResource(ColorUtils.getPackDetailsColor(context ,word.getFirstStatus()));
         wordHolder.rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

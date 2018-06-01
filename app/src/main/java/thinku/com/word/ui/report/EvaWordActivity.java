@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.MyApplication;
@@ -34,6 +36,7 @@ import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.recite.WordErrorActivity;
 import thinku.com.word.ui.report.bean.WordEva;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
+import thinku.com.word.utils.RxHelper;
 import thinku.com.word.utils.StringUtils;
 
 /**
@@ -91,6 +94,8 @@ public class EvaWordActivity extends BaseActivity {
     }
 
     public void initView(){
+        LinearLayout rl = (LinearLayout) findViewById(R.id.need_rl);
+        rl.setVisibility(View.GONE);
         familiar.setVisibility(View.GONE);
         needView.setVisibility(View.GONE);
     }
@@ -112,7 +117,7 @@ public class EvaWordActivity extends BaseActivity {
                         if (!rightPlayer.isPlaying()){
                             rightPlayer.start();
                         }
-                    } else {
+                    } else if (position < EvaWordList.size() -1){
                         int currentIndex = 0 ;
                         for (int i = 0 ; i < EvaWordList.size() ; i ++){
                             if (answer.equals(EvaWordList.get(i).getContent())) {
@@ -129,14 +134,19 @@ public class EvaWordActivity extends BaseActivity {
 
                     }
                 }else {
-                    evaHolder.rl.setBackgroundResource(R.drawable.yellow_red_20round);
                     isKnow = 1 ;
                     userAnswer = "不认识";
                     if (!errorPlayer.isPlaying()){
                         errorPlayer.start();
                     }
                 }
-                referWord();
+                RxHelper.delay(500).subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(@NonNull Integer integer) throws Exception {
+                        referWord();
+                    }
+                });
+
             }
         });
         dataList.setAdapter(evaWordAdapter);
@@ -212,6 +222,7 @@ public class EvaWordActivity extends BaseActivity {
                                     for (String content : StringUtils.spiltString(evaWordBeen.getWords().getSelect())) {
                                         EvaWordList.add(new WordEva(content , false));
                                     }
+                                    EvaWordList.add(new WordEva("不认识",false));
                                 }
                                 evaWordAdapter.notifyDataSetChanged();
                             }

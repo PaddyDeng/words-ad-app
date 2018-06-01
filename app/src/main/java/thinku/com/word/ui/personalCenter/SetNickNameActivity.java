@@ -159,16 +159,17 @@ public class SetNickNameActivity extends BaseActivity {
                         toTast(bean.getMessage());
                         if (getHttpMsgSu(bean.getCode())) {
                             saveUserInf(nickName);
+                            Log.e(TAG, "accept: " );
+                            resetSession();
                             hasNickName = true;
                             finishWithAnim();
                             EventBus.getDefault().post(nickName);
-                            resetSession();
                         }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-
+                        Log.e(TAG, "accept: " + throwable.getMessage() );
                     }
                 }));
     }
@@ -185,12 +186,12 @@ public class SetNickNameActivity extends BaseActivity {
      */
     private void resetSession() {
         UserInfo userInfo1 ;
-        Log.e(TAG, "resetSession: " + userInfo.getUid() );
         if (userInfo != null){
             userInfo1 = userInfo;
         }else{
             userInfo1 =SharedPreferencesUtils.getUserInfo(this);
         }
+        Log.e(TAG, "resetSession: " + userInfo1.getUid());
         LoginHelper.setSession(this, userInfo1, new ICallBack() {
             @Override
             public void onSuccess(Object o) {

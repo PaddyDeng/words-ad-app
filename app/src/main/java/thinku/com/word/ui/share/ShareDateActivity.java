@@ -121,7 +121,8 @@ public class ShareDateActivity extends BaseActivity  implements PlatformActionLi
                         if (userIndex != null) {
                             dayNum.setText(userIndex.getInsistDay());
                             wordNum.setText(userIndex.getToDayWords());
-                            content = getResources().getString(R.string.share_content);
+                            content = getResources().getString(R.string.share_content );
+                            content = String.format(content ,userIndex.getInsistDay() , userIndex.getToDayWords() ,userIndex.getUserAllWords());
                         }
                     }
                 }));

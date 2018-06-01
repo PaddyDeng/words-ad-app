@@ -19,7 +19,8 @@
         android:text="请选择某时间内背的单词"
         android:layout_marginTop="100px"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
     <LinearLayout
         android:layout_marginTop="100px"
         android:layout_marginLeft="50px"

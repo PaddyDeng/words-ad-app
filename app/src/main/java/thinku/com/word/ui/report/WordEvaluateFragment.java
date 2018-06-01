@@ -41,6 +41,7 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.adapter.QuestionAdapter;
 import thinku.com.word.ui.other.MainActivity;
+import thinku.com.word.ui.recite.ReviewActivity;
 import thinku.com.word.ui.recite.ReviewTimeActivity;
 import thinku.com.word.ui.recite.WordErrorActivity;
 import thinku.com.word.ui.report.bean.QuestionBean;
@@ -70,7 +71,7 @@ public class WordEvaluateFragment extends BaseActivity {
     @BindView(R.id.top)
     ImageView top;
     @BindView(R.id.content_show)
-    RelativeLayout contentShow;
+    ScrollView contentShow;
     @BindView(R.id.know)
     Button know;
     @BindView(R.id.unknow)
@@ -158,6 +159,7 @@ public class WordEvaluateFragment extends BaseActivity {
     private boolean isUpdataReview = false;   //  新艾宾浩斯，  老艾宾浩斯  和 复习模式下 都是reviewUpdata
     private boolean isShow = true;
     private boolean isNormal = false ;
+    private boolean isClick = true ;
 
     /**
      * @param context
@@ -208,7 +210,7 @@ public class WordEvaluateFragment extends BaseActivity {
             }
         }
         setFocusable();
-        initAudioManager();
+//        initAudioManager();
         initRecycler();
     }
 
@@ -220,6 +222,26 @@ public class WordEvaluateFragment extends BaseActivity {
         knowWellPlayer = MediaPlayer.create(this, R.raw.know_well);
     }
 
+
+    public void playMusic(){
+
+        if (!TextUtils.isEmpty(recitWord.getWords().getUs_audio())) {
+            IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+
+                }
+            });
+        } else {
+            if (!TextUtils.isEmpty(recitWord.getWords().getUk_audio()))
+                IMAudioManager.instance().playSound(recitWord.getWords().getUk_audio(), new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+
+                    }
+                });
+        }
+    }
     /**
      * 正常背单词情况
      * 根据code不同  处理情况不同
@@ -379,6 +401,7 @@ public class WordEvaluateFragment extends BaseActivity {
      * @param recitWord
      */
     public void referUi1(final RecitWordBeen recitWord) {
+        isClick  = true ;
         this.recitWord = recitWord;
         //  首页显示的内容
         setStudyAndReviewNum(recitWord);
@@ -430,10 +453,12 @@ public class WordEvaluateFragment extends BaseActivity {
 
         if (!TextUtils.isEmpty(recitWord.getWords().getMnemonic())) {
             String content = HtmlUtil.replaceRN(recitWord.getWords().getMnemonic()) ;
+            content = HtmlUtil.replaceSpace(content);
             helpContent.setText(content);
             helpMemory.setVisibility(View.VISIBLE);
         } else helpMemory.setVisibility(View.GONE);
         getData(recitWord);
+        playMusic();
         rlClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -544,18 +569,21 @@ public class WordEvaluateFragment extends BaseActivity {
                 questionAdapter.setSelectRlClickListener(new SelectRlClickListener() {
                     @Override
                     public void setClickListener(int position, RecyclerView.ViewHolder viewHolder, View view) {
-                        QuestionAdapter.QuestionHolder holder = (QuestionAdapter.QuestionHolder) viewHolder;
-                        int currentP = getCurrentP(questionBean.getQuestionanswer());
-                        if (position == currentP) {
-                            questions.get(position).setAnswer(1);
-                            questionAdapter.notifyItemChanged(currentP);
-                        } else {
-                            questions.get(position).setAnswer(2);
-                            questions.get(currentP).setAnswer(1);
-                            questionAdapter.notifyItemChanged(currentP);
-                            questionAdapter.notifyItemChanged(position);
-                        }
+                        if (isClick) {
+                            isClick = false;
+                            QuestionAdapter.QuestionHolder holder = (QuestionAdapter.QuestionHolder) viewHolder;
+                            int currentP = getCurrentP(questionBean.getQuestionanswer());
+                            if (position == currentP) {
+                                questions.get(position).setAnswer(1);
+                                questionAdapter.notifyItemChanged(currentP);
+                            } else {
+                                questions.get(position).setAnswer(2);
+                                questions.get(currentP).setAnswer(1);
+                                questionAdapter.notifyItemChanged(currentP);
+                                questionAdapter.notifyItemChanged(position);
+                            }
 
+                        }
                     }
                 });
                 questionAdapter.notifyDataSetChanged();
@@ -709,7 +737,7 @@ public class WordEvaluateFragment extends BaseActivity {
     }
 
 
-    @OnClick({R.id.back, R.id.familiar, R.id.errors, R.id.unknow, R.id.know, R.id.blurry})
+    @OnClick({R.id.back, R.id.familiar, R.id.errors, R.id.unknow, R.id.know, R.id.blurry , R.id.play})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -748,6 +776,9 @@ public class WordEvaluateFragment extends BaseActivity {
                     updataStatus(C.LGWordStatusVague);
                 }
                 break;
+            case R.id.play:
+                playMusic();
+                break;
         }
     }
 
@@ -760,23 +791,23 @@ public class WordEvaluateFragment extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().register(this);
-        if (dimPlayer != null) {
-            if (dimPlayer.isPlaying()) dimPlayer.stop();
-            dimPlayer.release();
-        }
-        if (knowWellPlayer != null) {
-            if (knowWellPlayer.isPlaying()) knowWellPlayer.stop();
-            knowWellPlayer.release();
-        }
-        if (notKnowPlayer != null) {
-            if (notKnowPlayer.isPlaying()) notKnowPlayer.stop();
-            notKnowPlayer.release();
-        }
-        if (knowPlayer != null) {
-            if (knowPlayer.isPlaying()) knowPlayer.stop();
-            knowPlayer.release();
-        }
+        EventBus.getDefault().unregister(this);
+//        if (dimPlayer != null) {
+//            if (dimPlayer.isPlaying()) dimPlayer.stop();
+//            dimPlayer.release();
+//        }
+//        if (knowWellPlayer != null) {
+//            if (knowWellPlayer.isPlaying()) knowWellPlayer.stop();
+//            knowWellPlayer.release();
+//        }
+//        if (notKnowPlayer != null) {
+//            if (notKnowPlayer.isPlaying()) notKnowPlayer.stop();
+//            notKnowPlayer.release();
+//        }
+//        if (knowPlayer != null) {
+//            if (knowPlayer.isPlaying()) knowPlayer.stop();
+//            knowPlayer.release();
+//        }
     }
 
     @Override
@@ -900,7 +931,7 @@ public class WordEvaluateFragment extends BaseActivity {
                                         if (isNewAiBinHaoSi) {
                                             nowFinsh();
                                         } else {
-                                            MainActivity.toMain(WordEvaluateFragment.this);
+                                            ReviewActivity.start(WordEvaluateFragment.this);
                                         }
                                     }
                                 }

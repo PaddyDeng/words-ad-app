@@ -26,6 +26,8 @@ public class HostType {
     public static final int VIPLGW_URL_HOST = 6;
     @HostType.HostTypeChecker
     public static final int WORDS_URL_HOST = 7 ;
+    @HostType.HostTypeChecker
+    public static final int BAIDU_URL_HOST = 8 ;
 
 
 }

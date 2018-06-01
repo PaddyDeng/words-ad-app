@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -18,8 +17,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,33 +27,23 @@ import butterknife.OnClick;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.adapter.ReciteWordAdapter;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.RecitWordBeen;
-import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.callback.SelectRlClickListener;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.adapter.QuestionAdapter;
-import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.recite.WordErrorActivity;
 import thinku.com.word.ui.report.bean.QuestionBean;
-import thinku.com.word.ui.report.bean.ReviewBean;
-import thinku.com.word.ui.report.bean.ReviewCaseBean;
-import thinku.com.word.ui.share.ShareDateActivity;
 import thinku.com.word.ui.webView.WebViewActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
-import thinku.com.word.utils.C;
 import thinku.com.word.utils.HtmlUtil;
-import thinku.com.word.utils.SharedPreferencesUtils;
 
 
 public class WordEvaluateFragment1 extends BaseActivity {
     private static final String TAG = WordEvaluateFragment1.class.getSimpleName();
-    @BindView(R.id.newWord)
-    TextView newWord;
     @BindView(R.id.click)
     ImageView click;
     @BindView(R.id.rl_click)
@@ -66,9 +53,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
     @BindView(R.id.top)
     ImageView top;
     @BindView(R.id.content_show)
-    RelativeLayout contentShow;
-    @BindView(R.id.bottom_click)
-    LinearLayout bottomClick;
+    ScrollView contentShow;
     @BindView(R.id.prencente)
     TextView prencente;
     @BindView(R.id.name)
@@ -160,22 +145,22 @@ public class WordEvaluateFragment1 extends BaseActivity {
         ButterKnife.bind(this);
         Intent intent = null;
         intent = getIntent();
-            if (!TextUtils.isEmpty(wordId)) {
-                isShow = false;
-                fromWordsIdGetWordDetails(wordId);
-            }
+        if (intent != null){
+            wordId = intent.getStringExtra("wordId");
+            fromWordsIdGetWordDetails(wordId);
+        }
         setFocusable();
-        initAudioManager();
+//        initAudioManager();
         initRecycler();
     }
 
 
-    public void initAudioManager() {
-        dimPlayer = MediaPlayer.create(this, R.raw.dim);
-        knowPlayer = MediaPlayer.create(this, R.raw.eva_right_and_know);
-        notKnowPlayer = MediaPlayer.create(this, R.raw.eva_error_and_not_know);
-        knowWellPlayer = MediaPlayer.create(this, R.raw.know_well);
-    }
+//    public void initAudioManager() {
+//        dimPlayer = MediaPlayer.create(this, R.raw.dim);
+//        knowPlayer = MediaPlayer.create(this, R.raw.eva_right_and_know);
+//        notKnowPlayer = MediaPlayer.create(this, R.raw.eva_error_and_not_know);
+//        knowWellPlayer = MediaPlayer.create(this, R.raw.know_well);
+//    }
     /**
      * @param recitWord
      */
@@ -184,29 +169,38 @@ public class WordEvaluateFragment1 extends BaseActivity {
         phonogram.setText(recitWord.getWords().getPhonetic_us());
         name.setText(recitWord.getWords().getTranslate());
         word.setText(recitWord.getWords().getWord());
-        contentShow.setVisibility(View.GONE);
-        contentHide.setVisibility(View.VISIBLE);
+        contentShow.setVisibility(View.VISIBLE);
+        contentHide.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(recitWord.getWords().getMnemonic())) {
             String content = HtmlUtil.replaceRN(recitWord.getWords().getMnemonic()) ;
+            content = HtmlUtil.replaceSpace(content);
             helpContent.setText(content);
             helpMemory.setVisibility(View.VISIBLE);
         } else helpMemory.setVisibility(View.GONE);
+        playMusic();
         getData(recitWord);
-        rlClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //  显示更多内容
-                contentShow.scrollTo(0, 0);
-                contentShow.setVisibility(View.VISIBLE);
-                contentHide.setVisibility(View.GONE);
-                bottomClick.setVisibility(View.VISIBLE);
-                if (name.getVisibility() == View.GONE) name.setVisibility(View.VISIBLE);
-                if (phonogram.getVisibility() == View.GONE) phonogram.setVisibility(View.VISIBLE);
-                if (word.getVisibility() == View.GONE)  word.setVisibility(View.VISIBLE);
-            }
-        });
     }
 
+
+    public void playMusic(){
+
+        if (!TextUtils.isEmpty(recitWord.getWords().getUs_audio())) {
+            IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+
+                }
+            });
+        } else {
+            if (!TextUtils.isEmpty(recitWord.getWords().getUk_audio()))
+                IMAudioManager.instance().playSound(recitWord.getWords().getUk_audio(), new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+
+                    }
+                });
+        }
+    }
 
     /**
      * 获取RecyclerView  数据
@@ -342,6 +336,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
     }
 
     public void initRecycler() {
+        familiar.setVisibility(View.GONE);
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this);
         LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(this);
@@ -375,6 +370,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
                     @Override
                     public void accept(@NonNull RecitWordBeen recitWordBeen) throws Exception {
                         dismissLoadDialog();
+                        recitWord = recitWordBeen ;
                         referUi1(recitWordBeen);
 
                     }
@@ -389,7 +385,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
     }
 
 
-    @OnClick({R.id.back, R.id.familiar, R.id.errors, R.id.unknow, R.id.know, R.id.blurry})
+    @OnClick({R.id.back, R.id.familiar, R.id.errors , R.id.play})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -400,13 +396,16 @@ public class WordEvaluateFragment1 extends BaseActivity {
             case R.id.errors:
                 WordErrorActivity.start(WordEvaluateFragment1.this, wordId);
                 break;
+            case R.id.play:
+                playMusic();
+                break;
+
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().register(this);
     }
 
     @Override
