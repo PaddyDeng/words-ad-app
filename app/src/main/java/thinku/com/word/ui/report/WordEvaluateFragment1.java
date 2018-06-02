@@ -128,7 +128,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
     private QuestionAdapter questionAdapter;
     private boolean isUpdataReview = false;   //  新艾宾浩斯，  老艾宾浩斯  和 复习模式下 都是reviewUpdata
     private boolean isShow = true;
-    private boolean isNormal = false ;
+    private boolean isNormal = false;
 
     public static void start(Context context, String wordId) {
         Intent intent = new Intent(context, WordEvaluateFragment1.class);
@@ -142,7 +142,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
         ButterKnife.bind(this);
         Intent intent = null;
         intent = getIntent();
-        if (intent != null){
+        if (intent != null) {
             wordId = intent.getStringExtra("wordId");
             fromWordsIdGetWordDetails(wordId);
         }
@@ -158,12 +158,13 @@ public class WordEvaluateFragment1 extends BaseActivity {
 //        notKnowPlayer = MediaPlayer.create(this, R.raw.eva_error_and_not_know);
 //        knowWellPlayer = MediaPlayer.create(this, R.raw.know_well);
 //    }
+
     /**
      * @param recitWord
      */
     public void referUi1(final RecitWordBeen recitWord) {
 
-        this.recitWord = recitWord ;
+        this.recitWord = recitWord;
         prencente.setText("认知率" + recitWord.getPercent() + "%");
         phonogram.setText(recitWord.getWords().getPhonetic_us());
         name.setText(recitWord.getWords().getTranslate());
@@ -171,7 +172,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
         contentShow.setVisibility(View.VISIBLE);
         contentHide.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(recitWord.getWords().getMnemonic())) {
-            String content = HtmlUtil.replaceRN(recitWord.getWords().getMnemonic()) ;
+            String content = HtmlUtil.replaceRN(recitWord.getWords().getMnemonic());
             content = HtmlUtil.replaceSpace(content);
             helpContent.setText(content);
             helpMemory.setVisibility(View.VISIBLE);
@@ -181,7 +182,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
     }
 
 
-    public void playMusic(){
+    public void playMusic() {
 
         if (!TextUtils.isEmpty(recitWord.getWords().getUs_audio())) {
             IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
@@ -255,7 +256,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
             if (!TextUtils.isEmpty(questionBean.getArticle())) {
                 article.setVisibility(View.VISIBLE);
                 String content = HtmlUtil.getHtml(questionBean.getArticle());
-                String urlContent = HtmlUtil.repairContent(content , NetworkTitle.GMAT);
+                String urlContent = HtmlUtil.repairContent(content, NetworkTitle.GMAT);
                 article.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
                 article.setVisibility(View.GONE);
@@ -263,7 +264,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
             if (!TextUtils.isEmpty(questionBean.getQuestion())) {
                 question_home.setVisibility(View.VISIBLE);
                 String content = HtmlUtil.getHtml(questionBean.getQuestion());
-                String urlContent = HtmlUtil.repairContent(content ,NetworkTitle.GMAT);
+                String urlContent = HtmlUtil.repairContent(content, NetworkTitle.GMAT);
                 question_home.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
                 question_home.setVisibility(View.GONE);
@@ -369,9 +370,9 @@ public class WordEvaluateFragment1 extends BaseActivity {
                     @Override
                     public void accept(@NonNull RecitWordBeen recitWordBeen) throws Exception {
                         dismissLoadDialog();
-                        if (recitWordBeen.getCode() == 99){
-                            LoginHelper.needLogin(WordEvaluateFragment1.this , "");
-                        }else {
+                        if (recitWordBeen.getCode() == 99) {
+                            LoginHelper.needLogin(WordEvaluateFragment1.this, "");
+                        } else {
                             if (recitWordBeen != null) {
 
                                 referUi1(recitWordBeen);
@@ -382,13 +383,13 @@ public class WordEvaluateFragment1 extends BaseActivity {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         dismissLoadDialog();
-                        toTast(WordEvaluateFragment1.this ,throwable.getMessage());
+                        toTast(WordEvaluateFragment1.this, throwable.getMessage());
                     }
                 }));
     }
 
 
-    @OnClick({R.id.back, R.id.familiar, R.id.errors , R.id.play})
+    @OnClick({R.id.back, R.id.familiar, R.id.errors, R.id.play})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -438,8 +439,6 @@ public class WordEvaluateFragment1 extends BaseActivity {
         }
         WebViewActivity.start(this, url);
     }
-
-
 
 
 }

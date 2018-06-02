@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -42,8 +41,6 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.adapter.QuestionAdapter;
 import thinku.com.word.ui.other.MainActivity;
-import thinku.com.word.ui.recite.ReviewActivity;
-import thinku.com.word.ui.recite.ReviewTimeActivity;
 import thinku.com.word.ui.recite.WordErrorActivity;
 import thinku.com.word.ui.report.bean.QuestionBean;
 import thinku.com.word.ui.report.bean.ReviewBean;
@@ -54,6 +51,7 @@ import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.HtmlUtil;
 import thinku.com.word.utils.SharedPreferencesUtils;
+import thinku.com.word.view.NoScrollView;
 
 /**
  * Created by Administrator on 2018/2/22.
@@ -159,8 +157,8 @@ public class WordEvaluateFragment extends BaseActivity {
     private QuestionAdapter questionAdapter;
     private boolean isUpdataReview = false;   //  新艾宾浩斯，  老艾宾浩斯  和 复习模式下 都是reviewUpdata
     private boolean isShow = true;
-    private boolean isNormal = false ;
-    private boolean isClick = true ;
+    private boolean isNormal = false;
+    private boolean isClick = true;
 
     /**
      * @param context
@@ -202,7 +200,7 @@ public class WordEvaluateFragment extends BaseActivity {
             if (words != null && words.size() > 0) {
                 tag = C.REVIEW;
                 isUpdataReview = true;
-                isNormal = false ;
+                isNormal = false;
                 reciteWords(words);
             }
             if (!TextUtils.isEmpty(wordId)) {
@@ -224,7 +222,7 @@ public class WordEvaluateFragment extends BaseActivity {
     }
 
 
-    public void playMusic(){
+    public void playMusic() {
 
         if (!TextUtils.isEmpty(recitWord.getWords().getUs_audio())) {
             IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
@@ -243,6 +241,7 @@ public class WordEvaluateFragment extends BaseActivity {
                 });
         }
     }
+
     /**
      * 正常背单词情况
      * 根据code不同  处理情况不同
@@ -256,7 +255,7 @@ public class WordEvaluateFragment extends BaseActivity {
         posiiton = 0;
         isNewAiBinHaoSi = false;
         isUpdataReview = false;
-        isNormal = true ;
+        isNormal = true;
         addToCompositeDis(HttpUtil.reciteWordsObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -284,7 +283,7 @@ public class WordEvaluateFragment extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        toTast(WordEvaluateFragment.this ,"");
+                        toTast(WordEvaluateFragment.this, "");
                         dismissLoadDialog();
                     }
                 }));
@@ -299,7 +298,7 @@ public class WordEvaluateFragment extends BaseActivity {
     public void newAiBinHaoSi() {
         isUpdataReview = true;
         isNewAiBinHaoSi = true;
-        isNormal = false ;
+        isNormal = false;
         addToCompositeDis(HttpUtil.isReviewObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -361,7 +360,7 @@ public class WordEvaluateFragment extends BaseActivity {
      */
     public void oldAiBinHaoSi() {
         isUpdataReview = true;
-        isNormal  = false ;
+        isNormal = false;
         addToCompositeDis(HttpUtil.wordReviewTodayBeenObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -402,18 +401,18 @@ public class WordEvaluateFragment extends BaseActivity {
      * @param recitWord
      */
     public void referUi1(final RecitWordBeen recitWord) {
-        isClick  = true ;
+        isClick = true;
         this.recitWord = recitWord;
 
         //  首页显示的内容
         setStudyAndReviewNum(recitWord);
-        if (SharedPreferencesUtils.getChoseMode(WordEvaluateFragment.this).equals("英中")&& tag == C.REVIEW){
+        if (SharedPreferencesUtils.getChoseMode(WordEvaluateFragment.this).equals("英中") && tag == C.REVIEW) {
             word.setVisibility(View.VISIBLE);
             name.setVisibility(View.GONE);
-        }else if (SharedPreferencesUtils.getChoseMode(WordEvaluateFragment.this).equals("中英")){
+        } else if (SharedPreferencesUtils.getChoseMode(WordEvaluateFragment.this).equals("中英")) {
             name.setVisibility(View.VISIBLE);
             word.setVisibility(View.GONE);
-        }else if ( tag == C.NORMAL){
+        } else if (tag == C.NORMAL) {
             name.setVisibility(View.GONE);
             word.setVisibility(View.VISIBLE);
         }
@@ -438,7 +437,7 @@ public class WordEvaluateFragment extends BaseActivity {
         }
 
         if (!TextUtils.isEmpty(recitWord.getWords().getMnemonic())) {
-            String content = HtmlUtil.replaceRN(recitWord.getWords().getMnemonic()) ;
+            String content = HtmlUtil.replaceRN(recitWord.getWords().getMnemonic());
             content = HtmlUtil.replaceSpace(content);
             helpContent.setText(content);
             helpMemory.setVisibility(View.VISIBLE);
@@ -449,12 +448,19 @@ public class WordEvaluateFragment extends BaseActivity {
             @Override
             public void onClick(View view) {
                 //  显示更多内容
+                contentShow.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        contentShow.smoothScrollTo(0 ,0);
+                    }
+                });
                 contentShow.setVisibility(View.VISIBLE);
                 contentHide.setVisibility(View.GONE);
                 bottomClick.setVisibility(View.VISIBLE);
                 if (name.getVisibility() == View.GONE) name.setVisibility(View.VISIBLE);
                 if (phonogram.getVisibility() == View.GONE) phonogram.setVisibility(View.VISIBLE);
-                if (word.getVisibility() == View.GONE)  word.setVisibility(View.VISIBLE);
+                if (word.getVisibility() == View.GONE) word.setVisibility(View.VISIBLE);
+
             }
         });
     }
@@ -533,7 +539,7 @@ public class WordEvaluateFragment extends BaseActivity {
             if (!TextUtils.isEmpty(questionBean.getArticle())) {
                 article.setVisibility(View.VISIBLE);
                 String content = HtmlUtil.getHtml(questionBean.getArticle());
-                String urlContent = HtmlUtil.repairContent(content , NetworkTitle.GMAT);
+                String urlContent = HtmlUtil.repairContent(content, NetworkTitle.GMAT);
                 article.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
                 article.setVisibility(View.GONE);
@@ -541,7 +547,7 @@ public class WordEvaluateFragment extends BaseActivity {
             if (!TextUtils.isEmpty(questionBean.getQuestion())) {
                 question_home.setVisibility(View.VISIBLE);
                 String content = HtmlUtil.getHtml(questionBean.getQuestion());
-                String urlContent = HtmlUtil.repairContent(content ,NetworkTitle.GMAT);
+                String urlContent = HtmlUtil.repairContent(content, NetworkTitle.GMAT);
                 question_home.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
                 question_home.setVisibility(View.GONE);
@@ -716,14 +722,14 @@ public class WordEvaluateFragment extends BaseActivity {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         dismissLoadDialog();
-                        toTast(WordEvaluateFragment.this ,throwable.getMessage());
+                        toTast(WordEvaluateFragment.this, throwable.getMessage());
                         Log.e(TAG, "accept: " + throwable.toString());
                     }
                 }));
     }
 
 
-    @OnClick({R.id.back, R.id.familiar, R.id.errors, R.id.unknow, R.id.know, R.id.blurry , R.id.play})
+    @OnClick({R.id.back, R.id.familiar, R.id.errors, R.id.unknow, R.id.know, R.id.blurry, R.id.play})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -818,16 +824,54 @@ public class WordEvaluateFragment extends BaseActivity {
                 } else {
                     type = 0;
                 }
-                    addToCompositeDis(HttpUtil.reviewUpdataObservable(recitWord.getWords().getId(), status + "", type + "")
-                            .doOnSubscribe(new Consumer<Disposable>() {
-                                @Override
-                                public void accept(@NonNull Disposable disposable) throws Exception {
+                addToCompositeDis(HttpUtil.reviewUpdataObservable(recitWord.getWords().getId(), status + "", type + "")
+                        .doOnSubscribe(new Consumer<Disposable>() {
+                            @Override
+                            public void accept(@NonNull Disposable disposable) throws Exception {
 //                                    showLoadDialog();
-                                }
-                            }).subscribe(new Consumer<ResultBeen<Void>>() {
-                                @Override
-                                public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                            }
+                        }).subscribe(new Consumer<ResultBeen<Void>>() {
+                            @Override
+                            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
 //                                    dismissLoadDialog();
+                                posiiton++;
+                                if (isNewAiBinHaoSi) {
+                                    if (posiiton == words.size()) {
+                                        nowFinsh();
+                                    } else {
+                                        fromWordsIdGetWordDetails(words.get(posiiton));
+                                    }
+                                } else {
+                                    if (posiiton >= words.size()) {
+                                        share();
+                                    } else if (posiiton < words.size()) {
+                                        fromWordsIdGetWordDetails(words.get(posiiton));
+                                    }
+                                }
+
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+//                                    dismissLoadDialog();
+                                toTast(WordEvaluateFragment.this, throwable.toString());
+                            }
+                        }));
+            } else {
+                addToCompositeDis(HttpUtil.updataStatus(recitWord.getWords().getId(), status + "")
+                        .doOnSubscribe(new Consumer<Disposable>() {
+                            @Override
+                            public void accept(@NonNull Disposable disposable) throws Exception {
+//                                    showLoadDialog();
+                            }
+                        }).subscribe(new Consumer<ResultBeen<Void>>() {
+                            @Override
+                            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+//                                    dismissLoadDialog();
+                                if (isNormal) {
+                                    reciteWords();
+                                } else {
+                                    Log.e(TAG, "not: " + (words == null));
                                     posiiton++;
                                     if (isNewAiBinHaoSi) {
                                         if (posiiton == words.size()) {
@@ -836,102 +880,64 @@ public class WordEvaluateFragment extends BaseActivity {
                                             fromWordsIdGetWordDetails(words.get(posiiton));
                                         }
                                     } else {
+                                        Log.e(TAG, "accept: " + posiiton + "  " + words.size());
                                         if (posiiton >= words.size()) {
                                             share();
                                         } else if (posiiton < words.size()) {
                                             fromWordsIdGetWordDetails(words.get(posiiton));
                                         }
                                     }
-
                                 }
-                            }, new Consumer<Throwable>() {
-                                @Override
-                                public void accept(@NonNull Throwable throwable) throws Exception {
-//                                    dismissLoadDialog();
-                                    toTast(WordEvaluateFragment.this, throwable.toString());
-                                }
-                            }));
-                } else{
-                    addToCompositeDis(HttpUtil.updataStatus(recitWord.getWords().getId(), status + "")
-                            .doOnSubscribe(new Consumer<Disposable>() {
-                                @Override
-                                public void accept(@NonNull Disposable disposable) throws Exception {
-//                                    showLoadDialog();
-                                }
-                            }).subscribe(new Consumer<ResultBeen<Void>>() {
-                                @Override
-                                public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-//                                    dismissLoadDialog();
-                                    if (isNormal){
-                                        reciteWords();
-                                    } else {
-                                        Log.e(TAG, "not: " + (words == null));
-                                        posiiton++;
-                                        if (isNewAiBinHaoSi) {
-                                            if (posiiton == words.size()) {
-                                                nowFinsh();
-                                            } else {
-                                                fromWordsIdGetWordDetails(words.get(posiiton));
-                                            }
-                                        } else {
-                                            Log.e(TAG, "accept: " + posiiton + "  " + words.size());
-                                            if (posiiton >= words.size()) {
-                                                share();
-                                            } else if (posiiton < words.size()) {
-                                                fromWordsIdGetWordDetails(words.get(posiiton));
-                                            }
-                                        }
-                                    }
-                                }
-                            }, new Consumer<Throwable>() {
-                                @Override
-                                public void accept(@NonNull Throwable throwable) throws Exception {
-//                                    dismissLoadDialog();
-                                    toTast(WordEvaluateFragment.this, throwable.getMessage());
-                                }
-                            }));
-
-                }
-            } else if (tag == C.REVIEW) {
-                // 复习模式下上传
-                if (isNewAiBinHaoSi) {
-                    type = 1;
-                } else {
-                    type = 0;
-                }
-                addToCompositeDis(HttpUtil.reviewUpdataObservable(recitWord.getWords().getId(), status + "", type + "")
-                        .doOnSubscribe(new Consumer<Disposable>() {
-                            @Override
-                            public void accept(@NonNull Disposable disposable) throws Exception {
-//                                showLoadDialog();
-                            }
-                        }).subscribe(new Consumer<ResultBeen<Void>>() {
-                            @Override
-                            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-//                                dismissLoadDialog();
-                                posiiton++;
-                                if (words != null) {
-                                    if (posiiton < words.size()) {
-                                        fromWordsIdGetWordDetails(words.get(posiiton));
-                                    } else {
-                                        if (isNewAiBinHaoSi) {
-                                            nowFinsh();
-                                        } else {
-                                            finishWithAnim();
-                                        }
-                                    }
-                                }
-
                             }
                         }, new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-//                                dismissLoadDialog();
-                                toTast(WordEvaluateFragment.this, throwable.toString());
+//                                    dismissLoadDialog();
+                                toTast(WordEvaluateFragment.this, throwable.getMessage());
                             }
                         }));
 
             }
+        } else if (tag == C.REVIEW) {
+            // 复习模式下上传
+            if (isNewAiBinHaoSi) {
+                type = 1;
+            } else {
+                type = 0;
+            }
+            addToCompositeDis(HttpUtil.reviewUpdataObservable(recitWord.getWords().getId(), status + "", type + "")
+                    .doOnSubscribe(new Consumer<Disposable>() {
+                        @Override
+                        public void accept(@NonNull Disposable disposable) throws Exception {
+//                                showLoadDialog();
+                        }
+                    }).subscribe(new Consumer<ResultBeen<Void>>() {
+                        @Override
+                        public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+//                                dismissLoadDialog();
+                            posiiton++;
+                            if (words != null) {
+                                if (posiiton < words.size()) {
+                                    fromWordsIdGetWordDetails(words.get(posiiton));
+                                } else {
+                                    if (isNewAiBinHaoSi) {
+                                        nowFinsh();
+                                    } else {
+                                        finishWithAnim();
+                                    }
+                                }
+                            }
+
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@NonNull Throwable throwable) throws Exception {
+//                                dismissLoadDialog();
+                            toTast(WordEvaluateFragment.this, throwable.toString());
+                        }
+                    }));
+
+        }
     }
 
     @OnClick({R.id.youdao, R.id.niujing, R.id.biying, R.id.jinshan})

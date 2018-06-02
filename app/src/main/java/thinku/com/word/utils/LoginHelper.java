@@ -25,6 +25,7 @@ import thinku.com.word.callback.RequestCallback;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.jpush.TagAliasOperatorHelper;
 import thinku.com.word.ui.other.LoginActivity;
+import thinku.com.word.ui.other.RigisterActivity;
 import thinku.com.word.ui.other.dialog.NeedLoginDialog;
 import thinku.com.word.ui.other.dialog.callback.DialogClickListener;
 import thinku.com.word.ui.personalCenter.SetNickNameActivity;
@@ -63,11 +64,18 @@ public class LoginHelper {
                                             @Override
                                             public void onSuccess(Object o) {
                                                 requestCallback.requestSuccess(userInfo);
+//                                                if (!userInfo.equals(SharedPreferencesUtils.getStudyMode(context))){
+//                                                    updataMode(SharedPreferencesUtils.getStudyMode(context) ,context );
+//                                                }
                                             }
 
                                             @Override
                                             public void onFail() {
                                                 requestCallback.requestFail("");
+//                                                if (!userInfo.equals(SharedPreferencesUtils.getStudyMode(context))){
+//                                                    updataMode(SharedPreferencesUtils.getStudyMode(context) ,context );
+//                                                }
+
                                             }
                                         });
                                     } else {
@@ -88,6 +96,17 @@ public class LoginHelper {
     }
 
 
+    public  static  void updataMode(final String status , final Context context){
+        addToCompositeDis(HttpUtil.choseStudyMode(status)
+        .subscribe(new Consumer<BackCode>() {
+            @Override
+            public void accept(@NonNull BackCode backCode) throws Exception {
+                if (backCode.getCode() == 1){
+                    SharedPreferencesUtils.setStudyMode(context , status);
+                }
+            }
+        }));
+    }
 
     /**
      * 设置 Jpush alians

@@ -422,7 +422,8 @@
         <activity
             android:name=".ui.personalCenter.ReadMeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme" />
+            android:theme="@style/NoTitleTheme"
+           />
         <activity
             android:name=".ui.other.UserActivity"
             android:screenOrientation="portrait"

@@ -129,14 +129,11 @@
                     android:id="@+id/content_show"
                     android:layout_below="@id/top"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="none"
-                    android:descendantFocusability="blocksDescendants">
-
+                    android:layout_height="match_parent"
+                   >
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusable="true"
                         android:focusableInTouchMode="true"
                        >
 
@@ -460,7 +457,6 @@
                                 </LinearLayout>
                             </LinearLayout>
                         </RelativeLayout>
-
 
                     </RelativeLayout>
                 </android.support.v4.widget.NestedScrollView>
