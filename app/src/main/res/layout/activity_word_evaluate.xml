@@ -125,15 +125,19 @@
                     android:scaleType="fitXY"
                     android:src="@mipmap/bg" />
 
-                <ScrollView
+                <android.support.v4.widget.NestedScrollView
                     android:id="@+id/content_show"
                     android:layout_below="@id/top"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none"
+                    android:descendantFocusability="blocksDescendants">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
                        >
 
                         <RelativeLayout
@@ -459,7 +463,7 @@
 
 
                     </RelativeLayout>
-                </ScrollView>
+                </android.support.v4.widget.NestedScrollView>
                 <LinearLayout
                     android:id="@+id/bottom_click"
                     android:layout_width="match_parent"

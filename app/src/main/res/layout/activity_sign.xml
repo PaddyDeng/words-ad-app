@@ -71,7 +71,7 @@
 
             <com.dd.ShadowLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="85dp"
                 android:layout_below="@+id/calendar_shadow"
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
@@ -89,7 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="30px"
+                        android:layout_marginLeft="10dp"
                         android:gravity="center"
                         android:text="雷豆总数"
                         android:textColor="@color/black"
@@ -129,7 +129,7 @@
                     android:layout_height="wrap_content"
                     android:text="雷豆可换购雷哥网任何课程和服务～"
                     android:layout_marginTop="30dp"
-                    android:paddingLeft="30px"
+                    android:padding="10dp"
                     android:background="@color/white"
                     />
             </com.dd.ShadowLayout>

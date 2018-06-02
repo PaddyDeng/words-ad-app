@@ -23,6 +23,7 @@ public class NotificationUtil {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder
+                .setContentTitle("雷哥单词")
                 .setContentText("不是约好现在背单词么，打开雷哥单词来背单词吧，么么哒~")
                 .setPriority(Notification.PRIORITY_HIGH)
                 .setDefaults(Notification.DEFAULT_SOUND)

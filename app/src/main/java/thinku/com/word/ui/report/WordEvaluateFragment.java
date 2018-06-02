@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -71,7 +72,7 @@ public class WordEvaluateFragment extends BaseActivity {
     @BindView(R.id.top)
     ImageView top;
     @BindView(R.id.content_show)
-    ScrollView contentShow;
+    NestedScrollView contentShow;
     @BindView(R.id.know)
     Button know;
     @BindView(R.id.unknow)
@@ -403,6 +404,7 @@ public class WordEvaluateFragment extends BaseActivity {
     public void referUi1(final RecitWordBeen recitWord) {
         isClick  = true ;
         this.recitWord = recitWord;
+
         //  首页显示的内容
         setStudyAndReviewNum(recitWord);
         if (SharedPreferencesUtils.getChoseMode(WordEvaluateFragment.this).equals("英中")&& tag == C.REVIEW){
@@ -423,22 +425,6 @@ public class WordEvaluateFragment extends BaseActivity {
         } else {
             blurry.setText("忘记");
         }
-        if (!TextUtils.isEmpty(recitWord.getWords().getUs_audio())) {
-            IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-
-                }
-            });
-        } else {
-            if (!TextUtils.isEmpty(recitWord.getWords().getUk_audio()))
-                IMAudioManager.instance().playSound(recitWord.getWords().getUk_audio(), new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-
-                    }
-                });
-        }
         word.setText(recitWord.getWords().getWord());
         if (isShow) {
             contentShow.setVisibility(View.GONE);
@@ -457,13 +443,12 @@ public class WordEvaluateFragment extends BaseActivity {
             helpContent.setText(content);
             helpMemory.setVisibility(View.VISIBLE);
         } else helpMemory.setVisibility(View.GONE);
-        getData(recitWord);
         playMusic();
+        getData(recitWord);
         rlClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //  显示更多内容
-                contentShow.scrollTo(0, 0);
                 contentShow.setVisibility(View.VISIBLE);
                 contentHide.setVisibility(View.GONE);
                 bottomClick.setVisibility(View.VISIBLE);
@@ -628,6 +613,7 @@ public class WordEvaluateFragment extends BaseActivity {
         sentencesList.requestFocus();
         questionList.setFocusableInTouchMode(false);
         questionList.requestFocus();
+
     }
 
     public void initRecycler() {
@@ -931,7 +917,7 @@ public class WordEvaluateFragment extends BaseActivity {
                                         if (isNewAiBinHaoSi) {
                                             nowFinsh();
                                         } else {
-                                            ReviewActivity.start(WordEvaluateFragment.this);
+                                            finishWithAnim();
                                         }
                                     }
                                 }

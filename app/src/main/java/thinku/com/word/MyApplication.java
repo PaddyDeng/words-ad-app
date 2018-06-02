@@ -9,10 +9,6 @@ import android.util.Log;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.mob.MobSDK;
-import com.yanzhenjie.nohttp.InitializationConfig;
-import com.yanzhenjie.nohttp.Logger;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.cookie.DBCookieStore;
 
 import java.net.HttpCookie;
 import java.net.URI;
@@ -51,16 +47,6 @@ public class MyApplication extends Application {
         mContext = this;
         session = SharedPreferencesUtils.getSession(MyApplication.this, 4);
 
-        //  Nohttp
-        InitializationConfig config = InitializationConfig.newBuilder(this)
-                .cookieStore(new DBCookieStore(this).setEnable(false))
-                .addHeader("Cookie", "PHPSESSID=" + session)
-                .build();
-        NoHttp.initialize(config);
-
-        // 开启NoHttp的调试模式, 配置后可看到请求过程、日志和错误信息。
-        Logger.setDebug(true);
-        Logger.setTag("NoHttpSample");
         IMAudioManager.instance().init(this);
         //  fragment  框架配置
         Fragmentation.builder()
@@ -171,29 +157,5 @@ public class MyApplication extends Application {
             activityStack.clear();
         }
     }
-
-    /**
-     * Cookie管理监听。x
-     */
-    private DBCookieStore.CookieStoreListener mListener = new DBCookieStore.CookieStoreListener() {
-        @Override
-        public void onSaveCookie(URI uri, HttpCookie cookie) { // Cookie被保存时被调用。
-            // 1. 判断这个被保存的Cookie是我们服务器下发的Session。
-            // 2. 这里的JSessionId是Session的name，
-            //    比如java的是JSessionId，PHP的是PSessionId，
-            //    当然这里只是举例，实际java中和php不一定是这个，具体要咨询你们服务器开发人员。
-            if ("PHPSESSID".equals(cookie.getName())) {
-                // 设置有效期为最大。
-                cookie.setMaxAge(0);
-            }
-        }
-
-        @Override
-        public void onRemoveCookie(URI uri, HttpCookie cookie) {// Cookie被移除时被调用。
-            Log.i("移除cookie", cookie.getValue());
-        }
-
-    };
-
 
 }

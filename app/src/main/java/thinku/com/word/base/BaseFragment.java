@@ -3,23 +3,15 @@ package thinku.com.word.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.gyf.barlibrary.ImmersionBar;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.rest.OnResponseListener;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.RequestQueue;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import me.yokeyword.fragmentation.SupportFragment;
-import me.yokeyword.fragmentation.SupportFragmentDelegate;
-import thinku.com.word.MyApplication;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
 import thinku.com.word.utils.HttpUtils;
@@ -36,10 +28,9 @@ import thinku.com.word.utils.WaitUtils;
  * 1、Viewpager + Fragment情况下，fragment的生命周期因Viewpager的缓存机制而失去了具体意义
  * 该抽象类自定义新的回调方法，当fragment可见状态改变时会触发的回调方法，和 Fragment 第一次可见时会回调的方法
  *
- * @see #onFragmentVisibleChange(boolean)
  * @see #onFragmentFirstVisible()
  */
-public abstract class BaseFragment extends SupportFragment  {
+public abstract class BaseFragment extends SupportFragment {
     private static final String TAG = BaseFragment.class.getSimpleName();
     protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private boolean isFragmentVisible;
@@ -48,7 +39,6 @@ public abstract class BaseFragment extends SupportFragment  {
     private View rootView;
 
     protected Context mContext;
-    private RequestQueue mRequestQueue;
     private ImmersionBar immersionBar;
 
     //setUserVisibleHint()在Fragment创建时会先被调用一次，传入isVisibleToUser = false
@@ -66,8 +56,10 @@ public abstract class BaseFragment extends SupportFragment  {
     protected void addToCompositeDis(Disposable disposable) {
         mCompositeDisposable.add(disposable);
     }
+
     /**
-     *  判断是否请求成功
+     * 判断是否请求成功
+     *
      * @param code
      * @return
      */
@@ -79,24 +71,24 @@ public abstract class BaseFragment extends SupportFragment  {
     }
 
     //  toast
-    public void toTast(Context context , String content){
-        Toast.makeText(context ,content ,Toast.LENGTH_SHORT).show();
+    public void toTast(Context context, String content) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
     }
 
     /**
-     *调起加载dialog
+     * 调起加载dialog
      */
-    public void showLoadDialog(Context context , String tag) {
-        WaitUtils.show(mContext,tag);
+    public void showLoadDialog(Context context, String tag) {
+        WaitUtils.show(mContext, tag);
     }
 
 
-
-    public void dismissLoadDialog(String tag){
-        if(WaitUtils.isRunning(tag)){
+    public void dismissLoadDialog(String tag) {
+        if (WaitUtils.isRunning(tag)) {
             WaitUtils.dismiss(tag);
         }
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         //如果setUserVisibleHint()在rootView创建前调用时，那么
@@ -120,7 +112,7 @@ public abstract class BaseFragment extends SupportFragment  {
     }
 
 
-    public void toLogin(){
+    public void toLogin() {
         LoginHelper.needLogin(_mActivity, "您还未登陆，请先登陆");
     }
 

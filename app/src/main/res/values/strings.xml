@@ -25,6 +25,7 @@
     <string name="no_tip">不在提示</string>
     <string name="go_on">继续</string>
     <string name="str_language_search">语音找单词</string>
+    <string name="camera_permission_required">本功能需要相机权限！</string>
     <!-- 请替换成在语音云官网申请的appid -->
     <string name="text_begin">请开始说话…</string>
     <string name="str_please_write_search_content">请输入查询内容</string>

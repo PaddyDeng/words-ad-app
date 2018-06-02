@@ -23,6 +23,7 @@ import thinku.com.word.bean.SingBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.personalCenter.bean.SignBean;
 import thinku.com.word.utils.DateUtil;
+import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.RxHelper;
 import thinku.com.word.utils.StringUtils;
 import thinku.com.word.view.AddLeidouDialog;
@@ -141,6 +142,8 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                             calendar.setSign(list);
                             addLeidou(voidResultBeen.getNum());
                             initData();
+                        }else if (voidResultBeen.getCode() == 99){
+                            LoginHelper.needLogin(SignActivity.this , "");
                         }
                     }
                 }, new Consumer<Throwable>() {

@@ -4,20 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.gyf.barlibrary.ImmersionBar;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.rest.OnResponseListener;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.zhy.autolayout.AutoLayoutActivity;
 
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -29,7 +23,6 @@ import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
 import thinku.com.word.callback.PermissionCallback;
 import thinku.com.word.permission.RxPermissions;
-import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
@@ -44,8 +37,7 @@ public class BaseActivity extends AutoLayoutActivity {
     public static final String TAG = BaseActivity.class.getSimpleName();
 
     protected Context mContext;
-    private RequestQueue mRequestQueue;
-    private int code,tag;
+    private int code, tag;
     private String[] permission;
     private PermissionCallback mCallback;
     private String hint;
@@ -54,13 +46,13 @@ public class BaseActivity extends AutoLayoutActivity {
 
 
     protected ConcurrentMap<String, CompositeDisposable> mConcurrentMap = new ConcurrentHashMap<>();
-    private int firstTime ;
+    private int firstTime;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
         // 创建请求队列, 默认并发3个请求, 传入数字改变并发数量: NoHttp.newRequestQueue(5);
-        mRequestQueue = NoHttp.newRequestQueue(20);
         immersionBar = ImmersionBar.with(this);
         immersionBar.init();
         mRxPermissions = new RxPermissions(this);
@@ -77,6 +69,7 @@ public class BaseActivity extends AutoLayoutActivity {
         }
         compositeDisposable.add(disposable);
     }
+
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
@@ -99,21 +92,20 @@ public class BaseActivity extends AutoLayoutActivity {
     }
 
 
-
-
     /**
-     *调起加载dialog
+     * 调起加载dialog
      */
     public void showLoadDialog() {
-        WaitUtils.show(mContext,getClass().getSimpleName());
-    }
-    public void showLoadDialog(String tag){
-        WaitUtils.show(mContext,tag);
+        WaitUtils.show(mContext, getClass().getSimpleName());
     }
 
-    public void showLoadDialog(String hint ,String tag){
-        WaitUtils.show(mContext ,tag);
-        WaitUtils.setHint(tag ,hint);
+    public void showLoadDialog(String tag) {
+        WaitUtils.show(mContext, tag);
+    }
+
+    public void showLoadDialog(String hint, String tag) {
+        WaitUtils.show(mContext, tag);
+        WaitUtils.setHint(tag, hint);
     }
 
 
@@ -124,13 +116,13 @@ public class BaseActivity extends AutoLayoutActivity {
 //        if (isShow()) {
 //            WaitDialog01.getInstance(mContext).dismissWaitDialog();
 //        }
-        if(WaitUtils.isRunning(getClass().getSimpleName())){
+        if (WaitUtils.isRunning(getClass().getSimpleName())) {
             WaitUtils.dismiss(getClass().getSimpleName());
         }
     }
 
-    public void dismissLoadDialog(String tag){
-        if(WaitUtils.isRunning(tag)){
+    public void dismissLoadDialog(String tag) {
+        if (WaitUtils.isRunning(tag)) {
             WaitUtils.dismiss(tag);
         }
     }
@@ -154,6 +146,7 @@ public class BaseActivity extends AutoLayoutActivity {
                 break;
         }
     }
+
     private void finishWithAnimRightOut() {
         finish();
         overridePendingTransition(R.anim.ac_slide_left_in, R.anim.ac_slide_right_out);
@@ -181,9 +174,11 @@ public class BaseActivity extends AutoLayoutActivity {
         ANIM_TYPE_UP_IN, //
         ANIM_TYPE_SCALE_CENTER // 中心缩放显示/隐藏
     }
+
     public AnimType getAnimType() {
         return AnimType.ANIM_TYPE_RIGHT_IN;
     }
+
     /**
      * 退出之前，如果需要额外处理，调用此方法
      *
@@ -192,7 +187,7 @@ public class BaseActivity extends AutoLayoutActivity {
      * false：	继续执行退出后续操作。
      */
     protected boolean preBackExitPage() {
-        if(WaitUtils.isRunning(getClass().getSimpleName())){
+        if (WaitUtils.isRunning(getClass().getSimpleName())) {
             dismissLoadDialog();
             return true;
         }
@@ -201,18 +196,18 @@ public class BaseActivity extends AutoLayoutActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_BACK == keyCode ) {
+        if (KeyEvent.KEYCODE_BACK == keyCode) {
             if (preBackExitPage()) {
                 return true;
             }
-            if(WaitUtils.isRunning(getClass().getSimpleName())){
+            if (WaitUtils.isRunning(getClass().getSimpleName())) {
                 dismissLoadDialog();
-            }else {
+            } else {
                 finishWithAnim();
             }
         }
-        if (KeyEvent.KEYCODE_HOME == keyCode){
-            if (MyApplication.mediaPlayer != null && MyApplication.mediaPlayer.isPlaying()){
+        if (KeyEvent.KEYCODE_HOME == keyCode) {
+            if (MyApplication.mediaPlayer != null && MyApplication.mediaPlayer.isPlaying()) {
                 MyApplication.mediaPlayer.stop();
             }
         }
@@ -221,25 +216,10 @@ public class BaseActivity extends AutoLayoutActivity {
     }
 
 
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mRequestQueue.cancelAll(); // 退出页面时时取消所有请求。
-        mRequestQueue.stop(); // 退出时销毁队列，回收资源。
-        if(null!=immersionBar)immersionBar.destroy();
-    }
-    /**
-     * 发起一个请求。
-     *
-     * @param what     what.
-     * @param request  请求对象。
-     * @param listener 结果监听。
-     * @param <T>      要请求到的数据类型。
-     */
-    public <T> void request(int what, Request<T> request, OnResponseListener<T> listener) {
-        mRequestQueue.add(what, request, listener);
+        if (null != immersionBar) immersionBar.destroy();
     }
 
     protected boolean getHttpResSuc(int code) {
@@ -249,18 +229,18 @@ public class BaseActivity extends AutoLayoutActivity {
         return false;
     }
 
-    public void getPermission(String[] permission, int code,String hint,int tag,PermissionCallback callback) {
-        this.code =code;
-        this.permission =permission;
-        this.mCallback=callback;
-        this.tag=tag;
-        this.hint=hint;
+    public void getPermission(String[] permission, int code, String hint, int tag, PermissionCallback callback) {
+        this.code = code;
+        this.permission = permission;
+        this.mCallback = callback;
+        this.tag = tag;
+        this.hint = hint;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==code){
+        if (requestCode == code) {
         }
     }
 
@@ -271,16 +251,16 @@ public class BaseActivity extends AutoLayoutActivity {
     }
 
     //  toast
-    public void toTast( String content){
-        Toast.makeText(mContext,content ,Toast.LENGTH_SHORT).show();
+    public void toTast(String content) {
+        Toast.makeText(mContext, content, Toast.LENGTH_SHORT).show();
     }
 
-    public void toTast( Context context,String content){
-        Toast.makeText(context,content ,Toast.LENGTH_SHORT).show();
+    public void toTast(Context context, String content) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
     }
 
-    public void toTast( int contentId){
-        Toast.makeText(mContext,mContext.getString(contentId) ,Toast.LENGTH_SHORT).show();
+    public void toTast(int contentId) {
+        Toast.makeText(mContext, mContext.getString(contentId), Toast.LENGTH_SHORT).show();
     }
 
     protected void forword(Class<?> c) {

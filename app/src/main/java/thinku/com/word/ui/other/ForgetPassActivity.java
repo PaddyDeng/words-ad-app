@@ -2,8 +2,6 @@ package thinku.com.word.ui.other;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,35 +10,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
-
-import org.json.JSONException;
-
 import java.util.Timer;
-import java.util.TimerTask;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
-import thinku.com.word.bean.BackCode;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.RequestCallback;
 import thinku.com.word.http.HttpUtil;
-import thinku.com.word.http.NetworkChildren;
-import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.personalCenter.SetNickNameActivity;
 import thinku.com.word.ui.personalCenter.feature.AuthCode;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.PhoneAndEmailUtils;
-import thinku.com.word.utils.SharePref;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
 /**
@@ -50,8 +34,8 @@ import thinku.com.word.utils.SharedPreferencesUtils;
 public class ForgetPassActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView back;
-    private EditText num_et,code_et,pass_et;
-    private TextView send,confirm;
+    private EditText num_et, code_et, pass_et;
+    private TextView send, confirm;
     private boolean isSendCode;
     private Timer timer;
     private int recLen = 60;
@@ -87,6 +71,7 @@ public class ForgetPassActivity extends BaseActivity implements View.OnClickList
                     }
                 }));
     }
+
     private void findView() {
         back = (ImageView) findViewById(R.id.back);
         num_et = (EditText) findViewById(R.id.num_et);
@@ -98,61 +83,61 @@ public class ForgetPassActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.back:
                 finish();
                 break;
             case R.id.send:
-                if(!isSendCode) {
+                if (!isSendCode) {
                     if (TextUtils.isEmpty(num_et.getText())) {
                         Toast.makeText(ForgetPassActivity.this, "请填写账号", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    String num=num_et.getText().toString();
-                    if(PhoneAndEmailUtils.isMobileNO(num_et.getText().toString())){
-                        sendCode(num,0);
-                    }else if(PhoneAndEmailUtils.isEmail(num_et.getText().toString())){
-                        sendCode(num,1);
-                    }else{
-                        Toast.makeText(ForgetPassActivity.this,"请输入有效的手机号/邮箱",Toast.LENGTH_SHORT).show();
+                    String num = num_et.getText().toString();
+                    if (PhoneAndEmailUtils.isMobileNO(num_et.getText().toString())) {
+                        sendCode(num, 0);
+                    } else if (PhoneAndEmailUtils.isEmail(num_et.getText().toString())) {
+                        sendCode(num, 1);
+                    } else {
+                        Toast.makeText(ForgetPassActivity.this, "请输入有效的手机号/邮箱", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
                 break;
             case R.id.confirm:
-                if(TextUtils.isEmpty(num_et.getText())){
-                    Toast.makeText(ForgetPassActivity.this,"请填写账号",Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(num_et.getText())) {
+                    Toast.makeText(ForgetPassActivity.this, "请填写账号", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(TextUtils.isEmpty(code_et.getText())){
-                    Toast.makeText(ForgetPassActivity.this,"请填写验证码",Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(code_et.getText())) {
+                    Toast.makeText(ForgetPassActivity.this, "请填写验证码", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(TextUtils.isEmpty(pass_et.getText())){
-                    Toast.makeText(ForgetPassActivity.this,"请填写密码",Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(pass_et.getText())) {
+                    Toast.makeText(ForgetPassActivity.this, "请填写密码", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                int type =1;
-                final String num =num_et.getText().toString();
-                final String pass =pass_et.getText().toString();
-                String code =code_et.getText().toString();
-                if(PhoneAndEmailUtils.isMobileNO(num)){
-                    type=1;
-                }else if(PhoneAndEmailUtils.isEmail(num)){
-                    type=2;
-                }else{
-                    Toast.makeText(ForgetPassActivity.this,"请填写有效的手机号/邮箱",Toast.LENGTH_SHORT).show();
+                int type = 1;
+                final String num = num_et.getText().toString();
+                final String pass = pass_et.getText().toString();
+                String code = code_et.getText().toString();
+                if (PhoneAndEmailUtils.isMobileNO(num)) {
+                    type = 1;
+                } else if (PhoneAndEmailUtils.isEmail(num)) {
+                    type = 2;
+                } else {
+                    Toast.makeText(ForgetPassActivity.this, "请填写有效的手机号/邮箱", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 showLoadDialog();
 
-                addToCompositeDis(HttpUtil.findPass(type +"" ,num ,pass ,code)
-                .doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(@NonNull Disposable disposable) throws Exception {
-                        showLoadDialog();
-                    }
-                }).subscribe(new Consumer<ResultBeen<Void>>() {
+                addToCompositeDis(HttpUtil.findPass(type + "", num, pass, code)
+                        .doOnSubscribe(new Consumer<Disposable>() {
+                            @Override
+                            public void accept(@NonNull Disposable disposable) throws Exception {
+                                showLoadDialog();
+                            }
+                        }).subscribe(new Consumer<ResultBeen<Void>>() {
                             @Override
                             public void accept(@NonNull ResultBeen<Void> userInfo) throws Exception {
                                 dismissLoadDialog();
@@ -184,6 +169,7 @@ public class ForgetPassActivity extends BaseActivity implements View.OnClickList
                                                     MainActivity.toMain(ForgetPassActivity.this);
                                                     startActivity(new Intent(ForgetPassActivity.this, MainActivity.class));
                                                 }
+
                                             } else {
                                                 toTast(userInfo.getMessage());
                                             }
@@ -205,7 +191,7 @@ public class ForgetPassActivity extends BaseActivity implements View.OnClickList
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
                                 dismissLoadDialog();
-                                toTast(ForgetPassActivity.this ,throwable.getMessage());
+                                toTast(ForgetPassActivity.this, throwable.getMessage());
                             }
                         }));
                 break;
@@ -220,8 +206,8 @@ public class ForgetPassActivity extends BaseActivity implements View.OnClickList
      */
     private void sendCode(final String num, final int i) {
         mAuthCode.start();
-        if (i ==0){
-            addToCompositeDis(HttpUtil.phoneCodeObservable(num , 2+"")
+        if (i == 0) {
+            addToCompositeDis(HttpUtil.phoneCodeObservable(num, 2 + "")
                     .subscribe(new Consumer<ResultBeen<Void>>() {
                         @Override
                         public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
@@ -239,9 +225,9 @@ public class ForgetPassActivity extends BaseActivity implements View.OnClickList
                         }
                     })
             );
-        }else if (i ==1){
+        } else if (i == 1) {
 
-            addToCompositeDis(HttpUtil.emailCodeObservable(num , 2+"")
+            addToCompositeDis(HttpUtil.emailCodeObservable(num, 2 + "")
                     .subscribe(new Consumer<ResultBeen<Void>>() {
                         @Override
                         public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {

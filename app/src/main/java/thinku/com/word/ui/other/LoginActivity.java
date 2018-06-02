@@ -18,6 +18,7 @@ import io.reactivex.functions.Consumer;
 import me.yokeyword.fragmentation.SupportActivity;
 import thinku.com.word.MyApplication;
 import thinku.com.word.R;
+import thinku.com.word.adapter.LoginInfo;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.UserInfo;
@@ -69,6 +70,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         login = (TextView) findViewById(R.id.login);
         register_btn = (TextView) findViewById(R.id.register_btn);
         forget_btn = (TextView) findViewById(R.id.forget_btn);
+        if (SharedPreferencesUtils.getLoginInfo(this) != null){
+            LoginInfo userInfo = SharedPreferencesUtils.getLoginInfo(this);
+                num_et.setText(userInfo.getNum());
+                pass_et.setText(userInfo.getPass());
+        }
+
     }
 
     @Override
@@ -93,6 +100,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     return;
                 }
                 pass = pass_et.getText().toString();
+                LoginInfo loginInfo = new LoginInfo(phone ,pass);
+                SharedPreferencesUtils.setLoginInfo(LoginActivity.this ,loginInfo);
                 LoginHelper.againLoginRetrofit(LoginActivity.this, phone, pass, new RequestCallback<UserInfo>() {
                     @Override
                     public void beforeRequest() {
@@ -126,6 +135,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                         });
                                 LoginActivity.this.finish();
                             }
+
                         }else{
                             toTast(userInfo.getMessage());
                         }

@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<thinku.com.word.weight.overscroll.FastAndOverScrollScrollView android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="none"
-    xmlns:android="http://schemas.android.com/apk/res/android">
 <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tool="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -70,4 +66,3 @@
         android:layout_width="match_parent"
         android:layout_height="40dp" />
 </com.zhy.autolayout.AutoLinearLayout>
-    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>

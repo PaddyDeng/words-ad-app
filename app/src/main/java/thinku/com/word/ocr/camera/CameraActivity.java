@@ -28,8 +28,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -365,7 +363,18 @@ public class CameraActivity extends FragmentActivity {
                     e.printStackTrace();
                 }
 
+//                Intent intent = new Intent();
+//                intent.putExtra(CameraActivity.KEY_CONTENT_TYPE, contentType);
+//                setResult(Activity.RESULT_OK, intent);
+
+//                RecognizeService.recGeneral(outputFile.getAbsolutePath(),
+//                        new RecognizeService.ServiceListener() {
+//                            @Override
+//                            public void onResult(String result) {
                 CameraSearchActivity.startAct(CameraActivity.this, "");
+//                            }
+//                        });
+//                finish();
             }
         }.start();
     }
@@ -459,7 +468,7 @@ public class CameraActivity extends FragmentActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     cameraView.getCameraControl().refreshPermission();
                 } else {
-                    Toast.makeText(getApplicationContext(),"本功能需要相机权限", Toast.LENGTH_LONG)
+                    Toast.makeText(getApplicationContext(), R.string.camera_permission_required, Toast.LENGTH_LONG)
                             .show();
                     finish();
                 }

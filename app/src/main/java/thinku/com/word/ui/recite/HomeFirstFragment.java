@@ -91,8 +91,7 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
         }else{
             now_type.setText("你还未选择记忆模式");
         }
-        Log.e(TAG, "uid: " + SharedPreferencesUtils.getUid(_mActivity));
-        if (!MyApplication.isLogin){
+        if (!MyApplication.isLogin || TextUtils.isEmpty(SharedPreferencesUtils.getUid(_mActivity))){
             Log.e(TAG, "init: " );
             LoginHelper.needLogin(_mActivity, "");
         }

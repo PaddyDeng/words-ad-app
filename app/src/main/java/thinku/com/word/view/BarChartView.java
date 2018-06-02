@@ -1,40 +1,37 @@
 
-        package thinku.com.word.view;
 
-        import android.content.Context;
-        import android.content.Intent;
-        import android.graphics.Canvas;
-        import android.graphics.Color;
-        import android.graphics.Paint;
-        import android.graphics.Paint.Align;
-        import android.graphics.Paint.Style;
-        import android.graphics.Rect;
-        import android.graphics.RectF;
-        import android.support.annotation.ColorInt;
-        import android.text.TextPaint;
-        import android.util.AttributeSet;
-        import android.util.Log;
-        import android.view.GestureDetector;
-        import android.view.MotionEvent;
-        import android.view.View;
+package thinku.com.word.view;
 
-        import java.text.DecimalFormat;
-        import java.util.ArrayList;
-        import java.util.HashMap;
-        import java.util.Iterator;
-        import java.util.List;
-        import java.util.Map;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Paint.Align;
+import android.graphics.Paint.Style;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.support.annotation.ColorInt;
+import android.text.TextPaint;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
 
-        import thinku.com.word.R;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import thinku.com.word.R;
 
 /**
  * 柱状�?
  */
 public class BarChartView extends View {
     private static final String TAG = BarChartView.class.getSimpleName();
-    private int scrollWidth  ;
-    private int width ;
-    private boolean isWidth ;
+    private int scrollWidth;
+    private int width;
+    private boolean isWidth;
     /**
      * 公共部分
      */
@@ -57,8 +54,8 @@ public class BarChartView extends View {
 
     private int colorCoordinates = 0xFF999999; // 坐标轴的颜色
 
-    private int[] colors = {R.color.color_notknow, R.color.color_forget, R.color.color_dim ,
-    R.color.color_know , R.color.color_know_well}; // 柱子的颜色
+    private int[] colors = {R.color.color_notknow, R.color.color_forget, R.color.color_dim,
+            R.color.color_know, R.color.color_know_well}; // 柱子的颜色
     private int yIndex = 5; // Y轴位置
     private HashMap<String, List<Integer>> yRawData = new HashMap<>();
     private int priceWeight = 1; // 倍数
@@ -84,12 +81,12 @@ public class BarChartView extends View {
     private GestureDetector mGestureDetector;
     private boolean isInteger = true;// 是否是整数坐标
     private float cutoffwidth = 0;
-    private Paint  hintPaint;
+    private Paint hintPaint;
     private Rect rectF;
     private Paint paint;
-    private float x ;  //  x轴的y坐标的点
-    private Context context ;
-    private TextPaint hintTextPaint ;
+    private float x;  //  x轴的y坐标的点
+    private Context context;
+    private TextPaint hintTextPaint;
 
     public BarChartView(Context context, List<String> tagging,
                         List<String> xRawData, List<Float>... yRawData) {
@@ -124,7 +121,7 @@ public class BarChartView extends View {
         paint = new Paint();
         paint.setTextSize(sp2px(10));
         paint.setAntiAlias(true);
-        this.context  =  context ;
+        this.context = context;
     }
 
     private float mDownPosX = 0;
@@ -201,7 +198,7 @@ public class BarChartView extends View {
                         coordinateRect.height() - dip2px(10) - rectF.height() / 2, canvas, Align.RIGHT, 8,
                         colorCoordinates);
                 mPaint.setColor(colorCoordinates);
-                x = (coordinateRect.height() - dip2px(10) - rectF.height() /2) ;
+                x = (coordinateRect.height() - dip2px(10) - rectF.height() / 2);
                 canvas.drawLine(startX, coordinateRect.top, startX,
                         coordinateRect.height() - dip2px(10) - rectF.height() / 2, mPaint);
                 canvas.drawLine(startX, coordinateRect.height() - dip2px(10) - rectF.height() / 2,
@@ -221,26 +218,26 @@ public class BarChartView extends View {
      * 画柱子
      */
     private void drawBar(Canvas canvas) {
-        boolean  isRel = false ;
+        boolean isRel = false;
         mPaint.setStyle(Style.FILL);
         for (int i = 0; i < xRawDatas.size(); i++) {
             float stopY = x;
             float newY = x;
-            float startX  = x;
-            float stopX = x  ;
-            float total  = 0 ;
-            if (xRawDatas.get(i).indexOf("后") != -1){
-                isRel = true ;
+            float startX = x;
+            float stopX = x;
+            float total = 0;
+            if (xRawDatas.get(i).indexOf("后") != -1) {
+                isRel = true;
             }
 
             List<Integer> data = yRawData.get(xRawDatas.get(i));
             for (int j = 0; j < data.size(); j++) {
 
                 //  画柱状图
-                 startX =  coordinateRect.left + cutoffwidth
+                startX = coordinateRect.left + cutoffwidth
                         * i * (yRawData.size() + 1) + cutoffwidth + cutoffwidth
-                        * yRawData.size() / 2  - coordinateRect.width() / 10 / 2 ;
-                 stopX = startX + coordinateRect.width() / 10 ;
+                        * yRawData.size() / 2 - coordinateRect.width() / 10 / 2;
+                stopX = startX + coordinateRect.width() / 10;
                 if (stopX <= offsetWidth + coordinateRect.left) {
                     continue;
                 }
@@ -249,12 +246,13 @@ public class BarChartView extends View {
                     continue;
                 }
                 newY = stopY - getCutoffKLY(yData);
-                if (newY < coordinateRect.top){
-                    newY = coordinateRect.top ;
+                if (newY < coordinateRect.top) {
+                    newY = coordinateRect.top;
                 }
-                if (!isRel) mPaint.setColor(context.getResources().getColor(colors[j % colors.length]));
+                if (!isRel)
+                    mPaint.setColor(context.getResources().getColor(colors[j % colors.length]));
                 else mPaint.setColor(context.getResources().getColor(R.color.gray_text));
-                if (newY > coordinateRect.height()){
+                if (newY > coordinateRect.height()) {
                     newY = coordinateRect.height();
                 }
                 if (startX < offsetWidth + coordinateRect.left) {
@@ -267,8 +265,9 @@ public class BarChartView extends View {
                 canvas.drawRect(startX, newY, stopX, stopY, mPaint);
                 total += yData;
                 stopY = newY;
-                }
-                if (total >0) canvas.drawText((int)total+"" ,startX + (stopX - startX) /2  ,stopY - dip2px(2) , hintTextPaint);
+            }
+            if (total > 0)
+                canvas.drawText((int) total + "", startX + (stopX - startX) / 2, stopY - dip2px(2), hintTextPaint);
             if (coordinateRect.left + cutoffwidth * i * (yRawData.size() + 1)
                     + cutoffwidth > offsetWidth + coordinateRect.left) {
                 String s = xRawDatas.get(i);
@@ -316,29 +315,29 @@ public class BarChartView extends View {
         this.xRawDatas.clear();
         this.yRawData.clear();
         this.xRawDatas.addAll(xRawData);
-        HashMapAdd(this.yRawData ,yRawData);
+        HashMapAdd(this.yRawData, yRawData);
         int position = xRawData.indexOf("今天");
         if (xRawData.size() > 17) {
             if (position != -1) {
-                int width = (int) (((position ) * coordinateRect.width() / 5) + coordinateRect.width() / 2 - scrollWidth);
+                int width = (int) (((position -5 ) * coordinateRect.width() / 5) + coordinateRect.width() / 2 );
                 updateCutoffwidth1(width);
             }
-        }else{
+        } else {
             if (position != -1) {
-                int width = (int) ((((position )* coordinateRect.width() / 5)) - scrollWidth);
+                int width = (int) ((((position - 4 ) * coordinateRect.width() / 5)) );
                 updateCutoffwidth1(width);
             }
         }
         invalidate();
     }
 
-    public void HashMapAdd(HashMap<String, List<Integer>> map1 , HashMap<String, List<Integer>> map2) {
+    public void HashMapAdd(HashMap<String, List<Integer>> map1, HashMap<String, List<Integer>> map2) {
         for (String key : map2.keySet()) {
             map1.put(key, map2.get(key));
         }
     }
 
-    private void updateCutoffwidth( int  width) {
+    private void updateCutoffwidth(int width) {
         if (xRawDatas != null) {
             if (xRawDatas.size() > horizontalNum) {
                 offsetWidthMax = (int) (((this.yRawData.size() + 1)
@@ -347,8 +346,8 @@ public class BarChartView extends View {
                         / ((this.yRawData.size() + 1) * horizontalNum + 1) - coordinateRect
                         .width());
                 offsetWidth = offsetWidthMax;
-                cutoffwidth = coordinateRect.width()/ (horizontalNum * (this.yRawData.size() + 1) + 1);
-                Log.e(TAG, "updateCutoffwidth: "  + offsetWidth + "  " + cutoffwidth);
+                cutoffwidth = coordinateRect.width() / (horizontalNum * (this.yRawData.size() + 1) + 1);
+                Log.e(TAG, "updateCutoffwidth: " + offsetWidth + "  " + cutoffwidth);
 
                 int start = (int) (offsetWidth / ((this.yRawData.size() + 1) * cutoffwidth));
                 int stop = (int) ((offsetWidth + coordinateRect.width() + cutoffwidth
@@ -369,7 +368,7 @@ public class BarChartView extends View {
     }
 
 
-    private void updateCutoffwidth1( int  width) {
+    private void updateCutoffwidth1(int width) {
         if (xRawDatas != null) {
             if (xRawDatas.size() > horizontalNum) {
                 offsetWidthMax = (int) (((this.yRawData.size() + 1)
@@ -391,7 +390,7 @@ public class BarChartView extends View {
                 offsetWidth = 0;
                 offsetWidthMax = 0;
             }
-            Log.e(TAG, "updateCutoffwidth1: " + width );
+            Log.e(TAG, "updateCutoffwidth1: " + width);
             scroll(width);
         }
     }
@@ -504,7 +503,7 @@ public class BarChartView extends View {
      * 根据数据大小返回Y坐标
      */
     private float getCutoffKLY(float price) {
-        float priceY =(coordinateRect.height()  - coordinateRect.height() / 15) * price / maxValue ;
+        float priceY = (coordinateRect.height() - coordinateRect.height() / 15) * price / maxValue;
 //        if (priceY < coordinateRect.top)
 //            priceY = coordinateRect.top;
 //        if (priceY > coordinateRect.height() - dip2px(10) - rectF.height() / 2)
@@ -586,13 +585,13 @@ public class BarChartView extends View {
         }
     }
 
-    public void scroll(int width ) {
-        Log.e(TAG, "scroll: " + width );
+    public void scroll(int width) {
+        Log.e(TAG, "scroll: " + width);
         scrollTo(width, 0);
         int start = (int) (offsetWidth / ((yRawData.size() + 1) * cutoffwidth));
         int stop = (int) ((offsetWidth + coordinateRect.width() + yRawData
                 .size() * cutoffwidth) / ((yRawData.size() + 1) * cutoffwidth));
-        scrollWidth = width ;
+        scrollWidth = width;
         if (!initMaxAndMin(start, stop)) {
             invalidate();
         }

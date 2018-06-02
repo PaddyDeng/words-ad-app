@@ -3,6 +3,7 @@ package thinku.com.word.utils.AudioTools;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.util.Log;
 
 
 import java.io.IOException;
@@ -57,6 +58,7 @@ public class IMAudioManager {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
                     // TODO Auto-generated method stub
+                    Log.e("Ok", "onError: " +what + "  " + extra );
                     mPlayer.reset();
                     return false;
                 }
@@ -64,6 +66,7 @@ public class IMAudioManager {
         } else {
             mPlayer.reset();//恢复
         }
+
         VoiceFileUtils fileUtils = new VoiceFileUtils();
         try {
             String path = fileUtils.exists(voicePath); // 判断是否存在缓存文件
@@ -97,6 +100,7 @@ public class IMAudioManager {
             e.printStackTrace();
         } catch (IOException e) {
             // TODO Auto-generated catch block
+            Log.e("OK", "playSound: " + e.getMessage() );
             e.printStackTrace();
         }
     }

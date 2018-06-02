@@ -244,7 +244,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 LoginHelper.needLogin(SettingActivity.this,"");
                 SharedPreferencesUtils.saveMemoryMode(mContext, "");
                 SharedPreferencesUtils.setImage(mContext, "");
-                SharedPreferencesUtils.setStudyMode(mContext,"");
+//                SharedPreferencesUtils.setStudyMode(mContext,"");
                 RxBus.get().post(C.RXBUS_EXLOING, true);
             }
         });

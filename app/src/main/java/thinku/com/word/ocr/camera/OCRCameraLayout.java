@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -18,7 +17,7 @@ import thinku.com.word.R;
 
 
 public class OCRCameraLayout extends FrameLayout {
-    private static final String TAG = OCRCameraLayout.class.getSimpleName();
+
     public static int ORIENTATION_PORTRAIT = 0;
     public static int ORIENTATION_HORIZONTAL = 1;
 
@@ -117,6 +116,7 @@ public class OCRCameraLayout extends FrameLayout {
         int height = getHeight();
         int left;
         int top;
+
         MarginLayoutParams leftDownViewLayoutParams = (MarginLayoutParams) leftDownView.getLayoutParams();
         MarginLayoutParams rightUpViewLayoutParams = (MarginLayoutParams) rightUpView.getLayoutParams();
         MarginLayoutParams topViewLayoutParams = null;

@@ -49,9 +49,14 @@ public class ReviewActivity extends BaseActivity implements View.OnClickListener
         setContentView(R.layout.activity_review);
         ButterKnife.bind(this);
         initView();
-        Review();
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Review();
+    }
 
     private void initView() {
         titleT.setText("复习");

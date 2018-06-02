@@ -1,5 +1,6 @@
 package thinku.com.word.ui.other;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +19,9 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import thinku.com.word.MyApplication;
 import thinku.com.word.R;
+import thinku.com.word.adapter.LoginInfo;
 import thinku.com.word.base.BaseActivity;
+import thinku.com.word.bean.BackCode;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.RequestCallback;
@@ -135,6 +138,8 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
                     return;
                 }
 
+                LoginInfo loginInfo = new LoginInfo(num ,pass);
+                SharedPreferencesUtils.setLoginInfo(RigisterActivity.this ,loginInfo);
                 showLoadDialog();
                 //参数需要对一下
                 addToCompositeDis(HttpUtil.register(type + "", num, pass, code, num, "5")
@@ -166,7 +171,6 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
                                             dismissLoadDialog();
                                             if (getHttpResSuc(userInfo.getCode())) {
                                                 if (TextUtils.isEmpty(userInfo.getNickname())) {
-                                                    Log.e(TAG, "requestSuccess: " + userInfo.getUid()+"  " + userInfo.getEmail() );
                                                     SharedPreferencesUtils.setLogin(RigisterActivity.this, userInfo);
                                                     RxHelper.delay(1000)
                                                             .subscribe(new Consumer<Integer>() {
@@ -175,6 +179,9 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
                                                                     SetNickNameActivity.start(RigisterActivity.this, userInfo);
                                                                 }
                                                             });
+                                                    if (!userInfo.equals(SharedPreferencesUtils.getStudyMode(RigisterActivity.this))){
+                                                        updataMode(SharedPreferencesUtils.getStudyMode(RigisterActivity.this) ,RigisterActivity.this );
+                                                    }
                                                 } else {
                                                     MyApplication.isLogin = true;
                                                     RxBus.get().post(C.RXBUS_LOGIN, true);
@@ -225,6 +232,16 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
+
+    public  void updataMode(final String status , final Context context){
+        addToCompositeDis(HttpUtil.choseStudyMode(status)
+                .subscribe(new Consumer<BackCode>() {
+                    @Override
+                    public void accept(@NonNull BackCode backCode) throws Exception {
+                        SharedPreferencesUtils.setStudyMode(context ,status);
+                    }
+                }));
+    }
     /**
      * 获取验证码
      */

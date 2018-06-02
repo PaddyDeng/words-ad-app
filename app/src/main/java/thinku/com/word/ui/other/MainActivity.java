@@ -27,6 +27,7 @@ import thinku.com.word.base.BaseFragmentActivitiy;
 import thinku.com.word.thrlib.OCRProxy;
 import thinku.com.word.ui.fparent.WordParentFragment;
 import thinku.com.word.ui.periphery.RoundFragment;
+import thinku.com.word.ui.personalCenter.update.SimpleUpdateApk;
 import thinku.com.word.ui.pk.PKFragment;
 import thinku.com.word.ui.recite.ReciteFragment;
 import thinku.com.word.ui.report.ReportFragment;
@@ -50,6 +51,7 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
     private SupportFragment[] fragments = new SupportFragment[4];
     private Map< Integer,SupportFragment> fragmentList = new ArrayMap<>();
     private WordParentFragment reciteFragment ;
+    private SimpleUpdateApk simpleUpdateApk ;
     public static void toMain(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
         context.startActivity(intent);
@@ -63,7 +65,11 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
         setClick();
         initView();
         OCRProxy.initToken(mContext);
+        simpleUpdateApk = new SimpleUpdateApk(this , false);
+        simpleUpdateApk.checkVersionUpdate();
     }
+
+
 
     @Override
     protected void onResume() {

@@ -3,6 +3,7 @@ package thinku.com.word.ui.periphery;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import thinku.com.word.ui.periphery.bean.RoundBean;
 import thinku.com.word.utils.DateUtil;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.HtmlUtil;
+import thinku.com.word.utils.MyWebViewClient;
 
 /**
  * 学员评价详情
@@ -68,9 +70,18 @@ public class EvaAllActivity extends BaseActivity {
         name.setText(caseBean.getName());
         new GlideUtils().loadCircle(this ,caseBean.getImage() ,image);
         time.setText(DateUtil.longTodate(caseBean.getCreateTime() * 1000 ,"yyyy-MM-dd"));
+        WebSettings settings = webView.getSettings();
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+//        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+////        settings.setUseWideViewPort(true);
+////        settings.setLoadWithOverviewMode(true);
+//        webView.setInitialScale(5);
+//        settings.setSupportZoom(true);
+        webView.setWebViewClient(new MyWebViewClient());
         String s = HtmlUtil.repairContent(caseBean.getDetails(), NetworkTitle.DomainSmartApplyResourceNormal);
         String html = HtmlUtil.getHtml(s, 0);
         webView.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
+
     }
 
     @Override

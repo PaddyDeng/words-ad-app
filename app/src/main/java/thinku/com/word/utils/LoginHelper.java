@@ -3,22 +3,10 @@ package thinku.com.word.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.yanzhenjie.nohttp.Headers;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.Response;
-import com.yanzhenjie.nohttp.rest.SimpleResponseListener;
-
-import java.net.HttpCookie;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -28,19 +16,19 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import thinku.com.word.R;
-import thinku.com.word.base.BaseActivity;
+import thinku.com.word.adapter.LoginInfo;
+import thinku.com.word.bean.BackCode;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
 import thinku.com.word.callback.RequestCallback;
 import thinku.com.word.http.HttpUtil;
-import thinku.com.word.http.NetworkChildren;
-import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.jpush.TagAliasOperatorHelper;
 import thinku.com.word.ui.other.LoginActivity;
 import thinku.com.word.ui.other.dialog.NeedLoginDialog;
 import thinku.com.word.ui.other.dialog.callback.DialogClickListener;
 import thinku.com.word.ui.personalCenter.SetNickNameActivity;
+import thinku.com.word.ui.personalCenter.TypeSettingActivity;
 
 
 /**
@@ -49,13 +37,14 @@ import thinku.com.word.ui.personalCenter.SetNickNameActivity;
 public class LoginHelper {
     private static final String TAG = LoginHelper.class.getSimpleName();
     private static String needLogin = "还未登录，请先登录";
+
     /**
      * @param context
      * @param
      */
     public static void againLoginRetrofit(final Context context, String phone, String password, final RequestCallback<UserInfo> requestCallback) {
         if (!TextUtils.isEmpty(phone)) {
-            Log.e(TAG, "againLoginRetrofit: " + phone +"  " + password );
+            Log.e(TAG, "againLoginRetrofit: " + phone + "  " + password);
             addToCompositeDis(HttpUtil.login(phone, password)
                     .doOnSubscribe(new Consumer<Disposable>() {
                         @Override
@@ -81,8 +70,8 @@ public class LoginHelper {
                                                 requestCallback.requestFail("");
                                             }
                                         });
-                                    }else{
-                                        SetNickNameActivity.start(context);
+                                    } else {
+                                        SetNickNameActivity.start(context , userInfo);
                                     }
                                 } else {
                                     requestCallback.requestFail(userInfo.getMessage());
@@ -97,6 +86,8 @@ public class LoginHelper {
                     }));
         }
     }
+
+
 
     /**
      * 设置 Jpush alians
@@ -120,7 +111,7 @@ public class LoginHelper {
      * @param mUserInfo
      */
     public static void setSession(final Context context, final UserInfo mUserInfo, final ICallBack mICallBack) {
-        Log.e(TAG, "setSession: " + mUserInfo.getMessage() );
+        Log.e(TAG, "setSession: " + mUserInfo.getMessage());
         final Map param = new HashMap();
         param.put("uid", mUserInfo.getUid());
         param.put("username", mUserInfo.getUsername());
@@ -190,75 +181,22 @@ public class LoginHelper {
     }
 
 
-    /**
-     * @param context
-     * @param login
-     * @param tag     0 托福  1 . 留校  2. GMAT 3. BBS 4. WORD
-     */
-    public static void login(final Context context, UserInfo login, final int tag) {
-        List<String> urlList = new ArrayList<>();
-        urlList.add(NetworkTitle.TOEFL + NetworkChildren.TOEFL);
-        urlList.add(NetworkTitle.DomainSmartApplyNormal + NetworkChildren.TOEFL);
-        urlList.add(NetworkTitle.GMAT + NetworkChildren.GMAT);
-        urlList.add(NetworkTitle.DomainGossipNormal + NetworkChildren.TOEFL);
-        urlList.add(NetworkTitle.WORD + NetworkChildren.TOEFL);
-
-        for (int i = 0; i < urlList.size(); i++) {
-            final int u = i;
-            final Request<String> req = NoHttp.createStringRequest(urlList.get(i), RequestMethod.GET);
-            req.set("uid", login.getUid())
-                    .set("nickname", login.getNickname())
-                    .set("username", login.getUsername())
-                    .set("password", login.getPassword())
-                    .set("email", login.getEmail())
-                    .set("phone", login.getPhone());
-            ((BaseActivity) context).request(0, req, new SimpleResponseListener<String>() {
-                @Override
-                public void onSucceed(int what, Response<String> response) {
-                    Headers headers = response.getHeaders();
-                    String cookie;
-                    List<HttpCookie> cookies = headers.getCookies();
-                    if (!cookies.isEmpty()) {
-                        cookie = cookies.get(0).getValue();
-                        SharedPreferencesUtils.setSession(context, u, cookie);
-                    }
-                    if (tag == 0) {
-//                        ((MainActivity) context).finish();
-                    } else if (tag == 2) {
-
-//                        ((NameActivity)context).finish();
-                    } else if (tag == 3) {
-//                        ((ForgetPasswordActivity)context).finish();
-                    } else if (tag == 4) {
-                        ((LoginActivity) context).setResult(10);
-                        ((LoginActivity) context).finish();
-                    }
-                }
-
-                @Override
-                public void onFailed(int what, Response<String> response) {
-                    Toast.makeText(context, "重置session失败,需重新登录", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
-
     public static void toLogin(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
         context.startActivity(intent);
     }
 
-    public static void toRequestCodeLogin(Activity context , int code) {
+    public static void toRequestCodeLogin(Activity context, int code) {
         Intent intent = new Intent(context, LoginActivity.class);
-        context.startActivityForResult(intent ,code  );
+        context.startActivityForResult(intent, code);
     }
 
     public static void needLogin(Context context, String s) {
 //        NeedLoginDialog dialog = new NeedLoginDialog(context, R.style.AlphaDialogAct);
 //        dialog.setContent(s);
 //        dialog.show();
-        Log.e(TAG, "needLogin: "  + s);
-        Intent intent = new Intent(context , LoginActivity.class);
+        Log.e(TAG, "needLogin: " + s);
+        Intent intent = new Intent(context, LoginActivity.class);
         context.startActivity(intent);
     }
 
@@ -269,27 +207,26 @@ public class LoginHelper {
 //        dialog.show();
 //    }
 
-     public static void needLogin(Activity context , String s ,int requestCode){
-         Intent intent = new Intent(context, LoginActivity.class);
-         context.startActivity(intent);
-     }
+    public static void needLogin(Activity context, String s, int requestCode) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
+    }
 
 
-
-    public static void needLogin(Context context , String s , DialogClickListener dialogClickListener){
-        NeedLoginDialog dialog = new NeedLoginDialog(context, R.style.AlphaDialogAct , dialogClickListener);
+    public static void needLogin(Context context, String s, DialogClickListener dialogClickListener) {
+        NeedLoginDialog dialog = new NeedLoginDialog(context, R.style.AlphaDialogAct, dialogClickListener);
         dialog.setContent(s);
         dialog.show();
     }
 
     public static void initMessage(final Context context) {
         addToCompositeDis(HttpUtil.sendCode()
-        .subscribe(new Consumer<ResultBeen<Void>>() {
-            @Override
-            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+                .subscribe(new Consumer<ResultBeen<Void>>() {
+                    @Override
+                    public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
 
-            }
-        }));
+                    }
+                }));
     }
 
 

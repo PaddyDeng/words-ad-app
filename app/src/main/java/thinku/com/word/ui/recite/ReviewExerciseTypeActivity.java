@@ -72,8 +72,14 @@ public class ReviewExerciseTypeActivity extends BaseActivity {
             count = intent.getStringExtra("count");
         }
         findView();
-        wrongIndex();
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        wrongIndex();
     }
 
     private void initView(final List<WrongIndexBeen> wrongIndexBeens) {

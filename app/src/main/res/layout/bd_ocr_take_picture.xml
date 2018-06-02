@@ -18,14 +18,14 @@
     <thinku.com.word.ocr.camera.CameraView
         android:id="@+id/camera_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
 
     <ImageView
         android:id="@+id/icon_take_photo_line"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@mipmap/icon_take_photo_line"/>
+        android:src="@drawable/icon_take_photo_line"/>
 
     <!--<ImageView-->
         <!--android:id="@+id/close_button"-->
@@ -99,7 +99,7 @@
         android:gravity="center"
         android:rotation="-90"
         android:lineSpacingMultiplier="1.4"
-        android:text="请按横屏拍照\n剪辑单词搜索"
+        android:text="请按横屏拍照\n剪辑一行题目搜索"
         android:textColor="@android:color/white"/>
 
 </thinku.com.word.ocr.camera.OCRCameraLayout>

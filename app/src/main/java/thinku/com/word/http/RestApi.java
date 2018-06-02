@@ -285,7 +285,7 @@ public interface RestApi {
     @GET
     Observable<UpdateLocalDbData> updateLocalData(@Url String url);
 
-    @GET("index.php?web/appapi/versions")
+    @GET("app-api/syn-update")
     Observable<VersionInfo> getUpdate();
 
     @FormUrlEncoded

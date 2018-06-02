@@ -3,6 +3,7 @@ package thinku.com.word.ui.personalCenter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -49,12 +50,15 @@ public class SetNickNameActivity extends BaseActivity {
 
     public static void start(Context context , UserInfo userInfo){
         Intent intent = new Intent(context ,SetNickNameActivity.class);
-        intent.putExtra("data" ,userInfo);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("user" ,userInfo);
+        intent.putExtras(bundle);
         context.startActivity(intent);
     }
 
 
     public static void start(Context context ){
+        Log.e(TAG, "start: " );
         Intent intent = new Intent(context ,SetNickNameActivity.class);
         context.startActivity(intent);
     }
@@ -66,7 +70,8 @@ public class SetNickNameActivity extends BaseActivity {
         initView();
         Intent intent = getIntent();
         if (intent != null){
-            userInfo = (UserInfo) intent.getSerializableExtra("data");
+            Bundle bundle = intent.getExtras();
+            userInfo = bundle.getParcelable("user");
         }
     }
 
@@ -162,7 +167,6 @@ public class SetNickNameActivity extends BaseActivity {
                             Log.e(TAG, "accept: " );
                             resetSession();
                             hasNickName = true;
-                            finishWithAnim();
                             EventBus.getDefault().post(nickName);
                         }
                     }
@@ -187,11 +191,12 @@ public class SetNickNameActivity extends BaseActivity {
     private void resetSession() {
         UserInfo userInfo1 ;
         if (userInfo != null){
+            Log.e(TAG, "onCreate: + userInfo "   );
             userInfo1 = userInfo;
         }else{
             userInfo1 =SharedPreferencesUtils.getUserInfo(this);
         }
-        Log.e(TAG, "resetSession: " + userInfo1.getUid());
+        Log.e("Ok", "resetSession: " + userInfo1.getUid());
         LoginHelper.setSession(this, userInfo1, new ICallBack() {
             @Override
             public void onSuccess(Object o) {

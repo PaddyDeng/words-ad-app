@@ -3,8 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/rl">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true">
     <TextView
-        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -20,8 +25,8 @@
         android:textSize="16sp"
         android:text="星期一"
         android:layout_below="@id/time"
-        android:layout_marginTop="20dp"/>
-
+        android:layout_marginTop="5dp"/>
+    </LinearLayout>
     <ch.ielse.view.SwitchView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

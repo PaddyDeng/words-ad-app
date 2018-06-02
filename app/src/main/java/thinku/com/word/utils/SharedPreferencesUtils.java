@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import thinku.com.word.MyApplication;
+import thinku.com.word.adapter.LoginInfo;
 import thinku.com.word.bean.EventPkData;
 import thinku.com.word.bean.UserInfo;
 
@@ -55,6 +56,11 @@ public class SharedPreferencesUtils {
         editor.putString(PERFS_PK_NAME , userBean.getNickname());
         editor.putString(PERFS_PK_UID ,userBean.getUid());
         editor.commit();
+    }
+
+
+    public void clearUserInfo(Context context){
+        SharedPreferences sp = getSharePreferences(context);
     }
 
     /**
@@ -118,7 +124,7 @@ public class SharedPreferencesUtils {
      * @param context
      */
     public static void clearLogin(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp =getSharePreferences(context);
         SharedPreferences.Editor edit = sp.edit();
         edit.putString("uid", "");
         edit.putString("username", "");
@@ -129,8 +135,24 @@ public class SharedPreferencesUtils {
         edit.commit();
     }
 
+    public static void setLoginInfo(Context context , LoginInfo loginInfo){
+        SharedPreferences sp = context.getSharedPreferences("login" ,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("num" , loginInfo.getNum());
+        editor.putString("pass" ,loginInfo.getPass());
+        editor.commit();
+    }
+
+    public static LoginInfo getLoginInfo(Context context){
+        LoginInfo loginInfo  = new LoginInfo() ;
+        SharedPreferences sp = context.getSharedPreferences("login" ,Context.MODE_PRIVATE);
+        loginInfo.setNum(sp.getString("num",""));
+        loginInfo.setPass(sp.getString("pass" ,""));
+        return loginInfo;
+    }
+
     public static void clearMatch(Context context){
-        SharedPreferences sp =getSharePreferences(context);
+        SharedPreferences sp =context.getSharedPreferences(PREFS_PK_NAME ,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(PERFS_PK_IMAGE,"");
         editor.putString(PERFS_PK_NAME , "");
@@ -196,7 +218,7 @@ public class SharedPreferencesUtils {
     }
 
     public static void setNickName(Context context ,String name){
-        SharedPreferences sp = context.getSharedPreferences(PREFS_NAME ,Context.MODE_PRIVATE );
+        SharedPreferences sp =getSharePreferences(context);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("nickname" ,name);
         editor.commit();

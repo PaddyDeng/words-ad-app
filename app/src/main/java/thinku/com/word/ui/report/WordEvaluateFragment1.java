@@ -4,19 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +37,7 @@ import thinku.com.word.ui.report.bean.QuestionBean;
 import thinku.com.word.ui.webView.WebViewActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.HtmlUtil;
+import thinku.com.word.utils.LoginHelper;
 
 
 public class WordEvaluateFragment1 extends BaseActivity {
@@ -53,7 +51,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
     @BindView(R.id.top)
     ImageView top;
     @BindView(R.id.content_show)
-    ScrollView contentShow;
+    NestedScrollView contentShow;
     @BindView(R.id.prencente)
     TextView prencente;
     @BindView(R.id.name)
@@ -138,7 +136,6 @@ public class WordEvaluateFragment1 extends BaseActivity {
         context.startActivity(intent);
     }
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_evaluate1);
@@ -165,6 +162,8 @@ public class WordEvaluateFragment1 extends BaseActivity {
      * @param recitWord
      */
     public void referUi1(final RecitWordBeen recitWord) {
+
+        this.recitWord = recitWord ;
         prencente.setText("认知率" + recitWord.getPercent() + "%");
         phonogram.setText(recitWord.getWords().getPhonetic_us());
         name.setText(recitWord.getWords().getTranslate());
@@ -370,16 +369,20 @@ public class WordEvaluateFragment1 extends BaseActivity {
                     @Override
                     public void accept(@NonNull RecitWordBeen recitWordBeen) throws Exception {
                         dismissLoadDialog();
-                        recitWord = recitWordBeen ;
-                        referUi1(recitWordBeen);
+                        if (recitWordBeen.getCode() == 99){
+                            LoginHelper.needLogin(WordEvaluateFragment1.this , "");
+                        }else {
+                            if (recitWordBeen != null) {
 
+                                referUi1(recitWordBeen);
+                            }
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         dismissLoadDialog();
                         toTast(WordEvaluateFragment1.this ,throwable.getMessage());
-                        Log.e(TAG, "accept: " + throwable.toString());
                     }
                 }));
     }
@@ -406,6 +409,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        IMAudioManager.instance().release();
     }
 
     @Override
@@ -434,6 +438,8 @@ public class WordEvaluateFragment1 extends BaseActivity {
         }
         WebViewActivity.start(this, url);
     }
+
+
 
 
 }

@@ -69,6 +69,13 @@ public class ReviewErrorActivity extends BaseActivity {
         }
         findView();
         initPopWindow();
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         wrongIndex();
     }
 
