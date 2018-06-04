@@ -55,6 +55,8 @@ public class EvaluateFirstFragment extends BaseActivity {
     TextView state;
     @BindView(R.id.evaluate)
     TextView evaluate;
+    @BindView(R.id.title_iv)
+    TextView titleIv ;
     Unbinder unbinder;
 
     private Observable<String> observable ;
@@ -86,8 +88,14 @@ public class EvaluateFirstFragment extends BaseActivity {
         int evaNum = SharedPreferencesUtils.getEvaluationNum(this);
         String nametxt = SharedPreferencesUtils.getString("nickname",this);
         name.setText(nametxt);
-        if (evaNum == 0) state.setText("未评估");
-        else state.setText(evaNum+"");
+        if (evaNum == 0) {
+            state.setText("未评估");
+            state.setVisibility(View.GONE);
+        } else {
+            state.setText(evaNum + "");
+            state.setText("评估结果");
+            state.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -119,6 +127,10 @@ public class EvaluateFirstFragment extends BaseActivity {
                         }
                     }
                 }));
+    }
+    @OnClick(R.id.title_iv)
+    public void evaResult(){
+        EvaluateResultActivity.start(EvaluateFirstFragment.this);
     }
 
     @OnClick(R.id.check_result)

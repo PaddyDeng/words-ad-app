@@ -2,31 +2,32 @@ package thinku.com.word.ui.personalCenter.update.bean;
 
 public class VersionInfo {
     //版本更新
-    private double versions;
-    private String text;
-    private String apk;
+    private double number;
+    private String content;
+    private String path;
 
-    public double getVersions() {
-        return versions;
+
+    public double getNumber() {
+        return number;
     }
 
-    public void setVersions(double versions) {
-        this.versions = versions;
+    public void setNumber(double number) {
+        this.number = number;
     }
 
-    public String getText() {
-        return text;
+    public String getContent() {
+        return content;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public String getApk() {
-        return apk;
+    public String getPath() {
+        return path;
     }
 
-    public void setApk(String apk) {
-        this.apk = apk;
+    public void setPath(String path) {
+        this.path = path;
     }
 }

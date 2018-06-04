@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -30,9 +29,9 @@ import thinku.com.word.utils.SharedPreferencesUtils;
  * 设置模式
  */
 
-public class TypeSettingActivity extends BaseActivity  implements DialogClickListener{
+public class TypeSettingActivity extends BaseActivity implements DialogClickListener {
     private static final String TAG = TypeSettingActivity.class.getSimpleName();
-    private static final int REQUEST_CODE = 10 ;
+    private static final int REQUEST_CODE = 10;
     public static final int LGStudyEbbinghaus = 1;  // 艾宾浩斯记忆法
     public static final int LGStudyReview = 2;    //  复习记忆法
     public static final int LGStudyOnlyNew = 3;   // 只背新单词
@@ -41,20 +40,25 @@ public class TypeSettingActivity extends BaseActivity  implements DialogClickLis
     @BindView(R.id.title_right)
     ImageView titleRight;
     @BindView(R.id.ebbinghaus)
-    TextView ebbinghaus;
+    RelativeLayout ebbinghaus;
     @BindView(R.id.review)
-    TextView review;
+    RelativeLayout review;
     @BindView(R.id.only_new)
-    TextView onlyNew;
-    Unbinder unbinder;
+    RelativeLayout onlyNew;
     @BindView(R.id.title_1)
     View title1;
     @BindView(R.id.title)
     RelativeLayout title;
+    @BindView(R.id.aibinhaosi_chose)
+    ImageView aibinhaosi_chose;
+    Unbinder unbinder;
+    @BindView(R.id.review_chose)
+    ImageView reviewChose;
+    @BindView(R.id.only_new_image)
+    ImageView onlyNewImage;
     private int oldPage = -1;
     private static int status = 1;
     boolean isFirst = false;
-    private String mode;   //  模式文字
 
     public static void start(Context context, boolean isFirst) {
         Intent intent = new Intent(context, TypeSettingActivity.class);
@@ -72,7 +76,7 @@ public class TypeSettingActivity extends BaseActivity  implements DialogClickLis
         }
         if (isFirst) {
             title.setVisibility(View.GONE);
-        }else{
+        } else {
             title1.setVisibility(View.VISIBLE);
             title.setVisibility(View.VISIBLE);
             title1.setBackgroundColor(getResources().getColor(R.color.mainColor));
@@ -80,12 +84,11 @@ public class TypeSettingActivity extends BaseActivity  implements DialogClickLis
         initMode();
     }
 
-    public void initMode(){
+    public void initMode() {
         String mode = SharedPreferencesUtils.getStudyMode(this);
-        Log.e(TAG, "initMode: " + mode );
-        try{
+        try {
             int userMode = Integer.parseInt(mode);
-            switch (userMode){
+            switch (userMode) {
                 case LGStudyEbbinghaus:
                     setSelect(0);
                     break;
@@ -93,10 +96,10 @@ public class TypeSettingActivity extends BaseActivity  implements DialogClickLis
                     setSelect(1);
                     break;
                 case LGStudyOnlyNew:
-                   setSelect(2);
+                    setSelect(2);
                     break;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -119,38 +122,32 @@ public class TypeSettingActivity extends BaseActivity  implements DialogClickLis
             case R.id.ebbinghaus:
                 if (isFirst) {
                     setSelect(0);
-                    mode = ebbinghaus.getText().toString().trim();
-                    SharedPreferencesUtils.setStudyMode(this , "1");
+                    SharedPreferencesUtils.setStudyMode(this, "1");
                     this.finishWithAnim();
                     MainActivity.toMain(this);
-                }else{
+                } else {
                     setSelect(0);
-                    mode = ebbinghaus.getText().toString().trim();
                 }
                 break;
             case R.id.review:
                 if (isFirst) {
                     setSelect(1);
-                    mode = review.getText().toString().trim();
-                    SharedPreferencesUtils.setStudyMode(this , "2");
+                    SharedPreferencesUtils.setStudyMode(this, "2");
                     this.finishWithAnim();
                     MainActivity.toMain(this);
-                }else{
+                } else {
                     setSelect(1);
-                    mode = review.getText().toString().trim();
                 }
 
                 break;
             case R.id.only_new:
                 if (isFirst) {
                     setSelect(2);
-                    mode = onlyNew.getText().toString().trim();
-                    SharedPreferencesUtils.setStudyMode(this , "3");
+                    SharedPreferencesUtils.setStudyMode(this, "3");
                     this.finishWithAnim();
                     MainActivity.toMain(this);
-                }else{
+                } else {
                     setSelect(2);
-                    mode = onlyNew.getText().toString().trim();
                 }
                 break;
         }
@@ -170,20 +167,21 @@ public class TypeSettingActivity extends BaseActivity  implements DialogClickLis
             case 0:
                 ebbinghaus.setSelected(b);
                 status = LGStudyEbbinghaus;
-                if (b) ebbinghaus.setTextColor(getResources().getColor(R.color.white));
-                else ebbinghaus.setTextColor(getResources().getColor(R.color.dark_gray));
+                if (b) {
+                    aibinhaosi_chose.setSelected(true);
+                } else aibinhaosi_chose.setSelected(false);
                 break;
             case 1:
                 review.setSelected(b);
                 status = LGStudyReview;
-                if (b) review.setTextColor(getResources().getColor(R.color.white));
-                else review.setTextColor(getResources().getColor(R.color.dark_gray));
+                if (b) reviewChose.setSelected(true);
+                else reviewChose.setSelected(false);
                 break;
             case 2:
                 onlyNew.setSelected(b);
                 status = LGStudyOnlyNew;
-                if (b) onlyNew.setTextColor(getResources().getColor(R.color.white));
-                else onlyNew.setTextColor(getResources().getColor(R.color.dark_gray));
+                if (b) onlyNewImage.setSelected(true);
+                else onlyNewImage.setSelected(false);
                 break;
         }
     }
@@ -210,7 +208,7 @@ public class TypeSettingActivity extends BaseActivity  implements DialogClickLis
                                 toTast(TypeSettingActivity.this, backCode.getMessage());
                             } else {
                                 toTast(TypeSettingActivity.this, backCode.getMessage());
-                                SharedPreferencesUtils.setStudyMode(TypeSettingActivity.this ,status +"");
+                                SharedPreferencesUtils.setStudyMode(TypeSettingActivity.this, status + "");
                                 finish();
                             }
                         }

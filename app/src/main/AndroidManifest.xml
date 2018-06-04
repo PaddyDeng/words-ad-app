@@ -64,11 +64,11 @@
             android:name=".ui.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/main_activity_style">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".ui.GuideActivity"
@@ -235,12 +235,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
 
         <!-- pk发现页详情 -->
@@ -422,8 +422,7 @@
         <activity
             android:name=".ui.personalCenter.ReadMeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTheme"
-           />
+            android:theme="@style/NoTitleTheme" />
         <activity
             android:name=".ui.other.UserActivity"
             android:screenOrientation="portrait"

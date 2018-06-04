@@ -11,7 +11,8 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <include layout="@layout/title_layout_word" />
+        <include layout="@layout/title_layout_word"
+            android:id="@+id/title"/>
 
         <TextView
             android:id="@+id/prencente"
@@ -80,17 +81,16 @@
                 android:orientation="vertical"
                 android:visibility="visible">
 
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/bg"
+                    android:scaleType="fitXY"/>
                 <RelativeLayout
                     android:id="@+id/rl_click"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="-15dp"
                     android:background="@color/color_bg_gray">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/bg" />
 
                     <ImageView
                         android:id="@+id/click"
@@ -129,11 +129,15 @@
                     android:id="@+id/content_show"
                     android:layout_below="@id/top"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                   >
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none"
+                    android:visibility="gone"
+                    android:descendantFocusability="blocksDescendants">
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:focusable="true"
                         android:focusableInTouchMode="true"
                        >
 
@@ -457,6 +461,7 @@
                                 </LinearLayout>
                             </LinearLayout>
                         </RelativeLayout>
+
 
                     </RelativeLayout>
                 </android.support.v4.widget.NestedScrollView>

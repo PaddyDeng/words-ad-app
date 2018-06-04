@@ -179,6 +179,9 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
                                                                     SetNickNameActivity.start(RigisterActivity.this, userInfo);
                                                                 }
                                                             });
+                                                    if (!userInfo.equals(SharedPreferencesUtils.getStudyMode(RigisterActivity.this))){
+                                                        updataMode(SharedPreferencesUtils.getStudyMode(RigisterActivity.this) ,RigisterActivity.this );
+                                                    }
                                                 } else {
                                                     MyApplication.isLogin = true;
                                                     RxBus.get().post(C.RXBUS_LOGIN, true);
@@ -230,15 +233,15 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
     }
 
 
-//    public  void updataMode(final String status , final Context context){
-//        addToCompositeDis(HttpUtil.choseStudyMode(status)
-//                .subscribe(new Consumer<BackCode>() {
-//                    @Override
-//                    public void accept(@NonNull BackCode backCode) throws Exception {
-//                        SharedPreferencesUtils.setStudyMode(context ,status);
-//                    }
-//                }));
-//    }
+    public  void updataMode(final String status , final Context context){
+        addToCompositeDis(HttpUtil.choseStudyMode(status)
+                .subscribe(new Consumer<BackCode>() {
+                    @Override
+                    public void accept(@NonNull BackCode backCode) throws Exception {
+                        SharedPreferencesUtils.setStudyMode(context ,status);
+                    }
+                }));
+    }
     /**
      * 获取验证码
      */

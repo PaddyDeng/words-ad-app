@@ -9,8 +9,6 @@ import thinku.com.word.adapter.LoginInfo;
 import thinku.com.word.bean.EventPkData;
 import thinku.com.word.bean.UserInfo;
 
-import static thinku.com.word.utils.SharePref.PREFS_NAME;
-
 /**
  * Created by Administrator on 2017/12/11.
  */
@@ -34,6 +32,7 @@ public class SharedPreferencesUtils {
     private final static String PERFS_PK_IMAGE = "prefs_pk_match_image" ;  //  对手头像
     private final static String PERFS_PK_NAME = "prefs_pk_match_name" ;   // 对手名字
     private final static String PERFS_PK_UID = "prefs_pk_match_uid" ;
+    private final static String PLAY_MUSCI = "prefs_play_music";  //   播放音效设置
 
     private final static String LOGO = "prefs_logo" ;  //  logo 图片
 
@@ -61,6 +60,15 @@ public class SharedPreferencesUtils {
 
     public void clearUserInfo(Context context){
         SharedPreferences sp = getSharePreferences(context);
+    }
+
+
+    public static void setPlayMusic(Context context ,boolean isPlay){
+        setBoolean(PLAY_MUSCI ,context ,isPlay);
+    }
+
+    public static boolean getPlayMusic(Context context ){
+        return getBoolean(PLAY_MUSCI ,context);
     }
 
     /**

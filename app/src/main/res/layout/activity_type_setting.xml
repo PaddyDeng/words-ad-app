@@ -52,10 +52,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="150px"
+                    android:layout_marginTop="80px"
                     android:gravity="center_horizontal"
-                    android:lineSpacingMultiplier="1.2"
-                    android:text="请选择适合你的\n背单词模式"
+                    android:text="请选择适合你的背单词模式"
                     android:textColor="@color/black"
                     android:textSize="50px" />
 
@@ -63,41 +62,106 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:layout_marginLeft="150px"
-                    android:layout_marginRight="150px"
                     android:orientation="vertical">
 
-                    <TextView
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                    <RelativeLayout
                         android:id="@+id/ebbinghaus"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/type_setting_select"
-                        android:gravity="center"
-                        android:text="艾宾浩斯记忆法（科学记忆）"
-                        android:textColor="@color/dark_gray"
-                        android:textSize="40px" />
+                        style="@style/study_rel">
 
-                    <TextView
-                        android:id="@+id/review"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="40px"
-                        android:background="@drawable/type_setting_select"
-                        android:gravity="center"
-                        android:text="复习记忆法（快速巩固）"
-                        android:textColor="@color/dark_gray"
-                        android:textSize="40px" />
+                        <TextView
+                            android:text="@string/aibinhaosi"
+                            style="@style/study_title"
+                            android:id="@+id/aibinhaosi_title"/>
 
-                    <TextView
-                        android:id="@+id/only_new"
+                        <TextView
+                            style="@style/study_content"
+                            android:layout_below="@id/aibinhaosi_title"
+                            android:text="@string/aibinhaosi_content" />
+
+
+                        <ImageView
+                            style="@style/study_img"
+                            android:id="@+id/aibinhaosi_chose"
+                            />
+
+                    </RelativeLayout>
+
+                        <TextView
+                            style="@style/study_green_right"
+                            android:text="@string/study_science"
+                           />
+                    </FrameLayout>
+
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="40px"
-                        android:background="@drawable/type_setting_select"
-                        android:gravity="center"
-                        android:text="只背新单词（快速记忆）"
-                        android:textColor="@color/dark_gray"
-                        android:textSize="40px" />
+                        android:layout_height="wrap_content">
+
+
+                        <RelativeLayout
+                            android:id="@+id/review"
+                            style="@style/study_rel">
+
+                            <TextView
+                                android:text="@string/review"
+                                style="@style/study_title"
+                                android:id="@+id/review_title"/>
+
+                            <TextView
+                                style="@style/study_content"
+                                android:layout_below="@id/review_title"
+                                android:text="@string/review_content" />
+
+
+                            <ImageView
+                                style="@style/study_img"
+                                android:id="@+id/review_chose"
+                                />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            style="@style/study_green_right"
+                            android:text="@string/review"
+                            />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <RelativeLayout
+                            android:id="@+id/only_new"
+                            style="@style/study_rel">
+
+                            <TextView
+                                android:text="@string/aibinhaosi"
+                                style="@style/study_title"
+                                android:id="@+id/only_new_title"/>
+
+                            <TextView
+                                style="@style/study_content"
+                                android:layout_below="@id/only_new_title"
+                                android:text="@string/aibinhaosi_content" />
+
+
+                            <ImageView
+                                style="@style/study_img"
+                                android:id="@+id/only_new_image"
+                                />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            style="@style/study_green_right"
+                            android:text="@string/only_newword"
+                            />
+                    </FrameLayout>
                 </LinearLayout>
 
                 <TextView

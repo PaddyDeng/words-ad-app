@@ -7,38 +7,40 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height">
+
         <ImageView
             android:id="@+id/back"
-            android:src="@mipmap/white_back"
-            android:layout_marginLeft="40px"
-            android:layout_centerVertical="true"
             android:layout_width="50px"
-            android:layout_height="50px" />
+            android:layout_height="50px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40px"
+            android:src="@mipmap/white_back" />
+
         <TextView
             android:id="@+id/title_t"
-            android:textSize="20sp"
-            android:layout_centerInParent="true"
-            android:textColor="@color/white"
-            android:text="加载中..."
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="加载中..."
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/title_iv"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="40px"
             android:layout_width="80dp"
             android:layout_height="30dp"
-            android:text="确定"
-            android:gravity="center"
-            android:textSize="17sp"
-            android:textColor="@color/white"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            />
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="40px"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
 
     </RelativeLayout>
 </LinearLayout>

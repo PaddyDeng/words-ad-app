@@ -19,9 +19,10 @@ import thinku.com.word.ui.personalCenter.BaseNoBackgDialog;
 public class UpdateNewDialog extends BaseNoBackgDialog {
 
     private static ICallBack<String> mCallBack;
-
-    public static UpdateNewDialog getInstance(ICallBack<String> callBack) {
+    private static String content ;
+    public static UpdateNewDialog getInstance(String con,ICallBack<String> callBack) {
         UpdateNewDialog simpleDialog = new UpdateNewDialog();
+        content = con ;
         simpleDialog.mCallBack = callBack;
         return simpleDialog;
     }
@@ -30,6 +31,8 @@ public class UpdateNewDialog extends BaseNoBackgDialog {
     ImageView close;
     @BindView(R.id.imme_update_btn)
     TextView confirmTxt;
+    @BindView(R.id.dialog_new_tip_content_tv)
+    TextView newTipContent ;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class UpdateNewDialog extends BaseNoBackgDialog {
                 dismiss();
             }
         });
+        newTipContent.setText(content);
     }
 
     @Override

@@ -15,7 +15,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import thinku.com.word.R;
-import thinku.com.word.view.GlideRoundTransform;
 
 
 /**
@@ -51,17 +50,6 @@ public class GlideUtils {
                 .into(iv);
     }
 
-    public void loadRoundCircle(Context context ,String url ,final  ImageView iv){
-        Glide.with(context)
-                .load(url)
-                .placeholder(R.mipmap.short_defult)//占位图
-                .error(R.mipmap.short_defult)//加载错误占位图
-                .crossFade(300)//过渡动画
-                .transform(new GlideRoundTransform(context,10))
-                .skipMemoryCache(false)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(iv);
-    }
     //加载圆形图片
     public void loadCircle(final Context context, String url, final ImageView iv){
         Glide.with(context)

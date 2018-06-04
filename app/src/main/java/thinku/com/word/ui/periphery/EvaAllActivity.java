@@ -3,6 +3,7 @@ package thinku.com.word.ui.periphery;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -80,6 +81,7 @@ public class EvaAllActivity extends BaseActivity {
         webView.setWebViewClient(new MyWebViewClient());
         String s = HtmlUtil.repairContent(caseBean.getDetails(), NetworkTitle.DomainSmartApplyResourceNormal);
         String html = HtmlUtil.getHtml(s, 0);
+        Log.e(TAG, "initData: " + html );
         webView.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
 
     }

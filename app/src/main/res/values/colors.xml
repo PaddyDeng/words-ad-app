@@ -97,4 +97,6 @@
     <color name="color_dim">#4D8EDA</color>
     <color name="color_forget">#F1975B</color>
     <color name="color_notknow">#e25859</color>
+
+    <color name="dark_green">#37BC85</color>
 </resources>

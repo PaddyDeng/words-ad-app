@@ -52,7 +52,7 @@ public class SimpleUpdateApk implements DownloadApk.OnDownloadApkListener {
                 .subscribe(new Consumer<VersionInfo>() {
                     @Override
                     public void accept(@NonNull final VersionInfo bean) throws Exception {
-                        if (Utils.getCurrentVersionNum(mActivity) < bean.getVersions()) {
+                        if (Utils.getCurrentVersionNum(mActivity) < bean.getNumber()) {
                             //弹框提示用户是否需要更新
                             showTipDialog(bean);
                         } else {
@@ -77,14 +77,14 @@ public class SimpleUpdateApk implements DownloadApk.OnDownloadApkListener {
     }
 
     private void showTipDialog(final VersionInfo info) {
-        UpdateNewDialog.getInstance(new ICallBack<String>() {
+        UpdateNewDialog.getInstance(info.getContent() ,new ICallBack<String>() {
             @Override
             public void onSuccess(String s) {
                 new RxPermissions(mActivity).request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(@NonNull Boolean aBoolean) throws Exception {
                         if (aBoolean) {
-                            downloadApk.downloadApk(info.getApk());
+                            downloadApk.downloadApk(info.getPath());
                         } else {
                             showToast(R.string.str_need_sdcard_permission);
                         }
