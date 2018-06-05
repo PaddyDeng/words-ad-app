@@ -45,6 +45,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import thinku.com.word.MyApplication;
 import thinku.com.word.R;
+import thinku.com.word.adapter.LoginInfo;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
@@ -154,11 +155,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void init() {
         userInfo = SharedPreferencesUtils.getUserInfo(SettingActivity.this);
         new GlideUtils().loadCircle(SettingActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(SettingActivity.this), portrait);
-        name.setText(userInfo.getPhone());
+        if (!TextUtils.isEmpty(userInfo.getPhone()))  name.setText(userInfo.getPhone());
+        else name.setText(userInfo.getEmail());
         nick.setText(userInfo.getNickname());
         phone.setText(userInfo.getPhone());
         email.setText(userInfo.getEmail());
-        pass.setText(userInfo.getPhone());
+        pass.setText(userInfo.getPassword());
         version.setText(VersionInfo.versionName(SettingActivity.this));
         if (TextUtils.isEmpty(userInfo.getUid())) {
             isLogin = false;
@@ -262,10 +264,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         ModifyPwdDialog.getInstance(new ICallBack<String>() {
             @Override
             public void onSuccess(String s) {
+                toTast("修改成功");
+                pass.setText(s);
             }
 
             @Override
             public void onFail() {
+                toTast("修改失败");
             }
         }).showDialog(getSupportFragmentManager());
     }
@@ -274,6 +279,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         ModifyPhoneOrEmailDialog.getInstance(modifyEmail, new ICallBack<String>() {
             @Override
             public void onSuccess(String emailOrPhone) {
+                toTast("修改成功");
                 if (modifyEmail) {
                     email.setText(emailOrPhone);
                 } else {

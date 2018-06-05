@@ -130,17 +130,12 @@
                     android:layout_below="@id/top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scrollbars="none"
                     android:visibility="gone"
-                    android:descendantFocusability="blocksDescendants">
-
+                    >
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
                        >
-
                         <RelativeLayout
                             android:id="@+id/help_memory"
                             android:layout_width="match_parent"
@@ -153,14 +148,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
                                 android:src="@mipmap/triangle" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
-                                android:layout_marginTop="5dp"
                                 android:layout_toRightOf="@id/image1"
                                 android:text="助记"
                                 android:textColor="@color/mainColor" />
@@ -293,21 +286,6 @@
                                 android:paddingRight="20dp"
                                 android:layout_marginTop="10dp"/>
 
-
-                            <!--<TextView-->
-                                <!--android:layout_below="@id/article"-->
-                                <!--android:layout_width="match_parent"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:background="@color/white"-->
-                                <!--android:id="@+id/question_home"-->
-                                <!--android:text="fdsfafafafa"-->
-                                <!--android:lineSpacingMultiplier="0.5"-->
-                                <!--android:layout_marginLeft="10dp"-->
-                                <!--android:layout_marginRight="10dp"-->
-                                <!--android:paddingLeft="20dp"-->
-                                <!--android:paddingRight="20dp"-->
-                                <!--android:textSize="13sp"-->
-                                <!--android:paddingTop="10dp"/>-->
                             <WebView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

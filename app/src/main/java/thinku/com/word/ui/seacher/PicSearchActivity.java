@@ -38,6 +38,7 @@ import thinku.com.word.callback.SelectListener;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.periphery.adapter.SearchQuestionAdapter;
 import thinku.com.word.ui.report.WordEvaluateFragment;
+import thinku.com.word.ui.report.WordEvaluateFragment1;
 import thinku.com.word.utils.Utils;
 
 import static thinku.com.word.utils.LogUtils.log;
@@ -153,7 +154,7 @@ public class PicSearchActivity extends BaseNoImmActivity {
             @Override
             public void setListener(int position) {
                 WordBean wordBean = words.get(position);
-                WordEvaluateFragment.start(PicSearchActivity.this, wordBean.getId() );
+                WordEvaluateFragment1.start(PicSearchActivity.this, wordBean.getId() );
             }
         });
         mRecyclerView.addItemDecoration(new RecycleViewLinearDivider(mContext, LinearLayoutManager.VERTICAL, R.drawable.gray_one_height_divider));

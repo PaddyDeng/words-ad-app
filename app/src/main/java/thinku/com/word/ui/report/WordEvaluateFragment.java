@@ -1,6 +1,5 @@
 package thinku.com.word.ui.report;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -10,14 +9,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -49,6 +46,7 @@ import thinku.com.word.ui.recite.WordErrorActivity;
 import thinku.com.word.ui.report.bean.QuestionBean;
 import thinku.com.word.ui.report.bean.ReviewBean;
 import thinku.com.word.ui.report.bean.ReviewCaseBean;
+import thinku.com.word.ui.report.bean.WordsBean;
 import thinku.com.word.ui.share.ShareDateActivity;
 import thinku.com.word.ui.webView.WebViewActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
@@ -137,7 +135,7 @@ public class WordEvaluateFragment extends BaseActivity {
     @BindView(R.id.question_home)
     WebView question_home;
     @BindView(R.id.title)
-    LinearLayout title ;
+    LinearLayout title;
     private RecitWordBeen recitWord;
     private int status;   //  单词状态
     private String wordId;   //  单词ID
@@ -160,12 +158,12 @@ public class WordEvaluateFragment extends BaseActivity {
     private ReciteWordAdapter sentence;
     private QuestionAdapter questionAdapter;
     private boolean isUpdataReview = false;   //  新艾宾浩斯，  老艾宾浩斯  和 复习模式下 都是reviewUpdata
-    private boolean isShow = true;
-    private boolean isNormal = false ;
-    private boolean isClick = true ;
+    private boolean isNormal = false;
 
-    private MutePopHelper mutePopHelper ;  //  音效popWindow ;
-    private boolean isPlay ;  //  控制音效开关
+    private MutePopHelper mutePopHelper;  //  音效popWindow ;
+    private boolean isPlay;  //  控制音效开关
+    private WordsBean data;
+
     /**
      * @param context
      * @param tag     tag 表明是背单词进入 还是其他情况进入
@@ -182,9 +180,9 @@ public class WordEvaluateFragment extends BaseActivity {
         context.startActivity(intent);
     }
 
-    public static void start(Context context, String wordId) {
+    public static void start(Context context, WordsBean wordsBean) {
         Intent intent = new Intent(context, WordEvaluateFragment.class);
-        intent.putExtra("wordId", wordId);
+        intent.putExtra("data", wordsBean);
         context.startActivity(intent);
     }
 
@@ -198,7 +196,7 @@ public class WordEvaluateFragment extends BaseActivity {
         if (intent != null) {
             tag = getIntent().getIntExtra("tag", 0);
             words = getIntent().getStringArrayListExtra("words");
-            wordId = getIntent().getStringExtra("wordId");
+            data = getIntent().getParcelableExtra("data");
             if (tag == C.NORMAL) {
                 reciteWords();
             }
@@ -206,36 +204,45 @@ public class WordEvaluateFragment extends BaseActivity {
             if (words != null && words.size() > 0) {
                 tag = C.REVIEW;
                 isUpdataReview = true;
-                isNormal = false ;
+                isNormal = false;
                 reciteWords(words);
             }
-            if (!TextUtils.isEmpty(wordId)) {
-                isShow = false;
-                fromWordsIdGetWordDetails(wordId);
+
+            if (data != null) {
+                tag = data.getTag();
+                isUpdataReview = data.isUpdataReview() ;
+                isNormal  = data.isNormal();
+                isNewAiBinHaoSi = data.getMode();
+                words = (ArrayList<String>) data.getWords();
+                posiiton = data.getPoistion();
+                fromWordsIdGetWordDetails(words.get(data.getPoistion()));
             }
         }
         setFocusable();
         initAudioManager();
         initRecycler();
         initPop();
+        isPlay = SharedPreferencesUtils.getPlayMusic(this);
     }
 
     /**
      * 初始化静音popWindow
      */
-    public  void  initPop(){
+    public void initPop() {
         mutePopHelper = MutePopHelper.create(this);
         mutePopHelper.setSelectListener(new MutePopHelper.MuteOpenListener() {
             @Override
             public void openMusic() {
-                  isPlay = true ;
-                SharedPreferencesUtils.setPlayMusic(WordEvaluateFragment.this ,true);
+                Log.e("tttt", "openMusic: " + true );
+                isPlay = true;
+                SharedPreferencesUtils.setPlayMusic(WordEvaluateFragment.this, true);
             }
 
             @Override
             public void closeMusic() {
-                isPlay = false ;
-                SharedPreferencesUtils.setPlayMusic(WordEvaluateFragment.this ,false);
+                isPlay = false;
+                Log.e("tttt", "closeMusic: " + false );
+                SharedPreferencesUtils.setPlayMusic(WordEvaluateFragment.this, false);
             }
 
             @Override
@@ -250,14 +257,14 @@ public class WordEvaluateFragment extends BaseActivity {
 
             @Override
             public void toError() {
-                WordErrorActivity.start(WordEvaluateFragment.this ,wordId);
+                WordErrorActivity.start(WordEvaluateFragment.this, wordId);
             }
         });
         mutePopHelper.init();
         isPlay = SharedPreferencesUtils.getPlayMusic(this);
     }
 
-    public void setBackground(float f){
+    public void setBackground(float f) {
         WindowManager.LayoutParams lp = getWindow()
                 .getAttributes();
         lp.alpha = f;
@@ -272,7 +279,7 @@ public class WordEvaluateFragment extends BaseActivity {
     }
 
 
-    public void playMusic(){
+    public void playMusic() {
 
         if (!TextUtils.isEmpty(recitWord.getWords().getUs_audio())) {
             IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
@@ -291,6 +298,7 @@ public class WordEvaluateFragment extends BaseActivity {
                 });
         }
     }
+
     /**
      * 正常背单词情况
      * 根据code不同  处理情况不同
@@ -300,11 +308,12 @@ public class WordEvaluateFragment extends BaseActivity {
      * code == 95  调老艾宾浩斯接口
      */
     public void normalReciteWords() {
+        Log.e("tttt", "openMusic: " + isPlay );
         tag = C.NORMAL;
         posiiton = 0;
         isNewAiBinHaoSi = false;
         isUpdataReview = false;
-        isNormal = true ;
+        isNormal = true;
         addToCompositeDis(HttpUtil.reciteWordsObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -332,7 +341,7 @@ public class WordEvaluateFragment extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        toTast(WordEvaluateFragment.this ,"");
+                        toTast(WordEvaluateFragment.this, "");
                         dismissLoadDialog();
                     }
                 }));
@@ -347,7 +356,7 @@ public class WordEvaluateFragment extends BaseActivity {
     public void newAiBinHaoSi() {
         isUpdataReview = true;
         isNewAiBinHaoSi = true;
-        isNormal = false ;
+        isNormal = false;
         addToCompositeDis(HttpUtil.isReviewObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -409,7 +418,7 @@ public class WordEvaluateFragment extends BaseActivity {
      */
     public void oldAiBinHaoSi() {
         isUpdataReview = true;
-        isNormal  = false ;
+        isNormal = false;
         addToCompositeDis(HttpUtil.wordReviewTodayBeenObservable()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -450,18 +459,17 @@ public class WordEvaluateFragment extends BaseActivity {
      * @param recitWord
      */
     public void referUi1(final RecitWordBeen recitWord) {
-        isClick  = true ;
         this.recitWord = recitWord;
 
         //  首页显示的内容
         setStudyAndReviewNum(recitWord);
-        if (SharedPreferencesUtils.getChoseMode(WordEvaluateFragment.this).equals("英中")&& tag == C.REVIEW){
+        if (SharedPreferencesUtils.getChoseMode(WordEvaluateFragment.this).equals("英中") && tag == C.REVIEW) {
             word.setVisibility(View.VISIBLE);
             name.setVisibility(View.GONE);
-        }else if (SharedPreferencesUtils.getChoseMode(WordEvaluateFragment.this).equals("中英")){
+        } else if (SharedPreferencesUtils.getChoseMode(WordEvaluateFragment.this).equals("中英")) {
             name.setVisibility(View.VISIBLE);
             word.setVisibility(View.GONE);
-        }else if ( tag == C.NORMAL){
+        } else if (tag == C.NORMAL) {
             name.setVisibility(View.GONE);
             word.setVisibility(View.VISIBLE);
         }
@@ -474,25 +482,27 @@ public class WordEvaluateFragment extends BaseActivity {
             blurry.setText("忘记");
         }
         word.setText(recitWord.getWords().getWord());
-        if (isShow) {
-            contentShow.setVisibility(View.GONE);
-            bottomClick.setVisibility(View.GONE);
-            contentHide.setVisibility(View.VISIBLE);
-        } else {
-            bottomClick.setBackground(null);
-            bottomClick.setVisibility(View.GONE);
-            contentHide.setVisibility(View.GONE);
-            contentShow.setVisibility(View.VISIBLE);
-        }
+        contentShow.setVisibility(View.GONE);
+        bottomClick.setVisibility(View.GONE);
+        contentHide.setVisibility(View.VISIBLE);
 
         if (!TextUtils.isEmpty(recitWord.getWords().getMnemonic())) {
-            String content = HtmlUtil.replaceRN(recitWord.getWords().getMnemonic()) ;
+            String content = HtmlUtil.replaceRN(recitWord.getWords().getMnemonic());
             content = HtmlUtil.replaceSpace(content);
             helpContent.setText(content);
             helpMemory.setVisibility(View.VISIBLE);
         } else helpMemory.setVisibility(View.GONE);
         playMusic();
         getData(recitWord);
+        contentShow.post(new Runnable() {
+            @Override
+            public void run() {
+                Log.e(TAG, "run: " + contentShow.getHeight() + "   " + contentShow.getScrollX() + "   " + contentShow.getScrollY());
+                contentShow.smoothScrollTo(0, 0);
+//                contentShow.fullScroll(View.FOCUS_UP);
+            }
+        });
+
         rlClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -502,7 +512,7 @@ public class WordEvaluateFragment extends BaseActivity {
                 bottomClick.setVisibility(View.VISIBLE);
                 if (name.getVisibility() == View.GONE) name.setVisibility(View.VISIBLE);
                 if (phonogram.getVisibility() == View.GONE) phonogram.setVisibility(View.VISIBLE);
-                if (word.getVisibility() == View.GONE)  word.setVisibility(View.VISIBLE);
+                if (word.getVisibility() == View.GONE) word.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -514,6 +524,7 @@ public class WordEvaluateFragment extends BaseActivity {
      * 需复习  正常背单词 userNeedRevies    进入新艾宾浩斯 needReviews   + 剩余数组   , 复习模式下  数组数量
      **/
     public void setStudyAndReviewNum(RecitWordBeen recitWord) {
+        Log.e(TAG, "setStudyAndReviewNum: " + isNewAiBinHaoSi );
         if (tag == C.NORMAL) {
             if (isNewAiBinHaoSi) {
                 if (words != null) {
@@ -531,6 +542,8 @@ public class WordEvaluateFragment extends BaseActivity {
      * 获取RecyclerView  数据
      */
     public void getData(RecitWordBeen recitWord) {
+        questionList.setFocusableInTouchMode(false);
+        questionList.requestFocus();
         try {
             if (recitWord.getLowSentence() == null) {
                 shortSenese.setVisibility(View.GONE);
@@ -580,16 +593,18 @@ public class WordEvaluateFragment extends BaseActivity {
             final QuestionBean questionBean = recitWord.getQuestion();
             if (!TextUtils.isEmpty(questionBean.getArticle())) {
                 article.setVisibility(View.VISIBLE);
-                String content = HtmlUtil.getHtml(questionBean.getArticle());
-                String urlContent = HtmlUtil.repairContent(content , NetworkTitle.GMAT);
+                String content = HtmlUtil.getHtml(questionBean.getArticle(), recitWord.getWords().getWord());
+                String urlContent = HtmlUtil.repairContent(content, NetworkTitle.GMAT);
+                Log.e(TAG, "getData: " + urlContent);
                 article.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
                 article.setVisibility(View.GONE);
             }
             if (!TextUtils.isEmpty(questionBean.getQuestion())) {
                 question_home.setVisibility(View.VISIBLE);
-                String content = HtmlUtil.getHtml(questionBean.getQuestion());
-                String urlContent = HtmlUtil.repairContent(content ,NetworkTitle.GMAT);
+                String content = HtmlUtil.getHtml(questionBean.getQuestion(), recitWord.getWords().getWord());
+                String urlContent = HtmlUtil.repairContent(content, NetworkTitle.GMAT);
+                Log.e(TAG, "getData: " + urlContent);
                 question_home.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
                 question_home.setVisibility(View.GONE);
@@ -602,21 +617,18 @@ public class WordEvaluateFragment extends BaseActivity {
                 questionAdapter.setSelectRlClickListener(new SelectRlClickListener() {
                     @Override
                     public void setClickListener(int position, RecyclerView.ViewHolder viewHolder, View view) {
-                        if (isClick) {
-                            isClick = false;
-                            QuestionAdapter.QuestionHolder holder = (QuestionAdapter.QuestionHolder) viewHolder;
-                            int currentP = getCurrentP(questionBean.getQuestionanswer());
-                            if (position == currentP) {
-                                questions.get(position).setAnswer(1);
-                                questionAdapter.notifyItemChanged(currentP);
-                            } else {
-                                questions.get(position).setAnswer(2);
-                                questions.get(currentP).setAnswer(1);
-                                questionAdapter.notifyItemChanged(currentP);
-                                questionAdapter.notifyItemChanged(position);
-                            }
-
+                        QuestionAdapter.QuestionHolder holder = (QuestionAdapter.QuestionHolder) viewHolder;
+                        int currentP = getCurrentP(questionBean.getQuestionanswer());
+                        if (position == currentP) {
+                            questions.get(position).setAnswer(1);
+                            questionAdapter.notifyItemChanged(currentP);
+                        } else {
+                            questions.get(position).setAnswer(2);
+                            questions.get(currentP).setAnswer(1);
+                            questionAdapter.notifyItemChanged(currentP);
+                            questionAdapter.notifyItemChanged(position);
                         }
+
                     }
                 });
                 questionAdapter.notifyDataSetChanged();
@@ -659,8 +671,6 @@ public class WordEvaluateFragment extends BaseActivity {
         shorSenseList.requestFocus();
         sentencesList.setFocusableInTouchMode(false);
         sentencesList.requestFocus();
-        questionList.setFocusableInTouchMode(false);
-        questionList.requestFocus();
 
     }
 
@@ -693,7 +703,6 @@ public class WordEvaluateFragment extends BaseActivity {
         isNewAiBinHaoSi = false;
         isUpdataReview = false;
         if (tag == C.NORMAL) {
-
             if (MyApplication.task == 3) {
                 oldAiBinHaoSi();
             } else {
@@ -707,12 +716,12 @@ public class WordEvaluateFragment extends BaseActivity {
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(@NonNull Disposable disposable) throws Exception {
-//                                showLoadDialog();
+
                             }
                         }).subscribe(new Consumer<ResultBeen<List<String>>>() {
                             @Override
                             public void accept(@NonNull ResultBeen<List<String>> listResultBeen) throws Exception {
-//                                dismissLoadDialog();
+
                                 if (words != null) {
                                     words.clear();
                                     words.addAll(listResultBeen.getData());
@@ -764,28 +773,29 @@ public class WordEvaluateFragment extends BaseActivity {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         dismissLoadDialog();
-                        toTast(WordEvaluateFragment.this ,throwable.getMessage());
+                        toTast(WordEvaluateFragment.this, throwable.getMessage());
                         Log.e(TAG, "accept: " + throwable.toString());
                     }
                 }));
     }
 
 
-    @OnClick({R.id.back, R.id.familiar, R.id.errors, R.id.unknow, R.id.know, R.id.blurry , R.id.play})
+    @OnClick({R.id.back, R.id.familiar, R.id.errors, R.id.unknow, R.id.know, R.id.blurry, R.id.play})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.back:
                 this.finish();
                 break;
             case R.id.familiar:
-                if (isPlay && knowWellPlayer != null && !knowWellPlayer.isPlaying()) knowWellPlayer.start();
+                if (isPlay && knowWellPlayer != null && !knowWellPlayer.isPlaying())
+                    knowWellPlayer.start();
                 updataStatus(C.LGWordStatusFamiliar);
                 break;
             case R.id.errors:
                 mutePopHelper.show(errors);
                 break;
             case R.id.unknow:
-                if ( isPlay && notKnowPlayer != null) {
+                if (isPlay && notKnowPlayer != null) {
                     if (!notKnowPlayer.isPlaying()) {
                         notKnowPlayer.start();
                     }
@@ -796,11 +806,11 @@ public class WordEvaluateFragment extends BaseActivity {
                 updataStatus(C.LGWordStatusIncoginzance);
                 break;
             case R.id.know:
-                if (isPlay &&knowPlayer != null && !knowPlayer.isPlaying()) knowPlayer.start();
+                if (isPlay && knowPlayer != null && !knowPlayer.isPlaying()) knowPlayer.start();
                 updataStatus(C.LGWordStatusKnow);
                 break;
             case R.id.blurry:
-                if (isPlay &&dimPlayer != null && !dimPlayer.isPlaying()) dimPlayer.start();
+                if (isPlay && dimPlayer != null && !dimPlayer.isPlaying()) dimPlayer.start();
                 if (tag == C.NORMAL) {
                     addWords(recitWord);
                 }
@@ -815,7 +825,6 @@ public class WordEvaluateFragment extends BaseActivity {
                 break;
         }
     }
-
 
 
     public void addWords(RecitWordBeen recitWord) {
@@ -851,6 +860,11 @@ public class WordEvaluateFragment extends BaseActivity {
         super.onResume();
     }
 
+    public void referStart(WordsBean word){
+        start(this ,word);
+        this.finishWithAnim();
+    }
+
     /**
      * 背单词中 正常背单词 上传状态   又调用背单词接口
      * words  中 用worIds 获取数据
@@ -859,6 +873,7 @@ public class WordEvaluateFragment extends BaseActivity {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updataStatus(int status) {
+      final  WordsBean word = new WordsBean() ;
         int type = 0;
         if (tag == C.NORMAL) {
             //  背单词状态上传
@@ -868,107 +883,42 @@ public class WordEvaluateFragment extends BaseActivity {
                 } else {
                     type = 0;
                 }
-                    addToCompositeDis(HttpUtil.reviewUpdataObservable(recitWord.getWords().getId(), status + "", type + "")
-                            .doOnSubscribe(new Consumer<Disposable>() {
-                                @Override
-                                public void accept(@NonNull Disposable disposable) throws Exception {
-//                                    showLoadDialog();
-                                }
-                            }).subscribe(new Consumer<ResultBeen<Void>>() {
-                                @Override
-                                public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-//                                    dismissLoadDialog();
-                                    posiiton++;
-                                    if (isNewAiBinHaoSi) {
-                                        if (posiiton == words.size()) {
-                                            nowFinsh();
-                                        } else {
-                                            fromWordsIdGetWordDetails(words.get(posiiton));
-                                        }
-                                    } else {
-                                        if (posiiton >= words.size()) {
-                                            share();
-                                        } else if (posiiton < words.size()) {
-                                            fromWordsIdGetWordDetails(words.get(posiiton));
-                                        }
-                                    }
-
-                                }
-                            }, new Consumer<Throwable>() {
-                                @Override
-                                public void accept(@NonNull Throwable throwable) throws Exception {
-//                                    dismissLoadDialog();
-                                    toTast(WordEvaluateFragment.this, throwable.toString());
-                                }
-                            }));
-                } else{
-                    addToCompositeDis(HttpUtil.updataStatus(recitWord.getWords().getId(), status + "")
-                            .doOnSubscribe(new Consumer<Disposable>() {
-                                @Override
-                                public void accept(@NonNull Disposable disposable) throws Exception {
-//                                    showLoadDialog();
-                                }
-                            }).subscribe(new Consumer<ResultBeen<Void>>() {
-                                @Override
-                                public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-//                                    dismissLoadDialog();
-                                    if (isNormal){
-                                        reciteWords();
-                                    } else {
-                                        Log.e(TAG, "not: " + (words == null));
-                                        posiiton++;
-                                        if (isNewAiBinHaoSi) {
-                                            if (posiiton == words.size()) {
-                                                nowFinsh();
-                                            } else {
-                                                fromWordsIdGetWordDetails(words.get(posiiton));
-                                            }
-                                        } else {
-                                            Log.e(TAG, "accept: " + posiiton + "  " + words.size());
-                                            if (posiiton >= words.size()) {
-                                                share();
-                                            } else if (posiiton < words.size()) {
-                                                fromWordsIdGetWordDetails(words.get(posiiton));
-                                            }
-                                        }
-                                    }
-                                }
-                            }, new Consumer<Throwable>() {
-                                @Override
-                                public void accept(@NonNull Throwable throwable) throws Exception {
-//                                    dismissLoadDialog();
-                                    toTast(WordEvaluateFragment.this, throwable.getMessage());
-                                }
-                            }));
-
-                }
-            } else if (tag == C.REVIEW) {
-                // 复习模式下上传
-                if (isNewAiBinHaoSi) {
-                    type = 1;
-                } else {
-                    type = 0;
-                }
                 addToCompositeDis(HttpUtil.reviewUpdataObservable(recitWord.getWords().getId(), status + "", type + "")
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(@NonNull Disposable disposable) throws Exception {
-//                                showLoadDialog();
+//                                    showLoadDialog();
                             }
                         }).subscribe(new Consumer<ResultBeen<Void>>() {
                             @Override
                             public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-//                                dismissLoadDialog();
+//                                    dismissLoadDialog();
                                 posiiton++;
-                                if (words != null) {
-                                    if (posiiton < words.size()) {
-                                        fromWordsIdGetWordDetails(words.get(posiiton));
+                                if (isNewAiBinHaoSi) {
+                                    if (posiiton == words.size()) {
+                                        nowFinsh();
                                     } else {
-                                        if (isNewAiBinHaoSi) {
-                                            nowFinsh();
-                                        } else {
-                                            finishWithAnim();
-                                        }
+                                        word.setPoistion(posiiton);
+                                        word.setTag(C.NORMAL);
+                                        word.setUpdataReview(isUpdataReview);
+                                        word.setWords(words);
+                                        word.setPoistion(posiiton);
+                                        word.setMode(isNewAiBinHaoSi);
+                                        referStart(word);
+//                                        fromWordsIdGetWordDetails(words.get(posiiton));
+                                    }
+                                } else {
+                                    if (posiiton >= words.size()) {
+                                        share();
+                                    } else if (posiiton < words.size()) {
+                                        word.setPoistion(posiiton);
+                                        word.setTag(C.NORMAL);
+                                        word.setUpdataReview(isUpdataReview);
+                                        word.setWords(words);
+                                        word.setPoistion(posiiton);
+                                        word.setMode(isNewAiBinHaoSi);
+                                        referStart(word);
+//                                        fromWordsIdGetWordDetails(words.get(posiiton));
                                     }
                                 }
 
@@ -976,12 +926,114 @@ public class WordEvaluateFragment extends BaseActivity {
                         }, new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-//                                dismissLoadDialog();
+//                                    dismissLoadDialog();
                                 toTast(WordEvaluateFragment.this, throwable.toString());
+                            }
+                        }));
+            } else {
+                addToCompositeDis(HttpUtil.updataStatus(recitWord.getWords().getId(), status + "")
+                        .doOnSubscribe(new Consumer<Disposable>() {
+                            @Override
+                            public void accept(@NonNull Disposable disposable) throws Exception {
+//                                    showLoadDialog();
+                            }
+                        }).subscribe(new Consumer<ResultBeen<Void>>() {
+                            @Override
+                            public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+//                                    dismissLoadDialog();
+                                if (isNormal) {
+//                                    reciteWords();
+                                    WordEvaluateFragment.start(WordEvaluateFragment.this ,C.NORMAL);
+                                    WordEvaluateFragment.this.finishWithAnim();
+                                } else {
+                                    Log.e(TAG, "not: " + (words == null));
+                                    posiiton++;
+                                    if (isNewAiBinHaoSi) {
+                                        if (posiiton == words.size()) {
+                                            nowFinsh();
+                                        } else {
+//                                            fromWordsIdGetWordDetails(words.get(posiiton));
+                                            word.setPoistion(posiiton);
+                                            word.setTag(C.NORMAL);
+                                            word.setUpdataReview(isUpdataReview);
+                                            word.setWords(words);
+                                            word.setPoistion(posiiton);
+                                            word.setMode(isNewAiBinHaoSi);
+                                            referStart(word);
+                                        }
+                                    } else {
+                                        Log.e(TAG, "accept: " + posiiton + "  " + words.size());
+                                        if (posiiton >= words.size()) {
+                                            share();
+                                        } else if (posiiton < words.size()) {
+//                                            fromWordsIdGetWordDetails(words.get(posiiton));
+                                            word.setPoistion(posiiton);
+                                            word.setTag(C.NORMAL);
+                                            word.setUpdataReview(isUpdataReview);
+                                            word.setWords(words);
+                                            word.setPoistion(posiiton);
+                                            word.setMode(isNewAiBinHaoSi);
+                                            referStart(word);
+                                        }
+                                    }
+                                }
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+//                                    dismissLoadDialog();
+                                toTast(WordEvaluateFragment.this, throwable.getMessage());
                             }
                         }));
 
             }
+        } else if (tag == C.REVIEW) {
+            // 复习模式下上传
+            if (isNewAiBinHaoSi) {
+                type = 1;
+            } else {
+                type = 0;
+            }
+            addToCompositeDis(HttpUtil.reviewUpdataObservable(recitWord.getWords().getId(), status + "", type + "")
+                    .doOnSubscribe(new Consumer<Disposable>() {
+                        @Override
+                        public void accept(@NonNull Disposable disposable) throws Exception {
+//                                showLoadDialog();
+                        }
+                    }).subscribe(new Consumer<ResultBeen<Void>>() {
+                        @Override
+                        public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
+//                                dismissLoadDialog();
+                            posiiton++;
+                            if (words != null) {
+                                if (posiiton < words.size()) {
+                                    word.setPoistion(posiiton);
+                                    word.setTag(C.REVIEW);
+                                    word.setUpdataReview(isUpdataReview);
+                                    word.setWords(words);
+                                    word.setPoistion(posiiton);
+                                    word.setMode(isNewAiBinHaoSi);
+                                    referStart(word);
+//                                    fromWordsIdGetWordDetails(words.get(posiiton));
+                                } else {
+                                    if (isNewAiBinHaoSi) {
+                                        nowFinsh();
+                                    } else {
+                                        finishWithAnim();
+                                    }
+                                }
+                            }
+
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@NonNull Throwable throwable) throws Exception {
+//                                dismissLoadDialog();
+                            toTast(WordEvaluateFragment.this, throwable.toString());
+                        }
+                    }));
+
+        }
     }
 
     @OnClick({R.id.youdao, R.id.niujing, R.id.biying, R.id.jinshan})

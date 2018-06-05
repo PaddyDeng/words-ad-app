@@ -1,5 +1,6 @@
 package thinku.com.word.ui.recite;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,8 +23,10 @@ import io.reactivex.functions.Consumer;
 import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.base.BaseFragment;
+import thinku.com.word.bean.BackCode;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.UserData;
+import thinku.com.word.bean.UserInfo;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ocr.camera.CameraActivity;
@@ -35,6 +38,8 @@ import thinku.com.word.utils.FileUtil;
 import thinku.com.word.utils.GlideUtils;
 import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
+
+import static thinku.com.word.R.id.userInfo;
 
 /**
  * 背单词
@@ -135,7 +140,8 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                                 MyApplication.signTime = been.getData().getLastSign();
                                 new GlideUtils().loadCircle(_mActivity, NetworkTitle.WORDRESOURE + userData.getImage(), portrait);
                                 SharedPreferencesUtils.setImage(_mActivity, userData.getImage());
-                                SharedPreferencesUtils.setStudyMode(_mActivity, userData.getStudyModel());
+//                                SharedPreferencesUtils.setStudyMode(_mActivity, userData.getStudyModel());
+                                updateStudyMode(userData.getStudyModel());
                                 if (TextUtils.isEmpty(userData.getPlanWords())) {
                                     setFragment(0);
                                 } else {
@@ -161,6 +167,27 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
     }
 
 
+    public void updateStudyMode(String mode ){
+        if (!SharedPreferencesUtils.getStudyMode(_mActivity).equals(mode)) {
+            updataMode(SharedPreferencesUtils.getStudyMode(_mActivity), _mActivity);
+        }
+    }
+
+
+
+    public  void updataMode(final String status , final Context context){
+        Log.e(TAG, "updataMode: " + status);
+        addToCompositeDis(HttpUtil.choseStudyMode(status)
+                .subscribe(new Consumer<BackCode>() {
+                    @Override
+                    public void accept(@NonNull BackCode backCode) throws Exception {
+                        if (backCode.getCode() == 1){
+                            Log.e("choseMode", "accept: " + status );
+                            SharedPreferencesUtils.setStudyMode(context , status);
+                        }
+                    }
+                }));
+    }
     private void setClick() {
         portrait.setOnClickListener(this);
         input_lookup.setOnClickListener(this);
@@ -233,7 +260,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
         oldPage = tag;
         Log.e(TAG, "setFragment: " + tag );
         if (tag==0) {
-//            RxBus.get().post(C.RXBUS_REFER_HOMEFIRST, true);
+            RxBus.get().post(C.RXBUS_REFER_HOMEFIRST, true);
         } else {
             RxBus.get().post(C.RXBUS_REFER_HOME, true);
         }

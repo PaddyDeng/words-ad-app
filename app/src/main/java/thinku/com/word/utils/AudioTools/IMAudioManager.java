@@ -3,6 +3,7 @@ package thinku.com.word.utils.AudioTools;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.util.Log;
 
 
@@ -11,6 +12,7 @@ import java.io.IOException;
 import thinku.com.word.utils.AudioTools.apis.DeleteListener;
 import thinku.com.word.utils.AudioTools.tasks.AudioAsyncTask;
 import thinku.com.word.utils.AudioTools.tools.VoiceFileUtils;
+import thinku.com.word.utils.HtmlUtil;
 
 /**
  * Created by Mao Jiqing on 2016/10/12.
@@ -66,29 +68,31 @@ public class IMAudioManager {
         } else {
             mPlayer.reset();//恢复
         }
-
         VoiceFileUtils fileUtils = new VoiceFileUtils();
+//        voicePath = Uri.encode(voicePath);
+        voicePath = HtmlUtil.replaceUrlSpace(voicePath);
+        Log.e("Ok", "playSound: " + voicePath );
         try {
-            String path = fileUtils.exists(voicePath); // 判断是否存在缓存文件
+//            String path = fileUtils.exists(voicePath); // 判断是否存在缓存文件
             mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mPlayer.setOnCompletionListener(onCompletionListener);
-            if (path != null) { // 存在缓存文件
-                mPlayer.setDataSource(path);
+//            if (path != null) { // 存在缓存文件
+                mPlayer.setDataSource(voicePath);
                 mPlayer.prepare();
                 mPlayer.start();
-            } else { // 不存在音频缓存文件,则边存边播
-                // 异步下载音频文件
-                new AudioAsyncTask(fileUtils).execute(voicePath);
-                mPlayer.setDataSource(voicePath);
-                mPlayer.prepareAsync(); // 准备(InputStream), 异步
-                mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        // 准备完成后, 开始播放音频文件
-                        mp.start();
-                    }
-                });
-            }
+//            } else { // 不存在音频缓存文件,则边存边播
+//                // 异步下载音频文件
+//                new AudioAsyncTask(fileUtils).execute(voicePath);
+//                mPlayer.setDataSource(voicePath);
+//                mPlayer.prepareAsync(); // 准备(InputStream), 异步
+//                mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                    @Override
+//                    public void onPrepared(MediaPlayer mp) {
+//                        // 准备完成后, 开始播放音频文件
+//                        mp.start();
+//                    }
+//                });
+//            }
         } catch (IllegalArgumentException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

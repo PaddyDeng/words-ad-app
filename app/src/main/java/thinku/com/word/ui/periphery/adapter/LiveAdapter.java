@@ -53,7 +53,7 @@ public class LiveAdapter extends RecyclerView.Adapter {
         liveHolder.date.setText(dataBean.getCnName());
         liveHolder.name.setText(dataBean.getName());
         liveHolder.introduction.setText(dataBean.getAlternatives());
-        new GlideUtils().load(context , NetworkTitle.OPENRESOURE + dataBean.getArticle()  ,liveHolder.teacher_image);
+        new GlideUtils().loadCircle(context , NetworkTitle.OPENRESOURE + dataBean.getArticle()  ,liveHolder.teacher_image);
         liveHolder.teacher_name.setText(dataBean.getListeningFile());
         if (!TextUtils.isEmpty(dataBean.getIsTitle())){
             liveHolder.month.setText(Integer.parseInt(StringUtils.spiltInt(dataBean.getIsTitle()).get(1)) +" 月课程");

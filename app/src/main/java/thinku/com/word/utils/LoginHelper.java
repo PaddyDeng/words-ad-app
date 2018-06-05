@@ -16,7 +16,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import thinku.com.word.R;
-import thinku.com.word.adapter.LoginInfo;
 import thinku.com.word.bean.BackCode;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.UserInfo;
@@ -28,7 +27,6 @@ import thinku.com.word.ui.other.LoginActivity;
 import thinku.com.word.ui.other.dialog.NeedLoginDialog;
 import thinku.com.word.ui.other.dialog.callback.DialogClickListener;
 import thinku.com.word.ui.personalCenter.SetNickNameActivity;
-import thinku.com.word.ui.personalCenter.TypeSettingActivity;
 
 
 /**
@@ -71,11 +69,18 @@ public class LoginHelper {
                                             }
                                         });
                                     } else {
-                                        SetNickNameActivity.start(context , userInfo);
+                                        SharedPreferencesUtils.setLogin(context, userInfo);
+                                        SetNickNameActivity.start(context, userInfo);
+                                        if (!SharedPreferencesUtils.getStudyMode(context).equals(userInfo.getStudyModel())) {
+                                            Log.e(TAG, "accept: " + SharedPreferencesUtils.getStudyMode(context) + "  " + userInfo.getStudyModel());
+                                            updataMode(SharedPreferencesUtils.getStudyMode(context), context);
+                                        }
                                     }
                                 } else {
                                     requestCallback.requestFail(userInfo.getMessage());
                                 }
+                            } else {
+                                requestCallback.requestFail(userInfo.getMessage());
                             }
                         }
                     }, new Consumer<Throwable>() {
@@ -86,7 +91,6 @@ public class LoginHelper {
                     }));
         }
     }
-
 
 
     /**
@@ -180,6 +184,20 @@ public class LoginHelper {
                 }));
     }
 
+
+    public static void updataMode(final String status, final Context context) {
+        Log.e(TAG, "updataMode: " + status);
+        addToCompositeDis(HttpUtil.choseStudyMode(status)
+                .subscribe(new Consumer<BackCode>() {
+                    @Override
+                    public void accept(@NonNull BackCode backCode) throws Exception {
+                        if (backCode.getCode() == 1) {
+                            Log.e("choseMode", "accept: " + status);
+                            SharedPreferencesUtils.setStudyMode(context, status);
+                        }
+                    }
+                }));
+    }
 
     public static void toLogin(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);

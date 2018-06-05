@@ -3,6 +3,7 @@ package thinku.com.word.utils;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +20,17 @@ public class HtmlUtil {
     }
 
 
+    public static String replaceUrlSpace(String content){
+        if (content.contains(" ")){
+            content = content.replace(" ","+");
+        }
+        return content.trim() ;
+    }
+
     public static String replaceSpace(String content) {
          String regMatchEnter="\\s*|\t|\r|\n";
          String regMatchTag = "<[^>]*>";
+        Log.e("tag", "replaceSpace: " + content );
         if (content.contains("&amp;")) {
             content = content.replace("&amp;", "&");
         }
@@ -38,7 +47,8 @@ public class HtmlUtil {
         Matcher m = p.matcher(content);
         content=m.replaceAll("");
         if (content.contains("<vocab>")){
-            content = content.replace("\\r<br/>", "");
+            Log.e("tag", "replaceSpace: " + content );
+            content = content.replace("<vocab>", "");
         }
         if (content.contains("</vocab>")){
             content = content.replace("</vocab>","");
@@ -71,10 +81,19 @@ public class HtmlUtil {
     public static String replaceRN(String content) {
         content = content.trim();
         content = content.replace("\n" ,"");
-        content = content.replace(" ","");
-//        if (content.contains("\\r")) {
-//            content = content.replace("\\r", "").trim();
-//        }
+        content = content.replace("    ","");
+        if (content.contains("</p>")) {
+            content = content.replace("</p>", "").trim();
+        }
+        if (content.contains("<p>")) {
+            content = content.replace("<p>", "").trim();
+        }
+        if (content.contains("<br/>")) {
+            content = content.replace("<br/>", "").trim();
+        }
+        if (content.contains("<br/>")) {
+            content = content.replace("<br/>", "").trim();
+        }
         return content;
     }
 
@@ -109,8 +128,11 @@ public class HtmlUtil {
         return result;
     }
 
-    public static String getHtml(String content) {
-
+    public static String getHtml(String content , String word) {
+        content = replaceRN(content);
+        String greenFirst = "<span style=\"color:green\">";
+        String greenLast = "</span>";
+        int index = content.indexOf(word);
         StringBuffer sb = new StringBuffer();
         sb.append("<!DOCTYPE html>");
         sb.append("<html lang=\"en\">");
@@ -132,7 +154,16 @@ public class HtmlUtil {
         sb.append("</style>");
         sb.append("</head>");
         sb.append("<body>");
-        sb.append(content);
+        if (index != -1){
+            int spaceIndex = content.indexOf(" " ,index);
+            sb.append(content.substring(0 ,index));
+            sb.append(greenFirst);
+            sb.append(word);
+            sb.append(greenLast);
+            sb.append(content.substring(spaceIndex , content.length()));
+        }else {
+            sb.append(content);
+        }
         sb.append("</body>");
         sb.append("</html>");
         return sb.toString();

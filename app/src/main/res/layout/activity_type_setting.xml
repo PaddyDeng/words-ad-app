@@ -140,7 +140,7 @@
                             style="@style/study_rel">
 
                             <TextView
-                                android:text="@string/aibinhaosi"
+                                android:text="@string/only_newword"
                                 style="@style/study_title"
                                 android:id="@+id/only_new_title"/>
 

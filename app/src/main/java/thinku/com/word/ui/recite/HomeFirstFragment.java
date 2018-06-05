@@ -54,6 +54,10 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
                 init();
             }
         });
+        if ( TextUtils.isEmpty(SharedPreferencesUtils.getUid(_mActivity))){
+            Log.e(TAG, "init: " );
+            LoginHelper.needLogin(_mActivity, "");
+        }
     }
 
 
@@ -90,10 +94,6 @@ public class HomeFirstFragment extends BaseFragment implements View.OnClickListe
             now_type.setText("你正在使用" + mode + "记忆单词");
         }else{
             now_type.setText("你还未选择记忆模式");
-        }
-        if (!MyApplication.isLogin || TextUtils.isEmpty(SharedPreferencesUtils.getUid(_mActivity))){
-            Log.e(TAG, "init: " );
-            LoginHelper.needLogin(_mActivity, "");
         }
     }
 

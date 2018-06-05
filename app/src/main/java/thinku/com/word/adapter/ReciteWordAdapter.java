@@ -38,9 +38,9 @@ public class ReciteWordAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ReciteWordHolder reciteWordHolder = (ReciteWordHolder) holder;
         RecitWordBeen.LowSentenceBean sentence = sentences.get(position);
-        reciteWordHolder.us.setText(sentence.getEnglish());
+        reciteWordHolder.us.setText(HtmlUtil.replaceSpace(sentence.getEnglish()));
         reciteWordHolder.us.setVisibility(View.VISIBLE);
-        reciteWordHolder.chinese.setText(HtmlUtil.replaceRN(sentence.getChinese()));
+        reciteWordHolder.chinese.setText(HtmlUtil.replaceSpace(sentence.getChinese()));
     }
 
     @Override

@@ -282,7 +282,7 @@
                     android:layout_height="100px"
                     android:layout_marginRight="50px"
                     android:layout_toLeftOf="@id/middle_2"
-                    android:background="@drawable/white_20round"
+                    android:background="@drawable/white_10round"
                     android:gravity="center"
                     android:text="重新匹配"
                     android:textColor="@color/gray_text" />

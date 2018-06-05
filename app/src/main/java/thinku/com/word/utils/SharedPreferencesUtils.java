@@ -3,6 +3,7 @@ package thinku.com.word.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 import thinku.com.word.MyApplication;
 import thinku.com.word.adapter.LoginInfo;
@@ -123,7 +124,6 @@ public class SharedPreferencesUtils {
         edit.putString("email", login.getEmail());
         edit.putString("phone", login.getPhone());
         edit.putString("nickname", login.getNickname());
-        edit.putString("studyMode" , login.getStudyModel());
         edit.commit();
     }
 
@@ -165,7 +165,6 @@ public class SharedPreferencesUtils {
         editor.putString(PERFS_PK_IMAGE,"");
         editor.putString(PERFS_PK_NAME , "");
         editor.putString(PERFS_PK_UID ,"");
-        editor.putString("studyMode" , "");
         editor.commit();
     }
 
@@ -183,10 +182,12 @@ public class SharedPreferencesUtils {
     }
 
     public static void setStudyMode(Context context , String mode){
+        Log.e(TAG, "setStudyMode: " + mode );
         setString("studyMode",context ,mode);
     }
 
     public static String getStudyMode(Context context){
+        Log.e(TAG, "getStudyMode: "  +getSharePreferences(context).getString("studyMode" ,"") );
         return  getSharePreferences(context).getString("studyMode" ,"");
     }
     public static String getNickName(Context context){

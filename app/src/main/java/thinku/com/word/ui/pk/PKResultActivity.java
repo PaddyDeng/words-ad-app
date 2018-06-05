@@ -163,7 +163,7 @@ public class PKResultActivity extends BaseActivity {
         matchErrorNum.getBackground().setAlpha(50);
         userName.setText(SharedPreferencesUtils.getNickName(PKResultActivity.this));
         matchName.setText(SharedPreferencesUtils.getPKMatchName(PKResultActivity.this));
-        setUserVictory();
+//        setUserVictory();
     }
 
     @OnClick({ R.id.back , R.id.share , R.id.user_image ,R.id.match_image})
@@ -198,7 +198,7 @@ public class PKResultActivity extends BaseActivity {
 
 
     public void setMatchVictory(){
-        new GlideUtils().loadCircle(PKResultActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(PKResultActivity.this), matchImage);
+        new GlideUtils().loadCircle(PKResultActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(PKResultActivity.this), userImage);
         new GlideUtils().loadCircle(PKResultActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getPKMatchImage(PKResultActivity.this), matchBig);
         userVictory.setVisibility(View.GONE);
         userBig.setVisibility(View.GONE);

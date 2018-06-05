@@ -2,6 +2,7 @@ package thinku.com.word.utils;
 
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -54,21 +55,26 @@ public class MutePopHelper {
         boolean isPlay = SharedPreferencesUtils.getPlayMusic(context);
         final TextView muteTxt  = (TextView) mView.findViewById(R.id.mute_text);
         final SwitchView switchView = (SwitchView) mView.findViewById(R.id.switch_button);
-        if (isPlay) muteTxt.setText("(开启)");
-        else muteTxt.setText("(关闭)");
+        Log.e("tttt", "init: " + isPlay );
+        if (isPlay) {
+            muteTxt.setText("(开启)");
+        }
+        else {
+            muteTxt.setText("(关闭)");
+        }
         final RelativeLayout relativeLayout = (RelativeLayout) mView.findViewById(R.id.error_rel);
-        switchView.setOpened(isPlay);
+        switchView.setOpened(!isPlay);
         switchView.setOnStateChangedListener(new SwitchView.OnStateChangedListener() {
             @Override
             public void toggleToOn(SwitchView view) {
-                muteOpenListener.openMusic();
+                muteOpenListener.closeMusic();
                 muteTxt.setText("(开启)");
                 view.setOpened(true);
             }
 
             @Override
             public void toggleToOff(SwitchView view) {
-                muteOpenListener.closeMusic();
+                muteOpenListener.openMusic();
                 muteTxt.setText("(关闭)");
                 view.setOpened(false);
             }

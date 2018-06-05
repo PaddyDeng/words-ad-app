@@ -3,11 +3,13 @@ package thinku.com.word.ui.report;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -254,16 +256,18 @@ public class WordEvaluateFragment1 extends BaseActivity {
             final QuestionBean questionBean = recitWord.getQuestion();
             if (!TextUtils.isEmpty(questionBean.getArticle())) {
                 article.setVisibility(View.VISIBLE);
-                String content = HtmlUtil.getHtml(questionBean.getArticle());
+                String content = HtmlUtil.getHtml(questionBean.getArticle() ,recitWord.getWords().getWord());
                 String urlContent = HtmlUtil.repairContent(content , NetworkTitle.GMAT);
+                Log.e(TAG, "getData: " + urlContent );
                 article.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
                 article.setVisibility(View.GONE);
             }
             if (!TextUtils.isEmpty(questionBean.getQuestion())) {
                 question_home.setVisibility(View.VISIBLE);
-                String content = HtmlUtil.getHtml(questionBean.getQuestion());
+                String content = HtmlUtil.getHtml(questionBean.getQuestion() ,recitWord.getWords().getWord());
                 String urlContent = HtmlUtil.repairContent(content ,NetworkTitle.GMAT);
+                Log.e(TAG, "getData: " + urlContent );
                 question_home.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
                 question_home.setVisibility(View.GONE);

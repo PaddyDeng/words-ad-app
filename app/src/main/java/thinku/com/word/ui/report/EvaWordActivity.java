@@ -46,14 +46,10 @@ import thinku.com.word.utils.StringUtils;
 public class EvaWordActivity extends BaseActivity {
     @BindView(R.id.back)
     ImageView back;
-    @BindView(R.id.familiar)
-    LinearLayout familiar;
     @BindView(R.id.errors)
     LinearLayout errors;
     @BindView(R.id.word)
     TextView word;
-    @BindView(R.id.newWord)
-    TextView needView ;
     @BindView(R.id.play)
     ImageView play;
     @BindView(R.id.mnemonic)
@@ -84,7 +80,6 @@ public class EvaWordActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eva);
         unbinder = ButterKnife.bind(this);
-        initView();
         initRecy();
         myApplication = (MyApplication) MyApplication.getInstance();
         myApplication.addActivity(this);
@@ -93,12 +88,6 @@ public class EvaWordActivity extends BaseActivity {
         rightPlayer = MediaPlayer.create(this ,R.raw.eva_right_and_know);
     }
 
-    public void initView(){
-        LinearLayout rl = (LinearLayout) findViewById(R.id.need_rl);
-        rl.setVisibility(View.GONE);
-        familiar.setVisibility(View.GONE);
-        needView.setVisibility(View.GONE);
-    }
 
     public void initRecy() {
         dataList.setLayoutManager(new LinearLayoutManager(EvaWordActivity.this));

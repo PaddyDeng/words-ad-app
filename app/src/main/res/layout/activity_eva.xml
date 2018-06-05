@@ -10,7 +10,57 @@
         android:orientation="vertical"
         android:background="@color/white">
 
-        <include layout="@layout/title_layout_word" />
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:background="@color/tittle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/title_bar_height"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/title_height">
+                <ImageView
+                    android:id="@+id/back"
+                    android:src="@mipmap/white_back"
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_width="50px"
+                    android:layout_height="50px" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:id="@+id/errors"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp">
+                <ImageView
+                    android:id="@+id/title_iv"
+                    android:background="@mipmap/error_smile"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:padding="10dp"
+                    android:layout_marginRight="10dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:id="@+id/chose_txt"
+                    android:textSize="13sp"
+                    android:text="报错"
+                    android:textColor="@color/white"
+                    android:layout_marginRight="10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/title_iv"
+                    />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
 
 
             <ImageView

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,6 @@ import thinku.com.word.ui.periphery.adapter.LiveAdapter;
 import thinku.com.word.ui.periphery.adapter.RecentClassAdapter;
 import thinku.com.word.ui.periphery.bean.RoundBean;
 import thinku.com.word.utils.DateUtil;
-import thinku.com.word.utils.WaitUtils;
 
 import static thinku.com.word.http.C.LG_COURSE_GMAT;
 import static thinku.com.word.http.C.LG_COURSE_GRE;
@@ -189,6 +187,8 @@ public class RoundFragment extends BaseFragment {
         contents[5] = content6;
         contents[6] = content7;
         rollPager.setHintView(new ColorPointHintView(_mActivity, getResources().getColor(R.color.gray_text), getResources().getColor(R.color.mainColor)));
+        recentClassBeanList = new ArrayList<>();
+        choicenessBeanList = new ArrayList<>();
     }
 
 
@@ -223,7 +223,8 @@ public class RoundFragment extends BaseFragment {
     }
 
     public void referUi(RoundBean roundBean) {
-        recentClassBeanList = roundBean.getRecentClass();
+        recentClassBeanList.clear();
+        recentClassBeanList.addAll(roundBean.getRecentClass());
         recentClassAdapter = new RecentClassAdapter(_mActivity, rollPager, recentClassBeanList);
         recentClassAdapter.setSelectListener(new SelectListener() {
             @Override
@@ -233,22 +234,24 @@ public class RoundFragment extends BaseFragment {
         });
         rollPager.setAdapter(recentClassAdapter);
         choseLiveList(roundBean.getLivePreview());
-        if (roundBean.getCaseX() .size() > 4) {
+        if (roundBean.getCaseX().size() > 4) {
             caseBeanList.clear();
-            caseBeanList.addAll(roundBean.getCaseX().subList(0  ,4 ));
-        }else{
+            caseBeanList.addAll(roundBean.getCaseX().subList(0, 4));
+        } else {
             caseBeanList.clear();
-            caseBeanList.addAll(roundBean.getCaseX().subList(0  ,4 ));
+            caseBeanList.addAll(roundBean.getCaseX().subList(0, 4));
         }
         evaAdapter.notifyDataSetChanged();
         setClass(roundBean.getChoiceness());
     }
 
     public void setClass(List<RoundBean.ChoicenessBean> choicenessBeanList) {
-        this.choicenessBeanList = choicenessBeanList;
-        for (int i = 0; i < choicenessBeanList.size(); i++) {
-            titles[i].setText(getClassType(choicenessBeanList.get(i).getCategoryId()));
-            contents[i].setText(choicenessBeanList.get(i).getName());
+        if (choicenessBeanList != null && choicenessBeanList.size() > 0) {
+            choicenessBeanList.addAll(choicenessBeanList);
+            for (int i = 0; i < choicenessBeanList.size(); i++) {
+                titles[i].setText(getClassType(choicenessBeanList.get(i).getCategoryId()));
+                contents[i].setText(choicenessBeanList.get(i).getName());
+            }
         }
     }
 
@@ -307,7 +310,7 @@ public class RoundFragment extends BaseFragment {
 
     @OnClick({R.id.case_more, R.id.gmat, R.id.gre, R.id.toefl, R.id.IELTS, R.id.abroad,
             R.id.class1, R.id.class3, R.id.class4, R.id.class5, R.id.class6, R.id.class7, R.id.calss2
-    ,R.id.live_more})
+            , R.id.live_more})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.case_more:
@@ -329,33 +332,40 @@ public class RoundFragment extends BaseFragment {
                 PeripheryFragment.start(_mActivity, LG_COURSE_SCHOOL);
                 break;
             case R.id.class1:
-                ClassDetailActivity.start(_mActivity, choicenessBeanList.get(0));
+                if (choicenessBeanList != null && choicenessBeanList.size() > 0)
+                    ClassDetailActivity.start(_mActivity, choicenessBeanList.get(0));
                 break;
             case R.id.class3:
+                if (choicenessBeanList != null && choicenessBeanList.size() > 2)
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(2));
                 break;
             case R.id.class4:
+                if (choicenessBeanList != null && choicenessBeanList.size() > 3)
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(3));
                 break;
             case R.id.class5:
+                if (choicenessBeanList != null && choicenessBeanList.size() > 4)
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(4));
                 break;
             case R.id.class6:
+                if (choicenessBeanList != null && choicenessBeanList.size() > 5)
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(5));
                 break;
             case R.id.class7:
+                if (choicenessBeanList != null && choicenessBeanList.size() > 6)
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(6));
                 break;
             case R.id.calss2:
+                if (choicenessBeanList != null && choicenessBeanList.size() > 1)
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(1));
                 break;
             case R.id.live_more:
-                PeripheryFragment.start(_mActivity );
-
+                PeripheryFragment.start(_mActivity);
             default:
                 break;
         }
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

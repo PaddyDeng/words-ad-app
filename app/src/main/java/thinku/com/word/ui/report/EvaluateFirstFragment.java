@@ -45,8 +45,6 @@ public class EvaluateFirstFragment extends BaseActivity {
     ImageView back;
     @BindView(R.id.title_t)
     TextView titleT;
-    @BindView(R.id.title_right_t)
-    TextView titleRightT;
     @BindView(R.id.portrait)
     CircleImageView portrait;
     @BindView(R.id.name)
@@ -93,7 +91,7 @@ public class EvaluateFirstFragment extends BaseActivity {
             state.setVisibility(View.GONE);
         } else {
             state.setText(evaNum + "");
-            state.setText("评估结果");
+//            state.setText("评估结果");
             state.setVisibility(View.VISIBLE);
         }
     }
