@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.gyf.barlibrary.ImmersionBar;
+import com.squareup.leakcanary.RefWatcher;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -220,6 +221,8 @@ public class BaseActivity extends AutoLayoutActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (null != immersionBar) immersionBar.destroy();
+        RefWatcher refWatcher = MyApplication.getRefWatcher(this);
+        if (refWatcher != null) refWatcher.watch(this);
     }
 
     protected boolean getHttpResSuc(int code) {

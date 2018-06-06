@@ -5,10 +5,13 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.widget.NestedScrollView;
 import android.util.Log;
+import android.widget.ScrollView;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.PriorityQueue;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -52,36 +55,22 @@ public class ShareUtils {
         }
     }
 
-    public static void shareContent(Context context ,String content ,PlatformActionListener p ){
-        String sdCardPath = Environment.getExternalStorageDirectory().getPath();
-        String filePath = sdCardPath + File.separator  + "logo.png";
-        OnekeyShare oks = new OnekeyShare();
-        //关闭sso授权
-        oks.disableSSOWhenAuthorize();
-        // title标题，微信、QQ和QQ空间等平台使用
-        oks.setTitle(content);
-        oks.setTitleUrl(NetworkTitle.WORD1+ File.separator +"wap/share/index?uid=" + SharedPreferencesUtils.getUid(context)+"&type=2");
-        Log.e(TAG, "shareContent: " + content );
-        oks.setUrl(NetworkTitle.WORD1+ File.separator +"wap/share/index?uid=" + SharedPreferencesUtils.getUid(context)+"&type=2");
-//        oks.setText(content);
-        oks.setImagePath(filePath);
-        oks.show(context);
-        oks.setCallback(new PlatformActionListener() {
-            @Override
-            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-                Log.e(TAG, "onComplete: " );
-            }
 
-            @Override
-            public void onError(Platform platform, int i, Throwable throwable) {
-                Log.e(TAG, "onError: " + platform + "  " + i + "   " + throwable.toString() );
-            }
+    public static void ShareOnlyScrollViewImage(Context context, NestedScrollView scrollView , String imageFile){
+        Log.e(TAG, "ShareOnlyScrollViewImage: " + imageFile );
+        if (FullScreenShot.getBitmapByView(scrollView ,imageFile)){
+            OnekeyShare oks = new OnekeyShare();
+            //关闭sso授权
+            oks.disableSSOWhenAuthorize();
 
-            @Override
-            public void onCancel(Platform platform, int i) {
-                Log.e(TAG, "onCancel: " + platform + "  " + i + "   " + i );
-            }
-        });
-
+            // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+//            oks.setImagePath(imageFile);//确保SDcard下面存在此张图片
+            oks.setText("我是分享文本");
+            oks.setImageUrl("http://f1.webshare.mob.com/dimgs/1c950a7b02087bf41bc56f07f7d3572c11dfcf36.jpg ");
+            oks.setTitleUrl("http://www.baidu.com");
+            oks.setTitle("标题");
+            // 启动分享GUI
+            oks.show(context);
+        }
     }
 }

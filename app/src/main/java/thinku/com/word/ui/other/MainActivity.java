@@ -66,14 +66,13 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
         initView();
         OCRProxy.initToken(mContext);
         simpleUpdateApk = new SimpleUpdateApk(this , false);
-        simpleUpdateApk.checkVersionUpdate();
     }
-
-
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        simpleUpdateApk.checkVersionUpdate();
         if (MyApplication.mediaPlayer != null && MyApplication.mediaPlayer.isPlaying()){
             MyApplication.mediaPlayer.stop();
         }

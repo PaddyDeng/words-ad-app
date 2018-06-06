@@ -72,7 +72,7 @@ public class DownloadApk {
     }
 
     private String createFile() {
-        File file = FileUtil.createFile(context, "gmat.apk");
+        File file = FileUtil.createFile(context, "word.apk");
         if (file == null || TextUtils.isEmpty(file.getPath())) {
             return null;
         }

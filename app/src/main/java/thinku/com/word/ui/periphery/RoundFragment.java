@@ -245,12 +245,12 @@ public class RoundFragment extends BaseFragment {
         setClass(roundBean.getChoiceness());
     }
 
-    public void setClass(List<RoundBean.ChoicenessBean> choicenessBeanList) {
-        if (choicenessBeanList != null && choicenessBeanList.size() > 0) {
-            choicenessBeanList.addAll(choicenessBeanList);
-            for (int i = 0; i < choicenessBeanList.size(); i++) {
-                titles[i].setText(getClassType(choicenessBeanList.get(i).getCategoryId()));
-                contents[i].setText(choicenessBeanList.get(i).getName());
+    public void setClass(List<RoundBean.ChoicenessBean> choicenessBeanLists) {
+        if (choicenessBeanLists != null && choicenessBeanLists.size() > 0) {
+            choicenessBeanList.addAll(choicenessBeanLists);
+            for (int i = 0; i < choicenessBeanLists.size(); i++) {
+                titles[i].setText(getClassType(choicenessBeanLists.get(i).getCategoryId()));
+                contents[i].setText(choicenessBeanLists.get(i).getName());
             }
         }
     }
@@ -332,31 +332,27 @@ public class RoundFragment extends BaseFragment {
                 PeripheryFragment.start(_mActivity, LG_COURSE_SCHOOL);
                 break;
             case R.id.class1:
-                if (choicenessBeanList != null && choicenessBeanList.size() > 0)
                     ClassDetailActivity.start(_mActivity, choicenessBeanList.get(0));
                 break;
             case R.id.class3:
-                if (choicenessBeanList != null && choicenessBeanList.size() > 2)
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(2));
                 break;
             case R.id.class4:
-                if (choicenessBeanList != null && choicenessBeanList.size() > 3)
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(3));
                 break;
             case R.id.class5:
-                if (choicenessBeanList != null && choicenessBeanList.size() > 4)
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(4));
                 break;
             case R.id.class6:
-                if (choicenessBeanList != null && choicenessBeanList.size() > 5)
+
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(5));
                 break;
             case R.id.class7:
-                if (choicenessBeanList != null && choicenessBeanList.size() > 6)
+
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(6));
                 break;
             case R.id.calss2:
-                if (choicenessBeanList != null && choicenessBeanList.size() > 1)
+
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(1));
                 break;
             case R.id.live_more:

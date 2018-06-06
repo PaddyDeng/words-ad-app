@@ -9,6 +9,8 @@ import android.util.Log;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.mob.MobSDK;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.net.HttpCookie;
 import java.net.URI;
@@ -37,6 +39,7 @@ public class MyApplication extends Application {
     public static int task ;
     public static String signTime ;
     public static boolean isLogin = false ;
+    private RefWatcher refWatcher ;
     public static Context getInstance() {
         return mContext;
     }
@@ -70,17 +73,30 @@ public class MyApplication extends Application {
 
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
-//        refWatcher = LeakCanary.install(this);
+        refWatcher = setupLeakCanary();
         MobSDK.init(this);   //  分享设置
         SpeechUtility.createUtility(this, SpeechConstant.APPID +"=5af9002c");  //  讯飞语音
 
+//        if (LeakCanary.isInAnalyzerProcess(this)) {//1
+//            // This process is dedicated to LeakCanary for heap analysis.
+//            // You should not init your app in this process.
+//            return;
+//        }
+//        LeakCanary.install(this);
 //        Stetho.initializeWithDefaults(this);
     }
 
-//    public static RefWatcher getRefWatcher(Context context) {
-//        MyApplication application = (MyApplication) context.getApplicationContext();
-//        return application.refWatcher;
-//    }
+    private RefWatcher setupLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return RefWatcher.DISABLED;
+        }
+        return LeakCanary.install(this);
+    }
+
+    public static RefWatcher getRefWatcher(Context context) {
+        MyApplication application = (MyApplication) context.getApplicationContext();
+        return application.refWatcher;
+    }
 
     public static MyApplication newInstance() {
         if (myApplication == null) {

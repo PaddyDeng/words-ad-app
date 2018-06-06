@@ -65,7 +65,6 @@ public class EvaluateFirstFragment extends BaseActivity {
         unbinder = ButterKnife.bind(this);
         titleT.setText("评估");
         initView();
-        titleIv.setVisibility(View.GONE);
         observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE ,String.class);
         observable.subscribe(new Consumer<String>() {
             @Override
@@ -89,11 +88,11 @@ public class EvaluateFirstFragment extends BaseActivity {
         name.setText(nametxt);
         if (evaNum == 0) {
             state.setText("未评估");
-            state.setVisibility(View.GONE);
+            titleIv.setVisibility(View.GONE);
         } else {
             state.setText(evaNum + "");
-//            state.setText("评估结果");
-            state.setVisibility(View.VISIBLE);
+            titleIv.setText("评估结果");
+            titleIv.setVisibility(View.VISIBLE);
         }
     }
 

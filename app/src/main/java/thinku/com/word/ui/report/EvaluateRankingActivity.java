@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -192,6 +193,7 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
         String sdCardPath = Environment.getExternalStorageDirectory().getPath();
         // 图片文件路径
         String filePath = sdCardPath + File.separator + System.currentTimeMillis() + ".png";
+        Log.i(TAG, "image>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: " + filePath);
         ShareUtils.shareOnlyImage(this, filePath);
     }
 

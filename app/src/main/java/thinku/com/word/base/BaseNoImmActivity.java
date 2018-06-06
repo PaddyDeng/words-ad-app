@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.squareup.leakcanary.RefWatcher;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,6 +16,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import thinku.com.word.MyApplication;
 import thinku.com.word.R;
 import thinku.com.word.callback.PermissionCallback;
 import thinku.com.word.permission.RxPermissions;
@@ -205,6 +207,8 @@ public class BaseNoImmActivity extends AutoLayoutActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        RefWatcher refWatcher = MyApplication.getRefWatcher(this);
+        if(refWatcher != null) refWatcher.watch(this);
     }
 
 

@@ -52,6 +52,7 @@ public class PKAdapter extends RecyclerView.Adapter {
         pkHolder.textView.setText(pkSelectBeen.getSelect());
         if (pkSelectBeen.isAnswer()){
             currentPosition  = position;
+            Log.d(TAG, "currentPosition>>>>>>>>>>>>>>>>>>>" + currentPosition );
             pkHolder.textView.setBackgroundResource(R.drawable.pk_select_main);
         }else{
             pkHolder.textView.setBackgroundResource(R.drawable.pk_select_red);
