@@ -65,6 +65,7 @@ public class EvaluateFirstFragment extends BaseActivity {
         unbinder = ButterKnife.bind(this);
         titleT.setText("评估");
         initView();
+        titleIv.setVisibility(View.GONE);
         observable = RxBus.get().register(C.RXBUS_HEAD_IMAGE ,String.class);
         observable.subscribe(new Consumer<String>() {
             @Override

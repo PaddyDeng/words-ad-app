@@ -211,7 +211,7 @@ public class RoundFragment extends BaseFragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        toTast(_mActivity, "网络出错");
+//                        toTast(_mActivity, "网络出错");
                     }
                 }));
     }

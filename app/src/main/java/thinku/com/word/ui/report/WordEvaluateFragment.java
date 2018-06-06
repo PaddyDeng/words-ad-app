@@ -573,10 +573,14 @@ public class WordEvaluateFragment extends BaseActivity {
                     sentenceBeen.clear();
                     if (recitWord.getSentence().size() > 3) {
                         for (int i = 0; i < 3; i++) {
+                            recitWord.getSentence().get(i).setWord(recitWord.getWords().getWord());
                             sentenceBeen.add(recitWord.getSentence().get(i));
                         }
                     } else {
-                        sentenceBeen.addAll(recitWord.getSentence());
+                        for (int i = 0; i < recitWord.getSentence().size(); i++) {
+                            recitWord.getSentence().get(i).setWord(recitWord.getWords().getWord());
+                            sentenceBeen.add(recitWord.getSentence().get(i));
+                        }
                     }
                     sentence.notifyDataSetChanged();
                     sentences.setVisibility(View.VISIBLE);

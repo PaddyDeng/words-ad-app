@@ -30,7 +30,6 @@ public class HtmlUtil {
     public static String replaceSpace(String content) {
          String regMatchEnter="\\s*|\t|\r|\n";
          String regMatchTag = "<[^>]*>";
-        Log.e("tag", "replaceSpace: " + content );
         if (content.contains("&amp;")) {
             content = content.replace("&amp;", "&");
         }
@@ -47,7 +46,6 @@ public class HtmlUtil {
         Matcher m = p.matcher(content);
         content=m.replaceAll("");
         if (content.contains("<vocab>")){
-            Log.e("tag", "replaceSpace: " + content );
             content = content.replace("<vocab>", "");
         }
         if (content.contains("</vocab>")){
@@ -74,6 +72,49 @@ public class HtmlUtil {
 //        if (content.contains("&euml;")) {
 //            content = content.replace("&euml;", "ë");
 //        }
+        content = replaceRN(content);
+        return content.trim();
+    }
+
+    public static String replaceSpace(String content , String words) {
+        String regMatchEnter="\\s*|\t|\r|\n";
+        String regMatchTag = "<[^>]*>";
+        Log.e("tag", "replaceSpace: " + content );
+        if (content.contains("&amp;")) {
+            content = content.replace("&amp;", "&");
+        }
+        if (content.contains("&nbsp;")) {
+            content = content.replace("&nbsp;", " ");
+        }
+        if (content.contains("<p><br/></p>")) {
+            content = content.replace("<p><br/></p>", " ");
+        }
+        if (content.contains("\\r<br/>")) {
+            content = content.replace("\\r<br/>", "");
+        }
+        Pattern p = Pattern.compile(regMatchTag);
+        Matcher m = p.matcher(content);
+        content=m.replaceAll("");
+        if (content.contains("<vocab>")){
+            content = content.replace("<vocab>", "");
+        }
+        if (content.contains("</vocab>")){
+            content = content.replace("</vocab>","");
+        }
+        int index = content.indexOf(words);
+        String greenFirst = "<font color='#31b272'>";
+        String greenLast = "</font>";
+        StringBuffer sb = new StringBuffer();
+        if (index != -1){
+            sb.append(content.substring(0 ,index));
+            sb.append(greenFirst);
+            sb.append(words);
+            sb.append(greenLast);
+            sb.append(content.substring(index , content.length()));
+        }else {
+            sb.append(content);
+        }
+        Log.e("tag", "replaceSpace: " + content );
         content = replaceRN(content);
         return content.trim();
     }

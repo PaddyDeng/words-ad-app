@@ -245,6 +245,15 @@ public class RecitWordBeen {
         private String english;
         private String chinese;
         private String id;
+        private String word ;
+
+        public String getWord() {
+            return word;
+        }
+
+        public void setWord(String word) {
+            this.word = word;
+        }
 
         public String getId() {
             return id;

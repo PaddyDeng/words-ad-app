@@ -420,12 +420,12 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
                             if (poisition != adapter.getSelectP()) {
 
                                 packdatas.remove(viewHolder.getAdapterPosition());
-                                adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                                adapter.notifyDataSetChanged();
                             } else {
                                 if (packdatas.size() > 0) {
                                     packdatas.remove(viewHolder.getAdapterPosition());
                                     adapter.setSelectP(0);
-                                    adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                                    adapter.notifyDataSetChanged();
                                     ((LinearLayoutManager)words_bag_list.getLayoutManager()).scrollToPositionWithOffset(viewHolder.getAdapterPosition() , 0);
                                 }
                             }

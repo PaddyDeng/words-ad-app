@@ -57,10 +57,10 @@ public class MutePopHelper {
         final SwitchView switchView = (SwitchView) mView.findViewById(R.id.switch_button);
         Log.e("tttt", "init: " + isPlay );
         if (isPlay) {
-            muteTxt.setText("(开启)");
+            muteTxt.setText("(关闭)");
         }
         else {
-            muteTxt.setText("(关闭)");
+            muteTxt.setText("(开启)");
         }
         final RelativeLayout relativeLayout = (RelativeLayout) mView.findViewById(R.id.error_rel);
         switchView.setOpened(!isPlay);

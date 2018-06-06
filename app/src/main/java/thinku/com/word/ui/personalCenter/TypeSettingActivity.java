@@ -59,7 +59,7 @@ public class TypeSettingActivity extends BaseActivity implements DialogClickList
     private int oldPage = -1;
     private static int status = 1;
     boolean isFirst = false;
-
+    private static int oldStatus  = -1 ;
     public static void start(Context context, boolean isFirst) {
         Intent intent = new Intent(context, TypeSettingActivity.class);
         intent.putExtra("first", isFirst);
@@ -88,6 +88,7 @@ public class TypeSettingActivity extends BaseActivity implements DialogClickList
         String mode = SharedPreferencesUtils.getStudyMode(this);
         try {
             int userMode = Integer.parseInt(mode);
+            oldStatus = userMode ;
             switch (userMode) {
                 case LGStudyEbbinghaus:
                     setSelect(0);
@@ -190,35 +191,36 @@ public class TypeSettingActivity extends BaseActivity implements DialogClickList
      * 修改学习模式
      */
     public void choseStudyMode() {
-        addToCompositeDis(HttpUtil.choseStudyMode(status + "")
-                .doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(@NonNull Disposable disposable) throws Exception {
-                        showLoadDialog();
-                    }
-                })
-                .subscribe(new Consumer<BackCode>() {
-                    @Override
-                    public void accept(@NonNull BackCode backCode) throws Exception {
-                        dismissLoadDialog();
-                        if (backCode != null) {
-                            if (backCode.getCode() == 99) {  //  未登录
-                                LoginHelper.needLogin(TypeSettingActivity.this, "你还没登录，请先登录", REQUEST_CODE);
-                            } else if (backCode.getCode() == 0) {
-                                toTast(TypeSettingActivity.this, backCode.getMessage());
-                            } else {
-                                toTast(TypeSettingActivity.this, backCode.getMessage());
-                                SharedPreferencesUtils.setStudyMode(TypeSettingActivity.this, status + "");
-                                finish();
+            addToCompositeDis(HttpUtil.choseStudyMode(status + "")
+                    .doOnSubscribe(new Consumer<Disposable>() {
+                        @Override
+                        public void accept(@NonNull Disposable disposable) throws Exception {
+                            showLoadDialog();
+                        }
+                    })
+                    .subscribe(new Consumer<BackCode>() {
+                        @Override
+                        public void accept(@NonNull BackCode backCode) throws Exception {
+                            dismissLoadDialog();
+                            if (backCode != null) {
+                                if (backCode.getCode() == 99) {  //  未登录
+                                    LoginHelper.needLogin(TypeSettingActivity.this, "你还没登录，请先登录", REQUEST_CODE);
+                                } else if (backCode.getCode() == 0) {
+                                    toTast(TypeSettingActivity.this, backCode.getMessage());
+                                } else {
+                                    toTast(TypeSettingActivity.this, backCode.getMessage());
+                                    SharedPreferencesUtils.setStudyMode(TypeSettingActivity.this, status + "");
+                                    finish();
+                                }
                             }
                         }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        dismissLoadDialog();
-                    }
-                }));
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@NonNull Throwable throwable) throws Exception {
+                            dismissLoadDialog();
+                        }
+                    }));
+
     }
 
     @Override

@@ -242,11 +242,7 @@ public class AddMyPlanActivity extends BaseActivity {
         .subscribe(new Consumer<ResultBeen<Void>>() {
             @Override
             public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                if (getHttpResSuc(voidResultBeen.getCode())) {
                     MainActivity.toMain(AddMyPlanActivity.this);
-                } else {
-                    toTast("修改当前词包失败");
-                }
             }
         }, new Consumer<Throwable>() {
             @Override

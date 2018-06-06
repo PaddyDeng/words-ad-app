@@ -1,7 +1,12 @@
 package thinku.com.word.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +43,20 @@ public class ReciteWordAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ReciteWordHolder reciteWordHolder = (ReciteWordHolder) holder;
         RecitWordBeen.LowSentenceBean sentence = sentences.get(position);
-        reciteWordHolder.us.setText(HtmlUtil.replaceSpace(sentence.getEnglish()));
+        if (!TextUtils.isEmpty(sentence.getWord())){
+            if (sentence.getEnglish().indexOf(sentence.getWord()) != -1) {
+                String content = HtmlUtil.replaceSpace(sentence.getEnglish());
+                int index = content.indexOf(sentence.getWord()) ;
+                SpannableString spannableString = new SpannableString(content);
+                spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#31b272")), index, index + sentence.getWord().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                reciteWordHolder.us.setText(spannableString);
+            }else{
+                String content = HtmlUtil.replaceSpace(sentence.getEnglish());
+                reciteWordHolder.us.setText(content);
+            }
+        }else {
+            reciteWordHolder.us.setText(HtmlUtil.replaceSpace(sentence.getEnglish()));
+        }
         reciteWordHolder.us.setVisibility(View.VISIBLE);
         reciteWordHolder.chinese.setText(HtmlUtil.replaceSpace(sentence.getChinese()));
     }
