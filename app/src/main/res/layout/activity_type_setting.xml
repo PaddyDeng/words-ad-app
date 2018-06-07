@@ -147,7 +147,7 @@
                             <TextView
                                 style="@style/study_content"
                                 android:layout_below="@id/only_new_title"
-                                android:text="@string/aibinhaosi_content" />
+                                android:text="@string/only_new_content" />
 
 
                             <ImageView

@@ -229,6 +229,7 @@ public class RoundFragment extends BaseFragment {
         recentClassAdapter.setSelectListener(new SelectListener() {
             @Override
             public void setListener(int position) {
+                if (recentClassBeanList.size() > 0 && position < recentClassBeanList.size())
                 ClassDetailActivity1.start(_mActivity, recentClassBeanList.get(position));
             }
         });
@@ -332,27 +333,31 @@ public class RoundFragment extends BaseFragment {
                 PeripheryFragment.start(_mActivity, LG_COURSE_SCHOOL);
                 break;
             case R.id.class1:
+                    if (choicenessBeanList.size() > 0)
                     ClassDetailActivity.start(_mActivity, choicenessBeanList.get(0));
                 break;
             case R.id.class3:
+                if (choicenessBeanList.size() > 0)
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(2));
                 break;
             case R.id.class4:
+                if (choicenessBeanList.size() > 0)
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(3));
                 break;
             case R.id.class5:
+                if (choicenessBeanList.size() > 0)
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(4));
                 break;
             case R.id.class6:
-
+                if (choicenessBeanList.size() > 0)
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(5));
                 break;
             case R.id.class7:
-
+                if (choicenessBeanList.size() > 0)
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(6));
                 break;
             case R.id.calss2:
-
+                if (choicenessBeanList.size() > 0)
                 ClassDetailActivity.start(_mActivity, choicenessBeanList.get(1));
                 break;
             case R.id.live_more:

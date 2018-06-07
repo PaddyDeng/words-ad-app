@@ -8,12 +8,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.gyf.barlibrary.ImmersionBar;
-import com.squareup.leakcanary.RefWatcher;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import me.yokeyword.fragmentation.SupportFragment;
-import thinku.com.word.MyApplication;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
 import thinku.com.word.utils.HttpUtils;
@@ -105,8 +103,8 @@ public abstract class BaseFragment extends SupportFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        RefWatcher refWatcher = MyApplication.getRefWatcher(_mActivity);
-        if (null != refWatcher)  refWatcher.watch(_mActivity);
+//        RefWatcher refWatcher = MyApplication.getRefWatcher(_mActivity);
+//        if (null != refWatcher)  refWatcher.watch(_mActivity);
     }
 
     @Override

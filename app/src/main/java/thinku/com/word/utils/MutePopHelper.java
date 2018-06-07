@@ -22,7 +22,7 @@ public class MutePopHelper {
     private Context context ;
     private PopupWindow mPopupWindow ;
     private MuteOpenListener muteOpenListener ;
-    private static MutePopHelper popHelper ;
+    private volatile  static MutePopHelper popHelper ;
     public MutePopHelper(Context context){
         this.context = context ;
         mView = LayoutInflater.from(context).inflate(R.layout.pop_music,null ,false);
@@ -34,7 +34,9 @@ public class MutePopHelper {
     }
     public static  MutePopHelper create(Context context ){
         if (popHelper == null){
-            popHelper = new MutePopHelper(context);
+            synchronized (MutePopHelper.class) {
+                popHelper = new MutePopHelper(context);
+            }
         }
         return popHelper ;
     }
@@ -97,6 +99,12 @@ public class MutePopHelper {
     public void dismiss(){
         if (mPopupWindow != null) {
             mPopupWindow.dismiss();
+        }
+    }
+
+    public void onDestory(){
+        if (popHelper != null){
+            popHelper = null ;
         }
     }
 

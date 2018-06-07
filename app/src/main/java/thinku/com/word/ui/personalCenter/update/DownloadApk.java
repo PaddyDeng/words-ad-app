@@ -182,7 +182,7 @@ public class DownloadApk {
             intent.setDataAndType(Uri.fromFile(f), "application/vnd.android.package-archive");
         } else {
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.setDataAndType(FileProvider.getUriForFile(context, "org.zywx.wbpalmstar.widgetone.uex11597450.fileprovider", f), "application/vnd.android.package-archive");
+            intent.setDataAndType(FileProvider.getUriForFile(context, "thinku.com.word.fileprovider", f), "application/vnd.android.package-archive");
         }
         context.startActivityForResult(intent, C.REQUST_CODE_UPDATE);
     }

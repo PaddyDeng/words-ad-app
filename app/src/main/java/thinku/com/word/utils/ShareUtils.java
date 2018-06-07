@@ -46,6 +46,7 @@ public class ShareUtils {
 //            oks.setText("我是分享文本");
             // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
             oks.setImagePath(imageFile);//确保SDcard下面存在此张图片
+//            oks.setImageUrl("https://hmls.hfbank.com.cn/hfapp-api/9.png");
             // url在微信、微博，Facebook等平台中使用
 //            oks.setUrl("http://sharesdk.cn");
 //            // comment是我对这条分享的评论，仅在人人网使用
@@ -62,13 +63,8 @@ public class ShareUtils {
             OnekeyShare oks = new OnekeyShare();
             //关闭sso授权
             oks.disableSSOWhenAuthorize();
-
             // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-//            oks.setImagePath(imageFile);//确保SDcard下面存在此张图片
-            oks.setText("我是分享文本");
-            oks.setImageUrl("http://f1.webshare.mob.com/dimgs/1c950a7b02087bf41bc56f07f7d3572c11dfcf36.jpg ");
-            oks.setTitleUrl("http://www.baidu.com");
-            oks.setTitle("标题");
+            oks.setImagePath(imageFile);//确保SDcard下面存在此张图片
             // 启动分享GUI
             oks.show(context);
         }

@@ -36,7 +36,7 @@ public class SplashAdapter extends PagerAdapter {
      */
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        container.addView(imageViews.get(position));
+        container.addView(imageViews.get(position % imageViews.size()));
         return imageViews.get(position);
     }
 

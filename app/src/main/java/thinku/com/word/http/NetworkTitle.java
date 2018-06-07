@@ -27,4 +27,9 @@ public class NetworkTitle {
      * 周边公开课路径
      */
     public static final String OPENRESOURE = "http://open.viplgw.cn" ;
+
+    /**
+     * 有道语音
+     */
+    public static final String youdao = "http://dict.youdao.com/dictvoice?audio=";
 }

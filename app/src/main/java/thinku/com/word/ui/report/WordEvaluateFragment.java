@@ -54,6 +54,7 @@ import thinku.com.word.utils.C;
 import thinku.com.word.utils.HtmlUtil;
 import thinku.com.word.utils.MutePopHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
+import thinku.com.word.view.RatingBar;
 
 /**
  * Created by Administrator on 2018/2/22.
@@ -136,6 +137,8 @@ public class WordEvaluateFragment extends BaseActivity {
     WebView question_home;
     @BindView(R.id.title)
     LinearLayout title;
+    @BindView(R.id.rat_diff)
+    RatingBar ratDiff ;
     private RecitWordBeen recitWord;
     private int status;   //  单词状态
     private String wordId;   //  单词ID
@@ -341,7 +344,7 @@ public class WordEvaluateFragment extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        toTast(WordEvaluateFragment.this, "");
+                        toTast(WordEvaluateFragment.this, throwable.getMessage());
                         dismissLoadDialog();
                     }
                 }));
@@ -437,7 +440,6 @@ public class WordEvaluateFragment extends BaseActivity {
                                 words = (ArrayList<String>) reviewCaseBean.getWords();
                             }
                         }
-                        Log.e(TAG, "oldAibinhaosi: " + words);
                         reciteWords(words);
                     }
                 }, new Consumer<Throwable>() {
@@ -466,16 +468,23 @@ public class WordEvaluateFragment extends BaseActivity {
         if (SharedPreferencesUtils.getChoseMode(WordEvaluateFragment.this).equals("英中") && tag == C.REVIEW) {
             word.setVisibility(View.VISIBLE);
             name.setVisibility(View.GONE);
-        } else if (SharedPreferencesUtils.getChoseMode(WordEvaluateFragment.this).equals("中英")) {
+        } else if (SharedPreferencesUtils.getChoseMode(WordEvaluateFragment.this).equals("中英") && tag == C.REVIEW) {
             name.setVisibility(View.VISIBLE);
             word.setVisibility(View.GONE);
         } else if (tag == C.NORMAL) {
             name.setVisibility(View.GONE);
             word.setVisibility(View.VISIBLE);
         }
-        prencente.setText("认知率" + recitWord.getPercent() + "%");
+        prencente.setText("认知率：" + recitWord.getPercent() + "%");
         phonogram.setText(recitWord.getWords().getPhonetic_us());
         name.setText(recitWord.getWords().getTranslate());
+        try{
+            int leve = Integer.parseInt(recitWord.getWords().getLevel());
+            ratDiff.setStar(leve);
+        }catch (Exception e){
+            ratDiff.setStar(0);
+        }
+
         if (tag == 100) {
             blurry.setText("模糊");
         } else {
@@ -857,6 +866,7 @@ public class WordEvaluateFragment extends BaseActivity {
             if (knowPlayer.isPlaying()) knowPlayer.stop();
             knowPlayer.release();
         }
+        IMAudioManager.instance().release();
     }
 
     @Override
@@ -931,7 +941,7 @@ public class WordEvaluateFragment extends BaseActivity {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
 //                                    dismissLoadDialog();
-                                toTast(WordEvaluateFragment.this, throwable.toString());
+                                toTast(WordEvaluateFragment.this, throwable.getMessage());
                             }
                         }));
             } else {
@@ -1033,7 +1043,7 @@ public class WordEvaluateFragment extends BaseActivity {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
 //                                dismissLoadDialog();
-                            toTast(WordEvaluateFragment.this, throwable.toString());
+                            toTast(WordEvaluateFragment.this, throwable.getMessage());
                         }
                     }));
 

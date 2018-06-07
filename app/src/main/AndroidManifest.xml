@@ -95,7 +95,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="org.zywx.wbpalmstar.widgetone.uex11597450.fileprovider"
+            android:authorities="thinku.com.word.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

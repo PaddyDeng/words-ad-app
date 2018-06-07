@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="25dp"
@@ -30,10 +31,11 @@
         />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:textSize="12dp"
+        android:layout_marginStart="10dp"
+        android:textSize="12sp"
+        android:maxLines="1"
         android:layout_gravity="center_vertical"
         android:id="@+id/num"/>
 </LinearLayout>

@@ -2,11 +2,14 @@ package thinku.com.word.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +19,10 @@ import java.util.List;
 
 import thinku.com.word.R;
 import thinku.com.word.bean.RecitWordBeen;
+import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.HtmlUtil;
+import thinku.com.word.utils.MeasureUtils;
 
 /**
  * Created by Administrator on 2018/3/29.
@@ -47,13 +53,38 @@ public class ReciteWordAdapter extends RecyclerView.Adapter {
             if (sentence.getEnglish().indexOf(sentence.getWord()) != -1) {
                 String content = HtmlUtil.replaceSpace(sentence.getEnglish());
                 int index = content.indexOf(sentence.getWord()) ;
-                SpannableString spannableString = new SpannableString(content);
-                spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#31b272")), index, index + sentence.getWord().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                SpannableString spannableString = new SpannableString(content );
+                spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#31b272")), index,
+                        index + sentence.getWord().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                //  在文本末尾添加图片
+                Drawable drawable = context.getResources().getDrawable(R.mipmap.music);
+                drawable.setBounds(MeasureUtils.dp2px(context , 5),MeasureUtils.dp2px(context , -5)
+                        ,MeasureUtils.dp2px(context , 20 ),MeasureUtils.dp2px(context ,10));
+                ImageSpan imageSpan = new ImageSpan(drawable);
+                spannableString.setSpan(imageSpan ,content.length()  -2 ,content.length() ,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 reciteWordHolder.us.setText(spannableString);
             }else{
                 String content = HtmlUtil.replaceSpace(sentence.getEnglish());
+                SpannableString spannableString = new SpannableString(content );
+                Drawable drawable = context.getResources().getDrawable(R.mipmap.music);
+                drawable.setBounds(MeasureUtils.dp2px(context , 5),MeasureUtils.dp2px(context , -5)
+                        ,MeasureUtils.dp2px(context , 20 ),MeasureUtils.dp2px(context ,10));
+                ImageSpan imageSpan = new ImageSpan(drawable);
+                spannableString.setSpan(imageSpan ,content.length() -2  ,content.length() ,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 reciteWordHolder.us.setText(content);
             }
+            final String urlPath = NetworkTitle.youdao + sentence.getEnglish();
+            reciteWordHolder.us.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    IMAudioManager.instance().playSound(urlPath, new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                        }
+                    });
+                }
+            });
+
         }else {
             reciteWordHolder.us.setText(HtmlUtil.replaceSpace(sentence.getEnglish()));
         }

@@ -150,6 +150,15 @@ public class RecitWordBeen {
         private String mnemonic;
         private String uk_audio;
         private String us_audio;
+        private String level ;
+
+        public String getLevel() {
+            return level;
+        }
+
+        public void setLevel(String level) {
+            this.level = level;
+        }
 
         public String getId() {
             return id;

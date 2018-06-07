@@ -4,6 +4,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -13,34 +15,68 @@
 
         <include layout="@layout/title_layout_word1" />
 
-        <TextView
-            android:id="@+id/prencente"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/white_stroke_10round"
-            android:paddingBottom="5dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="5dp"
-            android:textSize="13sp"
-            android:text="认知率0%" />
+            android:background="@drawable/white_stroke_10round">
+            <TextView
+                android:id="@+id/prencente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:paddingTop="5dp"
+                android:textSize="13sp"
+                android:text="认知率：0%" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:text="难度："
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:layout_alignStart="@id/prencente"
+                android:id="@+id/diff"
+                android:layout_below="@id/prencente"/>
+
+            <thinku.com.word.view.RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/diff"
+                android:layout_alignTop="@id/diff"
+                android:id="@+id/rat_diff"
+                app:starCount="5"
+                android:layout_marginTop="7dp"
+                app:starEmpty="@mipmap/rat_empty"
+                app:starFill="@mipmap/rat_sold"
+                app:starPadding="5dp"
+                app:starImageSize = "12dp"
+                app:clickable="false"
+                android:layout_marginLeft="5dp"
+                />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/word"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:textColor="@color/black"
-            android:textSize="24dp" />
+            android:gravity="center_horizontal"
+            tools:text="fdsfafasfsafsdfdsfsdfsafasfdsfsdafa"
+            android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
 
             <ImageView
                 android:id="@+id/play"
@@ -53,19 +89,22 @@
             <TextView
                 android:id="@+id/phonogram"
                 android:layout_width="wrap_content"
+                android:maxWidth="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/black"
                 android:layout_marginRight="20dp"
+                android:gravity="center_horizontal"
                 android:textSize="15sp" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:textColor="@color/mainColor"
+            android:gravity="center_horizontal"
             android:textSize="13sp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"/>

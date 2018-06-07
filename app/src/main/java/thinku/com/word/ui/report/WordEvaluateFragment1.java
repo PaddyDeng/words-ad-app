@@ -40,6 +40,7 @@ import thinku.com.word.ui.webView.WebViewActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.HtmlUtil;
 import thinku.com.word.utils.LoginHelper;
+import thinku.com.word.view.RatingBar;
 
 
 public class WordEvaluateFragment1 extends BaseActivity {
@@ -105,7 +106,9 @@ public class WordEvaluateFragment1 extends BaseActivity {
     WebView article;
     @BindView(R.id.question_home)
 //    TextView question_home ;
-            WebView question_home;
+    WebView question_home;
+    @BindView(R.id.rat_diff)
+    RatingBar ratDiff ;
 
     private RecitWordBeen recitWord;
     private int status;   //  单词状态
@@ -166,10 +169,17 @@ public class WordEvaluateFragment1 extends BaseActivity {
     public void referUi1(final RecitWordBeen recitWord) {
 
         this.recitWord = recitWord ;
-        prencente.setText("认知率" + recitWord.getPercent() + "%");
+        prencente.setText("认知率：" + recitWord.getPercent() + "%");
         phonogram.setText(recitWord.getWords().getPhonetic_us());
         name.setText(recitWord.getWords().getTranslate());
         word.setText(recitWord.getWords().getWord());
+        try{
+            int leve = Integer.parseInt(recitWord.getWords().getLevel());
+            ratDiff.setStar(leve);
+        }catch (Exception e){
+            ratDiff.setStar(0);
+        }
+
         contentShow.setVisibility(View.VISIBLE);
         contentHide.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(recitWord.getWords().getMnemonic())) {

@@ -35,10 +35,6 @@ import thinku.com.word.ui.report.ReportFragment;
 public class MainActivity extends BaseFragmentActivitiy implements View.OnClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    public static final int FIRST = 0;
-    public static final int SECOND = 1;
-    public static final int THIRD = 2;
-    public static final int FOURTH = 3;
     private RelativeLayout recite_ll, report_ll, pk_ll, periphery_ll;
     private FrameLayout fl;
     private ImageView recite_iv, report_iv, pk_iv, periphery_iv;
@@ -48,9 +44,7 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
     private List<ImageView> ivs;
     private List<TextView> tvs;
     private List<RelativeLayout> lls;
-    private SupportFragment[] fragments = new SupportFragment[4];
     private Map< Integer,SupportFragment> fragmentList = new ArrayMap<>();
-    private WordParentFragment reciteFragment ;
     private SimpleUpdateApk simpleUpdateApk ;
     public static void toMain(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -163,7 +157,6 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
             ivs.get(i).setSelected(true);
             lls.get(i).setSelected(true);
             tvs.get(i).setTextColor(getResources().getColor(R.color.white));
-            Log.e(TAG, "setSelect: " + i);
             setFragment(i);
         }
     }
@@ -171,6 +164,7 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
 
     public void setFragment(int tag) {
         Log.e(TAG, "setFragment: " + tag);
+        try {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (oldPage != -1) {
             ft.hide(fragmentList.get(oldPage));
@@ -202,10 +196,10 @@ public class MainActivity extends BaseFragmentActivitiy implements View.OnClickL
             }
         }
         oldPage = tag;
-        try {
+
             ft.commit();
         } catch (Exception e) {
-
+            Log.i(TAG, e.getMessage());
         }
     }
 

@@ -196,12 +196,12 @@ public class HtmlUtil {
         sb.append("</head>");
         sb.append("<body>");
         if (index != -1){
-            int spaceIndex = content.indexOf(" " ,index);
+//            int spaceIndex = content.indexOf(" " ,index);
             sb.append(content.substring(0 ,index));
             sb.append(greenFirst);
             sb.append(word);
             sb.append(greenLast);
-            sb.append(content.substring(spaceIndex , content.length()));
+            sb.append(content.substring(index , content.length()));
         }else {
             sb.append(content);
         }

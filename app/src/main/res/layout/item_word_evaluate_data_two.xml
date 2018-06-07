@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingTop="5dp"
     android:paddingLeft="5dp">
     
@@ -20,7 +21,7 @@
         android:gravity="center_vertical"
         android:layout_toRightOf="@id/img"
         android:lineSpacingExtra="2dp"
-        android:text="daasd"
+        tools:text="faffffs"
         android:textColor="@color/black"
         android:id="@+id/us"
         android:textSize="13sp"
@@ -33,7 +34,7 @@
         android:lineSpacingExtra="2dp"
         android:id="@+id/chinese"
         android:layout_below="@id/us"
-        android:text="v.管理支配"
+        tools:text="v.管理支配"
         android:textColor="@color/black"
         android:textSize="13sp"
         />
