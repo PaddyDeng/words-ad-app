@@ -86,12 +86,11 @@ public class WordErrorActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_error_correction);
         ButterKnife.bind(this);
-        initView();
-        try{
+        Intent intent = getIntent();
+        if (intent != null){
             wordId = getIntent().getStringExtra("wordId");
-        }catch (Exception e){
-
         }
+        initView();
     }
 
     public void initView() {

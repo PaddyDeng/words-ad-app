@@ -86,4 +86,9 @@ public class C {
     public static final int RXBUS_REPORT_WORD = 4 ;
     public static final int RXBUS_PK_PAGE = 5 ;
     public static final int RXBUS_PK_WORD = 6 ;
+
+
+    //  单词乱序 正序
+    public static final int LGAddPlanSortRandom = 1 ;  // 乱序
+    public static final int LGAddPlanSortOrder = 2 ;  //  正序
 }

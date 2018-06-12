@@ -23,6 +23,7 @@ import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.HtmlUtil;
 import thinku.com.word.utils.MeasureUtils;
+import thinku.com.word.view.CenterAlignImageSpan;
 
 /**
  * Created by Administrator on 2018/3/29.
@@ -49,31 +50,32 @@ public class ReciteWordAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ReciteWordHolder reciteWordHolder = (ReciteWordHolder) holder;
         RecitWordBeen.LowSentenceBean sentence = sentences.get(position);
+        String content ;
         if (!TextUtils.isEmpty(sentence.getWord())){
             if (sentence.getEnglish().indexOf(sentence.getWord()) != -1) {
-                String content = HtmlUtil.replaceSpace(sentence.getEnglish());
+                content = HtmlUtil.replaceSpace(sentence.getEnglish());
                 int index = content.indexOf(sentence.getWord()) ;
-                SpannableString spannableString = new SpannableString(content );
+                SpannableString spannableString = new SpannableString(content +"    ");
                 spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#31b272")), index,
                         index + sentence.getWord().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 //  在文本末尾添加图片
                 Drawable drawable = context.getResources().getDrawable(R.mipmap.music);
-                drawable.setBounds(MeasureUtils.dp2px(context , 5),MeasureUtils.dp2px(context , -5)
-                        ,MeasureUtils.dp2px(context , 20 ),MeasureUtils.dp2px(context ,10));
-                ImageSpan imageSpan = new ImageSpan(drawable);
-                spannableString.setSpan(imageSpan ,content.length()  -2 ,content.length() ,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                drawable.setBounds(MeasureUtils.dp2px(context , 5),MeasureUtils.dp2px(context , 0)
+                        ,MeasureUtils.dp2px(context , 17 ),MeasureUtils.dp2px(context ,12));
+                CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(drawable);
+                spannableString.setSpan(imageSpan ,content.length() ,content.length() + 2  ,ImageSpan.ALIGN_BASELINE);
                 reciteWordHolder.us.setText(spannableString);
             }else{
-                String content = HtmlUtil.replaceSpace(sentence.getEnglish());
-                SpannableString spannableString = new SpannableString(content );
+                content = HtmlUtil.replaceSpace(sentence.getEnglish());
+                SpannableString spannableString = new SpannableString(content +"    " );
                 Drawable drawable = context.getResources().getDrawable(R.mipmap.music);
-                drawable.setBounds(MeasureUtils.dp2px(context , 5),MeasureUtils.dp2px(context , -5)
-                        ,MeasureUtils.dp2px(context , 20 ),MeasureUtils.dp2px(context ,10));
-                ImageSpan imageSpan = new ImageSpan(drawable);
-                spannableString.setSpan(imageSpan ,content.length() -2  ,content.length() ,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                reciteWordHolder.us.setText(content);
+                drawable.setBounds(MeasureUtils.dp2px(context , 5),MeasureUtils.dp2px(context , 0)
+                        ,MeasureUtils.dp2px(context , 17 ),MeasureUtils.dp2px(context ,12));
+                CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(drawable);
+                spannableString.setSpan(imageSpan ,content.length() ,content.length() + 2  ,ImageSpan.ALIGN_BASELINE);
+                reciteWordHolder.us.setText(spannableString);
             }
-            final String urlPath = NetworkTitle.youdao + sentence.getEnglish();
+            final String urlPath = NetworkTitle.youdao +content ;
             reciteWordHolder.us.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -84,7 +86,6 @@ public class ReciteWordAdapter extends RecyclerView.Adapter {
                     });
                 }
             });
-
         }else {
             reciteWordHolder.us.setText(HtmlUtil.replaceSpace(sentence.getEnglish()));
         }

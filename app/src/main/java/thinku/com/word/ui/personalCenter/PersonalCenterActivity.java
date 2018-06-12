@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -41,6 +42,7 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
     private TextView title_t,name,setting;
     private ImageView portrait;
     private RelativeLayout type_setting,sign,feedback,clock,night,service;
+    private LinearLayout user ;
     private Observable<String> observable ;
     public static void start(Context context){
         Intent intent = new Intent(context ,PersonalCenterActivity.class);
@@ -63,6 +65,7 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
     }
 
     private void findView() {
+        user = (LinearLayout) findViewById(R.id.user);
         back = (ImageView) findViewById(R.id.back);
         title_t = (TextView) findViewById(R.id.title_t);
         title_t.setText("个人中心");
@@ -101,6 +104,7 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
         clock.setOnClickListener(this);
         night.setOnClickListener(this);
         service.setOnClickListener(this);
+        user.setOnClickListener(this);
     }
     @Override
     public void onClick(View v) {
@@ -108,7 +112,7 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
             case R.id.back:
                 finish();
                 break;
-            case R.id.setting:
+            case R.id.user:
                 SettingActivity.start(PersonalCenterActivity.this);
                 break;
             case R.id.type_setting:

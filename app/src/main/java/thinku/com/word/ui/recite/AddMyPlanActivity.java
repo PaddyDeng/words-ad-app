@@ -4,9 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,9 +30,10 @@ import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.other.MainActivity;
+import thinku.com.word.utils.C;
+import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.view.wheelview.widget.WheelView;
 
-import static thinku.com.word.R.id.find;
 import static thinku.com.word.R.id.title_t;
 
 public class AddMyPlanActivity extends BaseActivity {
@@ -50,7 +55,12 @@ public class AddMyPlanActivity extends BaseActivity {
     TextView numOfWord;
     @BindView(R.id.wheelView_r2)
     RelativeLayout wheelViewR2;
-
+    @BindView(R.id.word_order_group)
+    RadioGroup wordGroup ;
+    @BindView(R.id.positive_word)
+    RadioButton positive_word ;
+    @BindView(R.id.disorder)
+    RadioButton disorder ;
     Unbinder unbinder;
     @BindView(R.id.name)
     TextView name;
@@ -64,7 +74,9 @@ public class AddMyPlanActivity extends BaseActivity {
     private String packId;
     private int total;
     private String nameTxt;
-
+    private int sort = 2  ;
+    private Drawable wordChoseDrawable ;  //  选择
+    private Drawable wordUnchoseDrawable ;  // 未选择
     public static void start(Context context, String packId, String total, String name) {
         Intent intent = new Intent(context, AddMyPlanActivity.class);
         intent.putExtra("packId", packId);
@@ -91,6 +103,7 @@ public class AddMyPlanActivity extends BaseActivity {
 
     }
 
+
     public void referUi() {
         setWheel(total, 1, 1);
     }
@@ -103,12 +116,34 @@ public class AddMyPlanActivity extends BaseActivity {
     }
 
     public void init() {
+        wordChoseDrawable = getResources().getDrawable(R.mipmap.word_chose);
+        wordUnchoseDrawable = getResources().getDrawable(R.mipmap.word_unchose);
+        wordChoseDrawable.setBounds(0,0,wordChoseDrawable.getMinimumWidth() ,wordChoseDrawable.getMinimumHeight());
+        wordUnchoseDrawable.setBounds(0,0,wordUnchoseDrawable.getMinimumWidth() , wordUnchoseDrawable.getMinimumHeight());
         titleT.setText("我的计划");
         titleIv.setText("确定");
         setTextFlag(daytext);
         setTextFlag(numtext);
         name.setText(nameTxt);
+        wordGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                switch (checkedId){
+                    case R.id.positive_word:
+                         positive_word.setChecked(true);
+                         disorder.setChecked(false);
+                         sort = C.LGAddPlanSortOrder;
+                        break;
+                    case R.id.disorder:
+                        positive_word.setChecked(false);
+                        disorder.setChecked(true);
+                        sort = C.LGAddPlanSortRandom;
+                        break;
+                }
+            }
+        });
     }
+
 
     /**
      * 设置下划线
@@ -210,7 +245,7 @@ public class AddMyPlanActivity extends BaseActivity {
     }
 
     public void addPack(final String id, String day, String word) {
-        addToCompositeDis(HttpUtil.addPackageObservableOther(id, day, word)
+        addToCompositeDis(HttpUtil.addPackageObservableOther(id, day, word ,sort+"")
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {

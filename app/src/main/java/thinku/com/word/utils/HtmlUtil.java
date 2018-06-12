@@ -6,6 +6,7 @@ import android.text.Spanned;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,6 +51,10 @@ public class HtmlUtil {
         }
         if (content.contains("</vocab>")){
             content = content.replace("</vocab>","");
+        }
+
+        if (content.contains("<vocab")){
+            content = content.replace("<vocab", "");
         }
 //        if (content.contains("&amp;nbsp;")) {
 //            content = content.replace("&amp;nbsp;", " ");
@@ -135,6 +140,22 @@ public class HtmlUtil {
         if (content.contains("<br/>")) {
             content = content.replace("<br/>", "").trim();
         }
+        if (content.contains("<vocab>")){
+            content = content.replace("<vocab>", "");
+        }
+        if (content.contains("</vocab>")){
+            content = content.replace("</vocab>","");
+        }
+        if (content.contains("<vocab")){
+            content = content.replace("<vocab", "");
+        }
+        if (content.contains("font-family")){
+            content = content.replace("font-family","").trim();
+        }
+        if (content.contains("font-size")){
+            content = content.replace("font-size","").trim();
+        }
+//        content = Html.fromHtml(content).toString();
         return content;
     }
 
@@ -146,6 +167,7 @@ public class HtmlUtil {
      * @return
      */
     public static String repairContent(String content, String replaceHttp) {
+        Log.e("Word", "repairContent: " + content );
 //        <img src="http://www.gmatonline.cn//files/attach/images/20151109/1447062370368626.png" title="1447062370368626.png" alt="1.png"/>
         List<String> imgList =new ArrayList<>();
         String patternStr = "<img\\s*([^>]*)\\s*src=\\\"(.*?)\\\"\\s*([^>]*)>";
@@ -171,6 +193,7 @@ public class HtmlUtil {
 
     public static String getHtml(String content , String word) {
         content = replaceRN(content);
+        Log.e("Word", "getHtml: " + content );
         String greenFirst = "<span style=\"color:green\">";
         String greenLast = "</span>";
         int index = content.indexOf(word);
@@ -195,13 +218,17 @@ public class HtmlUtil {
         sb.append("</style>");
         sb.append("</head>");
         sb.append("<body>");
-        if (index != -1){
+        if (index != -1 && !content.substring(0 ,1).equals("<")){
+            try {
 //            int spaceIndex = content.indexOf(" " ,index);
-            sb.append(content.substring(0 ,index));
-            sb.append(greenFirst);
-            sb.append(word);
-            sb.append(greenLast);
-            sb.append(content.substring(index , content.length()));
+                    sb.append(content.substring(0, index));
+                    sb.append(greenFirst);
+                    sb.append(word);
+                    sb.append(greenLast);
+                    sb.append(content.substring(index + word.length(), content.length()));
+            }catch (Exception e){
+
+            }
         }else {
             sb.append(content);
         }

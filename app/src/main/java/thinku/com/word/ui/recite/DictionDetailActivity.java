@@ -83,6 +83,7 @@ public class DictionDetailActivity extends BaseActivity {
     private Disposable countTime;
     private Animation mShakeAnimation;
     private Vibrator mVibrator;   //  系统震动服务
+    private List<String> splitWordList ;  //  存储分割之后的string的list
     public static void start(Context context, ArrayList<String> wordList) {
         Intent intent = new Intent(context, DictionDetailActivity.class);
         intent.putStringArrayListExtra("words", wordList);
@@ -129,6 +130,9 @@ public class DictionDetailActivity extends BaseActivity {
         if (texts != null && texts.size() != 0) {
             texts.clear();
         }
+        if (splitWordList != null && splitWordList.size() > 0){
+            splitWordList.clear();
+        }
         i = 0;
         word_position_min = 0;
         closeAnimationForever(choseTxt);
@@ -141,6 +145,7 @@ public class DictionDetailActivity extends BaseActivity {
         word.removeAllViews();
         texts = new ArrayList<>();
         word_word = new HashMap<>();
+
         referData();
         if (countTime != null) {
             countTime.dispose();
@@ -159,16 +164,13 @@ public class DictionDetailActivity extends BaseActivity {
                         titleT.setVisibility(View.VISIBLE);
                         recitWord = strings;
                         phonogram.setText(recitWord.getWords().getPhonetic_us());
-                        IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(MediaPlayer mediaPlayer) {
-                            }
-                        });
+                        playMusic();
                         translate.setText(StringUtils.spilt(recitWord.getWords().getTranslate()));
                         if (words != null) {
                             words.clear();
                             if (StringUtils.splitString(recitWord.getWords().getWord()) != null) {
-                                words.addAll(StringUtils.splitString(recitWord.getWords().getWord()));
+                                splitWordList.addAll(StringUtils.splitString(recitWord.getWords().getWord()));
+                                words.addAll(splitWordList);
                                 dictionDetailAdapter.notifyDataSetChanged();
                             }
                         }
@@ -185,8 +187,17 @@ public class DictionDetailActivity extends BaseActivity {
     public void initView() {
         titleIv.setBackgroundResource(R.mipmap.clock);
         mVibrator = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
+        splitWordList = new ArrayList<>();
     }
 
+
+    public void playMusic(){
+        IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+            }
+        });
+    }
 
     public void initTimeText() {
         choseTxt.setText("15");
@@ -253,7 +264,7 @@ public class DictionDetailActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.back, R.id.tip})
+    @OnClick({R.id.back, R.id.tip , R.id.r1})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -261,6 +272,9 @@ public class DictionDetailActivity extends BaseActivity {
                 break;
             case R.id.tip:
                 toWordTip(recitWord);
+                break;
+            case R.id.r1:
+                playMusic();
                 break;
 
         }
@@ -276,6 +290,7 @@ public class DictionDetailActivity extends BaseActivity {
      */
     public void setUpText(int position) {
         if (TextUtils.isEmpty(texts.get(i).getText().toString().trim())) {
+            Log.e(TAG, "setUpText: "  );
             texts.get(i).setText(words.get(position));
             word_word.put(position, i);
             i++;
@@ -290,13 +305,13 @@ public class DictionDetailActivity extends BaseActivity {
                                     .doOnSubscribe(new Consumer<Disposable>() {
                                         @Override
                                         public void accept(@NonNull Disposable disposable) throws Exception {
-                                            showLoadDialog();
+//                                            showLoadDialog();
                                         }
                                     })
                                     .subscribe(new Consumer<ResultBeen<Void>>() {
                                         @Override
                                         public void accept(@NonNull ResultBeen<Void> voidResultBeen) throws Exception {
-                                            dismissLoadDialog();
+//                                            dismissLoadDialog();
                                             if (getHttpResSuc(voidResultBeen.getCode())) {
                                                 wordIdIndex++;
                                                 fromWordsIdGetWordDetails(wordList.get(wordIdIndex), wordList.size() + "", wordIdIndex + "");
@@ -305,10 +320,13 @@ public class DictionDetailActivity extends BaseActivity {
                                     }, new Consumer<Throwable>() {
                                         @Override
                                         public void accept(@NonNull Throwable throwable) throws Exception {
-                                            dismissLoadDialog();
+//                                            dismissLoadDialog();
+                                            toTast(throwable.getMessage());
                                         }
                                     }));
                         }else{
+                            //  填错了  清空所有数据
+                           resetAdapter();
                             startShakeAnimation();
                         }
                     }
@@ -324,6 +342,15 @@ public class DictionDetailActivity extends BaseActivity {
         }
     }
 
+    public void resetAdapter(){
+        i= 0 ;
+        words.clear();
+        words.addAll(splitWordList);
+        dictionDetailAdapter.notifyDataSetChanged();
+        for (TextView text : texts){
+            text.setText("");
+        }
+    }
 
 
     /**

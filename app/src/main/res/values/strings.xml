@@ -61,6 +61,9 @@
 </string>
     <string name="only_new_content">适合不喜欢重复记忆的同学们使用，快速浏览单词，快速记背，适合考前冲刺使用。需花费较少时间。
 </string>
+    <string name="positive_word">正序背单词</string>
+    <string name="disorder_word">乱序背单词</string>
+    <string name="diction_tip">点击即可选中，再次点击取消</string>
     <!--JPush-->
     <string name="hello">Hello World, JPush!</string>
     <string name="tag_hint">Tag can be number, alphabet, underscore, Chinese. Use , to split many tags.</string>

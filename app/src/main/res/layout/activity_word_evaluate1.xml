@@ -179,9 +179,46 @@
                        >
 
                         <RelativeLayout
+                            android:id="@+id/sentences"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/color_bg_gray"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/image3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:layout_marginLeft="30dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@mipmap/triangle" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_toRightOf="@id/image3"
+                                android:text="例句"
+                                android:textColor="@color/mainColor" />
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/sentences_list"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/image3"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:paddingTop="5dp"
+                                android:visibility="visible"
+                                android:background="@color/white"
+                                />
+                        </RelativeLayout>
+                        <RelativeLayout
                             android:id="@+id/help_memory"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_below="@id/sentences"
                             android:background="@color/color_bg_gray"
                             android:visibility="visible">
 
@@ -255,49 +292,12 @@
                                 android:background="@color/white" />
                         </RelativeLayout>
 
-                        <RelativeLayout
-                            android:id="@+id/sentences"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/short_senese"
-                            android:background="@color/color_bg_gray"
-                            android:visibility="gone">
-
-                            <ImageView
-                                android:id="@+id/image3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:src="@mipmap/triangle" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_toRightOf="@id/image3"
-                                android:text="例句"
-                                android:textColor="@color/mainColor" />
-
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/sentences_list"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/image3"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:paddingTop="5dp"
-                                android:visibility="visible"
-                                android:background="@color/white"
-                                 />
-                        </RelativeLayout>
 
                         <RelativeLayout
                             android:id="@+id/question"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_below="@id/sentences"
+                            android:layout_below="@id/short_senese"
                             android:visibility="gone"
                         android:background="@color/color_gray_bg"
                             >

@@ -163,8 +163,8 @@ public class HttpUtil {
     }
 
     // 添加词包
-    public static Observable<ResultBeen<Void>> addPackageObservableOther(String packageId , String planDay ,String planWords){
-        return getRestApi(HostType.WORDS_URL_HOST).addPackageOther(packageId ,planDay , planWords).compose(new SchedulerTransformer<ResultBeen<Void>>());
+    public static Observable<ResultBeen<Void>> addPackageObservableOther(String packageId , String planDay ,String planWords,String rank){
+        return getRestApi(HostType.WORDS_URL_HOST).addPackageOther(packageId ,planDay , planWords , rank).compose(new SchedulerTransformer<ResultBeen<Void>>());
     }
 
     //  开始背单词

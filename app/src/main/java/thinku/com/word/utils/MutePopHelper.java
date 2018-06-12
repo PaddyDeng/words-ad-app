@@ -57,7 +57,6 @@ public class MutePopHelper {
         boolean isPlay = SharedPreferencesUtils.getPlayMusic(context);
         final TextView muteTxt  = (TextView) mView.findViewById(R.id.mute_text);
         final SwitchView switchView = (SwitchView) mView.findViewById(R.id.switch_button);
-        Log.e("tttt", "init: " + isPlay );
         if (isPlay) {
             muteTxt.setText("(关闭)");
         }

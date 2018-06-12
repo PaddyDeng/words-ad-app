@@ -123,17 +123,9 @@ public class WordEvaluateFragment1 extends BaseActivity {
     private List<RecitWordBeen.LowSentenceBean> sentenceBeen;
     private List<QuestionBean.QslctarrBean> questions;
 
-    private MediaPlayer dimPlayer;
-    private MediaPlayer notKnowPlayer;
-    private MediaPlayer knowPlayer;
-    private MediaPlayer knowWellPlayer;
-
     private ReciteWordAdapter low;
     private ReciteWordAdapter sentence;
     private QuestionAdapter questionAdapter;
-    private boolean isUpdataReview = false;   //  新艾宾浩斯，  老艾宾浩斯  和 复习模式下 都是reviewUpdata
-    private boolean isShow = true;
-    private boolean isNormal = false ;
 
     public static void start(Context context, String wordId) {
         Intent intent = new Intent(context, WordEvaluateFragment1.class);
@@ -152,22 +144,14 @@ public class WordEvaluateFragment1 extends BaseActivity {
             fromWordsIdGetWordDetails(wordId);
         }
         setFocusable();
-//        initAudioManager();
         initRecycler();
     }
 
 
-//    public void initAudioManager() {
-//        dimPlayer = MediaPlayer.create(this, R.raw.dim);
-//        knowPlayer = MediaPlayer.create(this, R.raw.eva_right_and_know);
-//        notKnowPlayer = MediaPlayer.create(this, R.raw.eva_error_and_not_know);
-//        knowWellPlayer = MediaPlayer.create(this, R.raw.know_well);
-//    }
     /**
      * @param recitWord
      */
     public void referUi1(final RecitWordBeen recitWord) {
-
         this.recitWord = recitWord ;
         prencente.setText("认知率：" + recitWord.getPercent() + "%");
         phonogram.setText(recitWord.getWords().getPhonetic_us());
@@ -179,7 +163,6 @@ public class WordEvaluateFragment1 extends BaseActivity {
         }catch (Exception e){
             ratDiff.setStar(0);
         }
-
         contentShow.setVisibility(View.VISIBLE);
         contentHide.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(recitWord.getWords().getMnemonic())) {
@@ -194,23 +177,28 @@ public class WordEvaluateFragment1 extends BaseActivity {
 
 
     public void playMusic(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (!TextUtils.isEmpty(recitWord.getWords().getUs_audio())) {
+                    IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
 
-        if (!TextUtils.isEmpty(recitWord.getWords().getUs_audio())) {
-            IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
+                        }
+                    });
+                } else {
+                    if (!TextUtils.isEmpty(recitWord.getWords().getUk_audio()))
+                        IMAudioManager.instance().playSound(recitWord.getWords().getUk_audio(), new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
 
+                            }
+                        });
                 }
-            });
-        } else {
-            if (!TextUtils.isEmpty(recitWord.getWords().getUk_audio()))
-                IMAudioManager.instance().playSound(recitWord.getWords().getUk_audio(), new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
+            }
+        }).start();
 
-                    }
-                });
-        }
     }
 
     /**
@@ -246,10 +234,14 @@ public class WordEvaluateFragment1 extends BaseActivity {
                     sentenceBeen.clear();
                     if (recitWord.getSentence().size() > 3) {
                         for (int i = 0; i < 3; i++) {
+                            recitWord.getSentence().get(i).setWord(recitWord.getWords().getWord());
                             sentenceBeen.add(recitWord.getSentence().get(i));
                         }
                     } else {
-                        sentenceBeen.addAll(recitWord.getSentence());
+                        for (int i = 0; i < recitWord.getSentence().size(); i++) {
+                            recitWord.getSentence().get(i).setWord(recitWord.getWords().getWord());
+                            sentenceBeen.add(recitWord.getSentence().get(i));
+                        }
                     }
                     sentence.notifyDataSetChanged();
                     sentences.setVisibility(View.VISIBLE);
@@ -387,7 +379,6 @@ public class WordEvaluateFragment1 extends BaseActivity {
                             LoginHelper.needLogin(WordEvaluateFragment1.this , "");
                         }else {
                             if (recitWordBeen != null) {
-
                                 referUi1(recitWordBeen);
                             }
                         }
@@ -406,7 +397,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
     public void click(View view) {
         switch (view.getId()) {
             case R.id.back:
-                this.finish();
+                finishWithMusic();
                 break;
             case R.id.familiar:
                 break;
@@ -420,10 +411,14 @@ public class WordEvaluateFragment1 extends BaseActivity {
         }
     }
 
+    public void finishWithMusic(){
+        this.finishWithAnim();
+        IMAudioManager.instance().release();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        IMAudioManager.instance().release();
     }
 
     @Override
@@ -447,7 +442,6 @@ public class WordEvaluateFragment1 extends BaseActivity {
                 break;
             case R.id.niujing:
                 url = "https://www.oxfordlearnersdictionaries.com/definition/english/" + word.replace(" ", "-") + "?q=" + word.replace(" ", "+");
-//                  url = "https://www.oxfordlearnersdictionaries.com/definition/english/reflex-angle?q=reflex+angle";
                 break;
         }
         WebViewActivity.start(this, url);

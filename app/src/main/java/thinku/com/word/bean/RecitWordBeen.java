@@ -57,6 +57,15 @@ public class RecitWordBeen {
     private thinku.com.word.ui.report.bean.QuestionBean question;
     private List<LowSentenceBean> sentence;
     private List<LowSentenceBean> lowSentence;
+    private List<SimilarWords> similarWords ;
+
+    public List<SimilarWords> getSimilarWords() {
+        return similarWords;
+    }
+
+    public void setSimilarWords(List<SimilarWords> similarWords) {
+        this.similarWords = similarWords;
+    }
 
     public int getNeedReviewWords() {
         return needReviewWords;
@@ -120,6 +129,39 @@ public class RecitWordBeen {
 
     public void setLowSentence(List<LowSentenceBean> lowSentence) {
         this.lowSentence = lowSentence;
+    }
+
+    /**
+     * 相似词
+     */
+    public  static class SimilarWords{
+        private String word ;
+        private String id ;
+        private int num ;
+
+        public String getWord() {
+            return word;
+        }
+
+        public void setWord(String word) {
+            this.word = word;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public int getNum() {
+            return num;
+        }
+
+        public void setNum(int num) {
+            this.num = num;
+        }
     }
 
     public static class WordsBean {

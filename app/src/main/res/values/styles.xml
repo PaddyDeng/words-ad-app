@@ -453,4 +453,15 @@
         <item name="android:minHeight">9dp</item>
         <item name="android:maxHeight">9dp</item>
     </style>
+
+
+
+    <!--背单词排序单选按钮    -->
+    <style name="word_order" parent="wrap">
+        <item name="android:button">@null</item>
+        <item name="android:drawableRight">@drawable/word_order</item>
+        <item name="android:drawablePadding">20dp</item>
+        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:textColor">@color/gray_text</item>
+    </style>
 </resources>

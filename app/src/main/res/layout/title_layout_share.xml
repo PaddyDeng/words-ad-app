@@ -13,10 +13,10 @@
         <ImageView
             android:id="@+id/back"
             android:src="@mipmap/white_back"
-            android:layout_marginLeft="10dp"
+            android:padding="10dp"
             android:layout_centerVertical="true"
-            android:layout_width="50px"
-            android:layout_height="50px" />
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
         <TextView
             android:id="@+id/title_t"
             android:textSize="20sp"

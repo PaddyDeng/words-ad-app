@@ -117,7 +117,7 @@ public interface RestApi {
 
     @FormUrlEncoded
     @POST(NetworkChildren.ADD_PACKAGE)
-    Observable<ResultBeen<Void>> addPackageOther(@Field("packageId" ) String packageId , @Field("planDay" ) String planDay  ,@Field("planWords" ) String planWords);
+    Observable<ResultBeen<Void>> addPackageOther(@Field("packageId" ) String packageId , @Field("planDay" ) String planDay  ,@Field("planWords" ) String planWords ,@Field("rank") String rank);
 
     @POST(NetworkChildren.RECITE_WORDS)
     Observable<ResultBeen<Void>> reciteWord();
