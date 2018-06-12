@@ -297,6 +297,15 @@ public class RecitWordBeen {
         private String chinese;
         private String id;
         private String word ;
+        private boolean isDialog ;
+
+        public boolean isDialog() {
+            return isDialog;
+        }
+
+        public void setDialog(boolean dialog) {
+            isDialog = dialog;
+        }
 
         public String getWord() {
             return word;

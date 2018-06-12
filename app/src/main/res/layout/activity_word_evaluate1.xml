@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
         <include layout="@layout/title_layout_word1" />
 
@@ -108,400 +103,314 @@
             android:textSize="13sp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"/>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/content_hide"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:visibility="gone">
 
-                <RelativeLayout
-                    android:id="@+id/rl_click"
+        <android.support.v4.widget.NestedScrollView
+                    android:id="@+id/content_show"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="-15dp"
-                    android:background="@color/color_bg_gray">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/bg" />
-
-                    <ImageView
-                        android:id="@+id/click"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="80dp"
-                        android:src="@mipmap/click" />
-
-                    <TextView
+                    android:layout_height="0dp"
+                    android:visibility="visible"
+                    android:layout_weight="1"
+                    >
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@id/click"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center_horizontal"
-                        android:text="点击屏幕显示释义"
-                        android:textSize="15sp" />
-                </RelativeLayout>
-            </LinearLayout>
+                        android:orientation="vertical"
+                        >
 
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/top"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/bg" />
-
-                <android.support.v4.widget.NestedScrollView
-                    android:id="@+id/content_show"
-                    android:layout_below="@id/top"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#EBEBEB">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                       >
-
-                        <RelativeLayout
-                            android:id="@+id/sentences"
+                        <ImageView
+                            android:id="@+id/top"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/color_bg_gray"
-                            android:visibility="gone">
-
-                            <ImageView
-                                android:id="@+id/image3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:src="@mipmap/triangle" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_toRightOf="@id/image3"
-                                android:text="例句"
-                                android:textColor="@color/mainColor" />
-
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/sentences_list"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/image3"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:paddingTop="5dp"
-                                android:visibility="visible"
-                                android:background="@color/white"
-                                />
-                        </RelativeLayout>
-                        <RelativeLayout
-                            android:id="@+id/help_memory"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/sentences"
-                            android:background="@color/color_bg_gray"
-                            android:visibility="visible">
-
-                            <ImageView
-                                android:id="@+id/image1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:src="@mipmap/triangle" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_toRightOf="@id/image1"
-                                android:text="助记"
-                                android:textColor="@color/mainColor" />
-                            
-                            <TextView
-                                android:layout_below="@id/image1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginTop="5dp"
-                                android:background="@color/white"
-                                android:id="@+id/help_content"
-                                android:lineSpacingExtra="10dp"
-                                android:lineSpacingMultiplier="0.5"
-                                android:layout_marginBottom="5dp"
-                                android:textColor="@color/black"
-                                android:textSize="12sp"
-                                android:paddingLeft="20dp"
-                                />
-
-                        </RelativeLayout>
-                        <RelativeLayout
-                            android:id="@+id/short_senese"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/help_memory"
-                            android:background="@color/color_bg_gray">
-
-                            <ImageView
-                                android:id="@+id/image2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:src="@mipmap/triangle" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_toRightOf="@id/image2"
-                                android:text="短句"
-                                android:textColor="@color/mainColor" />
-
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/shor_sense_list"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_below="@id/image2"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginTop="5dp"
-                                android:background="@color/white" />
-                        </RelativeLayout>
-
-
-                        <RelativeLayout
-                            android:id="@+id/question"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/bg" />
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_below="@id/short_senese"
-                            android:visibility="gone"
-                        android:background="@color/color_gray_bg"
-                            >
-
-                            <ImageView
-                                android:id="@+id/image4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:src="@mipmap/triangle" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_toRightOf="@id/image4"
-                                android:text="例题入口"
-                                android:textColor="@color/mainColor" />
-                            <WebView
-                                android:layout_below="@id/image4"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/white"
-                                android:id="@+id/article"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:paddingLeft="20dp"
-                                android:paddingRight="20dp"
-                                android:layout_marginTop="10dp"/>
-
-
-                            <!--<TextView-->
-                                <!--android:layout_below="@id/article"-->
-                                <!--android:layout_width="match_parent"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:background="@color/white"-->
-                                <!--android:id="@+id/question_home"-->
-                                <!--android:text="fdsfafafafa"-->
-                                <!--android:lineSpacingMultiplier="0.5"-->
-                                <!--android:layout_marginLeft="10dp"-->
-                                <!--android:layout_marginRight="10dp"-->
-                                <!--android:paddingLeft="20dp"-->
-                                <!--android:paddingRight="20dp"-->
-                                <!--android:textSize="13sp"-->
-                                <!--android:paddingTop="10dp"/>-->
-                            <WebView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/question_home"
-                                android:layout_below="@id/article"
-                                android:paddingLeft="20dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:paddingRight="20dp"
-                                android:paddingTop="10dp"/>
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/question_list"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_below="@id/question_home"
-                                android:paddingTop="5dp"
-                                android:background="@color/white" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/jiekou"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/question"
-                            android:layout_marginTop="10dp"
-                            android:background="@color/color_bg_gray"
-                            android:layout_marginBottom="75dp"
-                           >
-
-                            <ImageView
-                                android:id="@+id/image5"
-                                android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:src="@mipmap/triangle" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_toRightOf="@id/image5"
-                                android:text="词典接口"
-                                android:textColor="@color/mainColor" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="100dp"
-                                android:layout_below="@id/image5"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginTop="5dp"
-                                android:background="@color/white"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal"
-                                android:paddingLeft="20dp"
-                                android:paddingRight="20dp"
-                                android:paddingTop="15dp">
+                            android:orientation="vertical"
+                            android:background="@color/color_gray_bg">
+                            <RelativeLayout
+                                android:id="@+id/sentences"
+                                style="@style/recite_word_rel"
+                                >
+                                <TextView
+                                    style="@style/recite_word_title"
+                                    android:text="例句"
+                                    android:id="@+id/sentence_txt" />
 
                                 <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:gravity="center_horizontal"
-                                    android:orientation="vertical"
-                                    android:id="@+id/youdao">
+                                    style="@style/recite_word_show_more_background"
+                                    android:id="@+id/show_more_sentence"
+                                    android:visibility="visible"
+                                    >
+                                    <TextView
+                                        style="@style/recite_word_show_more_text"
+                                        android:text="@string/show_more"
+                                        android:id="@+id/show_more_sentence_text"
+                                        />
 
                                     <ImageView
-                                        android:layout_width="50dp"
-                                        android:layout_height="50dp"
-                                        android:scaleType="fitXY"
-                                        android:src="@mipmap/youdao" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center_horizontal"
-                                        android:layout_marginTop="10dp"
-                                        android:text="有道" />
+                                        style="@style/recite_word_show_more_image"
+                                        android:id="@+id/show_more_sentence_image"
+                                        />
                                 </LinearLayout>
+                                <android.support.v7.widget.RecyclerView
+                                    style="@style/recite_word_recyclerView"
+                                    android:id="@+id/sentences_list"
+                                    android:layout_below="@id/sentence_txt"
+                                    />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/short_senese"
+                                android:layout_below="@id/sentences"
+                                style="@style/recite_word_rel">
+
+                                <TextView
+                                    android:text="短句"
+                                    android:id="@+id/short_sentence_txt"
+                                    style="@style/recite_word_title" />
 
                                 <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:gravity="center_horizontal"
-                                    android:orientation="vertical"
-                                    android:id="@+id/jinshan">
+                                    style="@style/recite_word_show_more_background"
+                                    android:id="@+id/show_more_low_sentence"
+                                    android:visibility="visible"
+                                    >
+                                    <TextView
+                                        style="@style/recite_word_show_more_text"
+                                        android:id="@+id/show_more_low_sentence_text"
+                                        android:text="@string/show_more"
+                                        />
 
                                     <ImageView
-                                        android:layout_width="50dp"
-                                        android:layout_height="50dp"
-                                        android:scaleType="fitXY"
-                                        android:src="@mipmap/jinshan" />
+                                        style="@style/recite_word_show_more_image"
+                                        android:id="@+id/show_more_low_sentence_image"
+                                        />
+                                </LinearLayout>
+                                <android.support.v7.widget.RecyclerView
+                                    android:id="@+id/shor_sense_list"
+                                    android:layout_below="@id/short_sentence_txt"
+                                    style="@style/recite_word_recyclerView"/>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/similar"
+                                style="@style/recite_word_rel"
+                                android:layout_below="@id/sentences"
+                                >
+
+                                <TextView
+                                    android:text="形近词"
+                                    android:id="@+id/similar_txt"
+                                    style="@style/recite_word_title" />
+
+                                <thinku.com.word.view.FABRecyclerView
+                                    style="@style/recite_word_rel"
+                                    android:layout_marginTop="0dp"
+                                    android:layout_below="@id/similar_txt"
+                                    android:id="@+id/similar_list"
+                                    />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/help_memory"
+                                style="@style/recite_word_rel"
+                                android:layout_below="@id/similar">
+                                <TextView
+                                    style="@style/recite_word_title"
+                                    android:text="助记"
+                                    android:id="@+id/help_memory_txt"
+                                    />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:orientation="horizontal"
+                                    android:layout_below="@id/help_memory_txt"
+                                    android:background="@color/white">
+
+                                    <ImageView
+                                        android:layout_marginStart="10dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="16dp"
+                                        android:src="@mipmap/green_circle"
+                                        android:layout_marginTop="5dp"
+                                        android:id="@+id/img"/>
 
                                     <TextView
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:layout_gravity="center_horizontal"
-                                        android:layout_marginTop="10dp"
-                                        android:text="金山" />
+                                        android:layout_marginEnd="10dp"
+                                        android:paddingTop="5dp"
+                                        android:id="@+id/help_content"
+                                        android:lineSpacingExtra="10dp"
+                                        android:lineSpacingMultiplier="0.5"
+                                        android:layout_marginBottom="5dp"
+                                        android:textSize="12sp"
+                                        android:textColor="@color/black"
+                                        android:paddingLeft="10dp"
+                                        />
                                 </LinearLayout>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/question"
+                                android:layout_below="@id/help_memory"
+                                style="@style/recite_word_rel"
+                                >
+
+                                <TextView
+                                    style="@style/recite_word_title"
+                                    android:text="例题入口"
+                                    android:id="@+id/question_txt"
+                                    />
+                                <WebView
+                                    android:layout_below="@id/question_txt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/white"
+                                    android:id="@+id/article"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:paddingLeft="20dp"
+                                    android:paddingRight="20dp"
+                                    android:layout_marginTop="10dp"/>
+
+                                <WebView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/question_home"
+                                    android:layout_below="@id/article"
+                                    android:paddingLeft="20dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:paddingRight="20dp"
+                                    android:paddingTop="10dp"
+                                    android:visibility="gone" />
+                                <android.support.v7.widget.RecyclerView
+                                    android:id="@+id/question_list"
+                                    style="@style/recite_word_recyclerView"
+                                    android:layout_below="@id/question_home" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/jiekou"
+                                style="@style/recite_word_rel"
+                                android:layout_below="@id/question"
+                                android:layout_marginBottom="20dp"
+                                >
+
+                                <TextView
+                                    style="@style/recite_word_title"
+                                    android:text="词典"
+                                    android:id="@+id/jiekou_txt"
+                                    />
 
                                 <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:gravity="center_horizontal"
-                                    android:orientation="vertical"
-                                    android:id="@+id/biying">
+                                    android:layout_width="match_parent"
+                                    android:layout_height="100dp"
+                                    android:layout_below="@id/jiekou_txt"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@color/white"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:paddingTop="15dp">
 
-                                    <ImageView
-                                        android:layout_width="50dp"
-                                        android:layout_height="50dp"
-                                        android:scaleType="fitXY"
-                                        android:src="@mipmap/biying" />
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:gravity="center_horizontal"
+                                        android:orientation="vertical"
+                                        android:id="@+id/youdao">
 
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center_horizontal"
-                                        android:layout_marginTop="10dp"
-                                        android:text="必应" />
+                                        <ImageView
+                                            android:layout_width="50dp"
+                                            android:layout_height="50dp"
+                                            android:scaleType="fitXY"
+                                            android:src="@mipmap/youdao" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_horizontal"
+                                            android:layout_marginTop="10dp"
+                                            android:text="有道" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:gravity="center_horizontal"
+                                        android:orientation="vertical"
+                                        android:id="@+id/jinshan">
+
+                                        <ImageView
+                                            android:layout_width="50dp"
+                                            android:layout_height="50dp"
+                                            android:scaleType="fitXY"
+                                            android:src="@mipmap/jinshan" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_horizontal"
+                                            android:layout_marginTop="10dp"
+                                            android:text="金山" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:gravity="center_horizontal"
+                                        android:orientation="vertical"
+                                        android:id="@+id/biying">
+
+                                        <ImageView
+                                            android:layout_width="50dp"
+                                            android:layout_height="50dp"
+                                            android:scaleType="fitXY"
+                                            android:src="@mipmap/biying" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_horizontal"
+                                            android:layout_marginTop="10dp"
+                                            android:text="必应" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:gravity="center_horizontal"
+                                        android:orientation="vertical"
+                                        android:id="@+id/niujing">
+
+                                        <ImageView
+                                            android:layout_width="50dp"
+                                            android:layout_height="50dp"
+                                            android:scaleType="fitXY"
+                                            android:src="@mipmap/niujin" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_horizontal"
+                                            android:layout_marginTop="10dp"
+                                            android:text="牛津" />
+                                    </LinearLayout>
                                 </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:gravity="center_horizontal"
-                                    android:orientation="vertical"
-                                    android:id="@+id/niujing">
-
-                                    <ImageView
-                                        android:layout_width="50dp"
-                                        android:layout_height="50dp"
-                                        android:scaleType="fitXY"
-                                        android:src="@mipmap/niujin" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center_horizontal"
-                                        android:layout_marginTop="10dp"
-                                        android:text="牛津" />
-                                </LinearLayout>
-                            </LinearLayout>
-                        </RelativeLayout>
-
-                    </RelativeLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
                 </android.support.v4.widget.NestedScrollView>
-            </RelativeLayout>
 
-        </RelativeLayout>
         </LinearLayout>
-</RelativeLayout>
 

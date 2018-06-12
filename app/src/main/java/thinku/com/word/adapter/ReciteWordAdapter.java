@@ -13,6 +13,7 @@ import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -53,27 +54,45 @@ public class ReciteWordAdapter extends RecyclerView.Adapter {
         String content ;
         if (!TextUtils.isEmpty(sentence.getWord())){
             if (sentence.getEnglish().indexOf(sentence.getWord()) != -1) {
-                content = HtmlUtil.replaceSpace(sentence.getEnglish());
-                int index = content.indexOf(sentence.getWord()) ;
-                SpannableString spannableString = new SpannableString(content +"    ");
-                spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#31b272")), index,
-                        index + sentence.getWord().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                //  在文本末尾添加图片
-                Drawable drawable = context.getResources().getDrawable(R.mipmap.music);
-                drawable.setBounds(MeasureUtils.dp2px(context , 5),MeasureUtils.dp2px(context , 0)
-                        ,MeasureUtils.dp2px(context , 17 ),MeasureUtils.dp2px(context ,12));
-                CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(drawable);
-                spannableString.setSpan(imageSpan ,content.length() ,content.length() + 2  ,ImageSpan.ALIGN_BASELINE);
-                reciteWordHolder.us.setText(spannableString);
+                if (sentence.isDialog()){
+                    reciteWordHolder.img.setVisibility(View.GONE);
+                    content = HtmlUtil.replaceSpace(sentence.getEnglish());
+                    int index = content.indexOf(sentence.getWord()) ;
+                    SpannableString spannableString = new SpannableString(content +"    ");
+                    spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#31b272")), index,
+                            index + sentence.getWord().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    reciteWordHolder.us.setText(spannableString);
+                }else {
+                    reciteWordHolder.img.setVisibility(View.VISIBLE);
+                    content = HtmlUtil.replaceSpace(sentence.getEnglish());
+                    int index = content.indexOf(sentence.getWord());
+                    SpannableString spannableString = new SpannableString(content + "    ");
+                    spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#31b272")), index,
+                            index + sentence.getWord().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    //  在文本末尾添加图片
+                    Drawable drawable = context.getResources().getDrawable(R.mipmap.music);
+                    drawable.setBounds(MeasureUtils.dp2px(context, 5), MeasureUtils.dp2px(context, 0)
+                            , MeasureUtils.dp2px(context, 17), MeasureUtils.dp2px(context, 12));
+                    CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(drawable);
+                    spannableString.setSpan(imageSpan, content.length(), content.length() + 2, ImageSpan.ALIGN_BASELINE);
+                    reciteWordHolder.us.setText(spannableString);
+                }
             }else{
-                content = HtmlUtil.replaceSpace(sentence.getEnglish());
-                SpannableString spannableString = new SpannableString(content +"    " );
-                Drawable drawable = context.getResources().getDrawable(R.mipmap.music);
-                drawable.setBounds(MeasureUtils.dp2px(context , 5),MeasureUtils.dp2px(context , 0)
-                        ,MeasureUtils.dp2px(context , 17 ),MeasureUtils.dp2px(context ,12));
-                CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(drawable);
-                spannableString.setSpan(imageSpan ,content.length() ,content.length() + 2  ,ImageSpan.ALIGN_BASELINE);
-                reciteWordHolder.us.setText(spannableString);
+                if (sentence.isDialog()){
+                    reciteWordHolder.img.setVisibility(View.GONE);
+                    content = HtmlUtil.replaceSpace(sentence.getEnglish());
+                    reciteWordHolder.us.setText(content);
+                }else {
+                    reciteWordHolder.img.setVisibility(View.VISIBLE);
+                    content = HtmlUtil.replaceSpace(sentence.getEnglish());
+                    SpannableString spannableString = new SpannableString(content + "    ");
+                    Drawable drawable = context.getResources().getDrawable(R.mipmap.music);
+                    drawable.setBounds(MeasureUtils.dp2px(context, 5), MeasureUtils.dp2px(context, 0)
+                            , MeasureUtils.dp2px(context, 17), MeasureUtils.dp2px(context, 12));
+                    CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(drawable);
+                    spannableString.setSpan(imageSpan, content.length(), content.length() + 2, ImageSpan.ALIGN_BASELINE);
+                    reciteWordHolder.us.setText(spannableString);
+                }
             }
             final String urlPath = NetworkTitle.youdao +content ;
             reciteWordHolder.us.setOnClickListener(new View.OnClickListener() {
@@ -100,11 +119,12 @@ public class ReciteWordAdapter extends RecyclerView.Adapter {
 
     class ReciteWordHolder extends RecyclerView.ViewHolder {
         private TextView us, chinese;
-
+        private ImageView img ;
         public ReciteWordHolder(View itemView) {
             super(itemView);
             us = (TextView) itemView.findViewById(R.id.us);
             chinese = (TextView) itemView.findViewById(R.id.chinese);
+            img = (ImageView) itemView.findViewById(R.id.img);
         }
     }
 }

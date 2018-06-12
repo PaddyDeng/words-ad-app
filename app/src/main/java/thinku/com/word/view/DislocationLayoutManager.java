@@ -28,7 +28,7 @@ import thinku.com.word.utils.MeasureUtils;
  */
 public class DislocationLayoutManager extends RecyclerView.LayoutManager {
     private int nowWidth = 0   ;   //  现在item的宽度
-    private int rows = 1 ;  //  有多少行
+    private int rows = 1 ;  //  有多少行 初始为1行
     private final String TAG = DislocationLayoutManager.class.getSimpleName();
 
 //    //保存所有的Item的上下左右偏移量信息
@@ -261,13 +261,14 @@ public class DislocationLayoutManager extends RecyclerView.LayoutManager {
     @Override
     public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state,
                           int widthSpec, int heightSpec) {
-        rows = 0 ;
+        rows = 1 ;
+        nowWidth = 0 ;
         final int widthMode = View.MeasureSpec.getMode(widthSpec);
         final int heightMode = View.MeasureSpec.getMode(heightSpec);
         final int widthSize = View.MeasureSpec.getSize(widthSpec);
         final int heightSize = View.MeasureSpec.getSize(heightSpec);
         int width = 0;
-        int height = 0;
+        int height = 0;;
         for (int i = 0; i < getItemCount(); i++) {
             measureScrapChild(recycler, i,
                     View.MeasureSpec.makeMeasureSpec(i, View.MeasureSpec.UNSPECIFIED),
@@ -278,6 +279,7 @@ public class DislocationLayoutManager extends RecyclerView.LayoutManager {
                 }
         }
         height =  mMeasuredDimension[1] * rows + mMeasuredDimension[0] / 10 ;
+        Log.e(TAG, "onMeasure: " + rows );
             switch (widthMode) {
                 case View.MeasureSpec.EXACTLY:
                     width = widthSize;
@@ -308,6 +310,7 @@ public class DislocationLayoutManager extends RecyclerView.LayoutManager {
             measuredDimension[0] = view.getMeasuredWidth() + p.leftMargin + p.rightMargin;
             measuredDimension[1] = view.getMeasuredHeight() + p.bottomMargin + p.topMargin;
             nowWidth += measuredDimension[0];
+            Log.e(TAG, "measureScrapChild: "  );
             if (nowWidth > widthSize){
                 nowWidth =0 ;
                 rows+= 1 ;

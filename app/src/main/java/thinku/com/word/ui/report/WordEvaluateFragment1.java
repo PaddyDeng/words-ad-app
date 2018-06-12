@@ -1,5 +1,6 @@
 package thinku.com.word.ui.report;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,27 +32,26 @@ import thinku.com.word.R;
 import thinku.com.word.adapter.ReciteWordAdapter;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.RecitWordBeen;
+import thinku.com.word.callback.SelectListener;
 import thinku.com.word.callback.SelectRlClickListener;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.adapter.QuestionAdapter;
 import thinku.com.word.ui.recite.WordErrorActivity;
+import thinku.com.word.ui.report.adapter.SimilarAdapter;
 import thinku.com.word.ui.report.bean.QuestionBean;
 import thinku.com.word.ui.webView.WebViewActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.HtmlUtil;
 import thinku.com.word.utils.LoginHelper;
+import thinku.com.word.view.DislocationLayoutManager;
+import thinku.com.word.view.FABRecyclerView;
 import thinku.com.word.view.RatingBar;
+import thinku.com.word.view.ShapeWordDialog;
 
 
 public class WordEvaluateFragment1 extends BaseActivity {
     private static final String TAG = WordEvaluateFragment1.class.getSimpleName();
-    @BindView(R.id.click)
-    ImageView click;
-    @BindView(R.id.rl_click)
-    RelativeLayout rlClick;
-    @BindView(R.id.content_hide)
-    LinearLayout contentHide;
     @BindView(R.id.top)
     ImageView top;
     @BindView(R.id.content_show)
@@ -71,18 +72,22 @@ public class WordEvaluateFragment1 extends BaseActivity {
     RecyclerView sentencesList;
     @BindView(R.id.sentences)
     RelativeLayout sentences;
+    @BindView(R.id.show_more_sentence_image)
+    ImageView showMoreSentenceImage;
+    @BindView(R.id.show_more_sentence)
+    LinearLayout showMoreSentence;
+    @BindView(R.id.show_more_low_sentence_image)
+    ImageView showMoreLowSentenceImage;
+    @BindView(R.id.show_more_low_sentence)
+    LinearLayout showMoreLowSentence;
+    @BindView(R.id.show_more_low_sentence_text)
+    TextView showMoreLowSentenceText ;
+    @BindView(R.id.show_more_sentence_text)
+    TextView showMoreSentenceText ;
     @BindView(R.id.question_list)
     RecyclerView questionList;
     @BindView(R.id.question)
     RelativeLayout question;
-    @BindView(R.id.image1)
-    ImageView image1;
-    @BindView(R.id.image2)
-    ImageView image2;
-    @BindView(R.id.image3)
-    ImageView image3;
-    @BindView(R.id.image4)
-    ImageView image4;
     @BindView(R.id.youdao)
     LinearLayout youdao;
     @BindView(R.id.jinshan)
@@ -105,28 +110,33 @@ public class WordEvaluateFragment1 extends BaseActivity {
     @BindView(R.id.article)
     WebView article;
     @BindView(R.id.question_home)
-//    TextView question_home ;
     WebView question_home;
     @BindView(R.id.rat_diff)
     RatingBar ratDiff ;
+    @BindView(R.id.similar_list)
+    FABRecyclerView similarList;
+    @BindView(R.id.similar)
+    RelativeLayout similar ;
 
     private RecitWordBeen recitWord;
-    private int status;   //  单词状态
     private String wordId;   //  单词ID
-    private int tag;  //  tag ==  100    背单词   ，
-    private boolean isNewAiBinHaoSi = false;  //  是否进入新艾宾浩斯
-    //   根据List<wordsId>获取数据
-    private ArrayList<String> words;
-
-    private int posiiton = 0;
     private List<RecitWordBeen.LowSentenceBean> lowSentenceBeen;
     private List<RecitWordBeen.LowSentenceBean> sentenceBeen;
     private List<QuestionBean.QslctarrBean> questions;
+    private List<RecitWordBeen.SimilarWords> similarWords ;
+
 
     private ReciteWordAdapter low;
     private ReciteWordAdapter sentence;
     private QuestionAdapter questionAdapter;
 
+    private ShapeWordDialog shapeWordDialog ;  // 形近词dialog
+    private SimilarAdapter similarAdapter ;
+
+    private ObjectAnimator sentenceShowAnimator ;  //  例句展开动画
+    private ObjectAnimator sentenceHideAnimator ;  //  例句隐藏动画
+    private ObjectAnimator lowSentenceShowAnimator ;  //  短句展开动画
+    private ObjectAnimator lowSentnceHideAnimator ;   //  短句隐藏动画
     public static void start(Context context, String wordId) {
         Intent intent = new Intent(context, WordEvaluateFragment1.class);
         intent.putExtra("wordId", wordId);
@@ -164,7 +174,6 @@ public class WordEvaluateFragment1 extends BaseActivity {
             ratDiff.setStar(0);
         }
         contentShow.setVisibility(View.VISIBLE);
-        contentHide.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(recitWord.getWords().getMnemonic())) {
             String content = HtmlUtil.replaceRN(recitWord.getWords().getMnemonic()) ;
             content = HtmlUtil.replaceSpace(content);
@@ -216,8 +225,10 @@ public class WordEvaluateFragment1 extends BaseActivity {
                         for (int i = 0; i < 3; i++) {
                             lowSentenceBeen.add(recitWord.getLowSentence().get(i));
                         }
+                        showMoreLowSentence.setVisibility(View.VISIBLE);
                     } else {
                         lowSentenceBeen.addAll(recitWord.getLowSentence());
+                        showMoreLowSentence.setVisibility(View.GONE);
                     }
                     low.notifyDataSetChanged();
                     shortSenese.setVisibility(View.VISIBLE);
@@ -237,11 +248,13 @@ public class WordEvaluateFragment1 extends BaseActivity {
                             recitWord.getSentence().get(i).setWord(recitWord.getWords().getWord());
                             sentenceBeen.add(recitWord.getSentence().get(i));
                         }
+                        showMoreSentence.setVisibility(View.VISIBLE);
                     } else {
                         for (int i = 0; i < recitWord.getSentence().size(); i++) {
                             recitWord.getSentence().get(i).setWord(recitWord.getWords().getWord());
                             sentenceBeen.add(recitWord.getSentence().get(i));
                         }
+                        showMoreSentence.setVisibility(View.GONE);
                     }
                     sentence.notifyDataSetChanged();
                     sentences.setVisibility(View.VISIBLE);
@@ -260,7 +273,6 @@ public class WordEvaluateFragment1 extends BaseActivity {
                 article.setVisibility(View.VISIBLE);
                 String content = HtmlUtil.getHtml(questionBean.getArticle() ,recitWord.getWords().getWord());
                 String urlContent = HtmlUtil.repairContent(content , NetworkTitle.GMAT);
-                Log.e(TAG, "getData: " + urlContent );
                 article.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
                 article.setVisibility(View.GONE);
@@ -269,7 +281,6 @@ public class WordEvaluateFragment1 extends BaseActivity {
                 question_home.setVisibility(View.VISIBLE);
                 String content = HtmlUtil.getHtml(questionBean.getQuestion() ,recitWord.getWords().getWord());
                 String urlContent = HtmlUtil.repairContent(content ,NetworkTitle.GMAT);
-                Log.e(TAG, "getData: " + urlContent );
                 question_home.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
                 question_home.setVisibility(View.GONE);
@@ -300,7 +311,13 @@ public class WordEvaluateFragment1 extends BaseActivity {
             } else {
                 questionList.setVisibility(View.GONE);
             }
-
+        }
+        if (recitWord.getSimilarWords() != null && recitWord.getSimilarWords().size() > 0){
+            similar.setVisibility(View.VISIBLE);
+            similarWords.addAll(recitWord.getSimilarWords());
+            similarAdapter.notifyDataSetChanged();
+        }else{
+            similar.setVisibility(View.GONE);
         }
 
     }
@@ -341,6 +358,9 @@ public class WordEvaluateFragment1 extends BaseActivity {
     }
 
     public void initRecycler() {
+        shapeWordDialog = new ShapeWordDialog(this);
+        shapeWordDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);//设置Dialog没有标题。需在setContentView之前设置，在之后设置会报错
+        shapeWordDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);//设置Dialog背景透明效果
         familiar.setVisibility(View.GONE);
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this);
@@ -357,6 +377,21 @@ public class WordEvaluateFragment1 extends BaseActivity {
         questions = new ArrayList<>();
         questionAdapter = new QuestionAdapter(this, questions);
         questionList.setAdapter(questionAdapter);
+        DislocationLayoutManager disLayoutManager = new DislocationLayoutManager();
+        similarList.setLayoutManager(disLayoutManager);
+        similarWords = new ArrayList<>();
+        similarAdapter = new SimilarAdapter(this ,similarWords);
+        similarAdapter.setSelectListener(new SelectListener() {
+            @Override
+            public void setListener(int position) {
+                if (shapeWordDialog != null){
+                    shapeWordDialog.setWordId(similarWords.get(position).getId());
+                }
+                shapeWordDialog.show();
+            }
+        });
+        similarList.setAdapter(similarAdapter);
+        similarList.setNestedScrollingEnabled(false);
     }
 
 
@@ -393,7 +428,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
     }
 
 
-    @OnClick({R.id.back, R.id.familiar, R.id.errors , R.id.play})
+    @OnClick({R.id.back, R.id.familiar, R.id.errors , R.id.play , R.id.show_more_low_sentence , R.id.show_more_sentence})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -407,9 +442,93 @@ public class WordEvaluateFragment1 extends BaseActivity {
             case R.id.play:
                 playMusic();
                 break;
+            case R.id.show_more_low_sentence:
+                showMoreLowSentence();
+                break;
+            case R.id.show_more_sentence:
+                showMoreSentence();
+                break;
 
         }
     }
+
+    /**
+     * 显示更多例句
+     */
+    private void showMoreSentence(){
+        if (sentenceBeen.size() <= 3){
+            sentenceBeen.clear();
+            sentenceBeen.addAll(recitWord.getSentence());
+            sentence.notifyDataSetChanged();
+            if (sentenceShowAnimator == null){
+                sentenceShowAnimator = showAnimator(showMoreSentenceImage);
+            }
+            startAnimator(sentenceShowAnimator);
+            showMoreSentenceText.setText(getResources().getString(R.string.hide_more));
+        }else{
+            List<RecitWordBeen.LowSentenceBean> sentences = new ArrayList<>();
+            for (int i = 0 ; i < 3; i++){
+                RecitWordBeen.LowSentenceBean sentence = sentenceBeen.get(i);
+                sentences.add(sentence);
+            }
+            sentenceBeen.clear();
+            sentenceBeen.addAll(sentences);
+            sentence.notifyDataSetChanged();
+            if (sentenceHideAnimator == null){
+                sentenceHideAnimator = hideAnimator(showMoreSentenceImage);
+            }
+            startAnimator(sentenceHideAnimator);
+            showMoreSentenceText.setText(getResources().getString(R.string.show_more));
+        }
+    }
+
+    private void startAnimator(ObjectAnimator objectAnimator){
+        if (objectAnimator != null){
+            objectAnimator.start();
+        }
+    }
+
+    private ObjectAnimator showAnimator(ImageView imageView){
+        ObjectAnimator objectAnimator =  ObjectAnimator.ofFloat(imageView, "rotation", 0f, 180f);
+        objectAnimator.setDuration(300);
+        return objectAnimator ;
+    }
+    private ObjectAnimator hideAnimator(ImageView imageView){
+        ObjectAnimator objectAnimator =  ObjectAnimator.ofFloat(imageView, "rotation", 180f, 360f);
+        objectAnimator.setDuration(300);
+        return objectAnimator ;
+    }
+
+
+    /**
+     * 显示更多短句
+     */
+    public void showMoreLowSentence(){
+        if (lowSentenceBeen.size() <= 3){
+            lowSentenceBeen.addAll(recitWord.getLowSentence());
+            low.notifyDataSetChanged();
+            if (lowSentenceShowAnimator == null){
+                lowSentenceShowAnimator = showAnimator(showMoreLowSentenceImage);
+            }
+            startAnimator(lowSentenceShowAnimator);
+            showMoreLowSentenceText.setText(getResources().getString(R.string.hide_more));
+        }else{
+            List<RecitWordBeen.LowSentenceBean> sentences = new ArrayList<>();
+            for (int i = 0 ; i < 3; i++){
+                RecitWordBeen.LowSentenceBean lowSentence = lowSentenceBeen.get(i);
+                sentences.add(lowSentence);
+            }
+            lowSentenceBeen.clear();
+            lowSentenceBeen.addAll(sentences);
+            low.notifyDataSetChanged();
+            if (lowSentnceHideAnimator == null){
+                lowSentnceHideAnimator = hideAnimator(showMoreLowSentenceImage);
+            }
+            startAnimator(lowSentnceHideAnimator);
+            showMoreLowSentenceText.setText(getResources().getString(R.string.show_more));
+        }
+    }
+
 
     public void finishWithMusic(){
         this.finishWithAnim();

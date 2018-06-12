@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
     android:background="@color/white">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
 
         <include layout="@layout/title_layout_word"
             android:id="@+id/title"/>
@@ -65,7 +60,7 @@
             android:layout_marginTop="10dp"
             android:textColor="@color/black"
             android:gravity="center_horizontal"
-            android:textSize="24dp" />
+            android:textSize="24sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -103,6 +98,7 @@
             android:layout_marginTop="5dp"
             android:textColor="@color/mainColor"
             android:textSize="13sp"
+            android:layout_marginBottom="5dp"
             android:gravity="center_horizontal"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"/>
@@ -115,7 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -126,6 +122,7 @@
                     android:id="@+id/rl_click"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="visible"
                     android:background="@color/color_bg_gray">
 
                     <ImageView
@@ -148,208 +145,168 @@
                 </RelativeLayout>
             </LinearLayout>
 
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/top"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/bg" />
-
                 <android.support.v4.widget.NestedScrollView
                     android:id="@+id/content_show"
-                    android:layout_below="@id/top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     >
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                        >
 
-                        <RelativeLayout
-                            android:id="@+id/sentences"
+                        <ImageView
+                            android:id="@+id/top"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/color_bg_gray"
-                            android:visibility="gone">
-
-                            <ImageView
-                                android:id="@+id/image3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:src="@mipmap/triangle" />
-
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/bg" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:background="@color/color_gray_bg">
+                        <RelativeLayout
+                            android:id="@+id/sentences"
+                            style="@style/recite_word_rel"
+                           >
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_toRightOf="@id/image3"
+                                style="@style/recite_word_title"
                                 android:text="例句"
-                                android:textColor="@color/mainColor" />
+                                android:id="@+id/sentence_txt" />
+
+                            <LinearLayout
+                                style="@style/recite_word_show_more_background"
+                                android:id="@+id/show_more_sentence"
+                                android:visibility="visible"
+                                >
+                                <TextView
+                                    style="@style/recite_word_show_more_text"
+                                    android:text="@string/show_more"
+                                    android:id="@+id/show_more_sentence_text"
+                                    />
+
+                                <ImageView
+                                    style="@style/recite_word_show_more_image"
+                                    android:id="@+id/show_more_sentence_image"
+                                   />
+                            </LinearLayout>
 
                             <android.support.v7.widget.RecyclerView
+                                style="@style/recite_word_recyclerView"
                                 android:id="@+id/sentences_list"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/image3"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:paddingTop="5dp"
-                                android:visibility="visible"
-                                android:background="@color/white"
+                                android:layout_below="@id/sentence_txt"
                                 />
                         </RelativeLayout>
 
                         <RelativeLayout
                             android:id="@+id/short_senese"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:layout_below="@id/sentences"
-                            android:background="@color/color_bg_gray">
-
-                            <ImageView
-                                android:id="@+id/image2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:src="@mipmap/triangle" />
+                            style="@style/recite_word_rel">
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_toRightOf="@id/image2"
                                 android:text="短句"
-                                android:textColor="@color/mainColor" />
+                                android:id="@+id/short_sentence_txt"
+                                style="@style/recite_word_title" />
 
+                            <LinearLayout
+                                style="@style/recite_word_show_more_background"
+                                android:id="@+id/show_more_low_sentence"
+                                android:visibility="visible"
+                                >
+                                <TextView
+                                    style="@style/recite_word_show_more_text"
+                                    android:id="@+id/show_more_low_sentence_text"
+                                    android:text="@string/show_more"
+                                    />
+
+                                <ImageView
+                                    style="@style/recite_word_show_more_image"
+                                    android:id="@+id/show_more_low_sentence_image"
+                                    />
+                            </LinearLayout>
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/shor_sense_list"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_below="@id/image2"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginTop="5dp"
-                                android:background="@color/white" />
+                                android:layout_below="@id/short_sentence_txt"
+                                style="@style/recite_word_recyclerView"/>
                         </RelativeLayout>
 
                         <RelativeLayout
                             android:id="@+id/similar"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/recite_word_rel"
                             android:layout_below="@id/sentences"
-                            android:visibility="gone"
-                            android:background="@color/color_bg_gray">
-
-                            <ImageView
-                                android:id="@+id/image_similar"
-                                android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:src="@mipmap/triangle" />
+                            >
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_toRightOf="@id/image_similar"
                                 android:text="形近词"
-                                android:textColor="@color/mainColor" />
+                                android:id="@+id/similar_txt"
+                                style="@style/recite_word_title" />
 
                             <thinku.com.word.view.FABRecyclerView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_below="@id/image_similar"
+                                style="@style/recite_word_rel"
+                                android:layout_marginTop="0dp"
+                                android:layout_below="@id/similar_txt"
                                 android:id="@+id/similar_list"
-                                android:paddingTop="5dp"
-                                android:background="@color/white"/>
+                               />
                         </RelativeLayout>
 
                         <RelativeLayout
                             android:id="@+id/help_memory"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/similar"
-                            android:background="@color/color_bg_gray"
-                            android:visibility="visible">
-
-                            <ImageView
-                                android:id="@+id/image1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_marginLeft="30dp"
-                                android:src="@mipmap/triangle" />
-
+                            style="@style/recite_word_rel"
+                            android:layout_below="@id/similar">
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_toRightOf="@id/image1"
+                                style="@style/recite_word_title"
                                 android:text="助记"
-                                android:textColor="@color/mainColor" />
-                            
-                            <TextView
-                                android:layout_below="@id/image1"
+                                android:id="@+id/help_memory_txt"
+                               />
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
+                                android:orientation="horizontal"
+                                android:layout_below="@id/help_memory_txt"
+                                android:background="@color/white">
+
+                            <ImageView
+                                android:layout_marginStart="10dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="16dp"
+                                android:src="@mipmap/green_circle"
+                                android:layout_marginTop="5dp"
+                                android:id="@+id/img"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
                                 android:paddingTop="5dp"
-                                android:background="@color/white"
                                 android:id="@+id/help_content"
                                 android:lineSpacingExtra="10dp"
                                 android:lineSpacingMultiplier="0.5"
                                 android:layout_marginBottom="5dp"
                                 android:textSize="12sp"
                                 android:textColor="@color/black"
-                                android:paddingLeft="20dp"
+                                android:paddingLeft="10dp"
                                 />
-
+                            </LinearLayout>
                         </RelativeLayout>
 
                         <RelativeLayout
                             android:id="@+id/question"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
                             android:layout_below="@id/help_memory"
-                            android:visibility="gone"
-                            android:background="@color/color_gray_bg"
+                            style="@style/recite_word_rel"
                             >
 
-                            <ImageView
-                                android:id="@+id/image4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:src="@mipmap/triangle" />
-
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_toRightOf="@id/image4"
+                                style="@style/recite_word_title"
                                 android:text="例题入口"
-                                android:textColor="@color/mainColor" />
+                                android:id="@+id/question_txt"
+                                 />
                             <WebView
-                                android:layout_below="@id/image4"
+                                android:layout_below="@id/question_txt"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@color/white"
@@ -373,55 +330,33 @@
                                 android:visibility="gone" />
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/question_list"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_below="@id/question_home"
-                                android:paddingTop="5dp"
-                                android:background="@color/white" />
+                                style="@style/recite_word_recyclerView"
+                                android:layout_below="@id/question_home" />
                         </RelativeLayout>
 
                         <RelativeLayout
                             android:id="@+id/jiekou"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/recite_word_rel"
                             android:layout_below="@id/question"
-                            android:layout_marginTop="10dp"
-                            android:background="@color/color_bg_gray"
-                            android:layout_marginBottom="75dp"
+                            android:layout_marginBottom="100dp"
                            >
 
-                            <ImageView
-                                android:id="@+id/image5"
-                                android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"
-                                android:src="@mipmap/triangle" />
-
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_toRightOf="@id/image5"
-                                android:text="词典接口"
-                                android:textColor="@color/mainColor" />
+                                style="@style/recite_word_title"
+                                android:text="词典"
+                                android:id="@+id/jiekou_txt"
+                                 />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp"
-                                android:layout_below="@id/image5"
-                                android:layout_marginBottom="30dp"
+                                android:layout_below="@id/jiekou_txt"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginTop="5dp"
                                 android:background="@color/white"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
-                                android:paddingLeft="20dp"
-                                android:paddingRight="20dp"
                                 android:paddingTop="15dp">
 
                                 <LinearLayout
@@ -513,9 +448,8 @@
                                 </LinearLayout>
                             </LinearLayout>
                         </RelativeLayout>
-
-
-                    </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
                 </android.support.v4.widget.NestedScrollView>
                 <LinearLayout
                     android:id="@+id/bottom_click"
@@ -525,6 +459,7 @@
                     android:layout_alignParentStart="true"
                     android:background="@color/white"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     android:padding="10dp">
 
                     <Button
@@ -559,8 +494,5 @@
                         android:text="模糊" />
                 </LinearLayout>
             </RelativeLayout>
-
-        </RelativeLayout>
         </LinearLayout>
-</RelativeLayout>
 

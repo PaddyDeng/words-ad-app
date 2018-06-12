@@ -197,10 +197,6 @@ public class HttpUtil {
         return getRestApiReciteWord(HostType.WORDS_URL_HOST).wordDetails(wordId).compose(new SchedulerTransformer<RecitWordBeen>());
     }
 
-    //单词详情
-    public static Observable<WordListBean> wordDetailsObservable2(String wordId){
-        return getRestApi(HostType.WORDS_URL_HOST).wordDetails2(wordId).compose(new SchedulerTransformer<WordListBean>());
-    }
 
     //根据复习模式后台返回改复习情况
     public static Observable<ReviewCaseBean> isReviewObservable(){

@@ -464,4 +464,56 @@
         <item name="android:layout_marginLeft">30dp</item>
         <item name="android:textColor">@color/gray_text</item>
     </style>
+
+    <!--背单词中每个栏目的父布局-->
+    <style name="recite_word_rel" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/white_10round</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+
+    <!--背单词中每个栏目标题-->
+    <style name="recite_word_title" parent="wrap">
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!--背单词中每个栏目中recyclerView -->
+    <style name="recite_word_recyclerView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
+    <!--背单词展开父布局-->
+    <style name="recite_word_show_more_background" parent="wrap">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:background">@drawable/green_stroke</item>
+    </style>
+
+    <!--背单词展开文字-->
+    <style name="recite_word_show_more_text" parent="wrap">
+        <item name="android:textSize">12sp</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+    </style>
+
+    <!--背单词展开图片-->
+    <style name="recite_word_show_more_image">
+        <item name="android:layout_width">10dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:src">@mipmap/down</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
 </resources>

@@ -4,10 +4,9 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:paddingTop="5dp"
-    android:paddingLeft="5dp">
+    >
     
     <ImageView
-        android:paddingLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="16dp"
         android:src="@mipmap/green_circle"
@@ -15,7 +14,7 @@
         android:id="@+id/img"/>
 
     <TextView
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"

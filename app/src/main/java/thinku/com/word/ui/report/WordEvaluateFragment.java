@@ -1,17 +1,17 @@
 package thinku.com.word.ui.report;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -58,7 +58,6 @@ import thinku.com.word.utils.C;
 import thinku.com.word.utils.HtmlUtil;
 import thinku.com.word.utils.MutePopHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
-import thinku.com.word.utils.clock.SimpleDialog;
 import thinku.com.word.view.DislocationLayoutManager;
 import thinku.com.word.view.FABRecyclerView;
 import thinku.com.word.view.RatingBar;
@@ -72,14 +71,10 @@ public class WordEvaluateFragment extends BaseActivity {
     private static final String TAG = WordEvaluateFragment.class.getSimpleName();
     @BindView(R.id.newWord)
     TextView newWord;
-    @BindView(R.id.click)
-    ImageView click;
     @BindView(R.id.rl_click)
     RelativeLayout rlClick;
     @BindView(R.id.content_hide)
     LinearLayout contentHide;
-    @BindView(R.id.top)
-    ImageView top;
     @BindView(R.id.content_show)
     NestedScrollView contentShow;
     @BindView(R.id.know)
@@ -110,14 +105,6 @@ public class WordEvaluateFragment extends BaseActivity {
     RecyclerView questionList;
     @BindView(R.id.question)
     RelativeLayout question;
-    @BindView(R.id.image1)
-    ImageView image1;
-    @BindView(R.id.image2)
-    ImageView image2;
-    @BindView(R.id.image3)
-    ImageView image3;
-    @BindView(R.id.image4)
-    ImageView image4;
     @BindView(R.id.youdao)
     LinearLayout youdao;
     @BindView(R.id.jinshan)
@@ -126,7 +113,18 @@ public class WordEvaluateFragment extends BaseActivity {
     LinearLayout biying;
     @BindView(R.id.niujing)
     LinearLayout niujing;
-    private String planWords;
+    @BindView(R.id.show_more_sentence_image)
+    ImageView showMoreSentenceImage;
+    @BindView(R.id.show_more_sentence)
+    LinearLayout showMoreSentence;
+    @BindView(R.id.show_more_low_sentence_image)
+    ImageView showMoreLowSentenceImage;
+    @BindView(R.id.show_more_low_sentence)
+    LinearLayout showMoreLowSentence;
+    @BindView(R.id.show_more_low_sentence_text)
+    TextView showMoreLowSentenceText ;
+    @BindView(R.id.show_more_sentence_text)
+    TextView showMoreSentenceText ;
     @BindView(R.id.back)
     ImageView back;
     @BindView(R.id.familiar)
@@ -146,13 +144,12 @@ public class WordEvaluateFragment extends BaseActivity {
     @BindView(R.id.title)
     LinearLayout title;
     @BindView(R.id.rat_diff)
-    RatingBar ratDiff ;
+    RatingBar ratDiff;
     @BindView(R.id.similar_list)
     FABRecyclerView similarList;
     @BindView(R.id.similar)
-    RelativeLayout similar ;
+    RelativeLayout similar;
     private RecitWordBeen recitWord;
-    private int status;   //  单词状态
     private String wordId;   //  单词ID
     private int tag;  //  tag ==  100    背单词   ，
     private boolean isNewAiBinHaoSi = false;  //  是否进入新艾宾浩斯
@@ -163,7 +160,7 @@ public class WordEvaluateFragment extends BaseActivity {
     private List<RecitWordBeen.LowSentenceBean> lowSentenceBeen;
     private List<RecitWordBeen.LowSentenceBean> sentenceBeen;
     private List<QuestionBean.QslctarrBean> questions;
-    private List<RecitWordBeen.SimilarWords> similarWords ;
+    private List<RecitWordBeen.SimilarWords> similarWords;
 
     private MediaPlayer dimPlayer;
     private MediaPlayer notKnowPlayer;
@@ -173,14 +170,20 @@ public class WordEvaluateFragment extends BaseActivity {
     private ReciteWordAdapter low;
     private ReciteWordAdapter sentence;
     private QuestionAdapter questionAdapter;
-    private SimilarAdapter similarAdapter ;
+    private SimilarAdapter similarAdapter;
     private boolean isUpdataReview = false;   //  新艾宾浩斯，  老艾宾浩斯  和 复习模式下 都是reviewUpdata
     private boolean isNormal = false;
 
     private MutePopHelper mutePopHelper;  //  音效popWindow ;
     private boolean isPlay;  //  控制音效开关
     private WordsBean data;
-    private ShapeWordDialog shapeWordDialog ;  // 形近词dialog
+    private ShapeWordDialog shapeWordDialog;  // 形近词dialog
+
+
+    private ObjectAnimator sentenceShowAnimator ;  //  例句展开动画
+    private ObjectAnimator sentenceHideAnimator ;  //  例句隐藏动画
+    private ObjectAnimator lowSentenceShowAnimator ;  //  短句展开动画
+    private ObjectAnimator lowSentnceHideAnimator ;   //  短句隐藏动画
     /**
      * @param context
      * @param tag     tag 表明是背单词进入 还是其他情况进入
@@ -231,15 +234,25 @@ public class WordEvaluateFragment extends BaseActivity {
 
             if (data != null) {
                 tag = data.getTag();
-                isUpdataReview = data.isUpdataReview() ;
-                isNormal  = data.isNormal();
+                isUpdataReview = data.isUpdataReview();
+                isNormal = data.isNormal();
                 isNewAiBinHaoSi = data.getMode();
                 words = (ArrayList<String>) data.getWords();
                 posiiton = data.getPoistion();
                 fromWordsIdGetWordDetails(words.get(data.getPoistion()));
             }
         }
+    }
 
+    private ObjectAnimator showAnimator(ImageView imageView){
+        ObjectAnimator objectAnimator =  ObjectAnimator.ofFloat(imageView, "rotation", 0f, 180f);
+        objectAnimator.setDuration(300);
+        return objectAnimator ;
+    }
+    private ObjectAnimator hideAnimator(ImageView imageView){
+        ObjectAnimator objectAnimator =  ObjectAnimator.ofFloat(imageView, "rotation", 180f, 360f);
+        objectAnimator.setDuration(300);
+        return objectAnimator ;
     }
 
     /**
@@ -278,6 +291,8 @@ public class WordEvaluateFragment extends BaseActivity {
         mutePopHelper.init();
         isPlay = SharedPreferencesUtils.getPlayMusic(this);
         shapeWordDialog = new ShapeWordDialog(this);
+        shapeWordDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);//设置Dialog没有标题。需在setContentView之前设置，在之后设置会报错
+        shapeWordDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);//设置Dialog背景透明效果
     }
 
     public void setBackground(float f) {
@@ -494,10 +509,10 @@ public class WordEvaluateFragment extends BaseActivity {
         prencente.setText("认知率：" + recitWord.getPercent() + "%");
         phonogram.setText(recitWord.getWords().getPhonetic_us());
         name.setText(recitWord.getWords().getTranslate());
-        try{
+        try {
             int leve = Integer.parseInt(recitWord.getWords().getLevel());
             ratDiff.setStar(leve);
-        }catch (Exception e){
+        } catch (Exception e) {
             ratDiff.setStar(0);
         }
 
@@ -540,7 +555,7 @@ public class WordEvaluateFragment extends BaseActivity {
         });
     }
 
-    public  void addView(){
+    public void addView() {
 
     }
 
@@ -551,7 +566,7 @@ public class WordEvaluateFragment extends BaseActivity {
      * 需复习  正常背单词 userNeedRevies    进入新艾宾浩斯 needReviews   + 剩余数组   , 复习模式下  数组数量
      **/
     public void setStudyAndReviewNum(RecitWordBeen recitWord) {
-        Log.e(TAG, "setStudyAndReviewNum: " + isNewAiBinHaoSi );
+        Log.e(TAG, "setStudyAndReviewNum: " + isNewAiBinHaoSi);
         if (tag == C.NORMAL) {
             if (isNewAiBinHaoSi) {
                 if (words != null) {
@@ -582,8 +597,10 @@ public class WordEvaluateFragment extends BaseActivity {
                         for (int i = 0; i < 3; i++) {
                             lowSentenceBeen.add(recitWord.getLowSentence().get(i));
                         }
+                        showMoreLowSentence.setVisibility(View.VISIBLE);
                     } else {
                         lowSentenceBeen.addAll(recitWord.getLowSentence());
+                        showMoreLowSentence.setVisibility(View.GONE);
                     }
                     low.notifyDataSetChanged();
                     shortSenese.setVisibility(View.VISIBLE);
@@ -603,11 +620,13 @@ public class WordEvaluateFragment extends BaseActivity {
                             recitWord.getSentence().get(i).setWord(recitWord.getWords().getWord());
                             sentenceBeen.add(recitWord.getSentence().get(i));
                         }
+                        showMoreSentence.setVisibility(View.VISIBLE);
                     } else {
                         for (int i = 0; i < recitWord.getSentence().size(); i++) {
                             recitWord.getSentence().get(i).setWord(recitWord.getWords().getWord());
                             sentenceBeen.add(recitWord.getSentence().get(i));
                         }
+                        showMoreSentence.setVisibility(View.GONE);
                     }
                     sentence.notifyDataSetChanged();
                     sentences.setVisibility(View.VISIBLE);
@@ -626,7 +645,6 @@ public class WordEvaluateFragment extends BaseActivity {
                 article.setVisibility(View.VISIBLE);
                 String content = HtmlUtil.getHtml(questionBean.getArticle(), recitWord.getWords().getWord());
                 String urlContent = HtmlUtil.repairContent(content, NetworkTitle.GMAT);
-                Log.e(TAG, "getData: " + urlContent);
                 article.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
                 article.setVisibility(View.GONE);
@@ -634,7 +652,6 @@ public class WordEvaluateFragment extends BaseActivity {
             if (!TextUtils.isEmpty(questionBean.getQuestion())) {
                 question_home.setVisibility(View.VISIBLE);
                 String content = HtmlUtil.getHtml(questionBean.getQuestion(), recitWord.getWords().getWord());
-                Log.e(TAG, "getData: " + content);
                 String urlContent = HtmlUtil.repairContent(content, NetworkTitle.GMAT);
                 question_home.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
@@ -666,11 +683,11 @@ public class WordEvaluateFragment extends BaseActivity {
                 questionList.setVisibility(View.GONE);
             }
         }
-        if (recitWord.getSimilarWords() != null && recitWord.getSimilarWords().size() > 0){
+        if (recitWord.getSimilarWords() != null && recitWord.getSimilarWords().size() > 0) {
             similar.setVisibility(View.VISIBLE);
             similarWords.addAll(recitWord.getSimilarWords());
             similarAdapter.notifyDataSetChanged();
-        }else{
+        } else {
             similar.setVisibility(View.GONE);
         }
 
@@ -729,12 +746,12 @@ public class WordEvaluateFragment extends BaseActivity {
         DislocationLayoutManager disLayoutManager = new DislocationLayoutManager();
         similarList.setLayoutManager(disLayoutManager);
         similarWords = new ArrayList<>();
-        similarAdapter = new SimilarAdapter(this ,similarWords);
+        similarAdapter = new SimilarAdapter(this, similarWords);
         similarAdapter.setSelectListener(new SelectListener() {
             @Override
             public void setListener(int position) {
-                if (shapeWordDialog != null){
-                    shapeWordDialog.addNet(similarWords.get(position).getId());
+                if (shapeWordDialog != null) {
+                    shapeWordDialog.setWordId(similarWords.get(position).getId());
                 }
                 shapeWordDialog.show();
             }
@@ -830,7 +847,7 @@ public class WordEvaluateFragment extends BaseActivity {
     }
 
 
-    @OnClick({R.id.back, R.id.familiar, R.id.errors, R.id.unknow, R.id.know, R.id.blurry, R.id.play})
+    @OnClick({R.id.back, R.id.familiar, R.id.errors, R.id.unknow, R.id.know, R.id.blurry, R.id.play , R.id.show_more_low_sentence , R.id.show_more_sentence})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -873,11 +890,83 @@ public class WordEvaluateFragment extends BaseActivity {
             case R.id.play:
                 playMusic();
                 break;
+            case R.id.show_more_low_sentence:
+                showMoreLowSentence();
+                break;
+            case R.id.show_more_sentence:
+                showMoreSentence();
+                break;
+        }
+    }
+
+    /**
+     * 显示更多例句
+     */
+    private void showMoreSentence(){
+        if (sentenceBeen.size() <= 3){
+            sentenceBeen.clear();
+            sentenceBeen.addAll(recitWord.getSentence());
+            sentence.notifyDataSetChanged();
+            if (sentenceShowAnimator == null){
+                sentenceShowAnimator = showAnimator(showMoreSentenceImage);
+            }
+            startAnimator(sentenceShowAnimator);
+            showMoreSentenceText.setText(getResources().getString(R.string.hide_more));
+        }else{
+            List<RecitWordBeen.LowSentenceBean> sentences = new ArrayList<>();
+            for (int i = 0 ; i < 3; i++){
+                RecitWordBeen.LowSentenceBean sentence = sentenceBeen.get(i);
+                sentences.add(sentence);
+            }
+            sentenceBeen.clear();
+            sentenceBeen.addAll(sentences);
+            sentence.notifyDataSetChanged();
+            if (sentenceHideAnimator == null){
+                sentenceHideAnimator = hideAnimator(showMoreSentenceImage);
+            }
+            startAnimator(sentenceHideAnimator);
+            showMoreSentenceText.setText(getResources().getString(R.string.show_more));
+        }
+    }
+
+    private void startAnimator(ObjectAnimator objectAnimator){
+        if (objectAnimator != null){
+            objectAnimator.start();
         }
     }
 
 
-    private void finishWithMusic(){
+    /**
+     * 显示更多短句
+     */
+    public void showMoreLowSentence(){
+        if (lowSentenceBeen.size() <= 3){
+            lowSentenceBeen.addAll(recitWord.getLowSentence());
+            low.notifyDataSetChanged();
+            if (lowSentenceShowAnimator == null){
+                lowSentenceShowAnimator = showAnimator(showMoreLowSentenceImage);
+            }
+            startAnimator(lowSentenceShowAnimator);
+            showMoreLowSentenceText.setText(getResources().getString(R.string.hide_more));
+        }else{
+            List<RecitWordBeen.LowSentenceBean> sentences = new ArrayList<>();
+            for (int i = 0 ; i < 3; i++){
+                RecitWordBeen.LowSentenceBean lowSentence = lowSentenceBeen.get(i);
+                sentences.add(lowSentence);
+            }
+            lowSentenceBeen.clear();
+            lowSentenceBeen.addAll(sentences);
+            low.notifyDataSetChanged();
+            if (lowSentnceHideAnimator == null){
+                lowSentnceHideAnimator = hideAnimator(showMoreLowSentenceImage);
+            }
+            startAnimator(lowSentnceHideAnimator);
+            showMoreLowSentenceText.setText(getResources().getString(R.string.show_more));
+        }
+    }
+
+
+    private void finishWithMusic() {
         this.finishWithAnim();
         IMAudioManager.instance().release();
     }
@@ -916,8 +1005,8 @@ public class WordEvaluateFragment extends BaseActivity {
         super.onResume();
     }
 
-    public void referStart(WordsBean word){
-        start(this ,word);
+    public void referStart(WordsBean word) {
+        start(this, word);
         this.finishWithAnim();
     }
 
@@ -929,7 +1018,7 @@ public class WordEvaluateFragment extends BaseActivity {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updataStatus(int status) {
-      final  WordsBean word = new WordsBean() ;
+        final WordsBean word = new WordsBean();
         int type = 0;
         if (tag == C.NORMAL) {
             //  背单词状态上传
@@ -999,7 +1088,7 @@ public class WordEvaluateFragment extends BaseActivity {
 //                                    dismissLoadDialog();
                                 if (isNormal) {
 //                                    reciteWords();
-                                    WordEvaluateFragment.start(WordEvaluateFragment.this ,C.NORMAL);
+                                    WordEvaluateFragment.start(WordEvaluateFragment.this, C.NORMAL);
                                     WordEvaluateFragment.this.finishWithAnim();
                                 } else {
                                     Log.e(TAG, "not: " + (words == null));

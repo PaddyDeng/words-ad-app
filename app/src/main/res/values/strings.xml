@@ -64,6 +64,8 @@
     <string name="positive_word">正序背单词</string>
     <string name="disorder_word">乱序背单词</string>
     <string name="diction_tip">点击即可选中，再次点击取消</string>
+    <string name="show_more">展开</string>
+    <string name="hide_more">收起</string>
     <!--JPush-->
     <string name="hello">Hello World, JPush!</string>
     <string name="tag_hint">Tag can be number, alphabet, underscore, Chinese. Use , to split many tags.</string>
