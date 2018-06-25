@@ -33,7 +33,9 @@ import thinku.com.word.ui.periphery.adapter.EvaAdapter;
 import thinku.com.word.ui.periphery.adapter.LiveAdapter;
 import thinku.com.word.ui.periphery.adapter.RecentClassAdapter;
 import thinku.com.word.ui.periphery.bean.RoundBean;
+import thinku.com.word.ui.personalCenter.FeedBackActivity;
 import thinku.com.word.utils.DateUtil;
+import thinku.com.word.utils.HttpUtils;
 
 import static thinku.com.word.http.C.LG_COURSE_GMAT;
 import static thinku.com.word.http.C.LG_COURSE_GRE;
@@ -212,6 +214,7 @@ public class RoundFragment extends BaseFragment {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
 //                        toTast(_mActivity, "网络出错");
+                        toTast(_mActivity, HttpUtils.onError(throwable));
                     }
                 }));
     }

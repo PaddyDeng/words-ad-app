@@ -18,6 +18,7 @@ import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.ReviewMainBeen;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.utils.HttpUtils;
 
 /**
  * 复习(选择复习方式)
@@ -90,9 +91,14 @@ public class ReviewActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void accept(@NonNull ReviewMainBeen reviewMainBeen) throws Exception {
                 dismissLoadDialog();
-                if (Integer.parseInt(reviewMainBeen.getCode()) == 1){
-                    num.setText("共"+reviewMainBeen.getNum()+"词");
+                if (Integer.parseInt(reviewMainBeen.getCode()) == 1) {
+                    num.setText("共" + reviewMainBeen.getNum() + "词");
                 }
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(@NonNull Throwable throwable) throws Exception {
+                toTast(ReviewActivity.this, HttpUtils.onError(throwable));
             }
         }));
     }

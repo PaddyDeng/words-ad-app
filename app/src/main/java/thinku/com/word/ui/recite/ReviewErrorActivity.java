@@ -26,6 +26,7 @@ import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.WrongIndexBeen;
 import thinku.com.word.callback.SelectListener;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.PopHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
@@ -92,7 +93,7 @@ public class ReviewErrorActivity extends BaseActivity {
     }
 
     private void findView() {
-        titleT.setText("错题本");
+        titleT.setText("生词本");
         GridLayoutManager manager = new GridLayoutManager(ReviewErrorActivity.this, 3);
         listView.setLayoutManager(manager);
         titleIv.setBackgroundResource(R.mipmap.wrong_chose);
@@ -160,6 +161,7 @@ public class ReviewErrorActivity extends BaseActivity {
             @Override
             public void accept(@NonNull Throwable throwable) throws Exception {
                 dismissLoadDialog();
+                toTast(ReviewErrorActivity.this, HttpUtils.onError(throwable));
             }
         }));
     }
@@ -189,7 +191,7 @@ public class ReviewErrorActivity extends BaseActivity {
             @Override
             public void accept(@NonNull Throwable throwable) throws Exception {
                 dismissLoadDialog();
-                toTast(ReviewErrorActivity.this ,throwable.getMessage());
+                toTast(ReviewErrorActivity.this, HttpUtils.onError(throwable));
             }
         }));
     }

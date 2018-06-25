@@ -19,7 +19,6 @@
             android:src="@mipmap/btn_back_white" />
 
         <TextView
-            android:id="@+id/stock_name"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"

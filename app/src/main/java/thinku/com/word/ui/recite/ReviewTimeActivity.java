@@ -35,6 +35,7 @@ import thinku.com.word.callback.SelectListener;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.report.*;
 import thinku.com.word.utils.DateUtil;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.PopHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.view.wheelview.widget.WheelView;
@@ -231,7 +232,7 @@ public class ReviewTimeActivity extends BaseActivity implements View.OnClickList
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         dismissLoadDialog();
-                        toTast(ReviewTimeActivity.this, throwable.getMessage());
+                        toTast(ReviewTimeActivity.this, HttpUtils.onError(throwable));
                     }
                 }));
     }

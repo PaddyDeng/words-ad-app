@@ -13,7 +13,6 @@
             android:layout_weight="1">
 
             <View
-                android:id="@+id/inter_1"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/mainColor" />
@@ -25,7 +24,6 @@
                 android:background="@color/color_interval_line_1" />
 
             <View
-                android:id="@+id/inter_2"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/mainColor" />

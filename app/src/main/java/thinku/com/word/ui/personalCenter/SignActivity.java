@@ -22,7 +22,9 @@ import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.bean.SingBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.personalCenter.bean.SignBean;
+import thinku.com.word.ui.share.ShareDateActivity;
 import thinku.com.word.utils.DateUtil;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.RxHelper;
 import thinku.com.word.utils.StringUtils;
@@ -59,9 +61,14 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         .subscribe(new Consumer<SingBeen>() {
             @Override
             public void accept(SingBeen singBeen) throws Exception {
-                if (singBeen != null){
-                   referUi(singBeen);
+                if (singBeen != null) {
+                    referUi(singBeen);
                 }
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(@NonNull Throwable throwable) throws Exception {
+                toTast(SignActivity.this, HttpUtils.onError(throwable));
             }
         }));
     }
@@ -149,6 +156,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
+                        toTast(SignActivity.this, HttpUtils.onError(throwable));
                     }
                 }));
     }

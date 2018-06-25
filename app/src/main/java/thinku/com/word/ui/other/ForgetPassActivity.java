@@ -23,6 +23,8 @@ import thinku.com.word.callback.RequestCallback;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.personalCenter.SetNickNameActivity;
 import thinku.com.word.ui.personalCenter.feature.AuthCode;
+import thinku.com.word.ui.share.ShareDateActivity;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.PhoneAndEmailUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
@@ -221,6 +223,7 @@ public class ForgetPassActivity extends BaseActivity implements View.OnClickList
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
+                            toTast(ForgetPassActivity.this, HttpUtils.onError(throwable));
                             mAuthCode.sendAgain();
                         }
                     })
@@ -241,6 +244,7 @@ public class ForgetPassActivity extends BaseActivity implements View.OnClickList
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
+                            toTast(ForgetPassActivity.this, HttpUtils.onError(throwable));
                             mAuthCode.sendAgain();
                         }
                     })

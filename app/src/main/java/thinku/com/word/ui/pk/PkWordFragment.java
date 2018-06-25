@@ -28,7 +28,9 @@ import thinku.com.word.base.BaseFragment;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.pk.adapter.PkWordAdapter;
 import thinku.com.word.ui.pk.been.PkWordData;
+import thinku.com.word.ui.share.ShareDateActivity;
 import thinku.com.word.utils.C;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.WaitUtils;
@@ -134,7 +136,7 @@ public class PkWordFragment extends BaseFragment {
             @Override
             public void accept(@NonNull Throwable throwable) throws Exception {
                 pkWordRl.loadMoreComplete();
-                toTast( _mActivity,throwable.getMessage());
+                toTast(_mActivity, HttpUtils.onError(throwable));
             }
         }));
     }

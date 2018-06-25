@@ -45,7 +45,6 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import thinku.com.word.MyApplication;
 import thinku.com.word.R;
-import thinku.com.word.adapter.LoginInfo;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
@@ -53,13 +52,14 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.photo.ClipImageActivity;
 import thinku.com.word.ui.other.LoginActivity;
-import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.personalCenter.bean.ImageBean;
 import thinku.com.word.ui.personalCenter.dialog.ModifyPhoneOrEmailDialog;
 import thinku.com.word.ui.personalCenter.dialog.ModifyPwdDialog;
 import thinku.com.word.ui.personalCenter.update.SimpleUpdateApk;
+import thinku.com.word.utils.APPSmart;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.ImageUtil;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.RxBus;
@@ -115,6 +115,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     RelativeLayout fontRl;
     @BindView(R.id.exit_login)
     TextView exitLogin;
+    @BindView(R.id.service)
+    RelativeLayout service;
     private LinearLayout personal_detail;
 
     private UserInfo userInfo;
@@ -155,7 +157,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void init() {
         userInfo = SharedPreferencesUtils.getUserInfo(SettingActivity.this);
         new GlideUtils().loadCircle(SettingActivity.this, NetworkTitle.WORDRESOURE + SharedPreferencesUtils.getImage(SettingActivity.this), portrait);
-        if (!TextUtils.isEmpty(userInfo.getPhone()))  name.setText(userInfo.getPhone());
+        if (!TextUtils.isEmpty(userInfo.getPhone())) name.setText(userInfo.getPhone());
         else name.setText(userInfo.getEmail());
         nick.setText(userInfo.getNickname());
         phone.setText(userInfo.getPhone());
@@ -173,7 +175,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void initLoginName() {
         if (isLogin) {
             exitLogin.setText("退出当前账户");
-        }else{
+        } else {
             exitLogin.setText("请登录");
         }
     }
@@ -184,7 +186,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
 
     @OnClick({R.id.back, R.id.portrait_rl, R.id.name_rl, R.id.nick_rl, R.id.phone_rl, R.id.email_rl,
-            R.id.pass_rl, R.id.version_rl, R.id.font_rl, R.id.exit_login})
+            R.id.pass_rl, R.id.version_rl, R.id.font_rl, R.id.exit_login,R.id.service})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back:
@@ -217,10 +219,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.exit_login:
                 if (isLogin) {
                     clearUi();
-                }else{
-                    Intent intent = new Intent(SettingActivity.this ,LoginActivity.class);
+                } else {
+                    Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
+                break;
+            case R.id.service:
+                APPSmart.openApplicationMarket(this ,getPackageName());
                 break;
         }
     }
@@ -232,7 +237,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         alertDialog.setPositiveButton("是", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                MyApplication.isLogin = false ;
+                MyApplication.isLogin = false;
                 dialog.dismiss();
                 SharedPreferencesUtils.clearLogin(SettingActivity.this);
                 SharedPreferencesUtils.clearMatch(SettingActivity.this);
@@ -243,7 +248,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 pass.setText("");
                 email.setText("");
                 SharePref.saveCookie(mContext, "");
-                LoginHelper.needLogin(SettingActivity.this,"");
+                LoginHelper.needLogin(SettingActivity.this, "");
                 SharedPreferencesUtils.saveMemoryMode(mContext, "");
                 SharedPreferencesUtils.setImage(mContext, "");
 //                SharedPreferencesUtils.setStudyMode(mContext,"");
@@ -478,6 +483,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         dismissLoadDialog();
+                        toTast(SettingActivity.this, HttpUtils.onError(throwable));
                     }
                 }));
     }

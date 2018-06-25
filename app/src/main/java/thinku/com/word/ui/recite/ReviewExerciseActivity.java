@@ -22,6 +22,7 @@ import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.Dictation;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.utils.C;
+import thinku.com.word.utils.HttpUtils;
 
 /**
  * Created by Administrator on 2018/2/23.
@@ -82,6 +83,11 @@ public class ReviewExerciseActivity extends BaseActivity {
                         if (dictation != null) {
                             referUi(dictation);
                         }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        toTast(ReviewExerciseActivity.this, HttpUtils.onError(throwable));
                     }
                 }));
     }

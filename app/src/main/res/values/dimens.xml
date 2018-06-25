@@ -11,20 +11,16 @@
     <dimen name="text_size_bl">20sp</dimen>
     <dimen name="text_size_medium">18sp</dimen>
     <dimen name="border_space">8dip</dimen>
-    <dimen name="border_space_half">4dip</dimen>
     <dimen name="border_space_normal">6dip</dimen>
     <dimen name="border_space_sec">10dip</dimen>
     <dimen name="border_space_sec_m">12dip</dimen>
     <dimen name="border_space_sec_max_m">20dip</dimen>
-    <dimen name="border_space_sec_max_b">25dip</dimen>
     <dimen name="border_space_thr">30dip</dimen>
-    <dimen name="border_space_thr_max">40dip</dimen>
     <dimen name="border_space_max_min">45dip</dimen>
     <dimen name="border_space_max_max">50dip</dimen>
 
     <dimen name="text_size_ms">15sp</dimen>
 
-    <dimen name="text_size_s">17sp</dimen>
     <dimen name="round_tab">80dp</dimen>
 
     <dimen name="title_image">70px</dimen>

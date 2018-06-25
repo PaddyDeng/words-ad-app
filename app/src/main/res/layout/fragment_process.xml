@@ -217,7 +217,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="词汇量:"
+                            android:text="单词量:"
                             android:textSize="35px" />
 
                         <TextView

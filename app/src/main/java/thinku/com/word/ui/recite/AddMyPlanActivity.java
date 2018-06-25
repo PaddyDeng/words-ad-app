@@ -30,7 +30,9 @@ import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.other.MainActivity;
+import thinku.com.word.ui.personalCenter.FeedBackActivity;
 import thinku.com.word.utils.C;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.view.wheelview.widget.WheelView;
 
@@ -143,8 +145,7 @@ public class AddMyPlanActivity extends BaseActivity {
             }
         });
     }
-
-
+    
     /**
      * 设置下划线
      *
@@ -266,7 +267,7 @@ public class AddMyPlanActivity extends BaseActivity {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         dismissLoadDialog();
-                        toTast(AddMyPlanActivity.this, "添加词包失败");
+                        toTast(AddMyPlanActivity.this, HttpUtils.onError(throwable));
                     }
                 }));
     }
@@ -282,7 +283,7 @@ public class AddMyPlanActivity extends BaseActivity {
         }, new Consumer<Throwable>() {
             @Override
             public void accept(@NonNull Throwable throwable) throws Exception {
-                toTast(AddMyPlanActivity.this ,throwable.getMessage());
+                toTast(AddMyPlanActivity.this, HttpUtils.onError(throwable));
             }
         }));
     }

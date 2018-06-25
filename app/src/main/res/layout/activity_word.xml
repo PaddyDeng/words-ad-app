@@ -6,12 +6,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="thinku.com.word.ui.ActivityWord">
+    tools:context="thinku.com.word.ui.recite.WordPackageActivity">
     <include layout="@layout/title_layout" />
-    <thinku.com.word.weight.overscroll.FastAndOverScrollScrollView android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -40,6 +36,5 @@
         android:id="@+id/word_package"
         android:layout_weight="1"/>
     </LinearLayout>
-    </thinku.com.word.weight.overscroll.FastAndOverScrollScrollView>
 </LinearLayout>
 

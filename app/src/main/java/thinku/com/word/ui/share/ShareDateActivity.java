@@ -35,6 +35,7 @@ import thinku.com.word.bean.UserIndex;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.other.MainActivity;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.ShareUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.utils.StringUtils;
@@ -86,9 +87,14 @@ public class ShareDateActivity extends BaseActivity  implements PlatformActionLi
                 .subscribe(new Consumer<SingBeen>() {
                     @Override
                     public void accept(SingBeen singBeen) throws Exception {
-                        if (singBeen != null){
+                        if (singBeen != null) {
                             referUi(singBeen);
                         }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+
                     }
                 }));
     }

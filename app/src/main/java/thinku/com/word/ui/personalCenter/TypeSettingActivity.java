@@ -22,6 +22,7 @@ import thinku.com.word.bean.BackCode;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.other.dialog.callback.DialogClickListener;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
@@ -217,6 +218,7 @@ public class TypeSettingActivity extends BaseActivity implements DialogClickList
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
+                            toTast(TypeSettingActivity.this, HttpUtils.onError(throwable));
                             dismissLoadDialog();
                         }
                     }));

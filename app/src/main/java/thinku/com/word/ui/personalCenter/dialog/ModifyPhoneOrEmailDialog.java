@@ -18,8 +18,10 @@ import thinku.com.word.callback.ICallBack;
 import thinku.com.word.callback.RequestCallback;
 import thinku.com.word.http.C;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.ui.other.ForgetPassActivity;
 import thinku.com.word.ui.personalCenter.BaseDialog;
 import thinku.com.word.ui.personalCenter.feature.AuthCode;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.RegexValidateUtil;
 import thinku.com.word.utils.SharedPreferencesUtils;
@@ -144,6 +146,7 @@ public class ModifyPhoneOrEmailDialog extends BaseDialog {
             }, new Consumer<Throwable>() {
                 @Override
                 public void accept(@NonNull Throwable throwable) throws Exception {
+                    toastShort( HttpUtils.onError(throwable));
                     mAuthCode.sendAgain();
                 }
             }));

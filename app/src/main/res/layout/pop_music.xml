@@ -43,23 +43,41 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:id="@+id/mute"
-            android:text="静音"/>
+            android:text="音效"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tool:text="(开启)"
-            android:textSize="13sp"
-            android:id="@+id/mute_text"
-            android:textColor="@color/mainColor"
-            android:layout_toEndOf="@+id/mute"
-            android:layout_centerVertical="true"/>
         <ch.ielse.view.SwitchView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:id="@+id/switch_button"
+            android:padding="10dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_interval_line"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/auto"
+            android:text="自动发音"/>
+
+        <ch.ielse.view.SwitchView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/auto_switch_button"
             android:padding="10dp"/>
 
         <View

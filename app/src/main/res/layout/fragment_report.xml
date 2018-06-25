@@ -62,7 +62,7 @@
             android:layout_marginTop="40px"
             android:background="@drawable/main_10round_tv"
             android:gravity="center"
-            android:text="单词评估"
+            android:text="@string/word_eva"
             android:textColor="@color/white"
             android:textSize="50px" />
     </LinearLayout>

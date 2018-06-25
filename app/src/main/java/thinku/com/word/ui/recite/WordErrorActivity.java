@@ -26,6 +26,7 @@ import thinku.com.word.adapter.ErrorTypeAdapter;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.utils.HttpUtils;
 
 /**
  * Created by Administrator on 2018/4/10.
@@ -153,7 +154,7 @@ public class WordErrorActivity extends BaseActivity {
             @Override
             public void accept(Throwable throwable) throws Exception {
                 dismissLoadDialog();
-                toTast(WordErrorActivity.this ,throwable.getMessage());
+                toTast(WordErrorActivity.this, HttpUtils.onError(throwable));
             }
         }));
     }

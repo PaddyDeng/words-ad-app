@@ -45,6 +45,7 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.ui.adapter.QuestionAdapter;
 import thinku.com.word.ui.other.MainActivity;
+import thinku.com.word.ui.personalCenter.FeedBackActivity;
 import thinku.com.word.ui.recite.WordErrorActivity;
 import thinku.com.word.ui.report.adapter.SimilarAdapter;
 import thinku.com.word.ui.report.bean.QuestionBean;
@@ -56,6 +57,7 @@ import thinku.com.word.ui.webView.WebViewActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.HtmlUtil;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.MutePopHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.view.DislocationLayoutManager;
@@ -176,6 +178,7 @@ public class WordEvaluateFragment extends BaseActivity {
 
     private MutePopHelper mutePopHelper;  //  音效popWindow ;
     private boolean isPlay;  //  控制音效开关
+    private boolean autoPlay ;   //   单词播放音效
     private WordsBean data;
     private ShapeWordDialog shapeWordDialog;  // 形近词dialog
 
@@ -216,6 +219,7 @@ public class WordEvaluateFragment extends BaseActivity {
         initPop();
         initRecycler();
         isPlay = SharedPreferencesUtils.getPlayMusic(this);
+        autoPlay = SharedPreferencesUtils.getAutoPlayMusic(this);
         Intent intent = getIntent();
         if (intent != null) {
             tag = getIntent().getIntExtra("tag", 0);
@@ -287,6 +291,18 @@ public class WordEvaluateFragment extends BaseActivity {
             public void toError() {
                 WordErrorActivity.start(WordEvaluateFragment.this, wordId);
             }
+
+            @Override
+            public void openAutoMusic() {
+                autoPlay = true;
+                SharedPreferencesUtils.setAutoPlayMusic(WordEvaluateFragment.this, true);
+            }
+
+            @Override
+            public void closeAutoMusic() {
+                autoPlay = false;
+                SharedPreferencesUtils.setAutoPlayMusic(WordEvaluateFragment.this, false);
+            }
         });
         mutePopHelper.init();
         isPlay = SharedPreferencesUtils.getPlayMusic(this);
@@ -310,28 +326,31 @@ public class WordEvaluateFragment extends BaseActivity {
     }
 
 
-    public void playMusic() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (!TextUtils.isEmpty(recitWord.getWords().getUs_audio())) {
-                    IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mp) {
+    public void playMusic(boolean isAuto) {
+        if (autoPlay || !isAuto) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
 
-                        }
-                    });
-                } else {
-                    if (!TextUtils.isEmpty(recitWord.getWords().getUk_audio()))
-                        IMAudioManager.instance().playSound(recitWord.getWords().getUk_audio(), new MediaPlayer.OnCompletionListener() {
+                    if (!TextUtils.isEmpty(recitWord.getWords().getUs_audio())) {
+                        IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
                             @Override
                             public void onCompletion(MediaPlayer mp) {
 
                             }
                         });
+                    } else {
+                        if (!TextUtils.isEmpty(recitWord.getWords().getUk_audio()))
+                            IMAudioManager.instance().playSound(recitWord.getWords().getUk_audio(), new MediaPlayer.OnCompletionListener() {
+                                @Override
+                                public void onCompletion(MediaPlayer mp) {
+
+                                }
+                            });
+                    }
                 }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     /**
@@ -375,8 +394,9 @@ public class WordEvaluateFragment extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        toTast(WordEvaluateFragment.this, throwable.getMessage());
+                        toTast(WordEvaluateFragment.this, HttpUtils.onError(throwable));
                         dismissLoadDialog();
+
                     }
                 }));
     }
@@ -418,7 +438,7 @@ public class WordEvaluateFragment extends BaseActivity {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
 //                        dismissLoadDialog();
-                        toTast(throwable.getMessage());
+                        toTast(WordEvaluateFragment.this, HttpUtils.onError(throwable));
                     }
                 }));
     }
@@ -438,8 +458,7 @@ public class WordEvaluateFragment extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        toTast(throwable.getMessage());
-                        Log.e(TAG, "accept: " + throwable.toString());
+                        toTast(WordEvaluateFragment.this, HttpUtils.onError(throwable));
                     }
                 }));
     }
@@ -470,13 +489,14 @@ public class WordEvaluateFragment extends BaseActivity {
                             } else {
                                 words = (ArrayList<String>) reviewCaseBean.getWords();
                             }
+                            reciteWords(words);
                         }
-                        reciteWords(words);
+
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        toTast(throwable.getMessage());
+                        toTast(WordEvaluateFragment.this, HttpUtils.onError(throwable));
                     }
                 }));
     }
@@ -507,7 +527,11 @@ public class WordEvaluateFragment extends BaseActivity {
             word.setVisibility(View.VISIBLE);
         }
         prencente.setText("认知率：" + recitWord.getPercent() + "%");
-        phonogram.setText(recitWord.getWords().getPhonetic_us());
+        if (!TextUtils.isEmpty(recitWord.getWords().getPhonetic_us())){
+            phonogram.setText(recitWord.getWords().getPhonetic_us());
+        }else{
+           if (!TextUtils.isEmpty(recitWord.getWords().getPhonetic_uk())) phonogram.setText(recitWord.getWords().getPhonetic_uk());
+        }
         name.setText(recitWord.getWords().getTranslate());
         try {
             int leve = Integer.parseInt(recitWord.getWords().getLevel());
@@ -532,7 +556,7 @@ public class WordEvaluateFragment extends BaseActivity {
             helpContent.setText(content);
             helpMemory.setVisibility(View.VISIBLE);
         } else helpMemory.setVisibility(View.GONE);
-        playMusic();
+        playMusic(true);
         getData(recitWord);
         contentShow.post(new Runnable() {
             @Override
@@ -566,7 +590,6 @@ public class WordEvaluateFragment extends BaseActivity {
      * 需复习  正常背单词 userNeedRevies    进入新艾宾浩斯 needReviews   + 剩余数组   , 复习模式下  数组数量
      **/
     public void setStudyAndReviewNum(RecitWordBeen recitWord) {
-        Log.e(TAG, "setStudyAndReviewNum: " + isNewAiBinHaoSi);
         if (tag == C.NORMAL) {
             if (isNewAiBinHaoSi) {
                 if (words != null) {
@@ -803,6 +826,8 @@ public class WordEvaluateFragment extends BaseActivity {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
 //                                dismissLoadDialog();
+                                toTast(WordEvaluateFragment.this, HttpUtils.onError(throwable));
+                                Log.e(TAG, "reviewCaseObservable>>>>>>>>>: " + throwable.getMessage() );
                             }
                         }));
             }
@@ -841,6 +866,7 @@ public class WordEvaluateFragment extends BaseActivity {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         dismissLoadDialog();
+                        Log.e("error", "fromWordsIdGetWordDetails>>>>>>>>> " +throwable.getMessage() );
                         toTast(WordEvaluateFragment.this, throwable.getMessage());
                     }
                 }));
@@ -888,7 +914,7 @@ public class WordEvaluateFragment extends BaseActivity {
                 }
                 break;
             case R.id.play:
-                playMusic();
+                playMusic(false);
                 break;
             case R.id.show_more_low_sentence:
                 showMoreLowSentence();
@@ -1072,7 +1098,8 @@ public class WordEvaluateFragment extends BaseActivity {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
 //                                    dismissLoadDialog();
-                                toTast(WordEvaluateFragment.this, throwable.getMessage());
+                                Log.e("error", "reviewUpdataObservable>>>>>>>>> " +throwable.getMessage() );
+                                toTast(WordEvaluateFragment.this, HttpUtils.onError(throwable));
                             }
                         }));
             } else {
@@ -1091,7 +1118,6 @@ public class WordEvaluateFragment extends BaseActivity {
                                     WordEvaluateFragment.start(WordEvaluateFragment.this, C.NORMAL);
                                     WordEvaluateFragment.this.finishWithAnim();
                                 } else {
-                                    Log.e(TAG, "not: " + (words == null));
                                     posiiton++;
                                     if (isNewAiBinHaoSi) {
                                         if (posiiton == words.size()) {
@@ -1107,7 +1133,6 @@ public class WordEvaluateFragment extends BaseActivity {
                                             referStart(word);
                                         }
                                     } else {
-                                        Log.e(TAG, "accept: " + posiiton + "  " + words.size());
                                         if (posiiton >= words.size()) {
                                             share();
                                         } else if (posiiton < words.size()) {
@@ -1127,7 +1152,8 @@ public class WordEvaluateFragment extends BaseActivity {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
 //                                    dismissLoadDialog();
-                                toTast(WordEvaluateFragment.this, throwable.getMessage());
+                                Log.e("error", "updataStatus>>>>>>>>> " +throwable.getMessage() );
+                                toTast(WordEvaluateFragment.this, HttpUtils.onError(throwable));
                             }
                         }));
 
@@ -1174,7 +1200,8 @@ public class WordEvaluateFragment extends BaseActivity {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
 //                                dismissLoadDialog();
-                            toTast(WordEvaluateFragment.this, throwable.getMessage());
+                            Log.e("error", "REVIEW ======updataStatus>>>>>>>>> " +throwable.getMessage() );
+                            toTast(WordEvaluateFragment.this, HttpUtils.onError(throwable));
                         }
                     }));
 

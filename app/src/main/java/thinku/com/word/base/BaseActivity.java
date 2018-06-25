@@ -59,7 +59,6 @@ public class BaseActivity extends AutoLayoutActivity {
 
     }
 
-
     //网络请求
     protected void addToCompositeDis(Disposable disposable) {
         CompositeDisposable compositeDisposable = mConcurrentMap.get(TAG);

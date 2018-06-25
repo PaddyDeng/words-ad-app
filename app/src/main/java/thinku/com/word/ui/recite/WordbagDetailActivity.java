@@ -28,6 +28,7 @@ import thinku.com.word.adapter.WordAdapter;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.PackageDetails;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.utils.HttpUtils;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -142,7 +143,7 @@ public class WordbagDetailActivity extends BaseActivity {
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         pkWordRl.loadMoreComplete();
                         page-- ;
-                        toTast(WordbagDetailActivity.this ,throwable.getMessage());
+                        toTast(WordbagDetailActivity.this, HttpUtils.onError(throwable));
                     }
                 }));
     }

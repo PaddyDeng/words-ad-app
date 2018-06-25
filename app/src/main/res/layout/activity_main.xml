@@ -82,7 +82,7 @@
 
             <TextView
                 android:id="@+id/pk_tv"
-                android:text="PK"
+                android:text="发现"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="2dp"
                 android:textSize="10sp"

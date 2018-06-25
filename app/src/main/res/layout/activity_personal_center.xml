@@ -226,7 +226,7 @@
                                 android:layout_width="100px"
                                 android:layout_height="100px" />
                             <TextView
-                                android:text="五星好评"
+                                android:text="音效开关"
                                 android:layout_marginLeft="40px"
                                 android:textSize="50px"
                                 android:textColor="@color/black"

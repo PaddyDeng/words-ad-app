@@ -30,8 +30,10 @@ import thinku.com.word.base.BaseFragment;
 import thinku.com.word.bean.TrackBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.ui.share.ShareDateActivity;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
@@ -164,7 +166,7 @@ public class ProcessFragment extends BaseFragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        toTast(_mActivity,throwable.getMessage());
+                        toTast(_mActivity, HttpUtils.onError(throwable));
                     }
                 }));
     }

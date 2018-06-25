@@ -84,6 +84,26 @@ public class EvaWordBeen implements Parcelable {
         private String select;
         private String answer;
 
+        public String getPhonetic_us() {
+            return phonetic_us;
+        }
+
+        public void setPhonetic_us(String phonetic_us) {
+            this.phonetic_us = phonetic_us;
+        }
+
+        private String phonetic_us ;
+
+        public String getUs_audio() {
+            return us_audio;
+        }
+
+        public void setUs_audio(String us_audio) {
+            this.us_audio = us_audio;
+        }
+
+        private String us_audio ;
+
         public WordsBean(){}
         protected WordsBean(Parcel in) {
             word = in.readString();
@@ -92,6 +112,8 @@ public class EvaWordBeen implements Parcelable {
             uk_audio = in.readString();
             select = in.readString();
             answer = in.readString();
+            us_audio = in.readString();
+            phonetic_us = in.readString();
         }
 
         public static final Creator<WordsBean> CREATOR = new Creator<WordsBean>() {
@@ -167,6 +189,8 @@ public class EvaWordBeen implements Parcelable {
             dest.writeString(uk_audio);
             dest.writeString(select);
             dest.writeString(answer);
+            dest.writeString(us_audio);
+            dest.writeString(phonetic_us);
         }
     }
 }

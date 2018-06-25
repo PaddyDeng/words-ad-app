@@ -178,7 +178,7 @@ public interface RestApi {
 
     @FormUrlEncoded
     @POST(NetworkChildren.ERROR_RECOVERY)
-    Observable<ResultBeen<Void>> errorRecovery(@Field("type") String type , @Field("wordsId") String wordId  ,@Field("content") String content );
+    Observable<ResultBeen<Void>> errorRecovery(@Field("type") String type , @Field("wordsId") String wordId  ,@Field("content") String content ,@Field("platform") String platform );
 
     @POST(NetworkChildren.USER_SIGN)
     Observable<SingBeen> userSign();

@@ -123,24 +123,29 @@ public class ShapeWordDialog extends AlertDialog {
 
     public void referUi(final RecitWordBeen recitWordBeen) {
         word.setText(recitWordBeen.getWords().getWord());
+        if (!TextUtils.isEmpty(recitWordBeen.getWords().getPhonetic_us())){
+            phonogram.setText(recitWordBeen.getWords().getPhonetic_us());
+        }else{
+            if (!TextUtils.isEmpty(recitWordBeen.getWords().getPhonetic_uk()))  phonogram.setText(recitWordBeen.getWords().getPhonetic_us());
+        }
         phonogram.setText(recitWordBeen.getWords().getPhonetic_uk());
-        if (!TextUtils.isEmpty(recitWordBeen.getWords().getMnemonic())){
-            name.setText(recitWordBeen.getWords().getMnemonic());
+        if (!TextUtils.isEmpty(recitWordBeen.getWords().getTranslate())){
+            name.setText(recitWordBeen.getWords().getTranslate());
             name.setVisibility(View.VISIBLE);
         }else name.setVisibility(View.GONE);
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(recitWordBeen.getWords().getUk_audio())) {
-                    IMAudioManager.instance().playSound(recitWordBeen.getWords().getUk_audio(), new MediaPlayer.OnCompletionListener() {
+                if (!TextUtils.isEmpty(recitWordBeen.getWords().getUs_audio())) {
+                    IMAudioManager.instance().playSound(recitWordBeen.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
 
                         }
                     });
                 } else {
-                    IMAudioManager.instance().playSound(recitWordBeen.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
+                    IMAudioManager.instance().playSound(recitWordBeen.getWords().getUk_audio(), new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
 

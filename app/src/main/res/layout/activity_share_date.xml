@@ -45,7 +45,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:id="@+id/test"
             android:background="@color/white"
              android:layout_below="@id/calendar">
                 <View

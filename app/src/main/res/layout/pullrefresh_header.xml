@@ -6,7 +6,6 @@
     android:gravity="bottom">
 
     <RelativeLayout
-        android:id="@+id/xlistview_header_content"
         android:layout_width="match_parent"
         android:layout_marginTop="480dp"
         android:layout_height="@dimen/pullrefresh_head_content_height">

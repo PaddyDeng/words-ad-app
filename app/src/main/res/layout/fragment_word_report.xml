@@ -57,7 +57,6 @@
                     <LinearLayout style="@style/report_lin">
 
                         <View
-                            android:id="@+id/image1"
                             style="@style/report_view"
                             android:background="@color/color_know_well" />
 

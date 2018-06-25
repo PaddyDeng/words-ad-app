@@ -43,7 +43,9 @@ import thinku.com.word.ui.report.bean.QuestionBean;
 import thinku.com.word.ui.webView.WebViewActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.HtmlUtil;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.LoginHelper;
+import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.view.DislocationLayoutManager;
 import thinku.com.word.view.FABRecyclerView;
 import thinku.com.word.view.RatingBar;
@@ -137,6 +139,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
     private ObjectAnimator sentenceHideAnimator ;  //  例句隐藏动画
     private ObjectAnimator lowSentenceShowAnimator ;  //  短句展开动画
     private ObjectAnimator lowSentnceHideAnimator ;   //  短句隐藏动画
+    private boolean autoPlay ;
     public static void start(Context context, String wordId) {
         Intent intent = new Intent(context, WordEvaluateFragment1.class);
         intent.putExtra("wordId", wordId);
@@ -158,13 +161,18 @@ public class WordEvaluateFragment1 extends BaseActivity {
     }
 
 
+
     /**
      * @param recitWord
      */
     public void referUi1(final RecitWordBeen recitWord) {
         this.recitWord = recitWord ;
         prencente.setText("认知率：" + recitWord.getPercent() + "%");
-        phonogram.setText(recitWord.getWords().getPhonetic_us());
+        if (!TextUtils.isEmpty(recitWord.getWords().getPhonetic_us())){
+            phonogram.setText(recitWord.getWords().getPhonetic_us());
+        }else{
+            if (!TextUtils.isEmpty(recitWord.getWords().getPhonetic_uk())) phonogram.setText(recitWord.getWords().getPhonetic_uk());
+        }
         name.setText(recitWord.getWords().getTranslate());
         word.setText(recitWord.getWords().getWord());
         try{
@@ -186,28 +194,29 @@ public class WordEvaluateFragment1 extends BaseActivity {
 
 
     public void playMusic(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (!TextUtils.isEmpty(recitWord.getWords().getUs_audio())) {
-                    IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mp) {
-
-                        }
-                    });
-                } else {
-                    if (!TextUtils.isEmpty(recitWord.getWords().getUk_audio()))
-                        IMAudioManager.instance().playSound(recitWord.getWords().getUk_audio(), new MediaPlayer.OnCompletionListener() {
+        if (autoPlay) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if (!TextUtils.isEmpty(recitWord.getWords().getUs_audio())) {
+                        IMAudioManager.instance().playSound(recitWord.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
                             @Override
                             public void onCompletion(MediaPlayer mp) {
 
                             }
                         });
-                }
-            }
-        }).start();
+                    } else {
+                        if (!TextUtils.isEmpty(recitWord.getWords().getUk_audio()))
+                            IMAudioManager.instance().playSound(recitWord.getWords().getUk_audio(), new MediaPlayer.OnCompletionListener() {
+                                @Override
+                                public void onCompletion(MediaPlayer mp) {
 
+                                }
+                            });
+                    }
+                }
+            }).start();
+        }
     }
 
     /**
@@ -272,6 +281,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
             if (!TextUtils.isEmpty(questionBean.getArticle())) {
                 article.setVisibility(View.VISIBLE);
                 String content = HtmlUtil.getHtml(questionBean.getArticle() ,recitWord.getWords().getWord());
+
                 String urlContent = HtmlUtil.repairContent(content , NetworkTitle.GMAT);
                 article.loadDataWithBaseURL(null, urlContent, "text/html", " charset=UTF-8", null);//这种写法可以正确解码
             } else {
@@ -422,7 +432,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         dismissLoadDialog();
-                        toTast(WordEvaluateFragment1.this ,throwable.getMessage());
+                        toTast(WordEvaluateFragment1.this, HttpUtils.onError(throwable));
                     }
                 }));
     }
@@ -543,6 +553,7 @@ public class WordEvaluateFragment1 extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        autoPlay = SharedPreferencesUtils.getAutoPlayMusic(this);
     }
 
     @OnClick({R.id.youdao, R.id.niujing, R.id.biying, R.id.jinshan})

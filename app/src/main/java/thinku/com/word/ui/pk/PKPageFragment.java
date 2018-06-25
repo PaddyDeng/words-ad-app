@@ -36,8 +36,10 @@ import thinku.com.word.bean.PkIndexBeen;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.ui.share.ShareDateActivity;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
@@ -102,6 +104,8 @@ public class PKPageFragment extends BaseFragment {
 
     @Override
     public void onDestroy() {
+
+
         super.onDestroy();
         RxBus.get().unregister(C.RXBUS_HEAD_IMAGE, observable);
         RxBus.get().unregister(C.RXBUS_PK_PAGE ,referUiObservable);
@@ -117,6 +121,7 @@ public class PKPageFragment extends BaseFragment {
         ranking_list.setLayoutManager(new LinearLayoutManager(_mActivity));
         pkRankAdapter = new PkRankAdapter(_mActivity, rankingListBeans);
         ranking_list.setAdapter(pkRankAdapter);
+        ranking_list.setNestedScrollingEnabled(false);
     }
 
     public void addNet() {
@@ -140,7 +145,7 @@ public class PKPageFragment extends BaseFragment {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Log.e(TAG, "accept: " + throwable.toString() );
+                        toTast(_mActivity, HttpUtils.onError(throwable));
                     }
                 }));
     }

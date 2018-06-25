@@ -29,6 +29,7 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.personalCenter.SetNickNameActivity;
 import thinku.com.word.ui.personalCenter.feature.AuthCode;
 import thinku.com.word.utils.C;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.PhoneAndEmailUtils;
 import thinku.com.word.utils.RegexValidateUtil;
@@ -215,7 +216,7 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
                                 dismissLoadDialog();
-                                toTast(RigisterActivity.this, "网络出错");
+                                toTast(RigisterActivity.this, HttpUtils.onError(throwable));
                             }
                         }));
                 break;
@@ -338,6 +339,7 @@ public class RigisterActivity extends BaseActivity implements View.OnClickListen
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
+                            toTast(RigisterActivity.this, HttpUtils.onError(throwable));
                             mAuthCode.sendAgain();
                         }
                     })

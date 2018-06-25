@@ -28,4 +28,10 @@ public class WordBean {
     public void setWord(String word) {
         this.word = word;
     }
+
+    public WordBean(){} ;
+    public WordBean(String word ,String id){
+        setId(id);
+        setWord(word);
+    }
 }

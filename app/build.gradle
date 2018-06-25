@@ -7,11 +7,10 @@ android {
         applicationId "thinku.com.word"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 7
-        versionName "1.0.6"
+        versionCode 8
+        versionName "1.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-
 
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
@@ -35,8 +34,19 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def requested = details.requested
+            if (requested.group == 'com.android.support') {
+                if (!requested.name.startsWith("multidex")) {
+                    details.useVersion '25.3.1'
+                }
+            }
         }
     }
 
@@ -118,6 +128,10 @@ dependencies {
     compile files('libs/Sunflower.jar')
     compile files('libs/ocr-sdk.jar')
     compile files('libs/license.jar')
+    //    compile 'com.github.nuptboyzhb.lib.uikit:superswiperefreshlayout:1.0.0'
+    //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.2'
+//    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.2'
+//    compile 'com.coolerfall:android-app-daemon:1.2.0'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -145,12 +159,8 @@ dependencies {
     compile 'ch.ielse:switchbutton:1.0.1'
     compile 'cn.bingoogolapple:bga-refreshlayout:1.1.8@aar'
     compile 'com.jude:rollviewpager:1.4.6'
+    compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
+    compile 'com.jcodecraeer:xrecyclerview:1.5.9'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-    compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
-//    compile 'com.github.nuptboyzhb.lib.uikit:superswiperefreshlayout:1.0.0'
-    compile 'com.jcodecraeer:xrecyclerview:1.5.9'
-//    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.2'
-//    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.2'
-//    compile 'com.coolerfall:android-app-daemon:1.2.0'
 }

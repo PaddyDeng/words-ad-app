@@ -82,6 +82,7 @@ public class PKResultActivity extends BaseActivity {
     private String totalId;
     private MediaPlayer pk_success;
     private MediaPlayer pk_failure;
+    private boolean pkResult ;
     private ResultAdapter resultAdapter;
     private List<PkResultBeen.QuestionInfoBean> questionInfoBeanList;
 
@@ -107,6 +108,12 @@ public class PKResultActivity extends BaseActivity {
         addNet();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        pkResult = SharedPreferencesUtils.getPkResultMusic(this);
+    }
+
     public void addNet() {
         addToCompositeDis(HttpUtil.pkResultBeenObservable(matchUid, totalId)
                 .subscribe(new Consumer<PkResultBeen>() {
@@ -125,18 +132,23 @@ public class PKResultActivity extends BaseActivity {
     }
 
     public void initPkSuccessMedia() {
+        if (pkResult) {
         if (pk_success == null) {
             pk_success = MediaPlayer.create(this, R.raw.pk_success);
 
         }
-        pk_success.start();
+            pk_success.start();
+        }
     }
 
     public void initPkFailureMedia() {
+        if (pkResult) {
         if (pk_failure == null) {
             pk_failure = MediaPlayer.create(this, R.raw.pk_faliure);
         }
-        pk_failure.start();
+
+            pk_failure.start();
+        }
     }
 
     public void referUi(PkResultBeen pkResultBeen) {

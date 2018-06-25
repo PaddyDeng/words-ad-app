@@ -55,28 +55,35 @@ public class MutePopHelper {
         if (mView == null ) return;
         if (muteOpenListener == null) return ;
         boolean isPlay = SharedPreferencesUtils.getPlayMusic(context);
-        final TextView muteTxt  = (TextView) mView.findViewById(R.id.mute_text);
+        boolean autoPlay = SharedPreferencesUtils.getAutoPlayMusic(context);
+        final SwitchView auto_switchView = (SwitchView) mView.findViewById(R.id.auto_switch_button);
         final SwitchView switchView = (SwitchView) mView.findViewById(R.id.switch_button);
-        if (isPlay) {
-            muteTxt.setText("(关闭)");
-        }
-        else {
-            muteTxt.setText("(开启)");
-        }
         final RelativeLayout relativeLayout = (RelativeLayout) mView.findViewById(R.id.error_rel);
-        switchView.setOpened(!isPlay);
+        switchView.setOpened(isPlay);
+        auto_switchView.setOpened(autoPlay);
         switchView.setOnStateChangedListener(new SwitchView.OnStateChangedListener() {
             @Override
             public void toggleToOn(SwitchView view) {
-                muteOpenListener.closeMusic();
-                muteTxt.setText("(开启)");
+                muteOpenListener.openMusic();
                 view.setOpened(true);
             }
 
             @Override
             public void toggleToOff(SwitchView view) {
-                muteOpenListener.openMusic();
-                muteTxt.setText("(关闭)");
+                muteOpenListener.closeMusic();
+                view.setOpened(false);
+            }
+        });
+        auto_switchView.setOnStateChangedListener(new SwitchView.OnStateChangedListener() {
+            @Override
+            public void toggleToOn(SwitchView view) {
+                muteOpenListener.openAutoMusic();
+                view.setOpened(true);
+            }
+
+            @Override
+            public void toggleToOff(SwitchView view) {
+                muteOpenListener.closeAutoMusic();
                 view.setOpened(false);
             }
         });
@@ -114,5 +121,7 @@ public class MutePopHelper {
         void onDismissListener();
         void onShowListener() ;
         void toError();
+        void openAutoMusic();
+        void closeAutoMusic();
     }
 }

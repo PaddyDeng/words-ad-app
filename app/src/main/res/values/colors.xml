@@ -22,22 +22,14 @@
     <color name="drak_green">#219b8e</color>
     <color name="green_shallow">#DDEEE6</color>
     <color name="win_yellow">#FF8404</color>
-    <color name="familiar">#00B38B</color>
-    <color name="know">#33AFB9</color>
     <color name="vague">#E89500</color>
-    <color name="forget">#FF6F4B</color>
     <color name="evaluate_result">#F2ECE0</color>
     <color name="light_pink">#F5ECED</color>
     <color name="main_title_color">#434342</color>
     <color name="progress_clolor1">#EEC15F</color>
-    <color name="progress_bg">#F1EFE4</color>
-    <color name="progress_bg_stroker">#8ED9D1</color>
     <color name="gray_text">#7A7A7A</color>
     <color name="interal">#C9C9C9</color>
     <color name="pie_orange">#FF6F48</color>
-    <color name="pie_green">#00B38B</color>
-    <color name="pie_blue">#33AFB9</color>
-    <color name="pie_orange_3">#E89500</color>
     <color name="color_black_text">#7c7c7c</color>
     <color name="color_frame">#A3DFC0</color>
     <color name="color_progress_side">#CAF0EE</color>
@@ -55,8 +47,7 @@
     <color name="color_translate_black">#80000000</color>
 
     <color name="color_red">#FF203B</color>
-    
-    <color name="color_not_know">#4d6fcc</color>
+
     <color name="color_new_update_tip">#00c6ab</color>
 
     <!--clock-->
@@ -66,14 +57,7 @@
 
     <!--播放-->
     <color name="bg_video_controller">#A6000000</color>
-    <color name="bg_video_controller_divider">#FDFDFD</color>
     <color name="color_translucence">#B2000000</color>
-
-    <color name="color_paint1">#e45757</color>
-    <color name="color_paint2">#f29754</color>
-    <color name="color_paint3">#4B8CDD</color>
-    <color name="color_paint4">#48DFE8</color>
-    <color name="color_paint5">#11B873</color>
 
 
     <color name="tittle">#4dc494</color>
@@ -89,17 +73,13 @@
     <color name="word_know">#B8FFE0</color>
     <color name="word_not_know">#FFB5C5</color>
     <color name="word_dim">#FEE7B2</color>
-    
-    
+
     <!--repore-->
     <color name="color_know_well">#40c596</color>
     <color name="color_know">#51dfe7</color>
     <color name="color_dim">#4D8EDA</color>
     <color name="color_forget">#F1975B</color>
     <color name="color_notknow">#e25859</color>
-
-    <color name="dark_green">#37BC85</color>
-
 
     <color name="color_pale_red">#EE6C6E</color>
 </resources>

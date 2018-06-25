@@ -18,6 +18,7 @@
     <inspection_tool class="AndroidLintMangledCRLF" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="AndroidLintNewerVersionAvailable" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="AndroidLintStopShip" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="AndroidLintUnusedResources" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="AndroidMissingOnClickHandler" enabled="true" level="ERROR" enabled_by_default="true">
       <scope name="Project Files" level="WARNING" enabled="true" />
     </inspection_tool>

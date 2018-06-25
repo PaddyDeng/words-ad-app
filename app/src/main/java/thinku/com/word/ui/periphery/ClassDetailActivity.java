@@ -103,7 +103,7 @@ public class ClassDetailActivity extends BaseActivity {
         GlideUtils.load(this, choicenessBean.getImage(), courseImg);
         name.setText(choicenessBean.getName());
         people.setText(DateUtil.differentDays(Integer.parseInt(choicenessBean.getId())) + "人已加入");
-        String s = HtmlUtil.repairContent(choicenessBean.getContent(), NetworkTitle.DomainSmartApplyResourceNormal);
+        String s = HtmlUtil.repairContent(choicenessBean.getContent(), NetworkTitle.OPEN);
         String html = HtmlUtil.getHtml(s, 0);
         content.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
         listen.setVisibility(View.VISIBLE);
@@ -116,7 +116,7 @@ public class ClassDetailActivity extends BaseActivity {
         GlideUtils.load(this, courseBean.getImage(), courseImg);
         name.setText(courseBean.getName());
         people.setText(DateUtil.differentDays(Integer.parseInt(courseBean.getId())) + "人已加入");
-        String s = HtmlUtil.repairContent(courseBean.getContent(), NetworkTitle.DomainSmartApplyResourceNormal);
+        String s = HtmlUtil.repairContent(courseBean.getContent(), NetworkTitle.OPEN);
         String html = HtmlUtil.getHtml(s, 0);
         content.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
         listen.setVisibility(View.VISIBLE);

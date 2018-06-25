@@ -131,7 +131,7 @@ public class PersonalCenterActivity extends BaseActivity implements View.OnClick
                 startActivity(new Intent(this ,ReadMeActivity.class));
                 break;
             case R.id.service:
-                APPSmart.openApplicationMarket(this ,getPackageName());
+                MusicSwitchActivity.start(PersonalCenterActivity.this);
                 break;
         }
     }

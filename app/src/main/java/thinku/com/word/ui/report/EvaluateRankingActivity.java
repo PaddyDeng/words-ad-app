@@ -29,8 +29,10 @@ import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.UserRankBeen;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.ui.share.ShareDateActivity;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.ShareUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
@@ -105,7 +107,7 @@ public class EvaluateRankingActivity extends BaseActivity implements View.OnClic
 //                        dismissLoadDialog();
                         ranking_list.loadMoreComplete();
                         page-- ;
-                        toTast(throwable.getMessage());
+                        toTast(EvaluateRankingActivity.this, HttpUtils.onError(throwable));
                     }
                 }));
     }

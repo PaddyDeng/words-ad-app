@@ -12,6 +12,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+
+import retrofit2.HttpException;
+
 import static android.widget.Toast.makeText;
 
 /**

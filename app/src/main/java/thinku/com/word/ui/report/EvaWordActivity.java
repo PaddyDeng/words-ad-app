@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,8 +36,11 @@ import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.other.MainActivity;
 import thinku.com.word.ui.recite.WordErrorActivity;
 import thinku.com.word.ui.report.bean.WordEva;
+import thinku.com.word.ui.share.ShareDateActivity;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.RxHelper;
+import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.utils.StringUtils;
 
 /**
@@ -70,6 +74,9 @@ public class EvaWordActivity extends BaseActivity {
     private MyApplication myApplication ;
     private MediaPlayer rightPlayer ;
     private MediaPlayer errorPlayer ;
+    private boolean evaPlay ;
+    private boolean autoPlay ;
+    private EvaWordBeen wordBeen ;
     public static void start(Context context) {
         Intent intent = new Intent(context, EvaWordActivity.class);
         context.startActivity(intent);
@@ -88,6 +95,12 @@ public class EvaWordActivity extends BaseActivity {
         rightPlayer = MediaPlayer.create(this ,R.raw.eva_right_and_know);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        evaPlay = SharedPreferencesUtils.getEvaMusic(this);
+        autoPlay =SharedPreferencesUtils.getAutoPlayMusic(this);
+    }
 
     public void initRecy() {
         dataList.setLayoutManager(new LinearLayoutManager(EvaWordActivity.this));
@@ -103,7 +116,7 @@ public class EvaWordActivity extends BaseActivity {
                         evaHolder.error.setVisibility(View.GONE);
                         evaHolder.rl.setBackgroundResource(R.drawable.main_20round_tv);
                         type = 1 ;
-                        if (!rightPlayer.isPlaying()){
+                        if (!rightPlayer.isPlaying() && evaPlay){
                             rightPlayer.start();
                         }
                     } else if (position < EvaWordList.size() -1){
@@ -117,7 +130,7 @@ public class EvaWordActivity extends BaseActivity {
                         EvaWordList.get(currentIndex).setAnswer(true);
                         type = 0 ;
                         evaWordAdapter.notifyItemChanged(currentIndex);
-                        if (!errorPlayer.isPlaying()){
+                        if (!errorPlayer.isPlaying() && evaPlay){
                             errorPlayer.start();
                         }
 
@@ -167,7 +180,7 @@ public class EvaWordActivity extends BaseActivity {
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable throwable) throws Exception {
-                            toTast(throwable.getMessage());
+                            toTast(EvaWordActivity.this, HttpUtils.onError(throwable));
                         }
                     }));
     }
@@ -197,15 +210,15 @@ public class EvaWordActivity extends BaseActivity {
                         startDuration = System.currentTimeMillis() ;
                         if (getHttpResSuc(evaWordBeen.getCode())) {
                             if (evaWordBeen.getWords() != null) {
+                                wordBeen = evaWordBeen ;
                                 answer = evaWordBeen.getWords().getAnswer();
                                 word.setText(evaWordBeen.getWords().getWord());
-                                mnemonic.setText("["+evaWordBeen.getWords().getPhonetic_uk()+"]");
+                                if (!TextUtils.isEmpty(evaWordBeen.getWords().getPhonetic_us())) mnemonic.setText("["+evaWordBeen.getWords().getPhonetic_us()+"]");
+                                else {
+                                    if (TextUtils.isEmpty(evaWordBeen.getWords().getPhonetic_uk())) mnemonic.setText("["+evaWordBeen.getWords().getPhonetic_uk()+"]");
+                                }
                                 wordId = evaWordBeen.getWords().getWordsId();
-                                IMAudioManager.instance().playSound(evaWordBeen.getWords().getUk_audio(), new MediaPlayer.OnCompletionListener() {
-                                    @Override
-                                    public void onCompletion(MediaPlayer mediaPlayer) {
-                                    }
-                                });
+                                playMusic(true);
                                 EvaWordList.clear();
                                 if (StringUtils.spiltString(evaWordBeen.getWords().getSelect()).size() > 0) {
                                     for (String content : StringUtils.spiltString(evaWordBeen.getWords().getSelect())) {
@@ -221,11 +234,39 @@ public class EvaWordActivity extends BaseActivity {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         dismissLoadDialog();
+                        toTast(EvaWordActivity.this, HttpUtils.onError(throwable));
                     }
                 }));
     }
 
-    @OnClick({R.id.back ,R.id.errors})
+    public void playMusic(boolean isAuto ) {
+        if (autoPlay || !isAuto) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    if (!TextUtils.isEmpty(wordBeen.getWords().getUs_audio())) {
+                        IMAudioManager.instance().playSound(wordBeen.getWords().getUs_audio(), new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+
+                            }
+                        });
+                    } else {
+                        if (!TextUtils.isEmpty(wordBeen.getWords().getUk_audio()))
+                            IMAudioManager.instance().playSound(wordBeen.getWords().getUk_audio(), new MediaPlayer.OnCompletionListener() {
+                                @Override
+                                public void onCompletion(MediaPlayer mp) {
+
+                                }
+                            });
+                    }
+                }
+            }).start();
+        }
+    }
+
+    @OnClick({R.id.back ,R.id.errors , R.id.play})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -233,6 +274,9 @@ public class EvaWordActivity extends BaseActivity {
                 break;
             case R.id.errors:
                 toWordError();
+                break;
+            case R.id.play:
+                playMusic(false);
                 break;
         }
     }

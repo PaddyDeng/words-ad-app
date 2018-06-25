@@ -6,12 +6,14 @@ import android.text.Spanned;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class HtmlUtil {
+    private static  String greenFirst = "<span style=\"color:green\">";
+    private static  String greenLast = "</span>";
+    private static int index = 0 ;
     public static Spanned fromHtml(String body) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             return Html.fromHtml(body);
@@ -119,7 +121,6 @@ public class HtmlUtil {
         }else {
             sb.append(content);
         }
-        Log.e("tag", "replaceSpace: " + content );
         content = replaceRN(content);
         return content.trim();
     }
@@ -155,6 +156,7 @@ public class HtmlUtil {
         if (content.contains("font-size")){
             content = content.replace("font-size","").trim();
         }
+
 //        content = Html.fromHtml(content).toString();
         return content;
     }
@@ -191,12 +193,34 @@ public class HtmlUtil {
         return result;
     }
 
+    /**
+     * 从content中匹配单词word ， 不区分大小写，返回位置list
+     * @param word
+     * @param content
+     * @return
+     */
+    public static List<WordStartAndEnd> getPatternIndexs(String word , String content){
+        List<WordStartAndEnd> wordIndexs = new ArrayList<>();
+        try {
+            Pattern p = Pattern.compile(word.substring(0, word.length() - 1), Pattern.CASE_INSENSITIVE);
+            Matcher m = p.matcher(content);
+            while (m.find()) {
+                wordIndexs.add(new WordStartAndEnd(m.start(), m.end()));
+            }
+        }catch (Exception e){
+            Pattern p = Pattern.compile(word.substring(0, word.length() ), Pattern.CASE_INSENSITIVE);
+            Matcher m = p.matcher(content);
+            while (m.find()) {
+                wordIndexs.add(new WordStartAndEnd(m.start(), m.end()));
+            }
+        }
+        return wordIndexs;
+    }
+
     public static String getHtml(String content , String word) {
         content = replaceRN(content);
-        Log.e("Word", "getHtml: " + content );
-        String greenFirst = "<span style=\"color:green\">";
-        String greenLast = "</span>";
-        int index = content.indexOf(word);
+        List<WordStartAndEnd> wordStartAndEnds = getPatternIndexs(word , content);
+        StringBuffer contentStringBuffer = new StringBuffer(content);  //content
         StringBuffer sb = new StringBuffer();
         sb.append("<!DOCTYPE html>");
         sb.append("<html lang=\"en\">");
@@ -218,23 +242,50 @@ public class HtmlUtil {
         sb.append("</style>");
         sb.append("</head>");
         sb.append("<body>");
-        if (index != -1 && !content.substring(0 ,1).equals("<")){
-            try {
-//            int spaceIndex = content.indexOf(" " ,index);
-                    sb.append(content.substring(0, index));
-                    sb.append(greenFirst);
-                    sb.append(word);
-                    sb.append(greenLast);
-                    sb.append(content.substring(index + word.length(), content.length()));
-            }catch (Exception e){
-
+//        sb.append(content);
+//        if (index != -1 && !content.substring(0 ,1).equals("<")){
+//            try {
+//
+//                    sb.append(content.substring(0, index));
+//                    sb.append(greenFirst);
+//                    sb.append(word);
+//                    sb.append(greenLast);
+//                    sb.append(content.substring(index + word.length(), content.length()));
+//            }catch (Exception e){
+//
+//            }
+//        }else {
+//            sb.append(content);
+//        }
+            if (wordStartAndEnds != null && wordStartAndEnds.size() > 0) {
+                index = 0 ;
+                for (WordStartAndEnd wordStartAndEnd : wordStartAndEnds) {
+                    appendHtml( wordStartAndEnd, contentStringBuffer  );
+                }
             }
-        }else {
-            sb.append(content);
-        }
+        sb.append(contentStringBuffer);
         sb.append("</body>");
         sb.append("</html>");
         return sb.toString();
+    }
+
+    private static void appendHtml(WordStartAndEnd wordStartAndEnd , StringBuffer sb){
+        int start = wordStartAndEnd.getStart() ;
+        int end = wordStartAndEnd.getEnd() ;
+        if (start != -1 ){
+            if (start > 1) {
+                if (!sb.substring(start -1 , start).equals("<")) {
+                    sb.insert(start + index - 1, greenFirst);
+                    index += greenFirst.length() ;
+                }
+            }else{
+                sb.insert(0 ,greenFirst);
+                index += greenFirst.length() ;
+            }
+            int min = StringUtils.match(sb.toString() ,end+index);
+            sb.insert(min ,greenLast);
+            index += greenLast.length();
+        }
     }
 
 

@@ -46,3 +46,5 @@
 #百度文字识别
 -keep class com.baidu.ocr.sdk.**{*;}
 -dontwarn com.baidu.ocr.**
+
+-ignorewarnings -keep class * { public private *; }

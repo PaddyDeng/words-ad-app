@@ -38,6 +38,7 @@ import thinku.com.word.callback.SelectClickListener;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.report.*;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.MeasureUtils;
 import thinku.com.word.utils.RxHelper;
 import thinku.com.word.utils.StringUtils;
@@ -180,6 +181,7 @@ public class DictionDetailActivity extends BaseActivity {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         dismissLoadDialog();
+                        toTast(DictionDetailActivity.this, HttpUtils.onError(throwable));
                     }
                 }));
     }

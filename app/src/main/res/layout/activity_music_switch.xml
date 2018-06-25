@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="thinku.com.word.ui.personalCenter.MusicSwitchActivity">
+    <include layout="@layout/title_layout" />
+
+    <RelativeLayout
+        style="@style/music_rl"
+        android:id="@+id/home_music"
+
+        >
+        <TextView
+            style="@style/music_txt"
+            android:text="首页音效"
+           />
+        <ch.ielse.view.SwitchView
+            style="@style/music_switch"
+            android:id="@+id/home_music_switch"/>
+        <View
+          style="@style/music_interline" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/recite_rl"
+        style="@style/music_rl"
+
+        >
+
+        <TextView
+            style="@style/music_txt"
+            android:text="背单词音效" />
+
+        <ch.ielse.view.SwitchView
+            android:id="@+id/recite_music_switch"
+            style="@style/music_switch" />
+
+        <View style="@style/music_interline" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/music_rl"
+        android:id="@+id/eva_music"
+
+        >
+        <TextView
+            style="@style/music_txt"
+            android:text="单词评估音效"
+            />
+        <ch.ielse.view.SwitchView
+            style="@style/music_switch"
+            android:id="@+id/eva_music_switch"/>
+        <View
+            style="@style/music_interline" />
+    </RelativeLayout>
+    <RelativeLayout
+        style="@style/music_rl"
+        android:id="@+id/pk_result_music"
+
+        >
+        <TextView
+            style="@style/music_txt"
+            android:text="PK结果音效"
+            />
+        <ch.ielse.view.SwitchView
+            style="@style/music_switch"
+            android:id="@+id/pk_result_music_switch"/>
+        <View
+            style="@style/music_interline" />
+    </RelativeLayout>
+    <RelativeLayout
+        style="@style/music_rl"
+        android:id="@+id/pk_bg_music"
+
+        >
+        <TextView
+            style="@style/music_txt"
+            android:text="PK背景音效"
+            />
+        <ch.ielse.view.SwitchView
+            style="@style/music_switch"
+            android:id="@+id/pk_bg_music_switch"/>
+        <View
+            style="@style/music_interline" />
+    </RelativeLayout>
+    <RelativeLayout
+        style="@style/music_rl"
+        android:id="@+id/auto_music"
+
+        >
+        <TextView
+            style="@style/music_txt"
+            android:text="单词自动发音"
+            />
+        <ch.ielse.view.SwitchView
+            style="@style/music_switch"
+            android:id="@+id/auto_music_switch"/>
+        <View
+            style="@style/music_interline" />
+    </RelativeLayout>
+</LinearLayout>

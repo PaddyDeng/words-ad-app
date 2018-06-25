@@ -35,9 +35,11 @@ import thinku.com.word.base.BaseActivity;
 import thinku.com.word.callback.SelectListener;
 import thinku.com.word.callback.SelectRlClickListener;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.ui.fparent.PeripheryParentFragment;
 import thinku.com.word.ui.periphery.adapter.CourseAdapter;
 import thinku.com.word.ui.periphery.bean.CourseBean;
 import thinku.com.word.ui.periphery.bean.RoundBean;
+import thinku.com.word.ui.personalCenter.FeedBackActivity;
 import thinku.com.word.utils.HttpUtils;
 
 /**
@@ -159,7 +161,7 @@ public class PeripheryFragment extends BaseActivity  {
                         public void accept(@NonNull Throwable throwable) throws Exception {
 //                            dismissLoadDialog();
                             pkWordRl.loadMoreComplete();
-                            toTast(PeripheryFragment.this, throwable.toString());
+                            toTast(PeripheryFragment.this, HttpUtils.onError(throwable));
                         }
                     }));
         } else {
@@ -187,7 +189,7 @@ public class PeripheryFragment extends BaseActivity  {
 //                            dismissLoadDialog();
                             page-- ;
                             pkWordRl.loadMoreComplete();
-                            toTast(PeripheryFragment.this, throwable.toString());
+                            toTast(PeripheryFragment.this, HttpUtils.onError(throwable));
                         }
                     }));
         }

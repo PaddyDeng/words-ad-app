@@ -77,8 +77,8 @@
         <activity
             android:name=".ui.other.LoginActivity"
             android:configChanges="keyboardHidden|screenSize"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
         <!-- 注册 -->
         <activity
@@ -100,7 +100,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/paths"/>
+                android:resource="@xml/paths" />
         </provider>
         <!-- 设置背单词模式 -->
         <activity
@@ -246,12 +246,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme">
 
-             <!--<intent-filter>-->
-             <!--<action android:name="android.intent.action.MAIN" />-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
 
-             <!--<category android:name="android.intent.category.LAUNCHER" />-->
-             <!--</intent-filter>-->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <!-- pk发现页详情 -->
@@ -438,8 +438,11 @@
             android:name=".ui.other.UserActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme" />
-
-        <activity android:name=".ui.report.WordEvaluateFragment1"
+        <activity
+            android:name=".ui.report.WordEvaluateFragment1"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleTheme" />
+        <activity android:name=".ui.personalCenter.MusicSwitchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTheme"
             />

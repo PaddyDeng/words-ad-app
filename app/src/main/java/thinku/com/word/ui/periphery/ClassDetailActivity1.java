@@ -102,7 +102,7 @@ public class ClassDetailActivity1 extends BaseActivity {
         GlideUtils.load(this, NetworkTitle.OPENRESOURE + dataBean.getImage(), courseImg);
         name.setText(dataBean.getName());
         people.setText(dataBean.getViewCount() + "人已加入");
-        String s = HtmlUtil.repairContent(dataBean.getSentenceNumber(), NetworkTitle.DomainSmartApplyResourceNormal);
+        String s = HtmlUtil.repairContent(dataBean.getSentenceNumber(), NetworkTitle.OPEN);
         String html = HtmlUtil.getHtml(s, 0);
         content.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
     }

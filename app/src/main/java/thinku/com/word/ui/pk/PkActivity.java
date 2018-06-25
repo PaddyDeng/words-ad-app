@@ -102,7 +102,6 @@ public class PkActivity extends BaseActivity {
     private String mySelfUid;
     private String matchUid;
     private ValueAnimator valueAnimator;
-    private MediaPlayer pkbg;
     private boolean isOne;
     private boolean isClick = true;
     private int[] waitAnimator = new int[]{
@@ -132,20 +131,13 @@ public class PkActivity extends BaseActivity {
             Log.i(TAG, e.getMessage());
         }
         init();
-        initPkAudioManager();
     }
 
-    public void initPkAudioManager() {
-        pkbg = MediaPlayer.create(this, R.raw.pk_bg);
-        pkbg.setLooping(true);
-        pkbg.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-
-            }
-        });
-        pkbg.start();
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
+
 
     public void init() {
         EventBus.getDefault().register(PkActivity.this);
@@ -409,10 +401,6 @@ public class PkActivity extends BaseActivity {
         if (valueAnimator != null) {
             valueAnimator.cancel();
         }
-        if (pkbg.isPlaying()) {
-            pkbg.stop();
-        }
-        pkbg.release();
     }
 
 

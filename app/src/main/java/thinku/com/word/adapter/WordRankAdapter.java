@@ -48,15 +48,19 @@ public class WordRankAdapter extends RecyclerView.Adapter {
         if (position == 0 ){
             wordRankHolder.score_img.setImageResource(R.mipmap.rank_one);
             wordRankHolder.score_img.setVisibility(View.VISIBLE);
+            wordRankHolder.score_txt.setVisibility(View.INVISIBLE);
         }else if(position == 1){
             wordRankHolder.score_img.setImageResource(R.mipmap.rank_two);
             wordRankHolder.score_img.setVisibility(View.VISIBLE);
+            wordRankHolder.score_txt.setVisibility(View.INVISIBLE);
         }else if(position == 2 ){
             wordRankHolder.score_img.setImageResource(R.mipmap.rank_three);
             wordRankHolder.score_img.setVisibility(View.VISIBLE);
+            wordRankHolder.score_txt.setVisibility(View.INVISIBLE);
         }else{
             wordRankHolder.score_txt.setText((position +1)+"");
             wordRankHolder.score_txt.setVisibility(View.VISIBLE);
+            wordRankHolder.score_img.setVisibility(View.GONE);
         }
        new  GlideUtils().loadCircle(context , WORDRESOURE +rankBean.getImage()  ,wordRankHolder.head_image);
         wordRankHolder.name.setText(rankBean.getNickname());

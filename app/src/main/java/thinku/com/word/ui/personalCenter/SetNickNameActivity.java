@@ -28,6 +28,8 @@ import thinku.com.word.bean.UserInfo;
 import thinku.com.word.callback.ICallBack;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.other.MainActivity;
+import thinku.com.word.ui.share.ShareDateActivity;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.SharedPreferencesUtils;
 
@@ -58,10 +60,11 @@ public class SetNickNameActivity extends BaseActivity {
 
 
     public static void start(Context context ){
-        Log.e(TAG, "start: " );
         Intent intent = new Intent(context ,SetNickNameActivity.class);
         context.startActivity(intent);
     }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +73,12 @@ public class SetNickNameActivity extends BaseActivity {
         initView();
         Intent intent = getIntent();
         if (intent != null){
-            Bundle bundle = intent.getExtras();
-            userInfo = bundle.getParcelable("user");
+            try {
+                Bundle bundle = intent.getExtras();
+                userInfo = bundle.getParcelable("user");
+            }catch (Exception e){
+
+            }
         }
     }
 
@@ -173,7 +180,7 @@ public class SetNickNameActivity extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        Log.e(TAG, "accept: " + throwable.getMessage() );
+                        toTast(SetNickNameActivity.this, HttpUtils.onError(throwable));
                     }
                 }));
     }

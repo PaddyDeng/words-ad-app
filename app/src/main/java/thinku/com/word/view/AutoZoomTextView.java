@@ -3,6 +3,7 @@ package thinku.com.word.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.widget.TextView;
@@ -13,7 +14,7 @@ import thinku.com.word.R;
  * Created by Administrator on 2018/2/6.
  */
 
-public class AutoZoomTextView extends TextView {
+public class AutoZoomTextView extends AppCompatTextView {
 
     /**
      * 自动缩放

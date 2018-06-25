@@ -55,9 +55,6 @@ public class HttpUtil {
         return  RetrofitProvider.getInstance1(hostType).create(RestApi.class);
     }
 
-    private static RestApi getRestApiBaidu(@HostType.HostTypeChecker int hostType){
-        return  RetrofitProviderBaidu.getInstance(hostType).create(RestApi.class);
-    }
 
 
     //重置session
@@ -245,7 +242,7 @@ public class HttpUtil {
 
     //报错提交
     public static Observable<ResultBeen<Void>> errorRecoveryObservable(String type ,String wordId ,String content){
-        return getRestApi(HostType.WORDS_URL_HOST).errorRecovery( type ,wordId ,content).compose(new SchedulerTransformer<ResultBeen<Void>>());
+        return getRestApi(HostType.WORDS_URL_HOST).errorRecovery( type ,wordId ,content ,"android").compose(new SchedulerTransformer<ResultBeen<Void>>());
     }
 
     //用户签到首页
@@ -444,11 +441,6 @@ public class HttpUtil {
     //  背单词接口
     public static Observable<ResultBeen<Void>> deletePackageObservable(String id){
         return getRestApi(HostType.WORDS_URL_HOST).deletePackage(id).compose(new SchedulerTransformer<ResultBeen<Void>>());
-    }
-
-    //  背单词接口
-    public static Observable<BaiduBean> baiduBeanObservable(String appkey , String appsecert){
-        return getRestApiBaidu(HostType.WORDS_URL_HOST).getBaiduToken("client_credentials" ,appkey , appsecert).compose(new SchedulerTransformer<BaiduBean>());
     }
 
 }

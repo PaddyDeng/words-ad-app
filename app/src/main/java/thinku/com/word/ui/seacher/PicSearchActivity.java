@@ -13,8 +13,10 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,7 +65,10 @@ public class PicSearchActivity extends BaseNoImmActivity {
     RecyclerView mRecyclerView;
     @BindView(R.id.search_no_result_msg)
     LinearLayout noResult;
-
+    @BindView(R.id.no_result_text)
+    TextView noResultText ;
+    @BindView(R.id.chacha)
+    ImageView chacha ;
     private SearchQuestionAdapter mAdapter;
     private List<WordBean> words;
     private List<String> recordQuestionIds;
@@ -139,6 +144,11 @@ public class PicSearchActivity extends BaseNoImmActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 log(s.toString());
+                if (TextUtils.isEmpty(s.toString())){
+                    Utils.setGone(chacha);
+                }else{
+                    Utils.setVisible(chacha);
+                }
                 //内容改变
                 Message message = mHandler.obtainMessage();
                 message.what = SEARCH_WHAT;
@@ -189,6 +199,10 @@ public class PicSearchActivity extends BaseNoImmActivity {
                             mAdapter.notifyDataSetChanged();
                             Utils.setVisible(mRecyclerView);
                             Utils.setGone(shadow, noResult);
+                        }else{
+                            noResultText.setText(getResources().getString(R.string.str_search_no_result));
+                            Utils.setVisible(noResult);
+                            Utils.setGone(shadow, mRecyclerView);
                         }
 
                     }
@@ -196,6 +210,7 @@ public class PicSearchActivity extends BaseNoImmActivity {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         throwable.printStackTrace();
+                        noResultText.setText(getResources().getString(R.string.no_result_no_net));
                         Utils.setVisible(noResult);
                         Utils.setGone(shadow, mRecyclerView);
                     }
@@ -203,12 +218,15 @@ public class PicSearchActivity extends BaseNoImmActivity {
 
     }
 
-    @OnClick({R.id.question_search_cancel_btn})
+    @OnClick({R.id.question_search_cancel_btn , R.id.chacha})
     public void onClick(View v) {
         switch (v.getId()) {
             // 点击“取消”按钮，及半透明背景，均退出页面
             case R.id.question_search_cancel_btn:
                 finish();
+                break;
+            case R.id.chacha:
+                inputEdt.setText("");
                 break;
         }
     }

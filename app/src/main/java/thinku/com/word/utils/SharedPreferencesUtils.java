@@ -35,7 +35,14 @@ public class SharedPreferencesUtils {
     private final static String PERFS_PK_NAME = "prefs_pk_match_name" ;   // 对手名字
     private final static String PERFS_PK_UID = "prefs_pk_match_uid" ;
     private final static String PLAY_MUSCI = "prefs_play_music";  //   播放音效设置
+    private final static String AUTO_MUSIC = "prefs_auto_music" ;  //  自动播放音效
+    private final static String EVA_MUSIC = "prefs_eva_music" ;  // 单词评估音效
+    private final static String PK_RESULT_MUSIC = "prefs_pk_result_music" ;  //  pk结果音效
+    private final static String PK_BG_MUSIC = "prefs_pk_bg_music" ;  // PK背景音效
+    private final static String HOME_MUSIC = "prefs_home_music" ;  //  首页音效
 
+    //  搜索历史记录
+    private final static String PREFS_HISTORY = "prefs_history" ;  //  历史搜索记录
 
     private final static String LOGO = "prefs_logo" ;  //  logo 图片
 
@@ -60,9 +67,13 @@ public class SharedPreferencesUtils {
         editor.commit();
     }
 
+    /******* 音效开关*******/
 
-
-
+    /**
+     * 单词标记认识不认识的背景音乐
+     * @param context
+     * @param isPlay
+     */
     public static void setPlayMusic(Context context ,boolean isPlay){
         setBoolean(PLAY_MUSCI ,context ,isPlay);
     }
@@ -70,6 +81,58 @@ public class SharedPreferencesUtils {
     public static boolean getPlayMusic(Context context ){
         return getBoolean(PLAY_MUSCI ,context);
     }
+
+    //  背单词自动发音
+    public static void setAutoPlayMusic(Context c , boolean isPlay){
+        setBoolean(AUTO_MUSIC , c , isPlay);
+    }
+
+    public static boolean getAutoPlayMusic(Context context ){
+        return getBoolean(AUTO_MUSIC ,context);
+    }
+
+    //  首页背单词
+
+    public static void setHomeMusic(Context c , boolean isPlay){
+        setBoolean(HOME_MUSIC , c , isPlay);
+    }
+
+    public static boolean getHomeMusic(Context context ){
+        return getBoolean(HOME_MUSIC ,context , true);
+    }
+
+    //  评估音效
+
+    public static void setEvaMusic(Context c , boolean isPlay){
+        setBoolean( EVA_MUSIC, c , isPlay);
+    }
+
+    public static boolean getEvaMusic(Context context ){
+        return getBoolean(EVA_MUSIC ,context , false);
+    }
+
+    //  pk 结果
+
+    public static void setPkResultMusic(Context c , boolean isPlay){
+        setBoolean( PK_RESULT_MUSIC, c , isPlay);
+    }
+
+    public static boolean getPkResultMusic(Context context ){
+        return getBoolean(PK_RESULT_MUSIC ,context , false);
+    }
+
+    //  pk 背景
+    public static void setPkBgMusic(Context c , boolean isPlay){
+        setBoolean( PK_BG_MUSIC, c , isPlay);
+    }
+
+    public static boolean getPkBgMusic(Context context ){
+        Log.e(TAG, "getPkBgMusic: " + getBoolean(PK_BG_MUSIC ,context , true)  );
+        return getBoolean(PK_BG_MUSIC ,context , true);
+    }
+
+
+    /******* 音效开关*******/
 
     /**
      * 获取对手头像
@@ -181,12 +244,10 @@ public class SharedPreferencesUtils {
     }
 
     public static void setStudyMode(Context context , String mode){
-        Log.e(TAG, "setStudyMode: " + mode );
         setString("studyMode",context ,mode);
     }
 
     public static String getStudyMode(Context context){
-        Log.e(TAG, "getStudyMode: "  +getSharePreferences(context).getString("studyMode" ,"") );
         return  getSharePreferences(context).getString("studyMode" ,"");
     }
     public static String getNickName(Context context){
@@ -389,7 +450,7 @@ public class SharedPreferencesUtils {
      * @return
      */
     public static String getChoseMode(Context context){
-        return getString(PREFS_KEY_REVIEWE_MODE ,context) ;
+        return getString(PREFS_KEY_REVIEWE_MODE ,context,"英中") ;
     }
 
     /**
@@ -429,6 +490,9 @@ public class SharedPreferencesUtils {
         return  getSharePreferences(c).getString(key, "");
     }
 
+    public static String getString(String key , Context c , String defaultValue){
+        return getSharePreferences(c).getString(key ,defaultValue);
+    }
     public static void setString(String key, Context c, String value) {
         SharedPreferences.Editor editor =  getSharePreferences(c).edit();
         editor.putString(key, value);
@@ -451,8 +515,12 @@ public class SharedPreferencesUtils {
         editor.commit();
     }
 
+    public static boolean getBoolean(String key ,Context context , boolean defaultValue){
+        return getSharePreferences(context).getBoolean(key, defaultValue);
+    }
+
     public static Boolean getBoolean(String key ,Context context){
-        return getSharePreferences(context).getBoolean(key, false);
+        return getSharePreferences(context).getBoolean(key, true);
     }
 
 
@@ -480,5 +548,13 @@ public class SharedPreferencesUtils {
         return sp.getString("cookie" ,"");
     }
 
+
+    public static void setSearchHistory(Context context ,String searchHistory){
+        setString(PREFS_HISTORY ,context ,searchHistory);
+    }
+
+    public static String getSearchHistory(Context context){
+        return getString(PREFS_HISTORY ,context);
+    }
 
 }

@@ -211,6 +211,53 @@ public class StringUtils {
         return (int) (Math.floor(Math.random() * (upper - lower+1)) + lower);
     }
 
+    public static int match(String content , int index){
+        if (content.indexOf(" " ,index) != -1 || content.indexOf(".", index) != -1 || content.indexOf(",", index) != -1 || content.indexOf(":",index) != -1 || content.indexOf(";",index) != -1
+                || content.indexOf("?", index) != -1  || content.indexOf("!", index) != -1  ){
+            int spaceIndex = content.indexOf(" " ,index);
+            int pointIndex = content.indexOf("." ,index);
+            int commaIndex = content.indexOf("," , index);
+            int colonIndex = content.indexOf(":" , index);
+            int semicolonIndex = content.indexOf(";" , index);
+            int questionIndex = content.indexOf("?" , index);
+            int signIndex = content.indexOf("!" , index);
+            spaceIndex = spaceIndex != -1 ? spaceIndex : Integer.MAX_VALUE;
+            pointIndex = pointIndex != -1 ? pointIndex : Integer.MAX_VALUE ;
+            commaIndex = commaIndex != -1 ? commaIndex : Integer.MAX_VALUE ;
+            colonIndex = colonIndex != -1 ? colonIndex : Integer.MAX_VALUE ;
+            semicolonIndex = semicolonIndex != -1 ? semicolonIndex : Integer.MAX_VALUE ;
+            questionIndex = questionIndex != -1 ? questionIndex : Integer.MAX_VALUE ;
+            signIndex = signIndex != -1 ? signIndex : Integer.MAX_VALUE ;
+            int min = minIndex(spaceIndex ,pointIndex ,commaIndex , colonIndex , semicolonIndex , questionIndex , signIndex);
+            if (min == spaceIndex){
+               return spaceIndex ;
+            }else if (min == pointIndex){
+               return pointIndex ;
+            }else if (min == commaIndex){
+               return commaIndex ;
+            }else if (min == colonIndex){
+                return colonIndex ;
+            }else if (min == semicolonIndex){
+                return semicolonIndex ;
+            }else if (min == questionIndex){
+                return questionIndex ;
+            }else{
+                return index ;
+            }
+        }else{
+            return index ;
+        }
+    }
+
+    private static int minIndex (int index1 , int index2 , int index3 , int index4 , int index5 , int index6 , int index7){
+        int min = Math.min(index1 , index2);
+        min = Math.min(min , index3);
+        min = Math.min(min ,index4);
+        min = Math.min(min ,index5);
+        min = Math.min(min  , index6);
+        min = Math.min(min , index7);
+        return min ;
+    }
 
 
 }

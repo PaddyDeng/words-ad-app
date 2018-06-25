@@ -29,6 +29,8 @@ import thinku.com.word.callback.DeleteListener;
 import thinku.com.word.callback.SelectListener;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.other.MainActivity;
+import thinku.com.word.ui.personalCenter.FeedBackActivity;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.StringUtils;
 import thinku.com.word.view.wheelview.widget.WheelView;
 
@@ -373,7 +375,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
                         @Override
                         public void accept(Throwable throwable) throws Exception {
                             dismissLoadDialog();
-                            toTast(MyPlanActivity.this, throwable.getMessage());
+                            toTast(MyPlanActivity.this, HttpUtils.onError(throwable));
                         }
                     }));
         }
@@ -437,6 +439,7 @@ public class MyPlanActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         dismissLoadDialog();
+                        toTast(MyPlanActivity.this, HttpUtils.onError(throwable));
                     }
                 }));
 

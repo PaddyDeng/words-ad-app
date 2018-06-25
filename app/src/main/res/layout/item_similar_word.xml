@@ -15,4 +15,15 @@
     android:paddingRight="10dp"
     android:layout_marginTop="10dp"
     android:textColor="@color/mainColor" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1px"
+        android:layout_alignBottom="@+id/word"
+        android:layout_alignEnd="@+id/word"
+        android:layout_alignStart="@+id/word"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/circle_green"
+        android:minWidth="4dp" />
 </RelativeLayout>

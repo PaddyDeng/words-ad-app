@@ -19,6 +19,8 @@ import thinku.com.word.R;
 import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.ui.other.RigisterActivity;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.LoginHelper;
 import thinku.com.word.utils.Utils;
 
@@ -90,7 +92,7 @@ public class FeedBackActivity extends BaseActivity {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
                             dismissLoadDialog();
-                            toTast(FeedBackActivity.this ,"提交失败");
+                            toTast(FeedBackActivity.this, HttpUtils.onError(throwable));
                         }
                     }));
         } else {

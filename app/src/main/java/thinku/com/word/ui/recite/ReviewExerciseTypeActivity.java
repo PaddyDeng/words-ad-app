@@ -27,6 +27,7 @@ import thinku.com.word.base.BaseActivity;
 import thinku.com.word.bean.WrongIndexBeen;
 import thinku.com.word.callback.SelectListener;
 import thinku.com.word.http.HttpUtil;
+import thinku.com.word.utils.HttpUtils;
 
 /**
  * 听写练习分类
@@ -161,6 +162,7 @@ public class ReviewExerciseTypeActivity extends BaseActivity {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         dismissLoadDialog();
+                        toTast(ReviewExerciseTypeActivity.this, HttpUtils.onError(throwable));
                     }
                 }));
     }

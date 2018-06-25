@@ -1,17 +1,13 @@
 package thinku.com.word.http;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.SparseArray;
-
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -19,15 +15,12 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import thinku.com.word.BuildConfig;
 import thinku.com.word.MyApplication;
-import thinku.com.word.bean.RecitWordBeen;
-import thinku.com.word.bean.ResultBeen;
 import thinku.com.word.ui.report.bean.QuestionBean;
-import thinku.com.word.utils.LoginHelper;
 
 //链接
 public class RetrofitProvider {
     public static String BASEURL = "http://www.gmatonline.cn/";
-    private static String LOGINURL = "http://login.gmatonline.cn/cn/";
+    private static String LOGINURL = "http://login.viplgw.cn/cn/";
     private static String TOEFLURL = "http://www.toeflonline.cn/";
 //        public static String SMARTAPPLYURL = "http://smartapply.gmatonline.cn/";
     public static String SMARTAPPLYURL = "http://www.smartapply.cn/";

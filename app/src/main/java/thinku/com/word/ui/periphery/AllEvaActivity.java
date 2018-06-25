@@ -23,6 +23,7 @@ import thinku.com.word.callback.SelectListener;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.periphery.adapter.EvaAdapter1;
 import thinku.com.word.ui.periphery.bean.RoundBean;
+import thinku.com.word.ui.personalCenter.FeedBackActivity;
 import thinku.com.word.utils.HttpUtils;
 
 public class AllEvaActivity extends BaseActivity {
@@ -75,7 +76,7 @@ public class AllEvaActivity extends BaseActivity {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
                             dismissLoadDialog();
-                            toTast(AllEvaActivity.this, throwable.getMessage());
+                            toTast(AllEvaActivity.this, HttpUtils.onError(throwable));
                         }
                     }));
         }else{

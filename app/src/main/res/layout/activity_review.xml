@@ -32,7 +32,7 @@
                 android:layout_width="200px"
                 android:layout_height="200px" />
             <TextView
-                android:text="错题本"
+                android:text="生词本"
                 android:textSize="45px"
                 android:textColor="@color/mainColor"
                 android:layout_marginBottom="20px"

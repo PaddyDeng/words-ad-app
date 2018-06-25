@@ -40,8 +40,8 @@ public class SimilarAdapter extends RecyclerView.Adapter<SimilarAdapter.SimilarH
     @Override
     public void onBindViewHolder(SimilarHolder holder, final int position) {
         RecitWordBeen.SimilarWords similarWords = similarWordsList.get(position);
-        holder.word.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-        holder.word.getPaint().setAntiAlias(true);
+//        holder.word.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+//        holder.word.getPaint().setAntiAlias(true);
         holder.word.setText(similarWords.getWord());
         holder.rl.setOnClickListener(new View.OnClickListener() {
             @Override

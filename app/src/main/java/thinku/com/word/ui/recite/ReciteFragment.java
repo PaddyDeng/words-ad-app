@@ -36,8 +36,10 @@ import thinku.com.word.ui.seacher.TopicSearchActivity;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.FileUtil;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.RxBus;
 import thinku.com.word.utils.SharedPreferencesUtils;
+import thinku.com.word.utils.Utils;
 
 import static thinku.com.word.R.id.userInfo;
 
@@ -161,7 +163,7 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        toTast(_mActivity,throwable.getMessage());
+                        toTast(_mActivity, HttpUtils.onError(throwable));
                     }
                 }));
     }
@@ -172,7 +174,6 @@ public class ReciteFragment extends BaseFragment implements View.OnClickListener
             updataMode(SharedPreferencesUtils.getStudyMode(_mActivity), _mActivity);
         }
     }
-
 
 
     public  void updataMode(final String status , final Context context){

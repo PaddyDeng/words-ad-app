@@ -167,7 +167,7 @@
                                 style="@style/recite_word_rel">
 
                                 <TextView
-                                    android:text="短句"
+                                    android:text="@string/phrase"
                                     android:id="@+id/short_sentence_txt"
                                     style="@style/recite_word_title" />
 
@@ -295,7 +295,6 @@
                             </RelativeLayout>
 
                             <RelativeLayout
-                                android:id="@+id/jiekou"
                                 style="@style/recite_word_rel"
                                 android:layout_below="@id/question"
                                 android:layout_marginBottom="20dp"

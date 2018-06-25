@@ -36,7 +36,9 @@ import thinku.com.word.bean.WrodRateData;
 import thinku.com.word.callback.ISHCallBack;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
+import thinku.com.word.ui.share.ShareDateActivity;
 import thinku.com.word.utils.GlideUtils;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.Screenshot;
 import thinku.com.word.utils.ShareUtils;
 import thinku.com.word.utils.SharedPreferencesUtils;
@@ -150,7 +152,7 @@ public class EvaluateResultActivity extends BaseActivity implements View.OnClick
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         dismissLoadDialog();
-                        toTast(throwable.getMessage());
+                        toTast(EvaluateResultActivity.this, HttpUtils.onError(throwable));
                     }
                 }));
     }

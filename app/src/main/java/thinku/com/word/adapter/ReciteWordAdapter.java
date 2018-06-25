@@ -10,6 +10,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,13 @@ import java.util.List;
 
 import thinku.com.word.R;
 import thinku.com.word.bean.RecitWordBeen;
+import thinku.com.word.http.HttpUtil;
 import thinku.com.word.http.NetworkTitle;
 import thinku.com.word.utils.AudioTools.IMAudioManager;
 import thinku.com.word.utils.HtmlUtil;
 import thinku.com.word.utils.MeasureUtils;
+import thinku.com.word.utils.StringUtils;
+import thinku.com.word.utils.WordStartAndEnd;
 import thinku.com.word.view.CenterAlignImageSpan;
 
 /**
@@ -34,7 +38,6 @@ public class ReciteWordAdapter extends RecyclerView.Adapter {
     private static final String TAG = ReciteWordAdapter.class.getSimpleName();
     private List<RecitWordBeen.LowSentenceBean> sentences;
     private Context context;
-
     public ReciteWordAdapter(Context context, List<RecitWordBeen.LowSentenceBean> sentences) {
         this.context = context;
         this.sentences = sentences;
@@ -51,24 +54,18 @@ public class ReciteWordAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ReciteWordHolder reciteWordHolder = (ReciteWordHolder) holder;
         RecitWordBeen.LowSentenceBean sentence = sentences.get(position);
-        String content ;
+        String content =  HtmlUtil.replaceSpace(sentence.getEnglish());
+        SpannableString spannableString = new SpannableString(content + "    ");
         if (!TextUtils.isEmpty(sentence.getWord())){
-            if (sentence.getEnglish().indexOf(sentence.getWord()) != -1) {
+            if (HtmlUtil.getPatternIndexs(sentence.getWord() ,sentence.getEnglish()).size() > 0) {
                 if (sentence.isDialog()){
                     reciteWordHolder.img.setVisibility(View.GONE);
-                    content = HtmlUtil.replaceSpace(sentence.getEnglish());
-                    int index = content.indexOf(sentence.getWord()) ;
-                    SpannableString spannableString = new SpannableString(content +"    ");
-                    spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#31b272")), index,
-                            index + sentence.getWord().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    setAllWordGreen(sentence.getWord() ,content ,spannableString );
                     reciteWordHolder.us.setText(spannableString);
                 }else {
                     reciteWordHolder.img.setVisibility(View.VISIBLE);
-                    content = HtmlUtil.replaceSpace(sentence.getEnglish());
-                    int index = content.indexOf(sentence.getWord());
-                    SpannableString spannableString = new SpannableString(content + "    ");
-                    spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#31b272")), index,
-                            index + sentence.getWord().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    setAllWordGreen(sentence.getWord() ,content ,spannableString);
+                    reciteWordHolder.us.setText(spannableString);
                     //  在文本末尾添加图片
                     Drawable drawable = context.getResources().getDrawable(R.mipmap.music);
                     drawable.setBounds(MeasureUtils.dp2px(context, 5), MeasureUtils.dp2px(context, 0)
@@ -84,8 +81,6 @@ public class ReciteWordAdapter extends RecyclerView.Adapter {
                     reciteWordHolder.us.setText(content);
                 }else {
                     reciteWordHolder.img.setVisibility(View.VISIBLE);
-                    content = HtmlUtil.replaceSpace(sentence.getEnglish());
-                    SpannableString spannableString = new SpannableString(content + "    ");
                     Drawable drawable = context.getResources().getDrawable(R.mipmap.music);
                     drawable.setBounds(MeasureUtils.dp2px(context, 5), MeasureUtils.dp2px(context, 0)
                             , MeasureUtils.dp2px(context, 17), MeasureUtils.dp2px(context, 12));
@@ -125,6 +120,31 @@ public class ReciteWordAdapter extends RecyclerView.Adapter {
             us = (TextView) itemView.findViewById(R.id.us);
             chinese = (TextView) itemView.findViewById(R.id.chinese);
             img = (ImageView) itemView.findViewById(R.id.img);
+        }
+    }
+
+
+    private void  setColorGreen(SpannableString spannableString ,int start , int end  ){
+        spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#31b272")), start,  //  index + sentence.getWord().length()
+                end  , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+
+    private void addGreen(WordStartAndEnd wordStartAndEnd , SpannableString spannableString , String content){
+        int start = wordStartAndEnd.getStart() ;
+        int end = wordStartAndEnd.getEnd() ;
+        if (start != -1 ){
+           int spaceIndex = StringUtils.match(content ,end);
+           setColorGreen(spannableString ,start ,spaceIndex);
+        }
+    }
+
+    private void setAllWordGreen(String word ,String content ,SpannableString spannableString){
+        List<WordStartAndEnd> wordStartAndEnds = HtmlUtil.getPatternIndexs(word ,content);
+        if (wordStartAndEnds != null && wordStartAndEnds.size() > 0) {
+            for (WordStartAndEnd wordStartAndEnd : wordStartAndEnds) {
+                 addGreen(wordStartAndEnd ,spannableString ,content);
+            }
         }
     }
 }

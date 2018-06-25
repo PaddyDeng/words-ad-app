@@ -76,7 +76,6 @@
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
                 app:sl_shadowColor="#803F51B5"
-                android:id="@+id/width"
                 app:sl_shadowRadius="15px">
 
                 <RelativeLayout
@@ -93,8 +92,7 @@
                         android:gravity="center"
                         android:text="雷豆总数"
                         android:textColor="@color/black"
-                        android:textSize="50px"
-                        android:id="@+id/width1"/>
+                        android:textSize="50px" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"

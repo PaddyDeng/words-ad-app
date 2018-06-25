@@ -32,7 +32,9 @@ import thinku.com.word.ui.other.dialog.callback.DialogClickListener;
 import thinku.com.word.ui.personalCenter.SignActivity;
 import thinku.com.word.utils.C;
 import thinku.com.word.utils.DateUtil;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.RxBus;
+import thinku.com.word.utils.SharedPreferencesUtils;
 import thinku.com.word.utils.WaitUtils;
 import thinku.com.word.view.AutoZoomTextView;
 import thinku.com.word.view.CompleteDialog;
@@ -96,7 +98,7 @@ public class HomeFragment extends BaseFragment {
 
     private MediaPlayer recitePlayer;
     private boolean isInitData = false;
-
+    private boolean homePlay  ;
     private Observable<Boolean> referUiObservable ;
 
     @Nullable
@@ -120,6 +122,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        homePlay = SharedPreferencesUtils.getHomeMusic(_mActivity);
     }
 
     private void init() {
@@ -187,6 +190,7 @@ public class HomeFragment extends BaseFragment {
                         if (WaitUtils.isRunning("word")) {
                             WaitUtils.dismiss("word");
                         }
+                        toTast(_mActivity, HttpUtils.onError(throwable));
                     }
                 })
         );
@@ -238,7 +242,9 @@ public class HomeFragment extends BaseFragment {
      * task  = 4 提示  词包已经背完
      */
     public void reciteWord() {
-        if (recitePlayer != null && !recitePlayer.isPlaying()) recitePlayer.start();
+        if (homePlay) {
+            if (recitePlayer != null && !recitePlayer.isPlaying()) recitePlayer.start();
+        }
         if (MyApplication.task == 1) {
             showCompeleteDialog();
         } else if (MyApplication.task == 2) {

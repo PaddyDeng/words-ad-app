@@ -128,6 +128,7 @@ public class PKHomeActivity extends BaseActivity {
     private EventPkData.UserBean mySelfUser;
     private EventPkData.UserBean mathUser;
     private String uid;
+    private boolean pkBgPlay ;
     private static boolean isInit = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +137,7 @@ public class PKHomeActivity extends BaseActivity {
         unbinder = ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         addNet();
-        if (MyApplication.mediaPlayer == null){
+        if (MyApplication.mediaPlayer == null ){
             MyApplication.mediaPlayer = MediaPlayer.create(this , R.raw.pk_bg);
             MyApplication.mediaPlayer.setLooping(true);
 
@@ -146,7 +147,8 @@ public class PKHomeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-            if (!MyApplication.mediaPlayer.isPlaying()) {
+        pkBgPlay = SharedPreferencesUtils.getPkBgMusic(this);
+            if (!MyApplication.mediaPlayer.isPlaying() && pkBgPlay) {
                 try {
                     MyApplication.mediaPlayer.prepareAsync();
                     MyApplication.mediaPlayer.seekTo(0);
@@ -159,7 +161,6 @@ public class PKHomeActivity extends BaseActivity {
                         MyApplication.mediaPlayer.start();
                     }
                 });
-
             }
     }
 

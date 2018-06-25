@@ -22,6 +22,7 @@ import thinku.com.word.bean.WordPackageBeen;
 import thinku.com.word.callback.SelectListener;
 import thinku.com.word.http.HttpUtil;
 import thinku.com.word.ui.other.MainActivity;
+import thinku.com.word.utils.HttpUtils;
 import thinku.com.word.utils.LoginHelper;
 
 public class WordPackageActivity extends BaseActivity {
@@ -108,7 +109,7 @@ public class WordPackageActivity extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-
+                        toTast(WordPackageActivity.this, HttpUtils.onError(throwable));
                     }
                 }));
     }

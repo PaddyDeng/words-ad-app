@@ -2,9 +2,7 @@
     <string name="app_name">word</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="string_evaluate">按照正确率从词库抽取单词进行评估，请尽可能真实评测</string>
-    <string name="pk_success">匹配成功</string>
     <string name="str_camera_no_permisson">相机权限未授予，去设置中心设置</string>
     <string name="str_read_external_no_permisson">相册权限未授予，去设置中心设置</string>
     <string name="str_please_choose_pic">请选择图片</string>
@@ -14,13 +12,10 @@
     <string name="str_dialog_apk_downloding_msg">正在下载客户端(%1$d %2$s)</string>
     <string name="str_update_apk_title">发现新版本</string>
     <string name="str_update_apk_fail">下载失败</string>
-    <string name="str_is_new_apk">已经是最新版本了!</string>
     <string name="str_update_apk_imme">立即更新</string>
     <string name="str_update_apk_wait">稍后更新</string>
     <string name="str_need_sdcard_permission">本功能需要读写SDCARD权限</string>
     <string name="str_no_alarm_hint">您还没有学习闹钟，请添加学习闹钟</string>
-    <string name="toefl_class">托福班</string>
-    <string name="half_diy">半DIY留学服\n务课程</string>
     <string name="tip_title">请拖动裁剪框四角选择一行题目</string>
     <string name="no_tip">不在提示</string>
     <string name="go_on">继续</string>
@@ -31,28 +26,10 @@
     <string name="str_please_write_search_content">请输入查询内容</string>
     <string name="str_search_no_result">没有查找到相关内容</string>
     <string name="str_need_login">您还没登录，请先登录</string>
-    <string name="protocol">雷哥网用户注册协议
-
-特别提示
-雷哥网在此特别提醒您（用户）在注册成为用户之前，请认真阅读本《用户协议》（以下简称“协议”），以确保您充分理解本协议中各条款。您的注册、登录、使用等行为将视为对本协议的接受，并同意接受本协议各项条款的约束。
-本协议约定雷哥网与用户之间关于“雷哥单词”应用软件服务使用的权利义务。本协议可由雷哥网随时更新，更新后的协议条款一旦公布即代替原来的协议条款，恕不再另行通知，用户继续使用雷哥单词应用软件提供的服务将被视为接受修改后的协议，用户可在本网站查阅最新版协议条款。
-
-一、帐号注册
-1.用户注册成功后即成为雷哥网的合法用户，注册成功后会得到一个账号密码，用户用该账号进行做题等一切活动，并对自己的行为负责，由此行为产生的一切行为后果均由自己承担，雷哥网不承担任何责任。
-2.在用户注册及雷哥网搜集的信息包括但不限于用户的昵称、电话、邮箱和密码；雷哥网同意对这些信息的使用将受限于第三条用户个人隐私信息保护的约束。
-
-二、用户承诺
-用户同意遵守《中华人民共和国保守国家秘密法》、《中华人民共和国著作权法》、《互联网电子公告服务管理规定》、《信息网络传播法保护条例》、《中华人民共和国计算机信息系统安全保护条例》等有关法律法规及政府部门的规定，一经发现，雷哥网将根据法律法规采取相应措施。
-
-三、免责声明
-雷哥单词APP为互联网服务提供商，为单词学习用户提供在线考试学习服务及沟通交流平台，根据《侵权责任法》以及《信息网络传播权保护条例》规定，对于用户个人的侵权及违法行为，雷哥网不承担民事责任。
-</string>
 
     <string name="share_content">我已在雷哥单词坚持%1$s天,今日已背单词%2$s词,累计已背%3$s词</string>
 
     <string name="study_science">科学记忆</string>
-    <string name="study_fast_memory">快速记忆</string>
-    <string name="study_fast_cement">快速巩固</string>
     <string name="aibinhaosi">艾宾浩斯记忆法</string>
     <string name="review">复习记忆法</string>
     <string name="only_newword">只背新单词</string>
@@ -66,18 +43,11 @@
     <string name="diction_tip">点击即可选中，再次点击取消</string>
     <string name="show_more">展开</string>
     <string name="hide_more">收起</string>
+    <string name="word_eva">单词量评估</string>
+    <string name="phrase">短语</string>
+    <string name="no_result_no_net">没有查找到相关内容,请检查是否有网络</string>
+    <string name="search_history">搜索历史</string>
+    <string name="clear_search_history">清除历史搜索记录</string>
+    <string name="no_search_history">没有历史搜索记录</string>
     <!--JPush-->
-    <string name="hello">Hello World, JPush!</string>
-    <string name="tag_hint">Tag can be number, alphabet, underscore, Chinese. Use , to split many tags.</string>
-    <string name="alias_hint">Alias can be number, alphabet, underscore, Chinese.</string>
-    <string name="mobilenumber_hint">The phone number can only start with a "+" or a number,other can only contain "-" and Numbers</string>
-    <string name="style_hint">style should be number</string>
-    <string name="error_style_empty">style cannot be empty</string>
-    <string name="error_alias_empty">alias cannot be empty</string>
-    <string name="error_tag_empty">tag cannot be empty</string>
-    <string name="error_tag_gs_empty">Invalid format</string>
-    <string name="mobilenumber_empty_guide">will clear last set phone number</string>
-    <string name="error_network">Failed to init due to network exception.</string>
-    <string name="logining">Running in background. Please see log.</string>
-    <string name="setting_su">Succeed to set</string>
 </resources>
